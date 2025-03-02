@@ -1,0 +1,24 @@
+﻿<div class="mt-10 mb-10 flex h-[10vh] w-full items-center justify-center">
+    <div class="flex w-[85%] items-center justify-between gap-2">
+        <h1 class="text-center text-4xl">@ViewData["Title"]</h1>
+        <div class="flex flex-row">
+            <div class="relative w-full">
+                <input type="text" placeholder="Search"
+                       class="h-10 w-[600px] rounded-full border border-gray-300 bg-white pr-4 pl-12 outline-none focus:ring-2 focus:ring-gray-300">
+                <img class="absolute top-1/2 left-4 h-5 -translate-y-1/2" src="~/Images/find.svg" alt="Search">
+            </div>
+
+            <div class="group relative flex flex-row items-center">
+                <img class="w-5" src="~/Images/filter.svg" alt="Filter">
+                <a class="flex cursor-pointer flex-row items-center gap-1 text-base hover:text-[#787676]" href="#about">
+                    Filter
+                </a>
+                <!-- Dropdown Content -->
+                <div class="absolute top-6 right-2 hidden w-40 flex-col gap-1 rounded-lg bg-white py-2 shadow-lg group-hover:flex">
+                    <a href="#" class="px-4 py-2 hover:bg-gray-200">Availability</a>
+                    <a href="#my-facilities" class="px-4 py-2 hover:bg-gray-200">Capacity</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

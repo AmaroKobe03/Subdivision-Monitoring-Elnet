@@ -1,0 +1,56 @@
+﻿@model FacilityViewModel
+
+@{
+
+    string statusClass = Model.ButtonText switch
+    {
+        "Confirmed" => "bg-[#04333A] text-white", // Green confirmed
+        "Pending" => "bg-[#AC602A] text-white", // Yellow pending
+        "Completed" => "bg-[#04333A] text-white", // Dark completed
+        "Canceled" => "bg-[#E74C3C] text-white", // Red canceled
+        _ => "bg-gray-400 text-white" // Default
+    };
+
+    string scheduleText = Model.ButtonText == "Completed" ? "Schedule" : "Reschedule";
+}
+
+<div class="flex h-[40vh] w-full items-center justify-center gap-4 rounded-lg bg-white p-8 shadow-lg">
+    <div class="flex h-full w-[60%] items-center justify-center gap-6">
+        <div class="flex h-full items-center justify-center">
+            <img class="h-[218px] w-[400px]" src="@Url.Content("~/Images/" + Model.ImagePath)" alt="@Model.FacilityName">
+        </div>
+
+        <div class="flex h-full w-[50%] flex-col justify-center gap-5">
+            <h1 class="text-2xl font-bold text-[#AC602A] md:text-3xl lg:text-[35px]">@Model.FacilityName</h1>
+            <h1>Date: February 25, 2025</h1>
+            <h1>Time: 10:00 AM – 12:30 PM</h1>
+
+            <div class="relative flex w-full items-center">
+                <button class="h-10 w-[32%] rounded-full pr-4 pl-12 outline-none @statusClass">
+                    @Model.ButtonText
+                </button>
+                <img class="absolute top-1/2 left-3 h-5 -translate-y-1/2" src="@Url.Content($"~/Images/{Model.Icons["status"]}")" alt="Status Icon">
+            </div>
+        </div>
+    </div>
+
+    <div class="flex h-full w-[30%] flex-row items-center justify-center gap-8">
+        <div class="flex flex-col items-center rounded-lg">
+            <button class="flex h-[100px] w-[100px] cursor-pointer items-center justify-center bg-[#E9E9EA]">
+                <img src="@Url.Content($"~/Images/{Model.Icons["schedule"]}")" alt="Schedule">
+            </button>
+            <a>Reschedule</a>
+        </div>
+
+        @if (Model.ButtonText != "Completed")
+        {
+            <div class="rpunded-lg flex flex-col items-center">
+                <button class="flex h-[100px] w-[100px] cursor-pointer items-center justify-center bg-[#E9E9EA]">
+                    <img src="@Url.Content($"~/Images/{Model.Icons["cancel"]}")" alt="Cancel">
+                </button>
+                <a>Cancel</a>
+            </div>
+        }
+    </div>
+</div>
+

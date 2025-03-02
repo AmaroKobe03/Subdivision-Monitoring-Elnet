@@ -7,58 +7,54 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="~/css/output.css" rel="stylesheet">
 </head>
-<body class="w-full h-screen flex flex-col items-center justify-center bg-[#f2f2f2]">
-    <main class="w-full md:w-[70%] h-full flex flex-col items-center justify-center relative px-4 sm:px-6">
+<body class="flex h-screen w-full flex-col items-center justify-center overflow-y-hidden bg-[#f2f2f2]">
+    <main class="relative flex h-full w-full flex-col items-center justify-center px-4 sm:px-6 md:w-[70%]">
         <!-- Cover Section -->
-        <section id="cover-section" class="w-full h-[35%] relative">
-            <img class="object-cover w-full h-full rounded-t-3xl" src="~/Images/cover.png" alt="Cover Photo" />
+        <section id="cover-section" class="relative h-[35%] w-full">
+            <img class="h-full w-full rounded-t-3xl object-cover" src="~/Images/cover.png" alt="Cover Photo" />
         </section>
 
         <!-- Profile Details Section -->
-        <section id="profileDets-section" class="w-full h-[60%] bg-[#ffff] rounded-b-3xl shadow-lg pt-16 flex flex-col px-4 sm:px-8">
-            <div class="absolute left-1/2 md:left-10 top-[40%] transform -translate-x-1/2 md:-translate-x-0 -translate-y-1/2 w-[150px] h-[150px] md:w-[200px] md:h-[200px] rounded-full overflow-hidden border-4 border-white z-10">
-                <img class="w-full h-full object-cover" src="~/Images/pfp.svg" alt="Profile Picture" />
+        <section id="profileDets-section" class="flex h-[60%] w-full flex-col overflow-y-auto rounded-b-3xl bg-[#ffff] px-4 pt-16 shadow-lg sm:px-8">
+            <div class="border-4 absolute left-1/2 z-10 h-[150px] w-[150px] -translate-x-1/2 -translate-y-1/2 transform overflow-y-auto rounded-full border-white md:left-10 md:-translate-x-0 md:w-[200px] md:h-[200px] lg:top-[48%]">
+                <img class="h-full w-full object-cover" src="~/Images/pfp.svg" alt="Profile Picture" />
             </div>
 
-            <div class="flex flex-col md:flex-row items-center justify-between mt-[5em] md:mt-[-3em] ml-0 md:ml-[15em] text-center md:text-left">
+            <div class="mt-[5em] ml-0 flex flex-col items-center justify-between text-center md:flex-row md:mt-[-3em] md:ml-[15em] md:text-left">
                 <div class="flex flex-col items-center md:items-start">
-                    <h1 id="name" class="text-2xl md:text-3xl font-bold">Kobe Amaro</h1>
+                    <h1 id="name" class="text-2xl font-bold md:text-3xl">Kobe Amaro</h1>
                     <p id="role" class="text-[#787676]">House No.4</p>
                 </div>
-                <div class="mt-4 md:mt-6 flex justify-center md:justify-end">
-                    <button class="px-[2em] md:px-[4em] py-2 md:py-3 bg-orange-500 text-white font-semibold rounded-full">Edit Profile</button>
+                <div class="mt-4 flex justify-center md:mt-6 md:justify-end">
+                    <button class="rounded-full bg-orange-500 px-[2em] py-2 font-semibold text-white md:px-[4em] md:py-3">Edit Profile</button>
                 </div>
             </div>
 
-            <div id="pdets" class="w-full h-auto mt-10 md:mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 items-center justify-center">
-                <div class="bg-[#F7EFEA] flex flex-col justify-center gap-4 p-4 rounded-lg">
-                    <label class="text-xl md:text-2xl font-medium">Name</label>
-                    <input class="px-4 py-2 bg-transparent border-b-2 border-gray-400 text-xl md:text-2xl w-full" type="text" value="Kobe Amaro" readonly />
+            <div id="pdets" class="mt-10 mb-10 grid h-auto w-full grid-cols-1 items-center justify-center gap-5 sm:grid-cols-2 md:mt-20 lg:grid-cols-3">
+                <div class="flex flex-col justify-center gap-4 rounded-lg bg-[#F7EFEA] p-4">
+                    <label class="text-xl font-medium md:text-2xl">Name</label>
+                    <input class="bg-transparent w-full border-b-2 border-gray-400 px-4 py-2 text-xl md:text-2xl" type="text" value="Kobe Amaro" readonly />
                 </div>
 
-                <div class="bg-[#F7EFEA] flex flex-col justify-center gap-4 p-4 rounded-lg">
-                    <label class="text-xl md:text-2xl font-medium">Email</label>
-                    <input class="px-4 py-2 bg-transparent border-b-2 border-gray-400 text-xl md:text-2xl w-full" type="text" value="kbbryan.amaro@gmail.com" readonly />
+                <div class="flex flex-col justify-center gap-4 rounded-lg bg-[#F7EFEA] p-4">
+                    <label class="text-xl font-medium md:text-2xl">Email</label>
+                    <input class="bg-transparent w-full border-b-2 border-gray-400 px-4 py-2 text-xl md:text-2xl" type="text" value="kbbryan.amaro@gmail.com" readonly />
                 </div>
 
-                <div class="bg-[#F7EFEA] flex flex-col justify-center gap-4 p-4 rounded-lg">
-                    <label class="text-xl md:text-2xl font-medium">Password</label>
+                <div class="flex flex-col justify-center gap-4 rounded-lg bg-[#F7EFEA] p-4">
+                    <label class="text-xl font-medium md:text-2xl">Password</label>
                     <div class="relative">
-                        <input id="password" class="px-4 py-2 bg-transparent border-b-2 border-gray-400 text-xl md:text-2xl w-full" type="password" value="oten" readonly />
-                        <i id="toggle-eye" class="fas fa-eye absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-xl" onclick="togglePasswordVisibility()"></i>
+                        <input id="password" class="bg-transparent w-full border-b-2 border-gray-400 px-4 py-2 text-xl md:text-2xl" type="password" value="oten" readonly />
+                        <i id="toggle-eye" class="fas fa-eye absolute top-1/2 right-3 -translate-y-1/2 transform cursor-pointer text-xl" onclick="togglePasswordVisibility()"></i>
                     </div>
                 </div>
 
-                <div class="bg-[#F7EFEA] flex flex-col justify-center gap-4 p-4 rounded-lg">
-                    <label class="text-xl md:text-2xl font-medium">House/Family Number</label>
-                    <input class="px-4 py-2 bg-transparent border-b-2 border-gray-400 text-xl md:text-2xl w-full" type="text" value="No.4" readonly />
+                <div class="flex flex-col justify-center gap-4 rounded-lg bg-[#F7EFEA] p-4">
+                    <label class="text-xl font-medium md:text-2xl">House/Family Number</label>
+                    <input class="bg-transparent w-full border-b-2 border-gray-400 px-4 py-2 text-xl md:text-2xl" type="text" value="No.4" readonly />
                 </div>
             </div>
-            <div class="mt-6 flex justify-center md:justify-center lg:justify-end">
-                <button class="px-[2em] md:px-[4em] py-2 md:py-3 bg-orange-500 text-white font-semibold rounded-full" onclick="window.location.href='@Url.Action("DashboardLayout", "Home")'" class="px-6 py-2 bg-orange-500 text-white font-semibold rounded-full">
-                    Return Home
-                </button>
-            </div>
+
         </section>
     </main>
 

@@ -13,10 +13,10 @@ namespace ElnetSubdivi.Controllers
             _logger = logger;
         }
 
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
+        public IActionResult Index()
+        {
+            return View();
+        }
 
         public IActionResult Privacy()
         {
@@ -24,10 +24,10 @@ namespace ElnetSubdivi.Controllers
         }
         public IActionResult Landing()
         {
-            ViewData["HideLayout"] = true;
+            ViewBag.HideNav = true;
             return View();
         }
-        public IActionResult DashboardLayout()
+        public IActionResult UserDash()
         {
             return View();
         }
@@ -35,6 +35,34 @@ namespace ElnetSubdivi.Controllers
         {
             return View();
         }
+        public IActionResult FacilityReservation()
+        {
+
+            //var model = new FacilityViewModel
+            //{
+            //    ShowReservation = false // Default to not showing reservation
+            //};
+            return View();
+        }
+        //[HttpPost]
+        //public IActionResult ShowReservation()
+        //{
+        //    var model = new FacilityViewModel
+        //    {
+        //        ShowReservation = true // Show reservation when button is clicked
+        //    };
+        //    return View("FacilityReservation", model);
+        //}
+        public IActionResult MyReservation()
+        {
+            return View();
+        }
+        public IActionResult serviceRequest()
+        {
+            return View();
+        }
+
+
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

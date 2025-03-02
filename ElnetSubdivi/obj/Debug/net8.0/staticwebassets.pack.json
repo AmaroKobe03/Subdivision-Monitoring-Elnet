@@ -25,6 +25,22 @@
       "PackagePath": "staticwebassets\\Images\\billing 5.svg"
     },
     {
+      "Id": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\cancel-icon.svg",
+      "PackagePath": "staticwebassets\\Images\\cancel-icon.svg"
+    },
+    {
+      "Id": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\cancelicon.svg",
+      "PackagePath": "staticwebassets\\Images\\cancelicon.svg"
+    },
+    {
+      "Id": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\completedicon.svg",
+      "PackagePath": "staticwebassets\\Images\\completedicon.svg"
+    },
+    {
+      "Id": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\conficon.svg",
+      "PackagePath": "staticwebassets\\Images\\conficon.svg"
+    },
+    {
       "Id": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\cover.png",
       "PackagePath": "staticwebassets\\Images\\cover.png"
     },
@@ -35,6 +51,10 @@
     {
       "Id": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\document 1.svg",
       "PackagePath": "staticwebassets\\Images\\document 1.svg"
+    },
+    {
+      "Id": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\drdown.svg",
+      "PackagePath": "staticwebassets\\Images\\drdown.svg"
     },
     {
       "Id": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\faci.svg",
@@ -53,6 +73,14 @@
       "PackagePath": "staticwebassets\\Images\\facimg3.png"
     },
     {
+      "Id": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\filter.svg",
+      "PackagePath": "staticwebassets\\Images\\filter.svg"
+    },
+    {
+      "Id": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\find.svg",
+      "PackagePath": "staticwebassets\\Images\\find.svg"
+    },
+    {
       "Id": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\home 1.svg",
       "PackagePath": "staticwebassets\\Images\\home 1.svg"
     },
@@ -69,6 +97,10 @@
       "PackagePath": "staticwebassets\\Images\\notfif-bell.svg"
     },
     {
+      "Id": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\pendingicon.svg",
+      "PackagePath": "staticwebassets\\Images\\pendingicon.svg"
+    },
+    {
       "Id": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\pfp.svg",
       "PackagePath": "staticwebassets\\Images\\pfp.svg"
     },
@@ -81,6 +113,10 @@
       "PackagePath": "staticwebassets\\Images\\req.svg"
     },
     {
+      "Id": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\schedicon.svg",
+      "PackagePath": "staticwebassets\\Images\\schedicon.svg"
+    },
+    {
       "Id": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\sub-logo.svg",
       "PackagePath": "staticwebassets\\Images\\sub-logo.svg"
     },
@@ -89,8 +125,16 @@
       "PackagePath": "staticwebassets\\Images\\vid.svg"
     },
     {
+      "Id": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\xcon.svg",
+      "PackagePath": "staticwebassets\\Images\\xcon.svg"
+    },
+    {
       "Id": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\css\\input.css",
       "PackagePath": "staticwebassets\\css\\input.css"
+    },
+    {
+      "Id": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\css\\input.output.css",
+      "PackagePath": "staticwebassets\\css\\input.output.css"
     },
     {
       "Id": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\css\\output.css",
@@ -331,6 +375,10 @@
     {
       "Id": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
+    },
+    {
+      "Id": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\subdicon.ico",
+      "PackagePath": "staticwebassets\\subdicon.ico"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.ElnetSubdivi.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",

@@ -1,0 +1,29 @@
+﻿@model FacilityViewModel
+
+@{
+    bool isDisabled = Model.ButtonText == "Fully Booked" || Model.ButtonText == "Maintenance";
+    string overlayClass = isDisabled ? "opacity-50" : ""; // Dim the card
+    string textColorClass = isDisabled ? "text-gray-400" : "text-[#AC602A]"; // Adjust text color
+    string buttonColorClass = Model.ButtonText == "Fully Booked" ? "bg-gray-400 text-black font-bold"
+                           : Model.ButtonText == "Maintenance" ? "bg-red-600 text-white font-bold"
+                           : "bg-[#AC602A] text-white";
+}
+
+<div class="flex h-[45vh] w-[25%] flex-col items-center justify-center gap-4 rounded-lg bg-white p-8 shadow-lg @overlayClass">
+    <img class="h-[250px] w-[400px]" src="~/Images/@Model.ImagePath" alt="@Model.FacilityName">
+    <h1 class="text-2xl font-bold @textColorClass lg:text-[35px]">@Model.FacilityName</h1>
+
+    @if (!isDisabled)
+    {
+        <button type="button" class="book-now-btn rounded-full px-28 py-2 transition hover:bg-opacity-75 @buttonColorClass">
+            @Model.ButtonText
+        </button>
+
+    }
+    else
+    {
+        <button disabled class="rounded-full px-28 py-2 @buttonColorClass">
+            @Model.ButtonText
+        </button>
+    }
+</div>

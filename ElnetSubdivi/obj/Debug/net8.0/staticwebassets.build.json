@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "xksNNn1dKQpdtqwDwcBfnUNH4FeVgro8Q13QXdTBn+o=",
+  "Hash": "Yokt60lSgqT8YaTof86A4312fDYpPsw/ATcNLAcg8T8=",
   "Source": "ElnetSubdivi",
   "BasePath": "_content/ElnetSubdivi",
   "Mode": "Default",
@@ -80,6 +80,27 @@
       "OriginalItemSpec": "wwwroot\\css\\input.css"
     },
     {
+      "Identity": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\css\\input.output.css",
+      "SourceId": "ElnetSubdivi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\",
+      "BasePath": "_content/ElnetSubdivi",
+      "RelativePath": "css/input.output#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "8onf4iitsj",
+      "Integrity": "mJHFkIsuBG9j26Kk9Ppv+NAB4UVGQFUl4ip5ycOSO/Q=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\input.output.css"
+    },
+    {
       "Identity": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\css\\output.css",
       "SourceId": "ElnetSubdivi",
       "SourceType": "Discovered",
@@ -94,8 +115,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "ny7opfhd0t",
-      "Integrity": "T+POVVx4++pwAywOZGgG8NQgTgVgQai+irWQia7U1fw=",
+      "Fingerprint": "ht8rb0z415",
+      "Integrity": "ZYCaGUCNMLtXZwLSdfG4ZSt4ASLkhjWRGdOpkpAvm10=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\output.css"
@@ -206,6 +227,90 @@
       "OriginalItemSpec": "wwwroot\\Images\\billing 5.svg"
     },
     {
+      "Identity": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\cancelicon.svg",
+      "SourceId": "ElnetSubdivi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\",
+      "BasePath": "_content/ElnetSubdivi",
+      "RelativePath": "Images/cancelicon#[.{fingerprint}]?.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "bqf7fb6ejz",
+      "Integrity": "nVk08Z0GIXunh/49lXagJs8PgpwMTjr24P7SRr7TKFs=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\cancelicon.svg"
+    },
+    {
+      "Identity": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\cancel-icon.svg",
+      "SourceId": "ElnetSubdivi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\",
+      "BasePath": "_content/ElnetSubdivi",
+      "RelativePath": "Images/cancel-icon#[.{fingerprint}]?.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "mhgejph1hl",
+      "Integrity": "Bm5R8B8/rXCoW1j1F+eDby/EWtuvBtWKpiCGspD36Ms=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\cancel-icon.svg"
+    },
+    {
+      "Identity": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\completedicon.svg",
+      "SourceId": "ElnetSubdivi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\",
+      "BasePath": "_content/ElnetSubdivi",
+      "RelativePath": "Images/completedicon#[.{fingerprint}]?.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "08yg2necr7",
+      "Integrity": "wBAXQ3kN/6i7rPtjXc8JQ2dnqyQrSw1BpBbGtIqhxyk=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\completedicon.svg"
+    },
+    {
+      "Identity": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\conficon.svg",
+      "SourceId": "ElnetSubdivi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\",
+      "BasePath": "_content/ElnetSubdivi",
+      "RelativePath": "Images/conficon#[.{fingerprint}]?.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "08yg2necr7",
+      "Integrity": "wBAXQ3kN/6i7rPtjXc8JQ2dnqyQrSw1BpBbGtIqhxyk=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\conficon.svg"
+    },
+    {
       "Identity": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\cover.png",
       "SourceId": "ElnetSubdivi",
       "SourceType": "Discovered",
@@ -267,6 +372,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Images\\document 1.svg"
+    },
+    {
+      "Identity": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\drdown.svg",
+      "SourceId": "ElnetSubdivi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\",
+      "BasePath": "_content/ElnetSubdivi",
+      "RelativePath": "Images/drdown#[.{fingerprint}]?.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "jjzvuj8ath",
+      "Integrity": "UTD2c9xxEvH0IMBDKv8ZFSBsqUXZluBx1bvgICtfUV0=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\drdown.svg"
     },
     {
       "Identity": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\faci.svg",
@@ -353,6 +479,48 @@
       "OriginalItemSpec": "wwwroot\\Images\\facimg3.png"
     },
     {
+      "Identity": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\filter.svg",
+      "SourceId": "ElnetSubdivi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\",
+      "BasePath": "_content/ElnetSubdivi",
+      "RelativePath": "Images/filter#[.{fingerprint}]?.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "oy2mo2it39",
+      "Integrity": "gHiftBNYZ8oDnZ7b43w+Hx/rQV0oUT05YLr/R/IFkwY=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\filter.svg"
+    },
+    {
+      "Identity": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\find.svg",
+      "SourceId": "ElnetSubdivi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\",
+      "BasePath": "_content/ElnetSubdivi",
+      "RelativePath": "Images/find#[.{fingerprint}]?.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "zponfmdrf6",
+      "Integrity": "5/NmRZhTXtYLQhcRAKtwF5Ev8vEsrRRg0AH58DHdEog=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\find.svg"
+    },
+    {
       "Identity": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\home 1.svg",
       "SourceId": "ElnetSubdivi",
       "SourceType": "Discovered",
@@ -437,6 +605,27 @@
       "OriginalItemSpec": "wwwroot\\Images\\notfif-bell.svg"
     },
     {
+      "Identity": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\pendingicon.svg",
+      "SourceId": "ElnetSubdivi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\",
+      "BasePath": "_content/ElnetSubdivi",
+      "RelativePath": "Images/pendingicon#[.{fingerprint}]?.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "aa1ye4vi7r",
+      "Integrity": "AgmQ7aqvYRkb1EJXU0ZIO+3EO+Qnb9iWW5UwYvwe+aE=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\pendingicon.svg"
+    },
+    {
       "Identity": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\pfp.svg",
       "SourceId": "ElnetSubdivi",
       "SourceType": "Discovered",
@@ -498,6 +687,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Images\\req.svg"
+    },
+    {
+      "Identity": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\schedicon.svg",
+      "SourceId": "ElnetSubdivi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\",
+      "BasePath": "_content/ElnetSubdivi",
+      "RelativePath": "Images/schedicon#[.{fingerprint}]?.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "fi19j60o9t",
+      "Integrity": "5zoA1QZwKAE7GVfqwa98fxqMjVfIRKJW7XWVExdeOs4=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\schedicon.svg"
     },
     {
       "Identity": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\sub-logo.svg",
@@ -563,6 +773,27 @@
       "OriginalItemSpec": "wwwroot\\Images\\vid.svg"
     },
     {
+      "Identity": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\xcon.svg",
+      "SourceId": "ElnetSubdivi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\",
+      "BasePath": "_content/ElnetSubdivi",
+      "RelativePath": "Images/xcon#[.{fingerprint}]?.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "mhgejph1hl",
+      "Integrity": "Bm5R8B8/rXCoW1j1F+eDby/EWtuvBtWKpiCGspD36Ms=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\xcon.svg"
+    },
+    {
       "Identity": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\js\\site.js",
       "SourceId": "ElnetSubdivi",
       "SourceType": "Discovered",
@@ -577,8 +808,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "xtxxf3hu2r",
-      "Integrity": "hRQyftXiu1lLX2P9Ly9xa4gHJgLeR1uGN5qegUobtGo=",
+      "Fingerprint": "n6pudrrow5",
+      "Integrity": "/wMz9LbKC8YXBMprmeIfyAVooGTL5eKv79zYHetmTI0=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\site.js"
@@ -1779,6 +2010,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Identity": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\subdicon.ico",
+      "SourceId": "ElnetSubdivi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\",
+      "BasePath": "_content/ElnetSubdivi",
+      "RelativePath": "subdicon#[.{fingerprint}]?.ico",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "gww2etz1bw",
+      "Integrity": "EOUVkWuE4l8s1/yjox9/7ciDIPO2K6GzKneiX0Sihic=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\subdicon.ico"
     }
   ],
   "Endpoints": [
@@ -1865,6 +2117,88 @@
       ]
     },
     {
+      "Route": "css/input.output.8onf4iitsj.css",
+      "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\css\\input.output.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "33374"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"mJHFkIsuBG9j26Kk9Ppv+NAB4UVGQFUl4ip5ycOSO/Q=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 02 Mar 2025 20:50:47 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "8onf4iitsj"
+        },
+        {
+          "Name": "label",
+          "Value": "css/input.output.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-mJHFkIsuBG9j26Kk9Ppv+NAB4UVGQFUl4ip5ycOSO/Q="
+        }
+      ]
+    },
+    {
+      "Route": "css/input.output.css",
+      "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\css\\input.output.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "33374"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"mJHFkIsuBG9j26Kk9Ppv+NAB4UVGQFUl4ip5ycOSO/Q=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 02 Mar 2025 20:50:47 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-mJHFkIsuBG9j26Kk9Ppv+NAB4UVGQFUl4ip5ycOSO/Q="
+        }
+      ]
+    },
+    {
       "Route": "css/output.css",
       "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\css\\output.css",
       "Selectors": [],
@@ -1875,7 +2209,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "44166"
+          "Value": "47152"
         },
         {
           "Name": "Content-Type",
@@ -1883,11 +2217,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"T+POVVx4++pwAywOZGgG8NQgTgVgQai+irWQia7U1fw=\""
+          "Value": "\"ZYCaGUCNMLtXZwLSdfG4ZSt4ASLkhjWRGdOpkpAvm10=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 25 Feb 2025 14:58:08 GMT"
+          "Value": "Sun, 02 Mar 2025 20:53:20 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1897,12 +2231,12 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-T+POVVx4++pwAywOZGgG8NQgTgVgQai+irWQia7U1fw="
+          "Value": "sha256-ZYCaGUCNMLtXZwLSdfG4ZSt4ASLkhjWRGdOpkpAvm10="
         }
       ]
     },
     {
-      "Route": "css/output.ny7opfhd0t.css",
+      "Route": "css/output.ht8rb0z415.css",
       "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\css\\output.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -1912,7 +2246,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "44166"
+          "Value": "47152"
         },
         {
           "Name": "Content-Type",
@@ -1920,11 +2254,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"T+POVVx4++pwAywOZGgG8NQgTgVgQai+irWQia7U1fw=\""
+          "Value": "\"ZYCaGUCNMLtXZwLSdfG4ZSt4ASLkhjWRGdOpkpAvm10=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 25 Feb 2025 14:58:08 GMT"
+          "Value": "Sun, 02 Mar 2025 20:53:20 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1934,7 +2268,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "ny7opfhd0t"
+          "Value": "ht8rb0z415"
         },
         {
           "Name": "label",
@@ -1942,7 +2276,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-T+POVVx4++pwAywOZGgG8NQgTgVgQai+irWQia7U1fw="
+          "Value": "sha256-ZYCaGUCNMLtXZwLSdfG4ZSt4ASLkhjWRGdOpkpAvm10="
         }
       ]
     },
@@ -2521,6 +2855,334 @@
       ]
     },
     {
+      "Route": "Images/cancelicon.bqf7fb6ejz.svg",
+      "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\cancelicon.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "291"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"nVk08Z0GIXunh/49lXagJs8PgpwMTjr24P7SRr7TKFs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 01 Mar 2025 17:16:09 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "bqf7fb6ejz"
+        },
+        {
+          "Name": "label",
+          "Value": "Images/cancelicon.svg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-nVk08Z0GIXunh/49lXagJs8PgpwMTjr24P7SRr7TKFs="
+        }
+      ]
+    },
+    {
+      "Route": "Images/cancel-icon.mhgejph1hl.svg",
+      "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\cancel-icon.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "289"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Bm5R8B8/rXCoW1j1F+eDby/EWtuvBtWKpiCGspD36Ms=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 02 Mar 2025 07:20:43 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "mhgejph1hl"
+        },
+        {
+          "Name": "label",
+          "Value": "Images/cancel-icon.svg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Bm5R8B8/rXCoW1j1F+eDby/EWtuvBtWKpiCGspD36Ms="
+        }
+      ]
+    },
+    {
+      "Route": "Images/cancelicon.svg",
+      "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\cancelicon.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "291"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"nVk08Z0GIXunh/49lXagJs8PgpwMTjr24P7SRr7TKFs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 01 Mar 2025 17:16:09 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-nVk08Z0GIXunh/49lXagJs8PgpwMTjr24P7SRr7TKFs="
+        }
+      ]
+    },
+    {
+      "Route": "Images/cancel-icon.svg",
+      "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\cancel-icon.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "289"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Bm5R8B8/rXCoW1j1F+eDby/EWtuvBtWKpiCGspD36Ms=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 02 Mar 2025 07:20:43 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Bm5R8B8/rXCoW1j1F+eDby/EWtuvBtWKpiCGspD36Ms="
+        }
+      ]
+    },
+    {
+      "Route": "Images/completedicon.08yg2necr7.svg",
+      "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\completedicon.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "293"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"wBAXQ3kN/6i7rPtjXc8JQ2dnqyQrSw1BpBbGtIqhxyk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 01 Mar 2025 17:15:38 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "08yg2necr7"
+        },
+        {
+          "Name": "label",
+          "Value": "Images/completedicon.svg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-wBAXQ3kN/6i7rPtjXc8JQ2dnqyQrSw1BpBbGtIqhxyk="
+        }
+      ]
+    },
+    {
+      "Route": "Images/completedicon.svg",
+      "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\completedicon.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "293"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"wBAXQ3kN/6i7rPtjXc8JQ2dnqyQrSw1BpBbGtIqhxyk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 01 Mar 2025 17:15:38 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-wBAXQ3kN/6i7rPtjXc8JQ2dnqyQrSw1BpBbGtIqhxyk="
+        }
+      ]
+    },
+    {
+      "Route": "Images/conficon.08yg2necr7.svg",
+      "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\conficon.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "293"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"wBAXQ3kN/6i7rPtjXc8JQ2dnqyQrSw1BpBbGtIqhxyk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 01 Mar 2025 14:00:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "08yg2necr7"
+        },
+        {
+          "Name": "label",
+          "Value": "Images/conficon.svg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-wBAXQ3kN/6i7rPtjXc8JQ2dnqyQrSw1BpBbGtIqhxyk="
+        }
+      ]
+    },
+    {
+      "Route": "Images/conficon.svg",
+      "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\conficon.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "293"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"wBAXQ3kN/6i7rPtjXc8JQ2dnqyQrSw1BpBbGtIqhxyk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 01 Mar 2025 14:00:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-wBAXQ3kN/6i7rPtjXc8JQ2dnqyQrSw1BpBbGtIqhxyk="
+        }
+      ]
+    },
+    {
       "Route": "Images/cover.744d14gnfu.png",
       "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\cover.png",
       "Selectors": [],
@@ -2763,6 +3425,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-brg51VdzzkQVgmy32izpQPLpiP9cSVxg6TwkgBrtkys="
+        }
+      ]
+    },
+    {
+      "Route": "Images/drdown.jjzvuj8ath.svg",
+      "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\drdown.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "186"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"UTD2c9xxEvH0IMBDKv8ZFSBsqUXZluBx1bvgICtfUV0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 26 Feb 2025 14:14:39 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "jjzvuj8ath"
+        },
+        {
+          "Name": "label",
+          "Value": "Images/drdown.svg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-UTD2c9xxEvH0IMBDKv8ZFSBsqUXZluBx1bvgICtfUV0="
+        }
+      ]
+    },
+    {
+      "Route": "Images/drdown.svg",
+      "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\drdown.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "186"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"UTD2c9xxEvH0IMBDKv8ZFSBsqUXZluBx1bvgICtfUV0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 26 Feb 2025 14:14:39 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-UTD2c9xxEvH0IMBDKv8ZFSBsqUXZluBx1bvgICtfUV0="
         }
       ]
     },
@@ -3095,6 +3839,170 @@
       ]
     },
     {
+      "Route": "Images/filter.oy2mo2it39.svg",
+      "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\filter.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "279"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"gHiftBNYZ8oDnZ7b43w+Hx/rQV0oUT05YLr/R/IFkwY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 28 Feb 2025 14:30:28 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "oy2mo2it39"
+        },
+        {
+          "Name": "label",
+          "Value": "Images/filter.svg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-gHiftBNYZ8oDnZ7b43w+Hx/rQV0oUT05YLr/R/IFkwY="
+        }
+      ]
+    },
+    {
+      "Route": "Images/filter.svg",
+      "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\filter.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "279"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"gHiftBNYZ8oDnZ7b43w+Hx/rQV0oUT05YLr/R/IFkwY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 28 Feb 2025 14:30:28 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-gHiftBNYZ8oDnZ7b43w+Hx/rQV0oUT05YLr/R/IFkwY="
+        }
+      ]
+    },
+    {
+      "Route": "Images/find.svg",
+      "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\find.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "409"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"5/NmRZhTXtYLQhcRAKtwF5Ev8vEsrRRg0AH58DHdEog=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 28 Feb 2025 14:30:56 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-5/NmRZhTXtYLQhcRAKtwF5Ev8vEsrRRg0AH58DHdEog="
+        }
+      ]
+    },
+    {
+      "Route": "Images/find.zponfmdrf6.svg",
+      "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\find.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "409"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"5/NmRZhTXtYLQhcRAKtwF5Ev8vEsrRRg0AH58DHdEog=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 28 Feb 2025 14:30:56 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "zponfmdrf6"
+        },
+        {
+          "Name": "label",
+          "Value": "Images/find.svg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-5/NmRZhTXtYLQhcRAKtwF5Ev8vEsrRRg0AH58DHdEog="
+        }
+      ]
+    },
+    {
       "Route": "Images/home 1.rxs49fjlks.svg",
       "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\home 1.svg",
       "Selectors": [],
@@ -3423,6 +4331,88 @@
       ]
     },
     {
+      "Route": "Images/pendingicon.aa1ye4vi7r.svg",
+      "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\pendingicon.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "27499"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"AgmQ7aqvYRkb1EJXU0ZIO+3EO+Qnb9iWW5UwYvwe+aE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 01 Mar 2025 17:14:49 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "aa1ye4vi7r"
+        },
+        {
+          "Name": "label",
+          "Value": "Images/pendingicon.svg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-AgmQ7aqvYRkb1EJXU0ZIO+3EO+Qnb9iWW5UwYvwe+aE="
+        }
+      ]
+    },
+    {
+      "Route": "Images/pendingicon.svg",
+      "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\pendingicon.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "27499"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"AgmQ7aqvYRkb1EJXU0ZIO+3EO+Qnb9iWW5UwYvwe+aE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 01 Mar 2025 17:14:49 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-AgmQ7aqvYRkb1EJXU0ZIO+3EO+Qnb9iWW5UwYvwe+aE="
+        }
+      ]
+    },
+    {
       "Route": "Images/pfp.ifvaxhxui9.svg",
       "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\pfp.svg",
       "Selectors": [],
@@ -3665,6 +4655,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-77Pk2l1HALek7OjMasGZhNrUW/2DxcSQM8BbkRgJpOQ="
+        }
+      ]
+    },
+    {
+      "Route": "Images/schedicon.fi19j60o9t.svg",
+      "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\schedicon.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1036"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"5zoA1QZwKAE7GVfqwa98fxqMjVfIRKJW7XWVExdeOs4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 01 Mar 2025 14:06:44 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "fi19j60o9t"
+        },
+        {
+          "Name": "label",
+          "Value": "Images/schedicon.svg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-5zoA1QZwKAE7GVfqwa98fxqMjVfIRKJW7XWVExdeOs4="
+        }
+      ]
+    },
+    {
+      "Route": "Images/schedicon.svg",
+      "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\schedicon.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1036"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"5zoA1QZwKAE7GVfqwa98fxqMjVfIRKJW7XWVExdeOs4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 01 Mar 2025 14:06:44 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-5zoA1QZwKAE7GVfqwa98fxqMjVfIRKJW7XWVExdeOs4="
         }
       ]
     },
@@ -3915,6 +4987,88 @@
       ]
     },
     {
+      "Route": "Images/xcon.mhgejph1hl.svg",
+      "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\xcon.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "289"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Bm5R8B8/rXCoW1j1F+eDby/EWtuvBtWKpiCGspD36Ms=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 01 Mar 2025 14:07:57 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "mhgejph1hl"
+        },
+        {
+          "Name": "label",
+          "Value": "Images/xcon.svg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Bm5R8B8/rXCoW1j1F+eDby/EWtuvBtWKpiCGspD36Ms="
+        }
+      ]
+    },
+    {
+      "Route": "Images/xcon.svg",
+      "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\Images\\xcon.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "289"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Bm5R8B8/rXCoW1j1F+eDby/EWtuvBtWKpiCGspD36Ms=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 01 Mar 2025 14:07:57 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Bm5R8B8/rXCoW1j1F+eDby/EWtuvBtWKpiCGspD36Ms="
+        }
+      ]
+    },
+    {
       "Route": "js/site.js",
       "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\js\\site.js",
       "Selectors": [],
@@ -3925,7 +5079,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "231"
+          "Value": "2379"
         },
         {
           "Name": "Content-Type",
@@ -3933,11 +5087,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"hRQyftXiu1lLX2P9Ly9xa4gHJgLeR1uGN5qegUobtGo=\""
+          "Value": "\"/wMz9LbKC8YXBMprmeIfyAVooGTL5eKv79zYHetmTI0=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 25 Feb 2025 12:29:59 GMT"
+          "Value": "Sun, 02 Mar 2025 20:53:17 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3947,12 +5101,12 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-hRQyftXiu1lLX2P9Ly9xa4gHJgLeR1uGN5qegUobtGo="
+          "Value": "sha256-/wMz9LbKC8YXBMprmeIfyAVooGTL5eKv79zYHetmTI0="
         }
       ]
     },
     {
-      "Route": "js/site.xtxxf3hu2r.js",
+      "Route": "js/site.n6pudrrow5.js",
       "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\js\\site.js",
       "Selectors": [],
       "ResponseHeaders": [
@@ -3962,7 +5116,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "231"
+          "Value": "2379"
         },
         {
           "Name": "Content-Type",
@@ -3970,11 +5124,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"hRQyftXiu1lLX2P9Ly9xa4gHJgLeR1uGN5qegUobtGo=\""
+          "Value": "\"/wMz9LbKC8YXBMprmeIfyAVooGTL5eKv79zYHetmTI0=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 25 Feb 2025 12:29:59 GMT"
+          "Value": "Sun, 02 Mar 2025 20:53:17 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3984,7 +5138,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "xtxxf3hu2r"
+          "Value": "n6pudrrow5"
         },
         {
           "Name": "label",
@@ -3992,7 +5146,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-hRQyftXiu1lLX2P9Ly9xa4gHJgLeR1uGN5qegUobtGo="
+          "Value": "sha256-/wMz9LbKC8YXBMprmeIfyAVooGTL5eKv79zYHetmTI0="
         }
       ]
     },
@@ -8667,6 +9821,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-16aFlqtpsG9RyieKZUUUjkJpqTgcJtWXwT312I4Iz1s="
+        }
+      ]
+    },
+    {
+      "Route": "subdicon.gww2etz1bw.ico",
+      "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\subdicon.ico",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "171719"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/x-icon"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"EOUVkWuE4l8s1/yjox9/7ciDIPO2K6GzKneiX0Sihic=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 01 Mar 2025 12:47:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "gww2etz1bw"
+        },
+        {
+          "Name": "label",
+          "Value": "subdicon.ico"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-EOUVkWuE4l8s1/yjox9/7ciDIPO2K6GzKneiX0Sihic="
+        }
+      ]
+    },
+    {
+      "Route": "subdicon.ico",
+      "AssetFile": "C:\\Users\\vhinc\\source\\repos\\ElnetSubdivi\\ElnetSubdivi\\wwwroot\\subdicon.ico",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "171719"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/x-icon"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"EOUVkWuE4l8s1/yjox9/7ciDIPO2K6GzKneiX0Sihic=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 01 Mar 2025 12:47:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-EOUVkWuE4l8s1/yjox9/7ciDIPO2K6GzKneiX0Sihic="
         }
       ]
     }

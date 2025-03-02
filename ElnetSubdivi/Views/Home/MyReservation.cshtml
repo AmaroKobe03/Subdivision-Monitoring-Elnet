@@ -1,0 +1,79 @@
+﻿@* @model FacilityViewModel *@
+
+@{
+    ViewData["Title"] = "My Reservations";
+}
+<link href="~/css/output.css" rel="stylesheet">
+
+@{
+
+    var facilities = new List<FacilityViewModel>
+    {
+        new FacilityViewModel
+        {
+            ImagePath = "facimg1.png",
+            FacilityName = "Community Park",
+            ActionName = "ReserveFacility",
+            ButtonText = "Confirmed",
+            Icons = new Dictionary<string, string>
+            {
+                { "status", "conficon.svg" },
+                { "schedule", "schedicon.svg" },
+                { "cancel", "cancel-icon.svg" }
+            }
+        },
+        new FacilityViewModel
+        {
+            ImagePath = "facimg2.png",
+            FacilityName = "Club House",
+            ActionName = "ReserveFacility",
+            ButtonText = "Pending",
+            Icons = new Dictionary<string, string>
+            {
+                { "status", "conficon.svg" },
+                { "schedule", "schedicon.svg" },
+                { "cancel", "cancel-icon.svg" }
+            }
+        },
+        new FacilityViewModel
+        {
+            ImagePath = "facimg3.png",
+            FacilityName = "Fitness Center",
+            ActionName = "ReserveFacility",
+            ButtonText = "Completed",
+             Icons = new Dictionary<string, string>
+            {
+                { "status", "conficon.svg" },
+                { "schedule", "schedicon.svg" },
+                { "cancel", "cancel-icon.svg" }
+            }
+        },
+        new FacilityViewModel
+        {
+            ImagePath = "facimg3.png",
+            FacilityName = "Community Park",
+            ActionName = "ReserveFacility",
+            ButtonText = "Canceled",
+            Icons = new Dictionary<string, string>
+            {
+                { "status", "conficon.svg" },
+                { "schedule", "schedicon.svg" },
+                { "cancel", "cancel-icon.svg" }
+            }
+        }
+    };
+}
+
+
+<div class="flex h-[90vh] w-[90%] flex-col items-center overflow-auto bg-[#f2f2f2] font-semibold">
+    <div class="sticky top-0 z-10 w-full bg-[#f2f2f2]">
+        @await Html.PartialAsync("_sharedSearch")
+    </div>
+
+    <div id="reservediv" class="flex max-h-[calc(90vh-60px)] w-full flex-col items-center gap-6 overflow-y-auto px-10 py-10">
+        @foreach (var facility in facilities)
+        {
+            @await Html.PartialAsync("_sharedReservationsCard", facility)
+        }
+    </div>
+</div>

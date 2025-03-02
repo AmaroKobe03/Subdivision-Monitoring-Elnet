@@ -1,51 +1,124 @@
-﻿
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ElnetSubdivi</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/ElnetSubdivi.styles.css" asp-append-version="true" />
+    <title>@ViewData["Title"] ElnetSubdivi</title>
+    <link href="~/css/output.css" rel="stylesheet">
+
+    <link href="~/subdicon.ico" rel="icon" />
+    <style>
+        html {
+        font-family: 'Poppins', sans-serif;
+        }
+
+        #global-nav {
+            display: none;
+        }
+        #menu a{
+            font-size: 18px;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ElnetSubdivi</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+    @if (ViewBag.HideNav == null || ViewBag.HideNav == false)
+    {
+        <header id="navigation" class="sticky top-0 z-50 flex w-full items-center justify-center bg-white shadow-md">
+            <div class="flex w-11/12 items-center justify-between gap-5 p-6 text-[#1E2E33]">
+
+                <button id="menu-btn" class="text-2xl text-[#043137] md:hidden">
+                    &#9776;
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>       
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+                <!-- Logo -->
+                <div>
+                    <img class="h-10 max-sm:w-[200px] md:h-8" src="~/Images/sub-logo.svg" alt="Logo">
                 </div>
+
+                <!-- Navigation Menu -->
+                <div id="menu" class="ml-auto hidden flex-col items-center gap-6 bg-white p-6 font-medium text-[22px] md:flex md:flex-row md:gap-8">
+                    <a class="cursor-pointer hover:text-[#787676]" href="@Url.Action("UserDash", "Home")">Home</a>
+                    <div class="group relative">
+                        <a class="flex cursor-pointer flex-row items-center gap-1 hover:text-[#787676]">
+                            Facilities
+                            <img class="w-[15px]" src="/Images/drdown.svg" />
+                        </a>
+                        <!-- Dropdown -->
+                        <div class="absolute hidden w-40 flex-col rounded-lg bg-white py-2 shadow-lg group-hover:flex">
+                            <a href="@Url.Action("FacilityReservation", "Home")" class="px-4 py-2 hover:bg-gray-200">Request</a>
+                            <a href="@Url.Action("MyReservation","Home")" class="px-4 py-2 hover:bg-gray-200">My Facilities</a>
+                        </div>
+                    </div>
+                    <a class="cursor-pointer hover:text-[#787676]" href="@Url.Action("serviceRequest", "Home")">Service Request</a>
+                    <a class="cursor-pointer hover:text-[#787676]" href="#">Billing</a>
+                    <div class="group relative">
+                        <a class="flex cursor-pointer flex-row items-center gap-1 hover:text-[#787676]">
+                            Security
+                            <img class="w-[15px]" src="/Images/drdown.svg" />
+                        </a>
+                        <!-- Dropdown -->
+                        <div class="absolute hidden w-40 flex-col rounded-lg bg-white py-2 shadow-lg group-hover:flex">
+                            <a href="@Url.Action("FacilityReservation", "Home")" class="px-4 py-2 hover:bg-gray-200">Request</a>
+                            <a href="@Url.Action("MyReservation","Home")" class="px-4 py-2 hover:bg-gray-200">My Facilities</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="pfp-notif" class="relative flex flex-row items-center justify-center gap-4">
+                    <img class="w-[30px] sm:w-[45px]" src="~/Images/notfif-bell.svg" />
+                    <img class="dropdown-btn relative w-[30px] sm:w-[45px]" src="~/Images/pfp.svg" alt="Profile">
+
+                    <div class="drp-popup fles-col absolute top-10 right-0 flex hidden w-40 flex-col gap-2 rounded-lg bg-white py-2 shadow-lg">
+                        <a href="@Url.Action("UserProfile", "Home")" class="px-4 py-2 hover:bg-gray-200">Settings</a>
+                        <a href="#" class="px-4 py-2 hover:bg-gray-200">Feedback</a>
+                        <a href="#" class="px-4 py-2 hover:bg-gray-200">Calendar</a>
+                        <a href="#" class="px-4 py-2 hover:bg-gray-200">Contacts</a>
+                        <a href="#" class="px-4 py-2 hover:bg-gray-200">Logout</a>
+                    </div>
+                </div>
+
+                <!-- Mobile Navigation Menu -->
+      
+                    <div id="nav-menu" class="absolute top-full right-3 left-0 hidden w-full flex-col items-start justify-start gap-4 bg-[#043137] p-4 text-white transition-all duration-100 md:hidden">
+                        <a href="#home" class="block w-full text-left">Home</a>
+
+                        <div class="group relative w-full">
+                            <a class="dropdown-btn flex w-full cursor-pointer flex-row items-center gap-1 text-left hover:text-[#787676]">
+                                Facilities
+                                <img class="w-[10px] brightness-0 invert" src="/Images/drdown.svg" />
+                            </a>
+                            <!-- Dropdown -->
+                            <div class="dropdown-menu flex hidden w-full origin-top-left scale-y-0 flex-col rounded-lg py-2 text-white opacity-0 transition-all duration-100 ease-in-out">
+                                <a href="@Url.Action("FacilityReservation", "Home")" class="w-full px-4 py-2 text-left hover:bg-gray-200">Request</a>
+                                <a href="@Url.Action("MyReservation","Home")" class="w-full px-4 py-2 text-left hover:bg-gray-200">My Facilities</a>
+                            </div>
+                        </div>
+
+                        <a href="#events-section" class="block w-full text-left">Service Request</a>
+                        <a id="sign-in-btn" href="#" class="block w-full text-left">Billing</a>
+                        <div class="group relative w-full">
+                            <a class="dropdown-btn flex w-full cursor-pointer flex-row items-center gap-1 text-left hover:text-[#787676]">
+                                Security
+                                <img class="w-[10px] brightness-0 invert" src="/Images/drdown.svg" />
+                            </a>
+                            <!-- Dropdown -->
+                            <div class="dropdown-menu flex hidden w-full origin-top-left scale-y-0 flex-col rounded-lg py-2 text-white opacity-0 transition-all duration-100 ease-in-out">
+                                <a href="@Url.Action("FacilityReservation", "Home")" class="w-full px-4 py-2 text-left hover:bg-gray-200">Request</a>
+                                <a href="@Url.Action("MyReservation","Home")" class="w-full px-4 py-2 text-left hover:bg-gray-200">My Facilities</a>
+                            </div>
+                        </div>
+                    </div>
+               
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+        </header>
+
+    }
+
+
+    <div class="flex w-full items-center">
+        <main role="main" class="flex w-full flex-col items-center justify-center bg-[#f2f2f2]">
             @RenderBody()
         </main>
     </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - ElnetSubdivi - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    <script src="/js/site.js"></script>
 </body>
 </html>

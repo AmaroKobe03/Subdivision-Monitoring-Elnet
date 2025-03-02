@@ -1,27 +1,38 @@
 wwwroot\css\input.css
+wwwroot\css\input.output.css
 wwwroot\css\output.css
 wwwroot\favicon.ico
 wwwroot\Images\aboutimg.png
 wwwroot\Images\act.svg
 wwwroot\Images\admin.svg
 wwwroot\Images\billing 5.svg
+wwwroot\Images\cancelicon.svg
+wwwroot\Images\cancel-icon.svg
+wwwroot\Images\completedicon.svg
+wwwroot\Images\conficon.svg
 wwwroot\Images\cover.png
 wwwroot\Images\customer-service 1.svg
 wwwroot\Images\document 1.svg
+wwwroot\Images\drdown.svg
 wwwroot\Images\faci.svg
 wwwroot\Images\facimg1.png
 wwwroot\Images\facimg2.png
 wwwroot\Images\facimg3.png
+wwwroot\Images\filter.svg
+wwwroot\Images\find.svg
 wwwroot\Images\home 1.svg
 wwwroot\Images\modern-house.png
 wwwroot\Images\newsimg.png
 wwwroot\Images\notfif-bell.svg
+wwwroot\Images\pendingicon.svg
 wwwroot\Images\pfp.svg
 wwwroot\Images\pho.svg
 wwwroot\Images\req.svg
+wwwroot\Images\schedicon.svg
 wwwroot\Images\sub-logo.svg
 wwwroot\Images\Tree.png
 wwwroot\Images\vid.svg
+wwwroot\Images\xcon.svg
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap.css
 wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
@@ -80,3 +91,4 @@ wwwroot\lib\jquery-validation\LICENSE.md
 wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js
 wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js
 wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt
+wwwroot\subdicon.ico

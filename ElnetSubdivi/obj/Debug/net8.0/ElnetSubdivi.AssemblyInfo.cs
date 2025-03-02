@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ElnetSubdivi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d18e1e6af543067f29d47f667cc273201aac7e4d")]
 [assembly: System.Reflection.AssemblyProductAttribute("ElnetSubdivi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ElnetSubdivi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

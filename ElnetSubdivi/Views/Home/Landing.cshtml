@@ -9,10 +9,6 @@
 
     <style>
 
-        #feed::-webkit-scrollbar {
-            display: none;
-        }
-
    
         html {
             scroll-behavior: smooth;
@@ -37,7 +33,7 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                border-radius: 50%;
+                border-radius: 50%;cd 
             }
 
             .phone-icon span {
@@ -50,17 +46,16 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 flex flex-col items-center justify-center overflow-x-hidden">
+<body class="flex flex-col items-center justify-center overflow-x-hidden bg-gray-100">
 
     <!-- Navbar -->
-    <header id="navigation" class="w-full flex items-center justify-center sticky top-0 z-50 bg-white shadow-md">
-        <div class="w-11/12 flex justify-between p-6 relative text-[#1E2E33] ">
+    <header id="landNav" class="sticky top-0 z-50 flex w-full items-center justify-center bg-white shadow-md">
+        <div class="relative flex w-11/12 justify-between p-6 text-[#1E2E33]">
             <!-- Desktop Links -->
-            <div class="hidden md:flex flex-row gap-8 items-center text-[24px]">
-                <a class="hover:text-[#787676] cursor-pointer" href="#home">Home</a>
+            <div class="hidden flex-row items-center gap-8 text-[24px] md:flex">
+                <a class="cursor-pointer hover:text-[#787676]" href="#home">Home</a>
                 <a class="hover:text-[#787676]" href="#about">About Us</a>
                 <a class="hover:text-[#787676]" href="#Facilities">Facilities</a>
-
             </div>
 
             <!-- Logo -->
@@ -69,18 +64,18 @@
             </div>
 
             <!-- Desktop Links & Sign In -->
-            <div class="hidden md:flex flex-row gap-8 items-center ">
-                <a class="hover:text-[#787676] text-[24px]" href="#events-section">NewsFeed</a>
-                <a id="signin-btn" href="#" class="bg-[#FFFF] px-7 py-2 rounded-full border-2 border-[#AC602A] text-[#AC602A]">
+            <div class="hidden flex-row items-center gap-8 md:flex">
+                <a class="text-[24px] hover:text-[#787676]" href="#events-section">NewsFeed</a>
+                <a id="signin-btn" href="#" class="border-2 rounded-full border-[#AC602A] bg-[#FFFF] px-7 py-2 text-[#AC602A]">
                     Sign In
                 </a>
             </div>
 
-            <!-- Hamburger Menu (Mobile) -->
-            <button id="menu-btn" class="md:hidden text-[#043137] text-2xl">&#9776;</button>
+            <!-- Menu Button -->
+            <button id="landM-btn" class="text-2xl text-[#043137] md:hidden">&#9776;</button>
 
             <!-- Mobile Menu (Hidden by Default) -->
-            <div id="menu" class="absolute top-full left-0 w-full bg-[#AC602A]  text-white flex-col items-center gap-4 p-4 hidden md:hidden">
+            <div id="L-menu" class="absolute top-full left-0 hidden w-full flex-col items-center gap-4 bg-[#AC602A] p-4 text-white md:hidden">
                 <a href="#home" class="block">Home</a>
                 <a href="#about" class="block">About Us</a>
                 <a href="#Facilities" class="block">Facilities</a>
@@ -93,8 +88,8 @@
     <!-- JavaScript to Toggle Menu -->
     <script>
             document.addEventListener("DOMContentLoaded", function () {
-            const menuBtn = document.getElementById("menu-btn");
-            const menu = document.getElementById("menu");
+            const menuBtn = document.getElementById("landM-btn");
+            const menu = document.getElementById("L-menu");
 
             menuBtn.addEventListener("click", function (event) {
                 event.stopPropagation(); // Prevents click from bubbling up
@@ -111,9 +106,9 @@
     </script>
 
     <!-- Main Section -->
-    <section id="home" class="flex flex-col h-screen md:flex-row w-11/12 items-center justify-center md:h-screen sm:items-center  md:h-screen  sm:h-screen gap-9 ">
-        <div class="flex flex-col justify-center w-11/12  md:h-screen sm:items-center sm:justify-center gap-3 ">
-            <h1 class="text-5xl md:text-5xl lg:text-7xl font-bold text-[#043137]">
+    <section id="home" class="flex h-screen w-11/12 flex-col items-center justify-center gap-9 sm:items-center sm:h-screen md:flex-row md:h-screen">
+        <div class="flex w-11/12 flex-col justify-center gap-3 sm:items-center sm:justify-center md:h-screen">
+            <h1 class="text-5xl font-bold text-[#043137] md:text-5xl lg:text-7xl">
                 Strengthening Connections, Bringing Your Community Closer
             </h1>
 
@@ -122,14 +117,14 @@
                 facility reservations and security features, managing your home and community has never been easier.
             </p>
 
-            <div class="flex justify-start w-full">
+            <div class="flex w-full justify-start">
                 <div class="mt-6 flex gap-4">
-                    <a href="#" class="flex justify-center items-center text-white md:text-[24px] px-5 py-1.5 rounded-full bg-[#AC602A] text-center   sm:px-2 sm:py-1 md:px-6 md:py-2 sm:text-[12px] transition">
+                    <a href="#" class="flex items-center justify-center rounded-full bg-[#AC602A] px-5 py-1.5 text-center text-white transition sm:px-2 sm:py-1 sm:text-[12px] md:text-[24px] md:px-6 md:py-2">
                         Learn More
                     </a>
                     <div class="phone-icon">
                         <a href="#contactinfo"><i class="fas fa-phone-alt"></i></a>
-                        <a href="#contact-location" class=" text-[#1E2E33] px-4 py-2 rounded-full  md:text-[24px] transition">
+                        <a href="#contact-location" class="rounded-full px-4 py-2 text-[#1E2E33] transition md:text-[24px]">
                             Contact Us
                         </a>
                     </div>
@@ -138,147 +133,146 @@
 
 
         </div>
-
-        <div id="login-popup" class="hidden fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4">
-            <div class="bg-white p-6 sm:p-8 rounded-lg shadow-lg w-full max-w-sm relative">
-                <button class="absolute top-3 right-3 text-xl text-gray-500 hover:text-gray-700 close">&times;</button>
-                <h2 class="text-2xl font-bold text-[#043137] text-center">WELCOME!</h2>
-                <p class="text-gray-600 text-center mt-1">LOGIN</p>
-                <label class="block mt-4 text-gray-700 ">Username</label>
-                <input type="text" class="w-full px-4 py-2 border rounded-full mt-1" placeholder="Enter your username">
-                <label class="block mt-3 text-gray-700">Password</label>
-                <input type="password" class="w-full px-4 py-2 border rounded-full mt-1" placeholder="********">
-                <div class="flex justify-between items-center mt-3 text-sm">
+        <div id="login-popup" class="fixed inset-0 z-50 flex hidden items-center justify-center bg-black/50 p-4">
+            <div class="relative w-full max-w-sm rounded-lg bg-white p-6 shadow-lg sm:p-8">
+                <button id="close-btn" class="absolute top-3 right-3 text-xl text-gray-500 hover:text-gray-700">&times;</button>
+                <h2 class="text-center text-2xl font-bold text-[#043137]">WELCOME!</h2>
+                <p class="mt-1 text-center text-gray-600">LOGIN</p>
+                <label class="mt-4 block text-gray-700">Username</label>
+                <input type="text" class="mt-1 w-full rounded-full border px-4 py-2" placeholder="Enter your username">
+                <label class="mt-3 block text-gray-700">Password</label>
+                <input type="password" class="mt-1 w-full rounded-full border px-4 py-2" placeholder="********">
+                <div class="mt-3 flex items-center justify-between text-sm">
                     <div class="flex items-center">
                         <input type="checkbox" id="remember" class="mr-1">
                         <label for="remember">Remember me</label>
                     </div>
                     <a href="#" class="text-[#AC602A]">Forgot password</a>
                 </div>
-                <button class="w-full bg-[#043137] text-white py-2 rounded-full mt-5 text-lg">Log In</button>
+                <button class="mt-5 w-full rounded-full bg-[#043137] py-2 text-lg text-white"
+                        onclick="window.location.href='@Url.Action("UserDash", "Home")'">
+                    Log In
+                </button>
             </div>
         </div>
 
-
         <script>
-
             document.addEventListener("DOMContentLoaded", function () {
-                const mbsigninBtn = document.getElementById("sign-in-btn"); // Mobile menu Sign In
-                const signinBtn = document.getElementById("signin-btn"); // Other Sign In
+                const signinBtn = document.getElementById("signin-btn");
+                const mbsigninBtn = document.getElementById("sign-in-btn");
                 const popup = document.getElementById("login-popup");
-                const closeBtn = document.querySelector(".close");
+                const closeBtn = document.getElementById("close-btn");
 
                 function openPopup() {
                     popup.classList.remove("hidden");
                 }
 
+                function closePopup() {
+                    popup.classList.add("hidden");
+                }
+
                 if (signinBtn) signinBtn.addEventListener("click", openPopup);
                 if (mbsigninBtn) mbsigninBtn.addEventListener("click", openPopup);
-
-                closeBtn.addEventListener("click", function () {
-                    popup.classList.add("hidden");
-                });
+                if (closeBtn) closeBtn.addEventListener("click", closePopup);
 
                 window.addEventListener("click", function (e) {
-                    if (e.target === popup) {
-                        popup.classList.add("hidden");
-                    }
+                    if (e.target === popup) closePopup();
                 });
             });
-
         </script>
 
-        <div class="w-full relative md:h-screen p-6 flex items-center justify-center">
-            <img class="w-[170%] max-w-none absolute md:top-1/2 md:left-[52%] md:transform md:-translate-x-[55%] md:-translate-y-1/2 hidden md:block"
+
+        <div class="relative flex w-full items-center justify-center p-6 md:h-screen">
+            <img class="absolute hidden w-[170%] max-w-none md:top-1/2 md:left-[52%] md:transform md:-translate-x-[55%] md:-translate-y-1/2 md:block"
                  src="./Images/modern-house.png"
                  alt="">
         </div>
     </section>
 
-    <section id="about" class="h-[90vh] w-11/12 max-w-[1920px] border-[#AC602A] flex flex-col justify-center items-center rounded-[120px] lg:border-2 md:border-0 sm:border-0 sm:gap-8 mx-auto mt-[5em]">
+    <section id="about" class="mx-auto mt-[5em] flex h-[90vh] w-11/12 max-w-[1920px] flex-col items-center justify-center rounded-[120px] border-[#AC602A] sm:border-0 sm:gap-8 md:border-0 lg:border-2">
 
-        <div id="top" class="w-[55%] h-auto flex flex-col items-center justify-center gap-3 text-center">
-            <h1 class="text-3xl md:text-5xl lg:text-7xl font-bold text-[#043137]">
+        <div id="top" class="flex h-auto w-[55%] flex-col items-center justify-center gap-3 text-center">
+            <h1 class="text-3xl font-bold text-[#043137] md:text-5xl lg:text-7xl">
                 About Us
             </h1>
-            <p class="text-lg md:text-xl text-[#787676]3">
+            <p class="text-lg text-[#787676]3 md:text-xl">
                 At Neighborly, we prioritize safety and connectivity among our residents. Founded in 2025, our community has grown into a vibrant neighborhood where everyone can thrive and engage with one another.
             </p>
         </div>
 
-        <div id="bot" class="w-full max-w-[1000px] h-auto lg:flex lg:flex-row gap-4 mt-8 sm:flex sm:flex-col sm:items-center">
-            <div id="leftdiv" class="flex flex-col w-full lg:w-1/2 sm:w-[90%] gap-4">
+        <div id="bot" class="mt-8 h-auto w-full max-w-[1000px] gap-4 sm:flex sm:flex-col sm:items-center lg:flex lg:flex-row">
+            <div id="leftdiv" class="flex w-full flex-col gap-4 sm:w-[90%] lg:w-1/2">
 
                 <div class="h-auto text-center lg:text-left">
-                    <h1 class="text-2xl md:text-3xl lg:text-[35px] font-bold text-[#AC602A]">15 FAMILIES</h1>
-                    <p class="text-base md:text-lg text-[#787676]">With 15 families, we have fostered a strong sense of community and collaboration, sense of community and collaboration</p>
+                    <h1 class="text-2xl font-bold text-[#AC602A] md:text-3xl lg:text-[35px]">15 FAMILIES</h1>
+                    <p class="text-base text-[#787676] md:text-lg">With 15 families, we have fostered a strong sense of community and collaboration, sense of community and collaboration</p>
                 </div>
 
                 <div class="h-auto text-center lg:text-left">
-                    <h1 class="text-2xl md:text-3xl lg:text-[35px] font-bold text-[#AC602A]">5 CORE VALUES</h1>
-                    <p class="text-base md:text-lg text-[#787676]">Our core values include Safety, Connectivity, Community Engagement, Transparency, and Sustainability.</p>
+                    <h1 class="text-2xl font-bold text-[#AC602A] md:text-3xl lg:text-[35px]">5 CORE VALUES</h1>
+                    <p class="text-base text-[#787676] md:text-lg">Our core values include Safety, Connectivity, Community Engagement, Transparency, and Sustainability.</p>
                 </div>
             </div>
 
-            <div id="rightdiv" class="flex flex-col w-full lg:w-1/2 sm:w-[90%] gap-4">
+            <div id="rightdiv" class="flex w-full flex-col gap-4 sm:w-[90%] lg:w-1/2">
                 <div class="h-auto text-center lg:text-left">
-                    <h1 class="text-2xl md:text-3xl lg:text-[35px] font-bold text-[#AC602A]">4 TEAM MEMBERS</h1>
-                    <p class="text-base md:text-lg text-[#787676]">Our dedicated team includes professionals from the HOA, security, and maintenance, all committed to enhancing your living experience.</p>
+                    <h1 class="text-2xl font-bold text-[#AC602A] md:text-3xl lg:text-[35px]">4 TEAM MEMBERS</h1>
+                    <p class="text-base text-[#787676] md:text-lg">Our dedicated team includes professionals from the HOA, security, and maintenance, all committed to enhancing your living experience.</p>
                 </div>
 
                 <div class="h-auto text-center lg:text-left">
-                    <h1 class="text-2xl md:text-3xl lg:text-[35px] font-bold text-[#AC602A]">15 INITIATIVES</h1>
-                    <p class="text-base md:text-lg text-[#787676]">Over the years, we have implemented numerous initiatives to improve the quality of life for our residents.</p>
+                    <h1 class="text-2xl font-bold text-[#AC602A] md:text-3xl lg:text-[35px]">15 INITIATIVES</h1>
+                    <p class="text-base text-[#787676] md:text-lg">Over the years, we have implemented numerous initiatives to improve the quality of life for our residents.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="Facilities" class="min-h-screen w-11/12 max-w-[1920px] border-[#AC602A] flex flex-col justify-center items-center px-4 py-20">
-        <div id="topfac" class="w-[55%] h-auto flex flex-col items-center justify-center gap-3 text-center">
-            <h1 class="text-3xl md:text-5xl lg:text-7xl font-bold text-[#043137]">
+    <section id="Facilities" class="flex min-h-screen w-11/12 max-w-[1920px] flex-col items-center justify-center border-[#AC602A] px-4 py-20">
+        <div id="topfac" class="flex h-auto w-[55%] flex-col items-center justify-center gap-3 text-center">
+            <h1 class="text-3xl font-bold text-[#043137] md:text-5xl lg:text-7xl">
                 Explore Our Facilities
             </h1>
-            <p class="text-lg md:text-xl text-[#787676]">
+            <p class="text-lg text-[#787676] md:text-xl">
                 At Neighborly, we prioritize safety and connectivity among our residents. Founded in 2025, our community has grown into a vibrant neighborhood where everyone can thrive and engage with one another.
             </p>
         </div>
 
-        <div id="botfac" class="w-full max-w-[1200px] h-auto lg:flex lg:flex-row lg:items-center lg:justify-center lg:gap-8  mt-8 sm:flex sm:flex-col sm:items-center sm:gap-10">
-            <div id="left" class="flex flex-col gap-4 mb-10">
-                <img class="rounded-[50px] lg:max-w-[600px] md:w-auto sm:w-auto" src="./Images/facimg1.png" alt="">
-                <h1 class="text-2xl md:text-3xl lg:text-[35px] font-bold text-[#AC602A]">Community Park</h1>
+        <div id="botfac" class="mt-8 h-auto w-full max-w-[1200px] sm:flex sm:flex-col sm:items-center sm:gap-10 lg:flex lg:flex-row lg:items-center lg:justify-center lg:gap-8">
+            <div id="left" class="mb-10 flex flex-col gap-4">
+                <img class="rounded-[50px] sm:w-auto md:w-auto lg:max-w-[600px]" src="./Images/facimg1.png" alt="">
+                <h1 class="text-2xl font-bold text-[#AC602A] md:text-3xl lg:text-[35px]">Community Park</h1>
 
-                <p class="text-base md:text-lg text-[#787676]">Our community park offers a serene environment with walking trails, playgrounds, and picnic areas. It’s the perfect place for families to enjoy outdoor activities and connect with nature.</p>
+                <p class="text-base text-[#787676] md:text-lg">Our community park offers a serene environment with walking trails, playgrounds, and picnic areas. It’s the perfect place for families to enjoy outdoor activities and connect with nature.</p>
 
                 <div>
-                    <a href="#" class="text-white px-5 py-1.5 rounded-full bg-[#AC602A] sm:px-4 sm:py-1 md:px-6 md:py-2 transition ">
+                    <a href="#" class="rounded-full bg-[#AC602A] px-5 py-1.5 text-white transition sm:px-4 sm:py-1 md:px-6 md:py-2">
                         Learn More
                     </a>
                 </div>
             </div>
 
-            <div id="middle" class="flex flex-col gap-4 mb-10 ">
+            <div id="middle" class="mb-10 flex flex-col gap-4">
                 <img class="rounded-[50px] lg:max-w-[600px]" src="./Images/facimg2.png" alt="">
-                <h1 class="text-2xl md:text-3xl lg:text-[35px] font-bold text-[#AC602A]">Clubhouse</h1>
+                <h1 class="text-2xl font-bold text-[#AC602A] md:text-3xl lg:text-[35px]">Clubhouse</h1>
 
-                <p class="text-base md:text-lg text-[#787676]">The clubhouse is the heart of our community, hosting social events and gatherings. It's a place where residents come together to celebrate and build lasting friendships..</p>
+                <p class="text-base text-[#787676] md:text-lg">The clubhouse is the heart of our community, hosting social events and gatherings. It's a place where residents come together to celebrate and build lasting friendships..</p>
 
                 <div>
-                    <a href="#" class="text-white px-5 py-1.5 rounded-full bg-[#AC602A] sm:px-4 sm:py-1 md:px-6 md:py-2 transition sm:mb-6">
+                    <a href="#" class="rounded-full bg-[#AC602A] px-5 py-1.5 text-white transition sm:px-4 sm:py-1 sm:mb-6 md:px-6 md:py-2">
                         Learn More
                     </a>
                 </div>
             </div>
 
-            <div id="right" class="flex flex-col gap-4 mb-10">
+            <div id="right" class="mb-10 flex flex-col gap-4">
                 <img class="rounded-[50px] lg:max-w-[600px]" src="./Images/facimg3.png" alt="">
-                <h1 class="text-2xl md:text-3xl lg:text-[35px] font-bold text-[#AC602A]">Fitness Center</h1>
+                <h1 class="text-2xl font-bold text-[#AC602A] md:text-3xl lg:text-[35px]">Fitness Center</h1>
 
-                <p class="text-base md:text-lg text-[#787676]">Our state-of-the-art fitness center is equipped with modern facilities to support your health and wellness goals. Stay fit and healthy with us..</p>
+                <p class="text-base text-[#787676] md:text-lg">Our state-of-the-art fitness center is equipped with modern facilities to support your health and wellness goals. Stay fit and healthy with us..</p>
 
                 <div>
-                    <a href="#" class="text-white px-5 py-1.5 rounded-full bg-[#AC602A] sm:px-4 sm:py-1 md:px-6 md:py-2 transition">
+                    <a href="#" class="rounded-full bg-[#AC602A] px-5 py-1.5 text-white transition sm:px-4 sm:py-1 md:px-6 md:py-2">
                         Learn More
                     </a>
                 </div>
@@ -288,50 +282,50 @@
 
     </section>
 
-    <section id="events-section" class="min-h-[90vh] w-full max-w-[1920px] bg-[#ffff] flex flex-col sm:flex-col md:flex-row gap-10 sm:gap-8 items-center justify-center px-4 py-20">
-        <div id="eveleftdiv" class="w-full md:w-[50%] flex flex-col items-center justify-center gap-[5.5em]">
-            <div class="w-[60%] sm:w-full h-auto flex flex-col justify-center items-center text-center gap-4">
-                <h1 class="text-2xl md:text-3xl lg:text-[50px] font-bold text-[#043137]">Latest News & Events</h1>
-                <p class="text-lg md:text-xl text-[#787676]">Discover the latest community news and upcoming events to keep you connected and involved in our vibrant neighborhood.</p>
+    <section id="events-section" class="flex min-h-[90vh] w-full max-w-[1920px] flex-col items-center justify-center gap-10 bg-[#ffff] px-4 py-20 sm:flex-col sm:gap-8 md:flex-row">
+        <div id="eveleftdiv" class="flex w-full flex-col items-center justify-center gap-[5.5em] md:w-[50%]">
+            <div class="flex h-auto w-[60%] flex-col items-center justify-center gap-4 text-center sm:w-full">
+                <h1 class="text-2xl font-bold text-[#043137] md:text-3xl lg:text-[50px]">Latest News & Events</h1>
+                <p class="text-lg text-[#787676] md:text-xl">Discover the latest community news and upcoming events to keep you connected and involved in our vibrant neighborhood.</p>
             </div>
 
-            <div class="w-full h-auto sm:h-auto bg-[#F7EFEA] flex flex-col sm:flex-col md:flex-row gap-4 items-center justify-around rounded-lg mt-5">
-                <div class="w-full md:w-[50%] p-5">
+            <div class="mt-5 flex h-auto w-full flex-col items-center justify-around gap-4 rounded-lg bg-[#F7EFEA] sm:h-auto sm:flex-col md:flex-row">
+                <div class="w-full p-5 md:w-[50%]">
                     <img class="rounded-lg lg:max-w-[420px]" src="./Images/facimg2.png" alt="">
                 </div>
                 <div class="flex flex-col gap-4 text-center md:text-left">
-                    <h1 class="text-2xl md:text-3xl lg:text-[40px] font-bold text-[#043137]">Scheduled Maintenance</h1>
-                    <p class="text-lg md:text-xl text-[#787676]">Water system upgrades will take place; expect temporary disruptions. Please plan accordingly and contact maintenance for concerns.</p>
-                    <a href="#" class="text-[#AC602A] font-semibold text-[20px]">Read More</a>
+                    <h1 class="text-2xl font-bold text-[#043137] md:text-3xl lg:text-[40px]">Scheduled Maintenance</h1>
+                    <p class="text-lg text-[#787676] md:text-xl">Water system upgrades will take place; expect temporary disruptions. Please plan accordingly and contact maintenance for concerns.</p>
+                    <a href="#" class="font-semibold text-[#AC602A] text-[20px]">Read More</a>
                 </div>
             </div>
         </div>
 
-        <div id="everightdiv" class="w-full md:w-[40%] flex flex-col items-center justify-center gap-10">
-            <div id="top" class="w-full h-auto sm:h-auto bg-[#F7EFEA] flex flex-col rounded-lg justify-center p-8 gap-4">
-                <h1 class="text-2xl md:text-3xl lg:text-[30px] font-bold text-[#043137]">Meeting on March 15, 2025</h1>
-                <p class="text-lg md:text-xl text-[#787676]">Homeowners are invited to the monthly HOA meeting at the clubhouse at 6:00 PM to discuss upcoming projects and community concerns.</p>
+        <div id="everightdiv" class="flex w-full flex-col items-center justify-center gap-10 md:w-[40%]">
+            <div id="top" class="flex h-auto w-full flex-col justify-center gap-4 rounded-lg bg-[#F7EFEA] p-8 sm:h-auto">
+                <h1 class="text-2xl font-bold text-[#043137] md:text-3xl lg:text-[30px]">Meeting on March 15, 2025</h1>
+                <p class="text-lg text-[#787676] md:text-xl">Homeowners are invited to the monthly HOA meeting at the clubhouse at 6:00 PM to discuss upcoming projects and community concerns.</p>
             </div>
-            <div id="mid" class="w-full h-auto sm:h-auto bg-[#F7EFEA] rounded-lg flex flex-col p-8 gap-4">
-                <h1 class="text-2xl md:text-3xl lg:text-[30px] font-bold text-[#043137]">Community Clean-Up Drive</h1>
-                <p class="text-lg md:text-xl text-[#787676]">Join us for the upcoming clean-up drive. Together, we can keep our neighborhood clean and sustainable for all residents.</p>
+            <div id="mid" class="flex h-auto w-full flex-col gap-4 rounded-lg bg-[#F7EFEA] p-8 sm:h-auto">
+                <h1 class="text-2xl font-bold text-[#043137] md:text-3xl lg:text-[30px]">Community Clean-Up Drive</h1>
+                <p class="text-lg text-[#787676] md:text-xl">Join us for the upcoming clean-up drive. Together, we can keep our neighborhood clean and sustainable for all residents.</p>
             </div>
-            <div id="bot" class="w-full h-auto sm:h-auto bg-[#F7EFEA] rounded-lg flex flex-col p-8 gap-4">
-                <h1 class="text-2xl md:text-3xl lg:text-[30px] font-bold text-[#043137]">Renovation Completed</h1>
-                <p class="text-lg md:text-xl text-[#787676]">We are excited to announce that the renovations to the community center have been completed. Check it out soon!</p>
+            <div id="bot" class="flex h-auto w-full flex-col gap-4 rounded-lg bg-[#F7EFEA] p-8 sm:h-auto">
+                <h1 class="text-2xl font-bold text-[#043137] md:text-3xl lg:text-[30px]">Renovation Completed</h1>
+                <p class="text-lg text-[#787676] md:text-xl">We are excited to announce that the renovations to the community center have been completed. Check it out soon!</p>
             </div>
         </div>
     </section>
 
-    <section id="contact-location" class="w-screen h-[90vh] flex flex-col items-center justify-center mt-[10em] px-4 py-20">
+    <section id="contact-location" class="mt-[10em] flex h-[90vh] w-screen flex-col items-center justify-center px-4 py-20">
 
         <!-- Contact Information Section -->
-        <div id="contactinfo" class="flex flex-col mb-10 w-full flex items-center justify-center gap-10">
+        <div id="contactinfo" class="mb-10 flex flex w-full flex-col items-center justify-center gap-10">
             <div class="flex flex-col items-center justify-center gap-10">
-                <h1 class="text-2xl md:text-3xl lg:text-[55px] font-bold text-[#043137]">Contact Information</h1>
-                <p class="text-lg md:text-xl text-[#787676] text-center">Reach out to our dedicated teams for any inquiries or assistance.</p>
+                <h1 class="text-2xl font-bold text-[#043137] md:text-3xl lg:text-[55px]">Contact Information</h1>
+                <p class="text-center text-lg text-[#787676] md:text-xl">Reach out to our dedicated teams for any inquiries or assistance.</p>
 
-                <div class="flex flex-col sm:flex-row gap-10 sm:gap-20 text-center sm:text-left">
+                <div class="flex flex-col gap-10 text-center sm:flex-row sm:gap-20 sm:text-left">
                     <p><i class="fas fa-envelope"></i> Neighborly@gmail.com</p>
                     <p><i class="fas fa-phone"></i> +63995684154</p>
                     <p><i class="fas fa-map-marker-alt"></i> 123 Cebu City, 6000</p>
@@ -340,20 +334,20 @@
         </div>
 
         <!-- Google Map Section -->
-        <div class="w-[90%] flex justify-center">
+        <div class="flex w-[90%] justify-center">
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5717.309075708949!2d123.92468597908078!3d10.346282200897026!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33a998f5d0573d5b%3A0x45e96bb5678e2682!2s697%20M.%20L.%20Quezon%20Ave%2C%20Mandaue%20City%2C%20Cebu!5e0!3m2!1sen!2sph!4v1739159535814!5m2!1sen!2sph" width="100%" height="600" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
     </section>
 
-    <section class="w-full h-auto mt-[10em] bg-[#ffff] flex flex-col sm:flex-row justify-center gap-10 sm:gap-20 sm:w-aduto border-b-2 border-gray-300 px-4 py-10">
+    <section class="mt-[10em] flex h-auto w-full flex-col justify-center gap-10 border-b-2 border-gray-300 bg-[#ffff] px-4 py-10 sm:flex-row sm:gap-20 sm:w-aduto">
 
         <!-- Left Section: Logo and Social Icons -->
-        <div class="flex flex-col items-center sm:items-start m-5 sm:m-20">
+        <div class="m-5 flex flex-col items-center sm:items-start sm:m-20">
             <img src="./Images/sub-logo.svg" alt="Neighborly Logo" class="logo-image w-[150px] sm:w-[200px]">
-            <p class="text-center sm:text-left mt-4">
+            <p class="mt-4 text-center sm:text-left">
                 Strengthening Connections, Bringing Your Community Closer
             </p>
-            <div class="social-icons flex flex-row gap-5 w-[40px] mt-4 justify-center sm:justify-start">
+            <div class="social-icons mt-4 flex w-[40px] flex-row justify-center gap-5 sm:justify-start">
                 <i class="fab fa-facebook-f"></i>
                 <i class="fab fa-twitter"></i>
                 <i class="fab fa-instagram"></i>
@@ -361,17 +355,17 @@
         </div>
 
         <!-- Middle Section: Community Links -->
-        <div class="flex flex-col gap-4 m-5 sm:m-20 text-center sm:text-left">
-            <h3 class="text-2xl md:text-3xl lg:text-[25px] font-bold text-[#043137]">Community</h3>
-            <a href="#home" class="text-[#787676] ">Home</a>
+        <div class="m-5 flex flex-col gap-4 text-center sm:m-20 sm:text-left">
+            <h3 class="text-2xl font-bold text-[#043137] md:text-3xl lg:text-[25px]">Community</h3>
+            <a href="#home" class="text-[#787676]">Home</a>
             <a href="#about" class="text-[#787676]">About Us</a>
             <a href="#Facilities" class="text-[#787676]">Facilities</a>
             <a href="#events-section" class="text-[#787676]">NewsFeed</a>
         </div>
 
         <!-- Right Section: Contact Information -->
-        <div class="flex flex-col gap-4 m-5 sm:m-20 text-center sm:text-left">
-            <h3 class="text-2xl md:text-3xl lg:text-[25px] font-bold text-[#043137]">Contact Us</h3>
+        <div class="m-5 flex flex-col gap-4 text-center sm:m-20 sm:text-left">
+            <h3 class="text-2xl font-bold text-[#043137] md:text-3xl lg:text-[25px]">Contact Us</h3>
             <p><i class="fas fa-envelope"></i> Neighborly@gmail.com</p>
             <p><i class="fas fa-phone"></i> +63995684154</p>
             <p><i class="fas fa-map-marker-alt"></i> 123 Cebu City, 6000</p>
@@ -380,7 +374,7 @@
     </section>
 
     <footer>
-        <div id="foot" class="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-10 p-5">
+        <div id="foot" class="flex flex-col items-center justify-between gap-4 p-5 sm:flex-row sm:gap-10">
             <p class="text-center sm:text-left">Copyright © 2022 Neighborly</p>
             <p class="text-center sm:text-left">All Rights Reserved | <a href="#">Terms and Conditions</a> | <a href="#">Privacy Policy</a></p>
         </div>

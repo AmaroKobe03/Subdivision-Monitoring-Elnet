@@ -1,0 +1,236 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subdivision Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="~/css/output.css" rel="stylesheet">
+
+    <style>
+        #feed::-webkit-scrollbar {
+            display: none;
+        }
+
+        #feed {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="overflow-y-hidden">
+
+    <main id="UserFeed" class="flex h-[90vh] w-full flex-col justify-center gap-10 bg-[#F0F2F6] md:flex-row md:gap-20">
+       
+        <section id="feed" class="flex w-[90%] flex-col items-center gap-4 overflow-y-auto bg-[#F0F2F6] px-4 md:w-[50%]">
+            <div id="activity" class="mt-5 min-h-[20vh] w-full rounded-lg bg-white">
+                <div id="add" class="flex h-[50%] w-full flex-row items-center justify-center gap-3 border-b-2">
+                    <img src="~/Images/pfp.svg" />
+                    <input id="post-input" type="text" placeholder="What's on your mind?" class="h-[60px] w-[90%] rounded-full border-none bg-[#F0F2F6] text-start outline-none" style="text-indent: 15px;" />
+                </div>
+
+                <div class="flex h-[40%] w-full flex-row items-center justify-center gap-10 gap-20">
+                    <a href="#" class="flex flex-row gap-2">
+                        <img src="~/Images/vid.svg" />
+                        Video
+                    </a>
+                    <a href="#" class="flex flex-row gap-2">
+                        <img src="~/Images/pho.svg" />
+                        Photo
+                    </a>
+                    <a href="#" class="flex flex-row gap-2">
+                        <img src="~/Images/act.svg" />
+                        Feeling/Activity
+                    </a>
+                </div>
+            </div>  
+
+            @* post pop up *@
+
+            <div id="post-popup" class="fixed inset-0 z-50 flex hidden items-center justify-center bg-black/50 p-4">
+                <div class="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-lg sm:p-8">
+                   <button class="close absolute top-3 right-3 hidden text-xl text-gray-500 hover:text-gray-700">&times;</button>
+                    <div id="activity" class="mt-5 flex min-h-[25vh] w-full flex-col gap-4 rounded-lg bg-white">
+                        <div id="add" class="flex h-full w-full flex-col gap-3">
+                            <div class="flex flex-row items-center gap-4">
+                                <img class="flex self-start" src="~/Images/pfp.svg" />
+                                    <div class="flex flex-col">
+                                        <h2 class="font-semibold text-[16px]">
+                                            Kobe Amaro
+                                        </h2>
+                                        <p class="text-[12px] text-gray-500">
+                                            House No.4
+                                        </p>
+                                    </div>
+                            </div>
+                            <textarea id="post-input" placeholder="What's on your mind?" class="h-[200px] w-full resize-none rounded-lg border-none bg-[#F0F2F6] p-4 text-start outline-none"></textarea>
+                        </div>
+
+                        <div class="flex h-[40%] w-full flex-row">
+                    
+                            <a href="#" class="flex flex-row gap-2">
+                                <img src="~/Images/pho.svg" />
+                                Photo
+                            </a>
+                        
+                        </div>
+                    </div>
+                    <button class="mt-5 w-full rounded-lg bg-[#043137] py-2 text-lg text-white"
+                            onclick="window.location.href='@Url.Action("DashboardLayout", "Home")'">
+                        POST
+                    </button>
+                </div>
+            </div>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const postInput = document.getElementById("post-input");
+                    const popup = document.getElementById("post-popup");
+                    const closeBtn = document.querySelector(".close");
+
+                    postInput.addEventListener("click", function () {
+                        popup.classList.remove("hidden");
+                    });
+
+                    closeBtn.addEventListener("click", function () {
+                        popup.classList.add("hidden");
+                    });
+
+                    window.addEventListener("click", function (e) {
+                        if (e.target === popup) {
+                            popup.classList.add("hidden");
+                        }
+                    });
+                });
+            </script>
+            <div id="contfeed" class="min-h-[90vh] w-full rounded-lg bg-white">
+                <div id="fyp" class="flex w-[30%] flex-row items-center gap-2 p-5">
+                    <div>
+                        <img src="~/Images/admin.svg" alt="Alternate Text" />
+                    </div>
+                    <div class="flex flex-col">
+                        <h1 class="m-0 p-0 font-semibold">Admin</h1>
+                        <p class="m-0 p-0">Posted 2 hours ago</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="p-5">Tree planting werty uiopa szbn rtyua dfghlz bnm...</p>
+                </div>
+
+                <div class="flex flex-col">
+                    <img class="w-full" src="~/Images/tree.png" alt="Tree Planting">
+                    <div class="m-10 flex flex-row gap-6">
+                        <a class="flex cursor-pointer items-center gap-2">
+                            <i class="fa-regular fa-thumbs-up"></i> Like
+                        </a>
+                        <a class="flex cursor-pointer items-center gap-2">
+                            <i class="fa-regular fa-comment"></i> Comment
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Calendar Section -->
+        <section id="calendar-events" class="hidden w-full bg-[#ffff] p-4 md:w-[30%] lg:block">
+            <div id="calendar" class="h-[500px] w-full bg-gray-100"></div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const calendarContainer = document.getElementById("calendar");
+            const currentDate = new Date();
+            let selectedDate = null;
+
+            function generateCalendar(year, month) {
+                calendarContainer.innerHTML = "";
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                const firstDay = new Date(year, month, 1).getDay();
+
+                const header = document.createElement("div");
+                header.classList.add("flex", "justify-between", "items-center", "p-2", "bg-[#ffff]");
+
+                const prevBtn = document.createElement("button");
+                prevBtn.innerText = "<";
+                prevBtn.classList.add("px-2", "py-1", "bg-[#ffff]", "rounded");
+                prevBtn.onclick = () => generateCalendar(year, month - 1);
+
+                const nextBtn = document.createElement("button");
+                nextBtn.innerText = ">";
+                nextBtn.classList.add("px-2", "py-1", "bg-[#ffff]", "rounded");
+                nextBtn.onclick = () => generateCalendar(year, month + 1);
+
+                const title = document.createElement("h3");
+                title.innerText = `${new Date(year, month).toLocaleString('default', { month: 'long' })} ${year}`;
+                title.classList.add("text-lg", "font-bold");
+
+                header.appendChild(prevBtn);
+                header.appendChild(title);
+                header.appendChild(nextBtn);
+                calendarContainer.appendChild(header);
+
+                const daysRow = document.createElement("div");
+                daysRow.classList.add("grid", "grid-cols-7", "text-center", "font-bold", "mt-2");
+                ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].forEach(day => {
+                    const dayElement = document.createElement("div");
+                    dayElement.innerText = day;
+                    daysRow.appendChild(dayElement);
+                });
+                calendarContainer.appendChild(daysRow);
+
+                const datesGrid = document.createElement("div");
+                datesGrid.classList.add("grid", "grid-cols-7", "gap-1", "mt-2");
+
+                for (let i = 0; i < firstDay; i++) {
+                    const emptyCell = document.createElement("div");
+                    datesGrid.appendChild(emptyCell);
+                }
+
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dateElement = document.createElement("div");
+                    dateElement.innerText = day;
+                    dateElement.classList.add("p-2", "text-center", "cursor-pointer", "rounded", "hover:bg-[#F7EFEA]");
+
+                    dateElement.addEventListener("click", function () {
+                        if (selectedDate) {
+                            selectedDate.classList.remove("bg-blue-500", "text-white");
+                        }
+                        dateElement.classList.add("bg-[#AC602A]", "text-white");
+                        selectedDate = dateElement;
+                    });
+
+                    datesGrid.appendChild(dateElement);
+                }
+
+                calendarContainer.appendChild(datesGrid);
+            }
+
+            generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const mobileMenuToggle = document.getElementById("mobile-menu-toggle");
+            const sidenav = document.getElementById("sidenav");
+
+            function checkWindowSize() {
+                if (window.innerWidth <= 768) {
+                    sidenav.classList.add("hidden");
+                } else {
+                    sidenav.classList.remove("hidden");
+                }
+            }
+
+            mobileMenuToggle.addEventListener("click", function () {
+                sidenav.classList.toggle("hidden");
+            });
+
+            window.addEventListener("resize", checkWindowSize);
+            checkWindowSize();
+        });
+
+    </script>
+
+</body>
+</html>

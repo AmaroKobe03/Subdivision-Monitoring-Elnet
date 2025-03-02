@@ -32,3 +32,5 @@ C:\Users\vhinc\source\repos\ElnetSubdivi\ElnetSubdivi\obj\Debug\net8.0\refint\El
 C:\Users\vhinc\source\repos\ElnetSubdivi\ElnetSubdivi\obj\Debug\net8.0\ElnetSubdivi.pdb
 C:\Users\vhinc\source\repos\ElnetSubdivi\ElnetSubdivi\obj\Debug\net8.0\ElnetSubdivi.genruntimeconfig.cache
 C:\Users\vhinc\source\repos\ElnetSubdivi\ElnetSubdivi\obj\Debug\net8.0\ref\ElnetSubdivi.dll
+C:\Users\vhinc\source\repos\ElnetSubdivi\ElnetSubdivi\obj\Debug\net8.0\ElnetSubdivi.sourcelink.json
+C:\Users\vhinc\source\repos\ElnetSubdivi\ElnetSubdivi\bin\Debug\net8.0\tailwind.extension.json
