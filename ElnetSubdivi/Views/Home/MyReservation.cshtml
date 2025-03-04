@@ -1,6 +1,4 @@
-﻿@* @model FacilityViewModel *@
-
-@{
+﻿@{
     ViewData["Title"] = "My Reservations";
 }
 <link href="~/css/output.css" rel="stylesheet">
@@ -13,67 +11,55 @@
         {
             ImagePath = "facimg1.png",
             FacilityName = "Community Park",
-            ActionName = "ReserveFacility",
-            ButtonText = "Confirmed",
-            Icons = new Dictionary<string, string>
-            {
-                { "status", "conficon.svg" },
-                { "schedule", "schedicon.svg" },
-                { "cancel", "cancel-icon.svg" }
-            }
+            DTime = "March 15, 2025 6:00 AM - 10:00 PM",
+            ActionName = "View Details",
+            ButtonText = "Pending",
+            ShowEditCancelButtons = true,
+
         },
         new FacilityViewModel
         {
             ImagePath = "facimg2.png",
             FacilityName = "Club House",
+            DTime = "March 15, 2025 6:00 AM - 10:00 PM",
             ActionName = "ReserveFacility",
-            ButtonText = "Pending",
-            Icons = new Dictionary<string, string>
-            {
-                { "status", "conficon.svg" },
-                { "schedule", "schedicon.svg" },
-                { "cancel", "cancel-icon.svg" }
-            }
+            ButtonText = "Completed",
+            ShowEditCancelButtons = true,
+
         },
         new FacilityViewModel
         {
             ImagePath = "facimg3.png",
             FacilityName = "Fitness Center",
+            DTime = "March 15, 2025 6:00 AM - 10:00 PM",
             ActionName = "ReserveFacility",
-            ButtonText = "Completed",
-             Icons = new Dictionary<string, string>
-            {
-                { "status", "conficon.svg" },
-                { "schedule", "schedicon.svg" },
-                { "cancel", "cancel-icon.svg" }
-            }
+            ButtonText = "Approved",
+            ShowEditCancelButtons = true,
+
         },
         new FacilityViewModel
         {
             ImagePath = "facimg3.png",
             FacilityName = "Community Park",
+            DTime = "March 15, 2025 6:00 AM - 10:00 PM",
             ActionName = "ReserveFacility",
-            ButtonText = "Canceled",
-            Icons = new Dictionary<string, string>
-            {
-                { "status", "conficon.svg" },
-                { "schedule", "schedicon.svg" },
-                { "cancel", "cancel-icon.svg" }
-            }
+            ButtonText = "Cancelled",
+            ShowEditCancelButtons = false,
+
         }
     };
 }
 
+<div class="flex h-[100vh] w-[90%] flex-col items-center overflow-hidden bg-[#f2f2f2] font-semibold">
 
-<div class="flex h-[90vh] w-[90%] flex-col items-center overflow-auto bg-[#f2f2f2] font-semibold">
-    <div class="sticky top-0 z-10 w-full bg-[#f2f2f2]">
-        @await Html.PartialAsync("_sharedSearch")
-    </div>
+    @await Html.PartialAsync("_sharedSearch")
 
-    <div id="reservediv" class="flex max-h-[calc(90vh-60px)] w-full flex-col items-center gap-6 overflow-y-auto px-10 py-10">
+    @await Html.PartialAsync("_sortList", new List<string> { "All", "Pending", "Approved", "Completed", "Canceled" })
+
+    <div id="reservediv" class="flex w-full flex-wrap justify-center gap-6 overflow-y-auto px-10 py-10">
         @foreach (var facility in facilities)
         {
-            @await Html.PartialAsync("_sharedReservationsCard", facility)
+            @await Html.PartialAsync("_sharedFacilityCard", facility)
         }
     </div>
 </div>

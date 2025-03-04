@@ -1,56 +1,76 @@
 ﻿@model FacilityViewModel
 
 @{
-
-    string statusClass = Model.ButtonText switch
-    {
-        "Confirmed" => "bg-[#04333A] text-white", // Green confirmed
-        "Pending" => "bg-[#AC602A] text-white", // Yellow pending
-        "Completed" => "bg-[#04333A] text-white", // Dark completed
-        "Canceled" => "bg-[#E74C3C] text-white", // Red canceled
-        _ => "bg-gray-400 text-white" // Default
-    };
-
-    string scheduleText = Model.ButtonText == "Completed" ? "Schedule" : "Reschedule";
+    bool isDisabled = new[] { "Unavailable" }.Contains(Model.ButtonText);
+    bool status = new[] { "Unavailable", "Approved", "Cancelled", "Completed" }.Contains(Model.ButtonText);
+    string overlayClass = isDisabled ? "opacity-50" : ""; // Dim card when Unavailable
+    string buttonColorClass = Model.ButtonText == "Unavailable" ? "bg-red-500 text-black font-bold cursor-not-allowed"
+                             : Model.ButtonText == "Completed" ? "bg-[#10B981] text-white font-bold"
+                             : Model.ButtonText == "Cancelled" ? "bg-red-500 text-white font-bold"
+                             : Model.ButtonText == "Approved" ? "bg-[#043137] text-white font-bold"
+                             : Model.ButtonText == "Pending" ? "bg-yellow-500 text-black font-bold"
+                             : "bg-[#043137] text-white font-bold";
+    string badgeColorClass = Model.ButtonText == "Unavailable" ? "bg-red-500" : "bg-[#10B981]";
 }
 
-<div class="flex h-[40vh] w-full items-center justify-center gap-4 rounded-lg bg-white p-8 shadow-lg">
-    <div class="flex h-full w-[60%] items-center justify-center gap-6">
-        <div class="flex h-full items-center justify-center">
-            <img class="h-[218px] w-[400px]" src="@Url.Content("~/Images/" + Model.ImagePath)" alt="@Model.FacilityName">
-        </div>
+<div class="flex h-auto w-[90%] max-w-[500px] flex-col flex-wrap items-center gap-4 rounded-lg bg-white @overlayClass shadow-lg sm:w-[70%] md:w-[50%] lg:w-[30%]">
+    <div class="relative w-full">
+        <img class="h-[200px] w-full rounded-t-lg object-cover" src="~/Images/@Model.ImagePath" alt="@Model.FacilityName">
+        <span class="absolute top-2 right-2 z-10 rounded-full px-4 py-2 font-bold text-white shadow-lg @badgeColorClass">
+            @Model.ButtonText
+        </span>
+    </div>
 
-        <div class="flex h-full w-[50%] flex-col justify-center gap-5">
-            <h1 class="text-2xl font-bold text-[#AC602A] md:text-3xl lg:text-[35px]">@Model.FacilityName</h1>
-            <h1>Date: February 25, 2025</h1>
-            <h1>Time: 10:00 AM – 12:30 PM</h1>
-
-            <div class="relative flex w-full items-center">
-                <button class="h-10 w-[32%] rounded-full pr-4 pl-12 outline-none @statusClass">
-                    @Model.ButtonText
-                </button>
-                <img class="absolute top-1/2 left-3 h-5 -translate-y-1/2" src="@Url.Content($"~/Images/{Model.Icons["status"]}")" alt="Status Icon">
-            </div>
+    <div class="flex w-[90%] flex-col items-center justify-between">
+        <h1 class="font-semibold text-[20px] sm:text-3xl md:text-[24px] lg:text-[20px]">
+            @Model.FacilityName
+            @Model.DTime
+        </h1>
+        <div class="flex flex-row items-center gap-2">
+            <img src="~/Images/star.svg" class="mb-1" />
+            <p>4.8</p>
         </div>
     </div>
 
-    <div class="flex h-full w-[30%] flex-row items-center justify-center gap-8">
-        <div class="flex flex-col items-center rounded-lg">
-            <button class="flex h-[100px] w-[100px] cursor-pointer items-center justify-center bg-[#E9E9EA]">
-                <img src="@Url.Content($"~/Images/{Model.Icons["schedule"]}")" alt="Schedule">
+    <label class="relative bottom-3 left-6 self-start text-gray-400">
+        @Model.Type
+    </label>
+
+    <div class="mt-2 ml-6 flex items-center gap-4 self-start">
+        <div class="flex items-center gap-2">
+            <img src="~/Images/timeic.svg" class="mb-1" />
+            <p>6:00 AM - 10:00 PM</p>
+        </div>
+        <div class="flex items-center gap-2">
+            <img src="~/Images/dollar.svg" />
+            <p>Free</p>
+        </div>
+    </div>
+
+    @if (Model.ShowEditCancelButtons)
+    {
+        <div class="mb-4 flex w-[90%] flex-row justify-between gap-2">
+            @if (Model.ButtonText == "Approved")
+            {
+                <button type="button" class="w-1/2 cursor-pointer rounded-full bg-[#043137] px-6 py-3 font-bold text-white transition hover:bg-opacity-75">
+                    Reschedule
+                </button>
+            }
+            else
+            {
+                <button type="button" class="w-1/2 cursor-pointer rounded-full bg-[#043137] px-6 py-3 font-bold text-white transition hover:bg-opacity-75">
+                    Edit
+                </button>
+            }
+            <button type="button" class="w-1/2 cursor-pointer rounded-full border border-black px-6 py-3 font-bold text-black transition hover:bg-gray-100">
+                Cancel
             </button>
-            <a>Reschedule</a>
         </div>
-
-        @if (Model.ButtonText != "Completed")
-        {
-            <div class="rpunded-lg flex flex-col items-center">
-                <button class="flex h-[100px] w-[100px] cursor-pointer items-center justify-center bg-[#E9E9EA]">
-                    <img src="@Url.Content($"~/Images/{Model.Icons["cancel"]}")" alt="Cancel">
-                </button>
-                <a>Cancel</a>
-            </div>
-        }
-    </div>
+    }
+    else
+    {
+        <button type="button" class="mb-4 w-[90%] cursor-pointer rounded-full px-6 py-3 transition hover:bg-opacity-75 @buttonColorClass" @(isDisabled ? "disabled" : "")>
+            Book Again
+        </button>
+    }
 </div>
-

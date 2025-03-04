@@ -12,6 +12,7 @@
    
         html {
             scroll-behavior: smooth;
+            overflow-x: hidden;
         }
 
         * {
@@ -49,7 +50,7 @@
 <body class="flex flex-col items-center justify-center overflow-x-hidden bg-gray-100">
 
     <!-- Navbar -->
-    <header id="landNav" class="sticky top-0 z-50 flex w-full items-center justify-center bg-white shadow-md">
+    <section id="landNav" class="fixed top-0 z-50 flex w-full items-center justify-center bg-white shadow-md">
         <div class="relative flex w-11/12 justify-between p-6 text-[#1E2E33]">
             <!-- Desktop Links -->
             <div class="hidden flex-row items-center gap-8 text-[24px] md:flex">
@@ -83,7 +84,7 @@
                 <a id="sign-in-btn" href="#" class="block">Sign In</a>
             </div>
         </div>
-    </header>
+    </section>
 
     <!-- JavaScript to Toggle Menu -->
     <script>

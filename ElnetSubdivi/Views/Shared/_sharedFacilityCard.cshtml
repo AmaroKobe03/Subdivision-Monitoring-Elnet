@@ -1,29 +1,109 @@
 ﻿@model FacilityViewModel
 
 @{
-    bool isDisabled = Model.ButtonText == "Fully Booked" || Model.ButtonText == "Maintenance";
-    string overlayClass = isDisabled ? "opacity-50" : ""; // Dim the card
-    string textColorClass = isDisabled ? "text-gray-400" : "text-[#AC602A]"; // Adjust text color
-    string buttonColorClass = Model.ButtonText == "Fully Booked" ? "bg-gray-400 text-black font-bold"
-                           : Model.ButtonText == "Maintenance" ? "bg-red-600 text-white font-bold"
-                           : "bg-[#AC602A] text-white";
+    bool isDisabled = new[] { "Unavailable" }.Contains(Model.ButtonText);
+    bool status = new[] { "Pending", "Approved", "Cancelled", "Completed" }.Contains(Model.ButtonText);
+    string overlayClass = isDisabled ? "opacity-50" : ""; // Dim card when Unavailable
+    string buttonColorClass = Model.ButtonText == "Unavailable" ? "bg-red-500 text-white font-bold cursor-not-allowed"
+                             : "bg-[#043137] text-white font-bold";
+    string badgeColorClass = Model.ButtonText == "Unavailable" ? "bg-red-500"
+                             : Model.ButtonText == "Completed" ? "bg-gray-400"
+                             : Model.ButtonText == "Cancelled" ? "bg-red-500"
+                             : Model.ButtonText == "Approved" ? "bg-[#10B981]"
+                             : Model.ButtonText == "Pending" ? "bg-yellow-500"
+                             : "bg-[#10B981]";
 }
 
-<div class="flex h-[45vh] w-[25%] flex-col items-center justify-center gap-4 rounded-lg bg-white p-8 shadow-lg @overlayClass">
-    <img class="h-[250px] w-[400px]" src="~/Images/@Model.ImagePath" alt="@Model.FacilityName">
-    <h1 class="text-2xl font-bold @textColorClass lg:text-[35px]">@Model.FacilityName</h1>
-
-    @if (!isDisabled)
-    {
-        <button type="button" class="book-now-btn rounded-full px-28 py-2 transition hover:bg-opacity-75 @buttonColorClass">
+<div class="flex h-auto w-[90%] max-w-[500px] flex-col flex-wrap items-center gap-4 rounded-lg bg-white @overlayClass shadow-lg sm:w-[70%] md:w-[50%] lg:w-[30%]">
+    <div class="relative w-full">
+        <img class="h-[200px] w-full rounded-t-lg object-cover" src="~/Images/@Model.ImagePath" alt="@Model.FacilityName">
+        <span class="absolute top-2 right-2 z-10 rounded-full px-4 py-2 font-bold text-white shadow-lg @badgeColorClass">
             @Model.ButtonText
-        </button>
+        </span>
+    </div>
 
+    <div class="flex w-[90%] flex-row items-center justify-between">
+        <h1 class="font-semibold text-[20px] sm:text-3xl md:text-[24px] lg:text-[20px]">
+            @Model.FacilityName
+          
+        </h1>
+        <div class="flex flex-row items-center gap-2">
+            <img src="~/Images/star.svg" class="mb-1" />
+            <p>4.8</p>
+        </div>
+    </div>
+
+    <label class="relative bottom-3 left-6 self-start text-gray-400">
+        @Model.Type
+        @Model.DTime
+    </label>
+
+    <div class="mt-2 ml-6 flex items-center gap-4 self-start">
+        <div class="flex items-center gap-2">
+            <img src="~/Images/timeic.svg" class="mb-1" />
+            <p>6:00 AM - 10:00 PM</p>
+        </div>
+        <div class="flex items-center gap-2">
+            <img src="~/Images/dollar.svg" />
+            <p>Free</p>
+        </div>
+    </div>
+
+    @if (Model.ShowEditCancelButtons)
+    {
+        <div class="mb-4 flex w-[90%] flex-row justify-between gap-2">
+            @if (Model.ButtonText == "Approved")
+            {
+                <button type="button" class="w-1/2 cursor-pointer rounded-full bg-[#043137] px-6 py-3 font-bold text-white transition hover:bg-opacity-75">
+                    Reschedule
+                </button>
+            }
+            else if (Model.ButtonText == "Completed")
+            {
+                <button type="button" class="w-1/2 cursor-pointer rounded-full bg-[#043137] px-6 py-3 font-bold text-white transition hover:bg-opacity-75">
+                    Book Again
+                </button>
+            }
+
+            else
+            {
+                <button type="button" class="w-1/2 cursor-pointer rounded-full bg-[#043137] px-6 py-3 font-bold text-white transition hover:bg-opacity-75">
+                    Edit
+                </button>
+            }
+
+            <button type="button" class="w-1/2 cursor-pointer rounded-full border border-black px-6 py-3 font-bold text-black transition hover:bg-gray-100">
+                Cancel
+            </button>
+        </div>
     }
     else
     {
-        <button disabled class="rounded-full px-28 py-2 @buttonColorClass">
-            @Model.ButtonText
+        <button  type="button" class="book-now-btn mb-4 w-[90%] cursor-pointer rounded-full px-6 py-3 transition hover:bg-opacity-75 @buttonColorClass" @(isDisabled ? "disabled" : "")>
+                View Details
         </button>
     }
 </div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const popup = document.getElementById("popup");
+        const content = document.getElementById("content");
+        const bookNowBtns = document.querySelectorAll(".book-now-btn"); // Select all buttons
+
+        bookNowBtns.forEach(btn => {
+            btn.addEventListener("click", function () {
+                popup.classList.remove("hidden");
+            });
+        });
+
+        popup.addEventListener("click", function (event) {
+            if (!content.contains(event.target)) {
+                popup.classList.add("hidden");
+            }
+        });
+    });
+
+
+</script>

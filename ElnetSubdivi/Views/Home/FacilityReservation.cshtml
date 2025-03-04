@@ -12,31 +12,44 @@
         {
             ImagePath = "facimg1.png",
             FacilityName = "Community Park",
+            Type = "Recreation",
             ActionName = "ReserveFacility",
-            ButtonText = "Reserve Now"
+            ButtonText = "Available"
         },
         new FacilityViewModel
         {
             ImagePath = "facimg2.png",
-            FacilityName = "ClubHouse",
+            FacilityName = "Function Hall",
+            Type = "Events",
             ActionName = "ReserveFacility",
-            ButtonText = "Fully Booked"
+            ButtonText = "Unavailable"
         },
         new FacilityViewModel
         {
             ImagePath = "facimg3.png",
             FacilityName = "Fitness Center",
+            Type = "Ftiness",
             ActionName = "ReserveFacility",
-            ButtonText = "Maintenance"
+            ButtonText = "Available"
+        },
+        new FacilityViewModel
+        {
+            ImagePath = "tennis.png",
+            FacilityName = "Fitness Center",
+            Type = "sports",
+            ActionName = "ReserveFacility",
+            ButtonText = "Unavailable"
         }
     };
 }
 
-<div class="flex h-[90vh] w-[90%] flex-col items-center overflow-auto bg-[#f2f2f2] font-semibold">
+<div class="flex h-[100vh] w-[90%] flex-col items-center overflow-hidden bg-[#f2f2f2] font-semibold">
 
     @await Html.PartialAsync("_sharedSearch")
 
-    <div id="reservediv" class="flex w-full flex-wrap justify-center gap-6 px-10 py-10">
+    @await Html.PartialAsync("_SortList", new List<string> { "All Facilities", "Sports", "Events", "Recreation" })
+
+    <div id="reservediv" class="flex w-full flex-wrap justify-center gap-6 overflow-y-auto px-10 py-10">
         @foreach (var facility in facilities)
         {
             @await Html.PartialAsync("_sharedFacilityCard", facility)
@@ -46,8 +59,8 @@
 
 
 <!-- Popup Modal -->
-<div id="popup" class="fixed inset-0 mt-20 flex hidden items-center justify-center bg-black/50">
-    <div id="content" class="flex h-[80vh] w-[80%] overflow-hidden rounded-lg bg-white shadow-lg">
+<div id="popup" class="fixed inset-0 z-20 mt-20 flex hidden items-center justify-center">
+    <div id="content" class="flex h-[90vh] w-[90%] overflow-hidden rounded-lg bg-white shadow-lg">
         <!-- Left Section -->
         <div class="flex w-[70%] flex-col items-center p-6">
             <img class="h-[350px] w-[90%]" src="~/Images/facimg1.png" alt="Community Park">
@@ -114,26 +127,4 @@
         Close
     </button>
 </div>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const popup = document.getElementById("popup");
-        const content = document.getElementById("content");
-        const bookNowBtns = document.querySelectorAll(".book-now-btn"); // Select all buttons
-
-        bookNowBtns.forEach(btn => {
-            btn.addEventListener("click", function () {
-                popup.classList.remove("hidden");
-            });
-        });
-
-        popup.addEventListener("click", function (event) {
-            if (!content.contains(event.target)) {
-                popup.classList.add("hidden");
-            }
-        });
-    });
-
-
-</script>
 

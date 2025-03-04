@@ -1,0 +1,30 @@
+﻿@model List<string>
+@{
+    string activeClass = "bg-blue-200 text-blue-700 font-bold"; // Active button class
+    string defaultClass = "bg-gray-100 hover:bg-gray-200 transition";
+}
+
+<div id="sort" class="flex w-[90%] flex-row items-center gap-4">
+    @foreach (var text in Model)
+    {
+        <a href="#" class="cursor-pointer rounded-full px-6 py-2 text-center @(text == Model.First() ? activeClass : defaultClass)">
+            @text
+        </a>
+    }
+</div>
+<script>
+    document.querySelectorAll("#sort a").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+            e.preventDefault(); // Prevent page reload
+
+            document.querySelectorAll("#sort a").forEach(b => {
+                b.classList.remove("bg-blue-200", "text-blue-700", "font-bold");
+                b.classList.add("bg-gray-100", "hover:bg-gray-200");
+            });
+
+            e.target.classList.add("bg-blue-200", "text-blue-700", "font-bold");
+            e.target.classList.remove("bg-gray-100", "hover:bg-gray-200");
+
+        });
+    });
+</script>
