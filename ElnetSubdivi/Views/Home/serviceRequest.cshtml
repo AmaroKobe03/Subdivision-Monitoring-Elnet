@@ -1,14 +1,264 @@
 ﻿@{
-    ViewData["Title"] = "Serive Requests";
+    ViewData["Title"] = "Service Request";
 }
-<link href="~/css/output.css" rel="stylesheet">
-
-
-
-
-<div class="flex h-[90vh] w-[90%] flex-col items-center overflow-auto bg-[#f2f2f2] font-semibold">
+<style>
+    th{
+        align-self: center;
+    }
+</style>
+<div class="flex h-[100vh] w-[90%] flex-col items-center overflow-auto overflow-y-hidden bg-[#f2f2f2] font-semibold">
 
     @await Html.PartialAsync("_sharedSearch")
 
- 
+    <div class="relative mb-6 flex w-[88%] items-center justify-between">
+        <!-- Search Bar -->
+        @await Html.PartialAsync("_sharedSearch2", "Add Request")
+        <!-- Close Button -->
+        <button id="closePopupBtn" class="top-4 right-4 hidden rounded-full bg-red-500 px-4 py-2 text-white">
+            Close
+        </button>
+
+        <!-- Request Pop-Up -->
+        <div id="request-popup" class="fixed inset-0 z-100 flex hidden items-center justify-center bg-black/50 p-4">
+            <div class="w-[600px] rounded-lg bg-white p-6 shadow-lg">
+                <h1 class="text-center text-xl font-semibold text-[#043137]">Submit New Request</h1>
+
+                <div class="mt-4 space-y-3">
+                    <label class="block text-sm font-medium">Request Type</label>
+                    <select class="w-full rounded border px-3 py-2">
+                        <option>Maintenance Request</option>
+                    </select>
+
+                    <label class="block text-sm font-medium">Subject</label>
+                    <input type="text" class="w-full rounded border px-3 py-2" value="Maintenance Request" />
+
+                    <div class="flex gap-4">
+                        <div class="w-1/2">
+                            <label class="block text-sm font-medium">Date</label>
+                            <input type="date" class="w-full rounded border px-3 py-2" placeholder="mm/dd/yyyy" />
+                        </div>
+                        <div class="w-1/2">
+                            <label class="block text-sm font-medium">Time</label>
+                            <input type="time" class="w-full rounded border px-3 py-2" placeholder="--:-- --" />
+                        </div>
+                    </div>
+
+                    <label class="block text-sm font-medium">Description</label>
+                    <textarea class="h-24 w-full rounded border px-3 py-2">Lights are not working.</textarea>
+
+                    <label class="block text-sm font-medium">Attachments</label>
+                    <button class="w-[20%] rounded-full bg-[#043137] py-2 text-white">Upload</button>
+
+                    <div class="mt-4 flex justify-between">
+                        <button class="w-[45%] rounded-full border px-4 py-2">Cancel</button>
+                        <button class="w-[45%] rounded-full bg-[#043137] px-4 py-2 text-white">Request</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Table -->
+    <table class="w-[88%] overflow-y-auto rounded-lg bg-white shadow-lg">
+        <thead>
+            <tr class="text-left text-[#787676]">
+                <th class="px-4 py-3">ID</th>
+                <th class="px-4 py-3">Request</th>
+                <th class="px-4 py-3">Status</th>
+                <th class="px-4 py-3">Submitted</th>
+                <th class="px-4 py-3">Closed</th>
+                <th class="px-4 py-3">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="px-4 py-4">SR0001</td>
+                <td class="px-4 py-4">House Keeping</td>
+                <td class="px-4 py-4 text-yellow-500">Pending</td>
+                <td class="px-4 py-4">March 03, 2025</td>
+                <td class="px-4 py-4">---</td>
+                <td class="flex gap-3 px-4 py-4">
+                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
+                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
+                </td>
+            </tr>
+            <tr>
+                <td class="px-4 py-4">SR0002</td>
+                <td class="px-4 py-4">Pest Control</td>
+                <td class="px-4 py-4 text-blue-500">Ongoing</td>
+                <td class="px-4 py-4">March 03, 2025</td>
+                <td class="px-4 py-4">---</td>
+                <td class="flex gap-3 px-4 py-4">
+                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
+                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
+                </td>
+            </tr>
+            <tr>
+                <td class="px-4 py-4">SR0002</td>
+                <td class="px-4 py-4">Pest Control</td>
+                <td class="px-4 py-4 text-green-500">Completed</td>
+                <td class="px-4 py-4">March 03, 2025</td>
+                <td class="px-4 py-4">---</td>
+                <td class="flex gap-3 px-4 py-4">
+                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
+                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
+                </td>
+            </tr>
+            <tr>
+                <td class="px-4 py-4">SR0002</td>
+                <td class="px-4 py-4">Pest Control</td>
+                <td class="px-4 py-4 text-red-500">Canceled</td>
+                <td class="px-4 py-4">March 03, 2025</td>
+                <td class="px-4 py-4">---</td>
+                <td class="flex gap-3 px-4 py-4">
+                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
+                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
+                </td>
+            </tr>
+            <tr>
+                <td class="px-4 py-4">SR0002</td>
+                <td class="px-4 py-4">Pest Control</td>
+                <td class="px-4 py-4 text-red-500">Canceled</td>
+                <td class="px-4 py-4">March 03, 2025</td>
+                <td class="px-4 py-4">---</td>
+                <td class="flex gap-3 px-4 py-4">
+                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
+                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
+                </td>
+            </tr>
+            <tr>
+                <td class="px-4 py-4">SR0002</td>
+                <td class="px-4 py-4">Pest Control</td>
+                <td class="px-4 py-4 text-red-500">Canceled</td>
+                <td class="px-4 py-4">March 03, 2025</td>
+                <td class="px-4 py-4">---</td>
+                <td class="flex gap-3 px-4 py-4">
+                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
+                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
+                </td>
+            </tr>
+            <tr>
+                <td class="px-4 py-4">SR0002</td>
+                <td class="px-4 py-4">Pest Control</td>
+                <td class="px-4 py-4 text-red-500">Canceled</td>
+                <td class="px-4 py-4">March 03, 2025</td>
+                <td class="px-4 py-4">---</td>
+                <td class="flex gap-3 px-4 py-4">
+                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
+                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
+                </td>
+            </tr>
+            <tr>
+                <td class="px-4 py-4">SR0002</td>
+                <td class="px-4 py-4">Pest Control</td>
+                <td class="px-4 py-4 text-red-500">Canceled</td>
+                <td class="px-4 py-4">March 03, 2025</td>
+                <td class="px-4 py-4">---</td>
+                <td class="flex gap-3 px-4 py-4">
+                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
+                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
+                </td>
+            </tr>
+            <tr>
+                <td class="px-4 py-4">SR0002</td>
+                <td class="px-4 py-4">Pest Control</td>
+                <td class="px-4 py-4 text-red-500">Canceled</td>
+                <td class="px-4 py-4">March 03, 2025</td>
+                <td class="px-4 py-4">---</td>
+                <td class="flex gap-3 px-4 py-4">
+                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
+                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
+                </td>
+            </tr>
+                        <tr>
+                <td class="px-4 py-4">SR0002</td>
+                <td class="px-4 py-4">Pest Control</td>
+                <td class="px-4 py-4 text-red-500">Canceled</td>
+                <td class="px-4 py-4">March 03, 2025</td>
+                <td class="px-4 py-4">---</td>
+                <td class="flex gap-3 px-4 py-4">
+                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
+                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
+                </td>
+            </tr>
+            <tr>
+                <td class="px-4 py-4">SR0002</td>
+                <td class="px-4 py-4">Pest Control</td>
+                <td class="px-4 py-4 text-red-500">Canceled</td>
+                <td class="px-4 py-4">March 03, 2025</td>
+                <td class="px-4 py-4">---</td>
+                <td class="flex gap-3 px-4 py-4">
+                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
+                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
+                </td>
+            </tr>
+            <tr>
+                <td class="px-4 py-4">SR0002</td>
+                <td class="px-4 py-4">Pest Control</td>
+                <td class="px-4 py-4 text-red-500">Canceled</td>
+                <td class="px-4 py-4">March 03, 2025</td>
+                <td class="px-4 py-4">---</td>
+                <td class="flex gap-3 px-4 py-4">
+                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
+                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
+                </td>
+            </tr>
+            <tr>
+                <td class="px-4 py-4">SR0002</td>
+                <td class="px-4 py-4">Pest Control</td>
+                <td class="px-4 py-4 text-red-500">Canceled</td>
+                <td class="px-4 py-4">March 03, 2025</td>
+                <td class="px-4 py-4">---</td>
+                <td class="flex gap-3 px-4 py-4">
+                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
+                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
+                </td>
+            </tr>
+            <tr>
+                <td class="px-4 py-4">SR0002</td>
+                <td class="px-4 py-4">Pest Control</td>
+                <td class="px-4 py-4 text-red-500">Canceled</td>
+                <td class="px-4 py-4">March 03, 2025</td>
+                <td class="px-4 py-4">---</td>
+                <td class="flex gap-3 px-4 py-4">
+                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
+                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    @await Html.PartialAsync("_pagination")
+
 </div>
+<script>
+      document.addEventListener("DOMContentLoaded", function () {
+      const requestBtn = document.getElementById("request-btn");
+      const requestPopup = document.getElementById("request-popup");
+
+      // Function to Open Popup
+      function openPopup() {
+        requestPopup.classList.remove("hidden");
+      }
+
+      // Function to Close Popup
+      function closePopup() {
+        requestPopup.classList.add("hidden");
+      }
+
+      // Open Popup on Button Click
+      if (requestBtn) {
+        requestBtn.addEventListener("click", openPopup);
+      }
+
+      // Close Popup on Outside Click
+      window.addEventListener("click", function (event) {
+        if (event.target === requestPopup) {
+          closePopup();
+        }
+      });
+    });
+
+
+</script>

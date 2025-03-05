@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using ElnetSubdivi.Models;
 
@@ -57,8 +57,18 @@ namespace ElnetSubdivi.Controllers
         {
             return View();
         }
+        public IActionResult Billing()
+
+        {
+            ViewData["Title"] = "Service Request";
+            ViewData["HideSearch"] = true; // This will hide the search bar and filter
+            return View();
+        }
         public IActionResult serviceRequest()
         {
+
+            ViewData["Title"] = "Service Request";
+            ViewData["HideSearch"] = true; // This will hide the search bar and filter
             return View();
         }
 

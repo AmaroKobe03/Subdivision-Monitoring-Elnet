@@ -1,0 +1,232 @@
+﻿@{
+    ViewData["Title"] = "Billing and Payment";
+}
+
+@{
+    var BillCard = new List<BillingPaymentModel>
+    {
+        new BillingPaymentModel
+        {
+            description = "total Amount Due",
+            amount = "15,250.00",
+            Icons = new Dictionary<string, string>
+            {
+                {"psign", "~/Images/Peso.svg"},
+                {"due", "~/Images/due.svg"},
+                {"payment", "~/Images/pend.svg"},
+                {"overdue", "~/Images/overd.svg"},
+                {"paid", "~/Images/paid.svg"}
+            }
+        },
+        new BillingPaymentModel
+        {
+            description = "Pending Payments",
+            amount = "3",
+            Icons = new Dictionary<string, string>
+            {
+                {"psign", "~/Images/Peso.svg"},
+                {"due", "~/Images/due.svg"},
+                {"payment", "~/Images/pend.svg"},
+                {"overdue", "~/Images/overd.svg"},
+                {"paid", "~/Images/paid.svg"}
+            }
+        },
+        new BillingPaymentModel
+        {
+            description = "Overdue Payments",
+            amount = "15,250.00",
+            Icons = new Dictionary<string, string>
+            {
+                {"psign", "~/Images/Peso.svg"},
+                {"due", "~/Images/due.svg"},
+                {"payment", "~/Images/pend.svg"},
+                {"overdue", "~/Images/overd.svg"},
+                {"paid", "~/Images/paid.svg"}
+            }
+        },
+        new BillingPaymentModel
+        {
+            description = "Paid Amount (2025)",
+            amount = "45,750.00",
+            Icons = new Dictionary<string, string>
+            {
+                 {"psign", "~/Images/Peso.svg"},
+                {"due", "~/Images/due.svg"},
+                {"payment", "~/Images/pend.svg"},
+                {"overdue", "~/Images/overd.svg"},
+                {"paid", "~/Images/paid.svg"}
+            }
+        }
+    };
+}
+
+<div class="flex h-[100vh] w-[90%] flex-col items-center overflow-auto overflow-y-hidden bg-[#f2f2f2] font-semibold">
+    @await Html.PartialAsync("_sharedSearch")
+
+    <div class="mb-10 flex h-[15vh] w-[88%] flex-wrap items-center justify-between">
+        @foreach (var card in BillCard)
+        {
+            @await Html.PartialAsync("_sharedBillingCard", card)
+        }
+    </div>
+
+    <div class="relative mb-6 flex w-[88%] items-center justify-between">
+        @await Html.PartialAsync("_sharedSearch2", "Pay Selected Bills")
+    </div>
+
+    <table class="bg-white-200 w-[88%] border-collapse bg-white text-left">
+        <thead>
+            <tr class="text-gray-500">
+                <th class="px-4 py-3"><input type="checkbox"></th>
+                <th class="px-4 py-3">Bill Type</th>
+                <th class="px-4 py-3">Billing Period</th>
+                <th class="px-4 py-3">Amount Due</th>
+                <th class="px-4 py-3">Due Date</th>
+                <th class="px-4 py-3">Status</th>
+                <th class="px-4 py-3">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="px-4 py-3"><input type="checkbox"></td>
+                <td class="flex items-center gap-2 px-4 py-3">
+                    <img src="~/Images/electric.svg" class="w-5" alt="">
+                    <span>Electricity Bill</span>
+                </td>
+                <td class="px-4 py-3">March 2025</td>
+                <td class="px-4 py-3">₱5,250.00</td>
+                <td class="px-4 py-3">March 15, 2025</td>
+                <td class="px-4 py-3 font-semibold text-red-500">Overdue</td>
+                <td class="cursor-pointer px-4 py-3 font-semibold text-teal-700">Pay Now</td>
+            </tr>
+            <tr>
+                <td class="px-4 py-3"><input type="checkbox"></td>
+                <td class="flex items-center gap-2 px-4 py-3">
+                    <img src="~/Images/mechanic.svg" class="w-5" alt="">
+                    <span>Maintenance Fee</span>
+                </td>
+                <td class="px-4 py-3">April 2025</td>
+                <td class="px-4 py-3">₱2,250.00</td>
+                <td class="px-4 py-3">April 30, 2025</td>
+                <td class="px-4 py-3 font-semibold text-yellow-500">Pending</td>
+                <td class="cursor-pointer px-4 py-3 font-semibold text-teal-700">Pay Now</td>
+            </tr>
+            <tr>
+                <td class="px-4 py-3"><input type="checkbox"></td>
+                <td class="flex items-center gap-2 px-4 py-3">
+                    <img src="~/Images/water.svg" class="w-5" alt="">
+                    <span>Water Bill</span>
+                </td>
+                <td class="px-4 py-3">February 2025</td>
+                <td class="px-4 py-3">₱1,850.00</td>
+                <td class="px-4 py-3">February 28, 2025</td>
+                <td class="px-4 py-3 font-semibold text-green-500">Paid</td>
+                <td class="cursor-pointer px-4 py-3 font-semibold text-teal-700">View Receipt</td>
+            </tr>
+        </tbody>
+    </table>
+
+    @await Html.PartialAsync("_pagination")
+</div>
+
+<!-- Request Pop-Up -->
+<div id="billing-popup" class="fixed inset-0 z-100 flex hidden items-center justify-center bg-black/50 p-4">
+    <div class="w-[650px] rounded-lg bg-white p-6 shadow-lg">
+        <!-- Billing Summary -->
+        <h1 class="text-xl font-semibold text-black">Billing Summary</h1>
+
+        <div class="mt-4 space-y-2 border-b pb-4">
+            <div class="flex justify-between">
+                <span class="text-s text-gray-500">Bill Type</span>
+                <span class="">Association Dues</span>
+            </div>
+            <div class="flex justify-between">
+                <span class="text-s text-gray-500">Bill Type Period</span>
+                <span class="">March 1 - March 15, 2025</span>
+            </div>
+            <div class="flex justify-between">
+                <span class="text-s text-gray-500">Amount Due</span>
+                <span class="text-xl text-[#043137]">₱5,250.00</span>
+            </div>
+        </div>
+
+        <!-- Select Payment Method -->
+        <h2 class="mt-4 text-lg font-semibold text-black">Select Payment Method</h2>
+        <div class="mt-2 flex gap-3">
+            <button class="flex w-1/3 items-center justify-center gap-2 rounded-lg border px-4 py-2">
+                <img src="~/Images/credit.svg" alt="Credit/Debit Card" class="h-5 w-5" /> Credit/Debit Card
+            </button>
+            <button class="flex w-1/3 items-center justify-center gap-2 rounded-lg border px-4 py-2">
+                <img src="~/Images/online.svg" alt="Online Banking" class="h-5 w-5" /> Online Banking
+            </button>
+            <button class="flex w-1/3 items-center justify-center gap-2 rounded-lg border px-4 py-2">
+                <img src="~/Images/wallet.svg" alt="E-Wallet" class="h-5 w-5" /> E-Wallet
+            </button>
+        </div>
+
+        <!-- Payment Form -->
+        <div class="mt-4 space-y-3">
+            <div class="flex gap-4">
+                <div class="w-1/2">
+                    <label class="block text-sm font-medium">Card Number</label>
+                    <input type="text" class="w-full rounded border px-3 py-2 text-gray-400" placeholder="1234 5678 9012 3456"  />
+                </div>
+                <div class="w-1/2">
+                    <label class="block text-sm font-medium">Name on Card</label>
+                    <input type="text" class="w-full rounded border px-3 py-2 text-gray-400" placeholder="John Doe"  />
+                </div>
+            </div>
+
+            <div class="flex gap-4">
+                <div class="w-1/2">
+                    <label class="block text-sm font-medium">Expiry Date</label>
+                    <input type="text" class="w-full rounded border px-3 py-2 text-gray-400" placeholder="MM/YY"  />
+                </div>
+                <div class="w-1/2">
+                    <label class="block text-sm font-medium">CVV</label>
+                    <input type="text" class="w-full rounded border px-3 py-2 text-gray-400" placeholder="123"  />
+                </div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="mt-6 flex justify-between">
+            <button class="w-[45%] rounded-full border px-4 py-2 text-black">Cancel</button>
+            <button class="flex w-[45%] items-center justify-center gap-2 rounded-full bg-[#043137] px-4 py-2 text-white">
+                Pay ₱5,250.00 <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+     document.addEventListener("DOMContentLoaded", function () {
+        const requestBtns = document.querySelectorAll(".billing-btn"); // Select all buttons with this class
+        const requestPopup = document.getElementById("billing-popup");
+
+        // Function to Open Popup
+        function openPopup() {
+            requestPopup.classList.remove("hidden");
+        }
+
+        // Function to Close Popup
+        function closePopup() {
+            requestPopup.classList.add("hidden");
+        }
+
+        // Open Popup on Any Button Click
+        requestBtns.forEach(button => {
+            button.addEventListener("click", openPopup);
+        });
+
+        // Close Popup on Outside Click
+        window.addEventListener("click", function (event) {
+            if (event.target === requestPopup) {
+                closePopup();
+            }
+        });
+    });
+
+
+</script>
