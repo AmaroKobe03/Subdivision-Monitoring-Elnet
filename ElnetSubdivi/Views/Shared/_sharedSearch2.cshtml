@@ -21,6 +21,44 @@
 
 <!-- Dynamic Button -->
 <button id="request-btn" type="button"
-        class="billing-btn flex items-center gap-2 rounded-full bg-[#043137] px-6 py-3 font-bold text-white transition hover:bg-opacity-75">
+        class="billing-btn flex items-center gap-2 rounded-full bg-[#043137] px-6 py-3 font-bold text-white transition hover:bg-opacity-75"
+        onclick="handleButtonClick()">
     <span class="text-xl">+</span> @Model
 </button>
+
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const requestPopup = document.getElementById("request-popup");
+            const billingPopup = document.getElementById("billing-popup");
+            const userPopup = document.getElementById("User-popup");
+            const cancelButton = document.getElementById("cancelbtn");
+            const viewbtn = document.getElementById("viewUserbtn");
+            // Function to Open All Popups
+            function handleButtonClick() {
+                if (requestPopup) requestPopup.classList.remove("hidden");
+                if (billingPopup) billingPopup.classList.remove("hidden");
+                if (userPopup) userPopup.classList.remove("hidden");
+            }
+
+            // Function to Close a Popup
+            function closePopup(popup) {
+                if (popup) popup.classList.add("hidden");
+            }
+
+            // Close Popups when Clicking Outside
+            window.addEventListener("click", function (event) {
+                if (event.target === requestPopup) closePopup(requestPopup);
+                if (event.target === billingPopup) closePopup(billingPopup);
+                if (event.target === userPopup) closePopup(userPopup);
+               
+            });
+            window.addEventListener("click", function (event) {
+                if (event.target === cancelButton) closePopup(billingPopup);
+                if (event.target === cancelButton) closePopup(userPopup);
+                if (event.target === cancelButton) closePopup(requestPopup);
+            });
+
+            // Attach the function to the button
+            document.getElementById("request-btn").addEventListener("click", handleButtonClick);
+        });
+</script>

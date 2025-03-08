@@ -191,7 +191,7 @@
 
         <!-- Buttons -->
         <div class="mt-6 flex justify-between">
-            <button class="w-[45%] rounded-full border px-4 py-2 text-black">Cancel</button>
+            <button id="cancelbtn" class="w-[45%] rounded-full border px-4 py-2 text-black">Cancel</button>
             <button class="flex w-[45%] items-center justify-center gap-2 rounded-full bg-[#043137] px-4 py-2 text-white">
                 Pay ₱5,250.00 <i class="fas fa-arrow-right"></i>
             </button>
@@ -199,34 +199,3 @@
     </div>
 </div>
 
-
-<script>
-     document.addEventListener("DOMContentLoaded", function () {
-        const requestBtns = document.querySelectorAll(".billing-btn"); // Select all buttons with this class
-        const requestPopup = document.getElementById("billing-popup");
-
-        // Function to Open Popup
-        function openPopup() {
-            requestPopup.classList.remove("hidden");
-        }
-
-        // Function to Close Popup
-        function closePopup() {
-            requestPopup.classList.add("hidden");
-        }
-
-        // Open Popup on Any Button Click
-        requestBtns.forEach(button => {
-            button.addEventListener("click", openPopup);
-        });
-
-        // Close Popup on Outside Click
-        window.addEventListener("click", function (event) {
-            if (event.target === requestPopup) {
-                closePopup();
-            }
-        });
-    });
-
-
-</script>

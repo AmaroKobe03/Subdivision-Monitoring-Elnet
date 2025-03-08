@@ -24,33 +24,33 @@
                 <h1 class="text-center text-xl font-semibold text-[#043137]">Submit New Request</h1>
 
                 <div class="mt-4 space-y-3">
-                    <label class="block text-sm font-medium">Request Type</label>
+                    <label class="block font-medium">Request Type</label>
                     <select class="w-full rounded border px-3 py-2">
                         <option>Maintenance Request</option>
                     </select>
 
-                    <label class="block text-sm font-medium">Subject</label>
+                    <label class="block font-medium">Subject</label>
                     <input type="text" class="w-full rounded border px-3 py-2" value="Maintenance Request" />
 
                     <div class="flex gap-4">
                         <div class="w-1/2">
-                            <label class="block text-sm font-medium">Date</label>
+                            <label class="block font-medium">Date</label>
                             <input type="date" class="w-full rounded border px-3 py-2" placeholder="mm/dd/yyyy" />
                         </div>
                         <div class="w-1/2">
-                            <label class="block text-sm font-medium">Time</label>
+                            <label class="block font-medium">Time</label>
                             <input type="time" class="w-full rounded border px-3 py-2" placeholder="--:-- --" />
                         </div>
                     </div>
 
-                    <label class="block text-sm font-medium">Description</label>
+                    <label class="block font-medium">Description</label>
                     <textarea class="h-24 w-full rounded border px-3 py-2">Lights are not working.</textarea>
 
                     <label class="block text-sm font-medium">Attachments</label>
                     <button class="w-[20%] rounded-full bg-[#043137] py-2 text-white">Upload</button>
 
                     <div class="mt-4 flex justify-between">
-                        <button class="w-[45%] rounded-full border px-4 py-2">Cancel</button>
+                        <button id="cancelbtn" class="w-[45%] rounded-full border px-4 py-2">Cancel</button>
                         <button class="w-[45%] rounded-full bg-[#043137] px-4 py-2 text-white">Request</button>
                     </div>
                 </div>
@@ -232,33 +232,3 @@
     @await Html.PartialAsync("_pagination")
 
 </div>
-<script>
-      document.addEventListener("DOMContentLoaded", function () {
-      const requestBtn = document.getElementById("request-btn");
-      const requestPopup = document.getElementById("request-popup");
-
-      // Function to Open Popup
-      function openPopup() {
-        requestPopup.classList.remove("hidden");
-      }
-
-      // Function to Close Popup
-      function closePopup() {
-        requestPopup.classList.add("hidden");
-      }
-
-      // Open Popup on Button Click
-      if (requestBtn) {
-        requestBtn.addEventListener("click", openPopup);
-      }
-
-      // Close Popup on Outside Click
-      window.addEventListener("click", function (event) {
-        if (event.target === requestPopup) {
-          closePopup();
-        }
-      });
-    });
-
-
-</script>
