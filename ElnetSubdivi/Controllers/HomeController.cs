@@ -25,43 +25,64 @@ namespace ElnetSubdivi.Controllers
         {
             return View();
         }
+
         public IActionResult Landing()
         {
             ViewBag.HideNav = true;
             return View();
         }
+
         public IActionResult UserDash()
         {
             return View();
         }
+
         public IActionResult UserProfile()
         {
+            ViewData["PageTitle"] = "Profile Settings";
+            ViewData["HideBtn"] = true;
             return View();
         }
+
         public IActionResult FacilityReservation()
         {
             return View();
         }
+
         public IActionResult MyReservation()
         {
             return View();
         }
+
+        public IActionResult viewProfile()
+        {
+            return View();
+        }
+
         public IActionResult UserManagement()
         {
             ViewData["Title"] = "Service Request";
-            ViewData["HideSearch"] = true; // This will hide the search bar and filter
+            ViewData["HideSearch"] = true;
             return View();
         }
+
         public IActionResult Billing()
         {
             ViewData["Title"] = "Service Request";
-            ViewData["HideSearch"] = true; // This will hide the search bar and filter
+            ViewData["HideSearch"] = true;
             return View();
         }
+
         public IActionResult serviceRequest()
         {
             ViewData["Title"] = "Service Request";
-            ViewData["HideSearch"] = true; // This will hide the search bar and filter
+            ViewData["HideSearch"] = true;
+            return View();
+        }
+
+        public IActionResult Reports()
+        {
+            ViewData["Title"] = "Reports";
             return View();
         }
 
@@ -71,9 +92,9 @@ namespace ElnetSubdivi.Controllers
             if (username == "admin" && password == "admin123")
             {
                 var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, "admin")
-        };
+                {
+                    new Claim(ClaimTypes.Name, "admin")
+                };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var authProperties = new AuthenticationProperties();
@@ -85,9 +106,23 @@ namespace ElnetSubdivi.Controllers
             else if (username == "user" && password == "user123")
             {
                 var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, "user")
-        };
+                {
+                    new Claim(ClaimTypes.Name, "user")
+                };
+
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var authProperties = new AuthenticationProperties();
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+
+                return RedirectToAction("UserDash", "Home");
+            }
+            else if (username == "staff" && password == "staff123")
+            {
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, "staff")
+                };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var authProperties = new AuthenticationProperties();
@@ -102,6 +137,7 @@ namespace ElnetSubdivi.Controllers
                 return RedirectToAction("Landing");
             }
         }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

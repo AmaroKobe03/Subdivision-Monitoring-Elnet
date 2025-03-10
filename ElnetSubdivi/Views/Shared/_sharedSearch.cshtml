@@ -16,10 +16,20 @@
                     <a class="flex cursor-pointer flex-row items-center gap-1 text-base hover:text-[#787676]" href="#about">
                         Filter
                     </a>
+
                     <!-- Dropdown Content -->
-                    <div class="absolute top-6 right-2 hidden w-40 flex-col gap-1 rounded-lg bg-white py-2 shadow-lg group-hover:flex">
-                        <a href="#" class="px-4 py-2 hover:bg-gray-200">Availability</a>
-                        <a href="#my-facilities" class="px-4 py-2 hover:bg-gray-200">Capacity</a>
+                    <div class="absolute top-6 right-2 z-20 hidden w-40 flex-col gap-1 rounded-lg bg-white py-2 shadow-lg group-hover:flex">
+                        @if (ViewData["FilterItems"] != null)
+                        {
+                            foreach (var item in (List<string>)ViewData["FilterItems"])
+                            {
+                                var id = item.Replace(" ", "").ToLower();
+                                <a id="@id" href="#" class="px-4 py-2 hover:bg-gray-200">
+                                    @item
+                                </a>
+                            }
+                        }
+
                     </div>
                 </div>
             </div>

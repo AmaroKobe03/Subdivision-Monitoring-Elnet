@@ -8,45 +8,58 @@
         <div>
             <img class="h-10 max-sm:w-[200px] md:h-8" src="~/Images/Logo.svg" alt="Logo">
         </div>
-
+        
         <!-- Navigation Menu -->
-        <div id="menu" class="ml-auto hidden h-[5vh] flex-col items-center gap-6 bg-[#043137] p-6 font-medium text-[22px] md:flex md:flex-row md:gap-8">
+        <div id="menu" class="m-0 ml-auto hidden h-[4vh] flex-col items-center gap-6 bg-[#043137] p-5 font-medium text-[21px] md:flex md:flex-row md:gap-8">
             <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("UserDash", "Home")">Home</a>
             @if (User.Identity != null && User.Identity.IsAuthenticated && User.Identity.Name == "admin")
             {
                 <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("UserManagement", "Home")">Users</a>
             }
+            @if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                if (User.Identity.Name == "staff")
+                {
+                    <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("serviceRequest", "Home")">Service Request</a>
+                    <a class="cursor-pointer text-white hover:text-[#787676]" >Reports</a>
+                }
+            }
+            @if (User.Identity != null && User.Identity.IsAuthenticated && User.Identity.Name != "staff")
+            {
+                <div class="group relative">
+                    <a class="flex cursor-pointer flex-row items-center gap-1 text-white hover:text-[#787676]">
+                        Facilities
+                        <img class="w-[10px] brightness-0 invert-[1]" src="/Images/drdown.svg" />
+                    </a>
+                    <!-- Dropdown -->
+                    <div class="absolute hidden w-40 flex-col rounded-lg bg-white p-3 py-2 shadow-lg group-hover:flex">
+                        <a href="@Url.Action("FacilityReservation", "Home")" class="px-4 py-2 hover:bg-gray-200">Request</a>
+                        <a href="@Url.Action("MyReservation","Home")" class="px-4 py-2 hover:bg-gray-200">My Facilities</a>
+                    </div>
 
-            <div class="group relative">
-                <a class="flex cursor-pointer flex-row items-center gap-1 text-white hover:text-[#787676]">
-                    Facilities
-                    <img class="w-[10px] brightness-0 invert-[1]" src="/Images/drdown.svg" />
-                </a>
-                <!-- Dropdown -->
-                <div class="absolute hidden w-40 flex-col rounded-lg bg-white py-2 shadow-lg group-hover:flex">
-                    <a href="@Url.Action("FacilityReservation", "Home")" class="px-4 py-2 hover:bg-gray-200">Request</a>
-                    <a href="@Url.Action("MyReservation","Home")" class="px-4 py-2 hover:bg-gray-200">My Facilities</a>
                 </div>
-            </div>
-            <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("serviceRequest", "Home")">Service Request</a>
-            <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("Billing", "Home")">Billing</a>
-            <div class="group relative">
-                <a class="tex-white flex cursor-pointer flex-row items-center gap-1 text-white hover:text-[#787676]">
-                    Security
-                    <img class="w-[10px] brightness-0 invert-[1]" src="~/Images/drdown.svg" />
-                </a>
-                <!-- Dropdown -->
-                <div class="absolute top-6 right-3 hidden w-40 flex-col rounded-lg bg-white py-2 shadow-lg group-hover:flex">
-                    <a href="@Url.Action("FacilityReservation", "Home")" class="color-white px-4 py-2 hover:bg-gray-200">Request</a>
-                    <a href="@Url.Action("MyReservation","Home")" class="px-4 py-2 hover:bg-gray-200">My Facilities</a>
+                <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("serviceRequest", "Home")">Service Request</a>
+
+                <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("Billing", "Home")">Billing</a>
+
+                <div class="group relative">
+                    <a class="tex-white flex cursor-pointer flex-row items-center gap-1 text-white hover:text-[#787676]">
+                        Security
+                        <img class="w-[10px] brightness-0 invert-[1]" src="~/Images/drdown.svg" />
+                    </a>
+                    <!-- Dropdown -->
+                    <div class="absolute top-6 right-3 hidden w-40 flex-col rounded-lg bg-white p-3 py-2 shadow-lg group-hover:flex">
+                        <a href="@Url.Action("FacilityReservation", "Home")" class="color-white px-4 py-2 hover:bg-gray-200">Request</a>
+                        <a href="@Url.Action("MyReservation","Home")" class="px-4 py-2 hover:bg-gray-200">My Facilities</a>
+                    </div>
                 </div>
-            </div>
-        </div>
+
+            }
 
         <div id="pfp-notif" class="relative flex flex-row items-center justify-center gap-4">
             <div class="group relative">
                 <img class="w-[25px] cursor-pointer sm:w-[30px]" src="~/Images/bell.svg" />
-                <div class="drp-popup absolute top-8 right-0 hidden w-40 flex-col flex-col gap-2 rounded-lg bg-white py-2 shadow-lg group-hover:flex">
+                <div class="drp-popup absolute top-8 right-0 hidden w-40 flex-col flex-col gap-2 rounded-lg bg-white p-3 py-2 shadow-lg group-hover:flex">
                     <a href="#" class="px-4 py-2 hover:bg-gray-200">Visitors</a>
                     <a href="#" class="px-4 py-2 hover:bg-gray-200">Vehicles</a>
                 </div>
@@ -55,11 +68,42 @@
 
             <img class="dropdown-btn relative w-[25px] sm:w-[30px]" src="~/Images/pfp.svg" alt="Profile">
 
-            <div class="drp-popup fles-col absolute top-10 right-0 flex hidden w-40 flex-col gap-2 rounded-lg bg-white py-2 shadow-lg">
-                <a href="@Url.Action("UserProfile", "Home")" class="px-4 py-2 hover:bg-gray-200">Settings</a>
-                <a href="#" class="px-4 py-2 hover:bg-gray-200">Feedback</a>
+            <div class="drp-popup fles-col absolute top-10 right-0 flex hidden w-40 flex-col gap-2 rounded-lg bg-white p-2 py-2 shadow-lg">
+                    <a href="@GetProfileLink()" class="cursor-pointer">
+                        <div class="mb-3 flex items-center gap-4 border-b-2 border-gray-400 py-2">
+                            <img class="h-7 w-7 rounded-full object-cover" src="~/Images/pfp.svg" alt="Admin" />
+                            <span>@User.Identity.Name</span>
+                        </div>
+                    </a>
+
+                    @functions {
+                        string GetProfileLink()
+                        {
+                            if (User.Identity.IsAuthenticated)
+                            {
+                                if (User.IsInRole("admin"))
+                                {
+                                    return Url.Action("AdminProfile", "Home") ?? "/";
+                                }
+                                else if (User.IsInRole("staff"))
+                                {
+                                    return Url.Action("StaffProfile", "Home") ?? "/";
+                                }
+                                else
+                                {
+                                    return Url.Action("UserProfile", "Home") ?? "/";
+                                }
+
+                            }
+
+                            return Url.Action("Login", "Home"); // ala ni siya pa
+                        }
+                    }
+
+                <a href="@Url.Action("UserProfile", "Home")" class="px-4 hover:bg-gray-200">Profile Settings</a>
+                <a href="#" class="px-4 py-2 hover:bg-gray-200">Feedback & Report</a>
                 <a href="#" class="px-4 py-2 hover:bg-gray-200">Calendar</a>
-                <a href="#" class="px-4 py-2 hover:bg-gray-200">Contacts</a>
+                <a href="#" class="px-4 py-2 hover:bg-gray-200">Contact Directory</a>
                 <a href="#" class="px-4 py-2 hover:bg-gray-200">Logout</a>
             </div>
         </div>

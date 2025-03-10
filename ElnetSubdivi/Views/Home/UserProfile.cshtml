@@ -1,76 +1,8 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Account</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="~/css/output.css" rel="stylesheet">
-</head>
-<body class="flex h-screen w-full flex-col items-center justify-center overflow-y-hidden bg-[#f2f2f2]">
-    <main class="relative flex h-full w-full flex-col items-center justify-center px-4 sm:px-6 md:w-[70%]">
-        <!-- Cover Section -->
-        <section id="cover-section" class="relative h-[35%] w-full">
-            <img class="h-full w-full rounded-t-3xl object-cover" src="~/Images/cover.png" alt="Cover Photo" />
-        </section>
+﻿
+<body class="flex h-screen w-full flex-col items-center justify-center bg-[#f2f2f2]">
 
-        <!-- Profile Details Section -->
-        <section id="profileDets-section" class="flex h-[60%] w-full flex-col overflow-y-auto rounded-b-3xl bg-[#ffff] px-4 pt-16 shadow-lg sm:px-8">
-            <div class="border-4 absolute left-1/2 z-10 h-[150px] w-[150px] -translate-x-1/2 -translate-y-1/2 transform overflow-y-auto rounded-full border-white md:left-10 md:-translate-x-0 md:w-[200px] md:h-[200px] lg:top-[48%]">
-                <img class="h-full w-full object-cover" src="~/Images/pfp.svg" alt="Profile Picture" />
-            </div>
-
-            <div class="mt-[5em] ml-0 flex flex-col items-center justify-between text-center md:flex-row md:mt-[-3em] md:ml-[15em] md:text-left">
-                <div class="flex flex-col items-center md:items-start">
-                    <h1 id="name" class="text-2xl font-bold md:text-3xl">Kobe Amaro</h1>
-                    <p id="role" class="text-[#787676]">House No.4</p>
-                </div>
-                <div class="mt-4 flex justify-center md:mt-6 md:justify-end">
-                    <button class="rounded-full bg-orange-500 px-[2em] py-2 font-semibold text-white md:px-[4em] md:py-3">Edit Profile</button>
-                </div>
-            </div>
-
-            <div id="pdets" class="mt-10 mb-10 grid h-auto w-full grid-cols-1 items-center justify-center gap-5 sm:grid-cols-2 md:mt-20 lg:grid-cols-3">
-                <div class="flex flex-col justify-center gap-4 rounded-lg bg-[#F7EFEA] p-4">
-                    <label class="text-xl font-medium md:text-2xl">Name</label>
-                    <input class="bg-transparent w-full border-b-2 border-gray-400 px-4 py-2 text-xl md:text-2xl" type="text" value="Kobe Amaro" readonly />
-                </div>
-
-                <div class="flex flex-col justify-center gap-4 rounded-lg bg-[#F7EFEA] p-4">
-                    <label class="text-xl font-medium md:text-2xl">Email</label>
-                    <input class="bg-transparent w-full border-b-2 border-gray-400 px-4 py-2 text-xl md:text-2xl" type="text" value="kbbryan.amaro@gmail.com" readonly />
-                </div>
-
-                <div class="flex flex-col justify-center gap-4 rounded-lg bg-[#F7EFEA] p-4">
-                    <label class="text-xl font-medium md:text-2xl">Password</label>
-                    <div class="relative">
-                        <input id="password" class="bg-transparent w-full border-b-2 border-gray-400 px-4 py-2 text-xl md:text-2xl" type="password" value="oten" readonly />
-                        <i id="toggle-eye" class="fas fa-eye absolute top-1/2 right-3 -translate-y-1/2 transform cursor-pointer text-xl" onclick="togglePasswordVisibility()"></i>
-                    </div>
-                </div>
-
-                <div class="flex flex-col justify-center gap-4 rounded-lg bg-[#F7EFEA] p-4">
-                    <label class="text-xl font-medium md:text-2xl">House/Family Number</label>
-                    <input class="bg-transparent w-full border-b-2 border-gray-400 px-4 py-2 text-xl md:text-2xl" type="text" value="No.4" readonly />
-                </div>
-            </div>
-
-        </section>
-    </main>
-
-    <script>
-        function togglePasswordVisibility() {
-            const passwordField = document.getElementById('password');
-            const eyeIcon = document.getElementById('toggle-eye');
-
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
-                eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
-            } else {
-                passwordField.type = 'password';
-                eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
-            }
-        }
-    </script>
+    <div id="view-user" class="fixed inset-0 z-20 flex items-center justify-center bg-white pb-4">
+        @await Html.PartialAsync("_sharedViewUser")
+    </div>
 </body>
-</html>
+
