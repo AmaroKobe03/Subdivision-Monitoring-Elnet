@@ -1,0 +1,24 @@
+﻿@model BillingPaymentModel
+
+@{
+    var status = Model.description == "total Amount Due" ? "due"
+                 : Model.description == "Pending Payments" ? "payment"
+                 : Model.description == "Overdue Payments" ? "overdue"
+                 : "paid";
+}
+
+<div class="flex h-full w-[23%] flex-row items-center justify-around rounded-lg bg-[#fff] shadow-lg">
+    <div class="ml-5 flex w-[70%] flex-col gap-2">
+        <h2 class="text-[16px] text-gray-400">@Model.description</h2>
+        <div class="flex flex-row items-center gap-1">
+            @if (Model.description != "Pending Payments")
+            {
+                <img class="mb-1 w-[12px]" src="@Url.Content(Model.Icons["psign"])" alt="peso-sign" />
+            }
+            <p>@Model.amount</p>
+        </div>
+    </div>
+    <div class="flex w-[30%] justify-center">
+        <img class="mb-4 w-[40px]" src="@Url.Content(Model.Icons[status])" alt="status-icon" />
+    </div>
+</div>

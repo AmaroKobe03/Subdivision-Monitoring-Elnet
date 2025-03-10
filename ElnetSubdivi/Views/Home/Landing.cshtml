@@ -134,28 +134,34 @@
 
 
         </div>
+
         <div id="login-popup" class="fixed inset-0 z-50 flex hidden items-center justify-center bg-black/50 p-4">
             <div class="relative w-full max-w-sm rounded-lg bg-white p-6 shadow-lg sm:p-8">
-                <button id="close-btn" class="absolute top-3 right-3 text-xl text-gray-500 hover:text-gray-700">&times;</button>
+                <button id="close-btn" class="absolute top-3 right-3 hidden text-xl text-gray-500 hover:text-gray-700">&times;</button>
                 <h2 class="text-center text-2xl font-bold text-[#043137]">WELCOME!</h2>
                 <p class="mt-1 text-center text-gray-600">LOGIN</p>
-                <label class="mt-4 block text-gray-700">Username</label>
-                <input type="text" class="mt-1 w-full rounded-full border px-4 py-2" placeholder="Enter your username">
-                <label class="mt-3 block text-gray-700">Password</label>
-                <input type="password" class="mt-1 w-full rounded-full border px-4 py-2" placeholder="********">
-                <div class="mt-3 flex items-center justify-between text-sm">
-                    <div class="flex items-center">
-                        <input type="checkbox" id="remember" class="mr-1">
-                        <label for="remember">Remember me</label>
+                <form method="post" asp-action="Login" asp-controller="Home">
+                    <label class="mt-4 block text-gray-700">Username</label>
+                    <input type="text" name="username" class="mt-1 w-full rounded-full border px-4 py-2" placeholder="Enter your username">
+
+                    <label class="mt-3 block text-gray-700">Password</label>
+                    <input type="password" name="password" class="mt-1 w-full rounded-full border px-4 py-2" placeholder="********">
+
+                    <div class="mt-3 flex items-center justify-between text-sm">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="remember" class="mr-1">
+                            <label for="remember">Remember me</label>
+                        </div>
+                        <a href="#" class="text-[#AC602A]">Forgot password</a>
                     </div>
-                    <a href="#" class="text-[#AC602A]">Forgot password</a>
-                </div>
-                <button class="mt-5 w-full rounded-full bg-[#043137] py-2 text-lg text-white"
-                        onclick="window.location.href='@Url.Action("UserDash", "Home")'">
-                    Log In
-                </button>
+
+                    <button type="submit" class="mt-5 w-full rounded-full bg-[#043137] py-2 text-lg text-white">
+                        Log In
+                    </button>
+                </form>
             </div>
         </div>
+
 
         <script>
             document.addEventListener("DOMContentLoaded", function () {

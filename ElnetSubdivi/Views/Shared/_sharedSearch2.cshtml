@@ -1,0 +1,64 @@
+﻿@model string
+
+<!-- Search Bar -->
+<div class="relative w-[40%]">
+    <input type="text" placeholder="Search"
+           class="h-12 w-full rounded-full border border-gray-300 bg-white pr-4 pl-12 outline-none focus:ring-2 focus:ring-gray-300">
+    <img class="absolute top-1/2 left-4 h-5 -translate-y-1/2" src="~/Images/find.svg" alt="Search">
+</div>
+
+<!-- Filters -->
+<div class="group relative right-77 flex cursor-pointer items-center gap-2">
+    <img class="w-5" src="~/Images/filter.svg" alt="Filter">
+    <span class="text-base font-semibold hover:text-[#787676]">Filters</span>
+
+    <!-- Dropdown Content -->
+    <div class="absolute top-8 hidden w-40 flex-col gap-1 rounded-lg bg-white py-2 shadow-lg group-hover:flex">
+        <a href="#" class="px-4 py-2 hover:bg-gray-200">Availability</a>
+        <a href="#" class="px-4 py-2 hover:bg-gray-200">Capacity</a>
+    </div>
+</div>
+
+<!-- Dynamic Button -->
+<button id="request-btn" type="button"
+        class="billing-btn flex items-center gap-2 rounded-full bg-[#043137] px-6 py-3 font-bold text-white transition hover:bg-opacity-75"
+        onclick="handleButtonClick()">
+    <span class="text-xl">+</span> @Model
+</button>
+
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const requestPopup = document.getElementById("request-popup");
+            const billingPopup = document.getElementById("billing-popup");
+            const userPopup = document.getElementById("User-popup");
+            const cancelButton = document.getElementById("cancelbtn");
+            const viewbtn = document.getElementById("viewUserbtn");
+            // Function to Open All Popups
+            function handleButtonClick() {
+                if (requestPopup) requestPopup.classList.remove("hidden");
+                if (billingPopup) billingPopup.classList.remove("hidden");
+                if (userPopup) userPopup.classList.remove("hidden");
+            }
+
+            // Function to Close a Popup
+            function closePopup(popup) {
+                if (popup) popup.classList.add("hidden");
+            }
+
+            // Close Popups when Clicking Outside
+            window.addEventListener("click", function (event) {
+                if (event.target === requestPopup) closePopup(requestPopup);
+                if (event.target === billingPopup) closePopup(billingPopup);
+                if (event.target === userPopup) closePopup(userPopup);
+               
+            });
+            window.addEventListener("click", function (event) {
+                if (event.target === cancelButton) closePopup(billingPopup);
+                if (event.target === cancelButton) closePopup(userPopup);
+                if (event.target === cancelButton) closePopup(requestPopup);
+            });
+
+            // Attach the function to the button
+            document.getElementById("request-btn").addEventListener("click", handleButtonClick);
+        });
+</script>

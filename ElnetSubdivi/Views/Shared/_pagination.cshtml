@@ -1,0 +1,77 @@
+﻿<div class="fixed bottom-4 mt-6 flex w-[79%] items-center justify-between">
+    <span class="text-sm text-gray-500">
+        Showing 1 to 5 of 15 entries
+    </span>
+    <div class="flex gap-2">
+        <button onclick="changePage('prev')" id="prevPage" class="border-2 cursor-pointer rounded-md border-gray-400 px-4 py-2 hover:bg-gray-300">
+            Previous
+        </button>
+
+        <button onclick="changePage(1)" id="page1" class="cursor-pointer rounded-md bg-[#043137] px-4 py-2 text-white">
+            1
+        </button>
+
+        <button onclick="changePage(2)" id="page2" class="border-2 cursor-pointer rounded-md border-gray-400 px-4 py-2 hover:bg-gray-300">
+            2
+        </button>
+
+        <button onclick="changePage(3)" id="page3" class="border-2 cursor-pointer rounded-md border-gray-400 px-4 py-2 hover:bg-gray-300">
+            3
+        </button>
+
+        <button onclick="changePage('next')" id="nextPage" class="border-2 cursor-pointer rounded-md border-gray-400 px-4 py-2 hover:bg-gray-300">
+            Next
+        </button>
+    </div>
+</div>
+<script>
+    let currentPage = 1;
+    let rowsPerPage = 10;
+    let tableRows = document.querySelectorAll("tbody tr");
+    let totalPages = Math.ceil(tableRows.length / rowsPerPage);
+
+    window.onload = () => {
+        showPage(currentPage);
+    };
+
+    function showPage(page) {
+        // Hide All Rows First
+        tableRows.forEach(row => {
+            row.style.display = "none";
+        });
+
+        let start = (page - 1) * rowsPerPage;
+        let end = start + rowsPerPage;
+
+        // Loop through the Rows and Show Only the Desired Page
+        for (let i = start; i < end && i < tableRows.length; i++) {
+            tableRows[i].style.display = "table-row";
+        }
+
+        // Set Active Button
+        let buttons = document.querySelectorAll(".gap-2 button");
+        buttons.forEach(btn => {
+            btn.classList.remove("bg-[#043137]", "text-white");
+            btn.classList.add("border-2", "border-gray-400");
+        });
+
+        if (page >= 1 && page <= totalPages) {
+            buttons[page].classList.add("bg-[#043137]", "text-white");
+        }
+
+        // Update Showing Text
+        document.querySelector(".text-sm").innerText = `Showing ${start + 1} to ${end > tableRows.length ? tableRows.length : end} of ${tableRows.length} entries`;
+    }
+
+    function changePage(page) {
+        if (page === "prev" && currentPage > 1) {
+            currentPage--;
+        } else if (page === "next" && currentPage < totalPages) {
+            currentPage++;
+        } else if (typeof page === "number") {
+            currentPage = page;
+        }
+
+        showPage(currentPage);
+    }
+</script>
