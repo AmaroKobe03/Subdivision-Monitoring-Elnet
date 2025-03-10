@@ -85,6 +85,10 @@ namespace ElnetSubdivi.Controllers
             ViewData["Title"] = "Reports";
             return View();
         }
+        public IActionResult ContactDirectory()
+        {
+            return View();
+        }
 
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
@@ -143,5 +147,6 @@ namespace ElnetSubdivi.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
     }
 }

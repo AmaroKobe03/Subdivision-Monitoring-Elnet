@@ -1,0 +1,114 @@
+﻿
+@{
+    ViewData["Title"] = "Contact Directory";
+}
+@{
+
+    var contacts = new List<EmergencyContact>
+    {
+        new EmergencyContact
+        {
+            Name = "Medical Emergency",
+            PhoneNumber = "911",
+            IconPath = "~/Images/medic.svg",
+            PhoneIconPath = "~/Images/phone-red.svg",
+            Description = "24/7 Emergency Response",
+            BorderColor = "border-l-red-500",
+            BgColor = "bg-red-50",
+            TextColor = "text-red-600"
+        },
+        new EmergencyContact
+        {
+            Name = "Fire Department",
+            PhoneNumber = "+1 234 567 891",
+            IconPath = "~/Images/fire-exting.svg",
+            PhoneIconPath = "~/Images/phone-orange.svg",
+            Description = "Fire Emergency Response",
+            BorderColor = "border-l-orange-500",
+            BgColor = "bg-orange-50",
+            TextColor = "text-orange-600"
+        },
+        new EmergencyContact
+        {
+            Name = "Police Station",
+            PhoneNumber = "+1 234 567 890",
+            IconPath = "~/Images/protec.svg",
+            PhoneIconPath = "~/Images/phone-blue.svg",
+            Description = "24/7 Security Hotline",
+            BorderColor = "border-l-blue-500",
+            BgColor = "bg-blue-50",
+            TextColor = "text-blue-600"
+        }
+    };
+
+}
+<div class="flex h-[100vh] w-[90%] flex-col items-center overflow-hidden bg-[#f2f2f2] font-semibold">
+    @await Html.PartialAsync("_sharedSearch")
+
+    <div class="flex w-[88%] flex-col gap-4"> 
+        <div>
+            <h1 class="mb-3 text-xl font-semibold text-[#043137]">Emergency Contacts</h1>
+        </div>
+        @await Html.PartialAsync("_emergencyCard", contacts)
+
+    </div>
+
+    <table class="mt-10 w-[88%] overflow-y-auto rounded-lg bg-white shadow-lg">
+        <thead>
+            <tr class="text-left text-[#787676]">
+                <th class="px-4 py-3">First Name</th>
+                <th class="px-4 py-3">Last Name</th>
+                <th class="px-4 py-3">Role</th>
+                <th class="px-4 py-3">Email</th>
+                <th class="px-4 py-3">Contact Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="px-4 py-4">Angela</td>
+                <td class="px-4 py-4">Postrero</td>
+                <td class="px-4 py-4">Board Member</td>
+                <td class="px-4 py-4">Gela@gmail.com</td>
+                <td class="px-4 py-4">09958418165</td>
+            </tr>
+            <tr>
+                <td class="px-4 py-4">Angela</td>
+                <td class="px-4 py-4">Postrero</td>
+                <td class="px-4 py-4">Board Member</td>
+                <td class="px-4 py-4">Gela@gmail.com</td>
+                <td class="px-4 py-4">09958418165</td>
+            </tr>
+            <tr>
+                <td class="px-4 py-4">Angela</td>
+                <td class="px-4 py-4">Postrero</td>
+                <td class="px-4 py-4">Board Member</td>
+                <td class="px-4 py-4">Gela@gmail.com</td>
+                <td class="px-4 py-4">09958418165</td>
+            </tr>
+            <tr>
+                <td class="px-4 py-4">Angela</td>
+                <td class="px-4 py-4">Postrero</td>
+                <td class="px-4 py-4">Board Member</td>
+                <td class="px-4 py-4">Gela@gmail.com</td>
+                <td class="px-4 py-4">09958418165</td>
+            </tr>
+            <tr>
+                <td class="px-4 py-4">Angela</td>
+                <td class="px-4 py-4">Postrero</td>
+                <td class="px-4 py-4">Board Member</td>
+                <td class="px-4 py-4">Gela@gmail.com</td>
+                <td class="px-4 py-4">09958418165</td>
+            </tr>
+            <tr>
+                <td class="px-4 py-4">Angela</td>
+                <td class="px-4 py-4">Postrero</td>
+                <td class="px-4 py-4">Board Member</td>
+                <td class="px-4 py-4">Gela@gmail.com</td>
+                <td class="px-4 py-4">09958418165</td>
+            </tr>
+      
+        </tbody>
+    </table>
+
+    @await Html.PartialAsync("_pagination")
+</div>
