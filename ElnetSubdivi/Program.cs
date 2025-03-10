@@ -1,4 +1,5 @@
 ﻿using ElnetSubdivi.data;
+using ElnetSubdivi.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using MySqlConnector;
@@ -15,6 +16,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 21)));
 });
 
+builder.Services.AddScoped<IUserService, UserService>();
 
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -40,7 +42,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "default",
+    name: "Default",
     pattern: "{controller=Home}/{action=Landing}/{id?}");
 
 using (var scope = app.Services.CreateScope())

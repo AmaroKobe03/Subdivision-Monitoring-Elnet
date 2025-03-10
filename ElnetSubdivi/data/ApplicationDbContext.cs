@@ -9,5 +9,6 @@ namespace ElnetSubdivi.data
             : base(options) { }
 
         public DbSet<Users> Users { get; set; }
+        public DbSet<UserAccount> User_Accounts { get; set; }
     }
 }
