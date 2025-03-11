@@ -5,7 +5,7 @@ namespace ElnetSubdivi.Models
     public class Users
     {
         [Key] // ✅ This explicitly marks user_id as the primary key
-        public int user_id { get; set; }
+        public string user_id { get; set; }
 
         public string first_name { get; set; }
         public string middle_name { get; set; }
@@ -22,7 +22,7 @@ namespace ElnetSubdivi.Models
 
         public Users()
         {
-            user_id = 0;
+            user_id = string.Empty;
             first_name = string.Empty;
             middle_name = string.Empty;
             last_name = string.Empty;

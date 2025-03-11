@@ -30,7 +30,7 @@ namespace ElnetSubdivi.Services
         }
 
         // Get user details from users table by user_id
-        public async Task<Users> GetUserDetailsById(int userId)
+        public async Task<Users> GetUserDetailsById(string userId)
         {
             return await _context.Users
                 .Where(u => u.user_id == userId)
@@ -52,7 +52,7 @@ namespace ElnetSubdivi.Services
         }
 
         // Delete a user by ID
-        public async Task DeleteUser(int userId)
+        public async Task DeleteUser(string userId)
         {
             var user = await _context.Users.FindAsync(userId);
             if (user != null)

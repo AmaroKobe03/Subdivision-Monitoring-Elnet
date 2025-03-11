@@ -24,7 +24,7 @@ namespace ElnetSubdivi.Controllers
         }
 
         // Show user details
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(string id)
         {
             var user = await _userService.GetUserDetailsById(id);
             if (user == null) return NotFound();
@@ -51,7 +51,7 @@ namespace ElnetSubdivi.Controllers
         }
 
         // Show edit form for a user
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(string id)
         {
             var user = await _userService.GetUserDetailsById(id);
             if (user == null) return NotFound();
@@ -61,7 +61,7 @@ namespace ElnetSubdivi.Controllers
         // Handle form submission to edit a user
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Users user)
+        public async Task<IActionResult> Edit(string id, Users user)
         {
             if (id != user.user_id) return NotFound();
 
@@ -74,7 +74,7 @@ namespace ElnetSubdivi.Controllers
         }
 
         // Show confirmation page for deleting a user
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             var user = await _userService.GetUserDetailsById(id);
             if (user == null) return NotFound();
@@ -84,7 +84,7 @@ namespace ElnetSubdivi.Controllers
         // Handle delete confirmation
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             await _userService.DeleteUser(id);
             return RedirectToAction(nameof(Index));

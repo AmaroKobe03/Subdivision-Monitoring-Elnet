@@ -46,7 +46,7 @@ namespace ElnetSubdivi.Controllers
 
             if (userAccount != null && userAccount.password == password) // (Replace with password hashing later)
             {
-                int userId = userAccount.user_id;
+                string userId = userAccount.user_id;
 
                 // Fetch user details from users table using user_id
                 var userDetails = await _userService.GetUserDetailsById(userId);

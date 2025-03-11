@@ -9,7 +9,7 @@ namespace ElnetSubdivi.Models
     public class UserAccount
     {
         [Key]
-        public int user_id { get; set; }
+        public string user_id { get; set; }
 
         public string username { get; set; }
 
@@ -20,7 +20,7 @@ namespace ElnetSubdivi.Models
 
         public UserAccount()
         {
-            user_id = 0;
+            user_id = string.Empty;
             username = string.Empty;
             password = string.Empty;
         }

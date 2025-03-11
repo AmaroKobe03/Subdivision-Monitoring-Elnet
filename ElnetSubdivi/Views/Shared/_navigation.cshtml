@@ -12,7 +12,7 @@
         <!-- Navigation Menu -->
         <div id="menu" class="ml-auto hidden h-[5vh] flex-col items-center gap-6 bg-[#043137] p-6 font-medium text-[22px] md:flex md:flex-row md:gap-8">
             <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("UserDash", "Home")">Home</a>
-            @if (User.Identity != null && User.Identity.IsAuthenticated && User.Identity.Name == "admin")
+            @if (User.Identity != null && User.Identity.IsAuthenticated && User.IsInRole("Admin"))
             {
                 <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("UserManagement", "Home")">Users</a>
             }
