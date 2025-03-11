@@ -30,25 +30,19 @@
                 </div>
 
                 <div class="ml-5 flex h-[40%] w-full flex-row items-center justify-start gap-10">
-                    <a href="#" class="flex flex-row gap-2">
-                        <img src="~/Images/vid.svg" />
-                        Video
-                    </a>
-                    <a href="#" class="flex flex-row gap-2">
-                        <img  src="~/Images/pho.svg" />
-                        Photo
-                    </a>
-                    <a href="#" class="flex flex-row gap-2">
-                        <img  src="~/Images/act.svg" />
-                        Feeling/Activity
-                    </a>
+                    @await Html.PartialAsync("_sharedPost")
+
+                    <button id="anotherPost" class="ml-[15em] flex w-[10%] justify-end rounded-full bg-[#043137] px-7 py-2 text-white">
+                        Post
+                    </button>
+
                 </div>
             </div>  
 
             @* post pop up *@
 
             <div id="post-popup" class="fixed inset-0 z-50 flex hidden items-center justify-center bg-black/50 p-4">
-                <div class="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-lg sm:p-8">
+                <div class="relative w-full max-w-xl rounded-lg bg-white p-6 shadow-lg sm:p-8">
                    <button class="close absolute top-3 right-3 hidden text-xl text-gray-500 hover:text-gray-700">&times;</button>
                     <div id="activity" class="mt-5 flex min-h-[25vh] w-full flex-col gap-4 rounded-lg bg-white">
                         <div id="add" class="flex h-full w-full flex-col gap-3">
@@ -66,23 +60,26 @@
                             <textarea id="post-input" placeholder="What's on your mind?" class="h-[200px] w-full resize-none rounded-lg border-none bg-[#F0F2F6] p-4 text-start outline-none"></textarea>
                         </div>
 
-                        <div class="flex h-[40%] w-full flex-row items-center justify-center gap-10 gap-20">
-                            <a href="#" class="flex flex-row gap-2">
-                                <img class="w-[20px]" src="~/Images/vid.svg" />
+                        <div class="flex h-[40%] w-full flex-row items-center justify-center gap-10">
+                            <a href="#" class="flex items-center gap-2 text-sm">
+                                <img class="w-[20px]" src="~/Images/strokevid.svg" />
                                 Video
                             </a>
-                            <a href="#" class="flex flex-row gap-2">
-                                <img class="w-[20px]" src="~/Images/pho.svg" />
+                            <a href="#" class="flex items-center gap-2 text-sm">
+                                <img class="w-[15px]" src="~/Images/strokepho.svg" />
                                 Photo
                             </a>
-                            <a href="#" class="flex flex-row gap-2">
-                                <img class="w-[20px]" src="~/Images/act.svg" />
+                            <a href="#" class="flex items-center gap-2 text-sm">
+                                <img class="w-[20px]" src="~/Images/strokefeel.svg" />
                                 Feeling/Activity
+                            </a>
+                            <a href="#" class="flex items-center gap-2 text-sm">
+                                <img class="w-[15px]" src="~/Images/strokepool.svg" />
+                                Poll/Survey
                             </a>
                         </div>
                     </div>
-                    <button class="mt-5 w-full rounded-lg bg-[#043137] py-2 text-lg text-white"
-                            onclick="window.location.href='@Url.Action("DashboardLayout", "Home")'">
+                    <button class="mt-5 w-full rounded-lg bg-[#043137] py-2 text-lg text-white">
                         POST
                     </button>
                 </div>
@@ -90,9 +87,15 @@
 
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
+                    const buttonPost = document.getElementById("anotherPost")
                     const postInput = document.getElementById("post-input");
                     const popup = document.getElementById("post-popup");
                     const closeBtn = document.querySelector(".close");
+
+
+                    buttonPost.addEventListener("click", function () {
+                        popup.classList.remove("hidden");
+                    });
 
                     postInput.addEventListener("click", function () {
                         popup.classList.remove("hidden");
