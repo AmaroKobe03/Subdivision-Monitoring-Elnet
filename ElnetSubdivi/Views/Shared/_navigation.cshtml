@@ -10,7 +10,7 @@
         </div>
         
         <!-- Navigation Menu -->
-        <div id="menu" class="m-0 ml-auto hidden h-[4vh] flex-col items-center gap-6 bg-[#043137] p-5 font-medium text-[21px] md:flex md:flex-row md:gap-8">
+        <div id="menu" class="m-0 ml-auto hidden h-[4vh] flex-col items-center gap-6 bg-[#043137] font-medium text-[21px] md:flex md:flex-row md:gap-8">
             <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("UserDash", "Home")">Home</a>
             @if (User.Identity != null && User.Identity.IsAuthenticated && User.IsInRole("Admin"))
             {
