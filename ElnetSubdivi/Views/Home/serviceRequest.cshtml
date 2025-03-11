@@ -12,6 +12,9 @@
 
     <div class="relative mb-6 flex w-[88%] items-center justify-between">
         <!-- Search Bar -->
+        @{
+            ViewData["DropdownItems"] = new List<string> { "Pending", "Ongoing", "Completed", "Canceled" };
+        }
         @await Html.PartialAsync("_sharedSearch2", "Add Request")
         <!-- Close Button -->
         <button id="closePopupBtn" class="top-4 right-4 hidden rounded-full bg-red-500 px-4 py-2 text-white">

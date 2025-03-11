@@ -27,6 +27,11 @@ namespace ElnetSubdivi.Controllers
             return View();
         }
 
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
         public IActionResult Landing()
         {
             ViewBag.HideNav = true;
@@ -34,6 +39,59 @@ namespace ElnetSubdivi.Controllers
         }
 
         public IActionResult UserDash()
+        {
+            return View();
+        }
+
+        public IActionResult UserProfile()
+        {
+            ViewData["PageTitle"] = "Profile Settings";
+            ViewData["HideBtn"] = true;
+            return View();
+        }
+
+        public IActionResult FacilityReservation()
+        {
+            return View();
+        }
+
+        public IActionResult MyReservation()
+        {
+            return View();
+        }
+
+        public IActionResult viewProfile()
+        {
+            return View();
+        }
+
+        public IActionResult UserManagement()
+        {
+            ViewData["Title"] = "Service Request";
+            ViewData["HideSearch"] = true;
+            return View();
+        }
+
+        public IActionResult Billing()
+        {
+            ViewData["Title"] = "Service Request";
+            ViewData["HideSearch"] = true;
+            return View();
+        }
+
+        public IActionResult serviceRequest()
+        {
+            ViewData["Title"] = "Service Request";
+            ViewData["HideSearch"] = true;
+            return View();
+        }
+
+        public IActionResult Reports()
+        {
+            ViewData["Title"] = "Reports";
+            return View();
+        }
+        public IActionResult ContactDirectory()
         {
             return View();
         }
@@ -101,5 +159,6 @@ namespace ElnetSubdivi.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
     }
 }

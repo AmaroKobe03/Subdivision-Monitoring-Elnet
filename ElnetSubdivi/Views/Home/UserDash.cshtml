@@ -18,28 +18,28 @@
         }
     </style>
 </head>
-<body class="overflow-y-hidden">
+<body>
 
-    <main id="UserFeed" class="flex h-[90vh] w-full flex-col justify-center gap-10 bg-[#F0F2F6] md:flex-row md:gap-20">
+    <main id="UserFeed" class="flex h-[100vh] w-full flex-col justify-center gap-10 bg-[#F0F2F6] md:flex-row md:gap-20">
        
         <section id="feed" class="flex w-[90%] flex-col items-center gap-4 overflow-y-auto bg-[#F0F2F6] px-4 md:w-[50%]">
             <div id="activity" class="mt-5 min-h-[20vh] w-full rounded-lg bg-white">
-                <div id="add" class="flex h-[50%] w-full flex-row items-center justify-center gap-3 border-b-2">
-                    <img src="~/Images/pfp.svg" />
-                    <input id="post-input" type="text" placeholder="What's on your mind?" class="h-[60px] w-[90%] rounded-full border-none bg-[#F0F2F6] text-start outline-none" style="text-indent: 15px;" />
+                <div id="add" class="flex h-[50%] w-full flex-row items-center justify-center gap-3 p-4">
+                    <a href="@Url.Action("viewProfile","Home")"><img src="~/Images/pfp.svg" /></a>
+                    <input id="post-input" type="text" class="flex-1 rounded-full border p-2 px-4 text-gray-600" placeholder="Share Something..." />
                 </div>
 
-                <div class="flex h-[40%] w-full flex-row items-center justify-center gap-10 gap-20">
+                <div class="ml-5 flex h-[40%] w-full flex-row items-center justify-start gap-10">
                     <a href="#" class="flex flex-row gap-2">
                         <img src="~/Images/vid.svg" />
                         Video
                     </a>
                     <a href="#" class="flex flex-row gap-2">
-                        <img src="~/Images/pho.svg" />
+                        <img  src="~/Images/pho.svg" />
                         Photo
                     </a>
                     <a href="#" class="flex flex-row gap-2">
-                        <img src="~/Images/act.svg" />
+                        <img  src="~/Images/act.svg" />
                         Feeling/Activity
                     </a>
                 </div>
@@ -66,13 +66,19 @@
                             <textarea id="post-input" placeholder="What's on your mind?" class="h-[200px] w-full resize-none rounded-lg border-none bg-[#F0F2F6] p-4 text-start outline-none"></textarea>
                         </div>
 
-                        <div class="flex h-[40%] w-full flex-row">
-                    
+                        <div class="flex h-[40%] w-full flex-row items-center justify-center gap-10 gap-20">
                             <a href="#" class="flex flex-row gap-2">
-                                <img src="~/Images/pho.svg" />
+                                <img class="w-[20px]" src="~/Images/vid.svg" />
+                                Video
+                            </a>
+                            <a href="#" class="flex flex-row gap-2">
+                                <img class="w-[20px]" src="~/Images/pho.svg" />
                                 Photo
                             </a>
-                        
+                            <a href="#" class="flex flex-row gap-2">
+                                <img class="w-[20px]" src="~/Images/act.svg" />
+                                Feeling/Activity
+                            </a>
                         </div>
                     </div>
                     <button class="mt-5 w-full rounded-lg bg-[#043137] py-2 text-lg text-white"
@@ -103,6 +109,7 @@
                     });
                 });
             </script>
+
             <div id="contfeed" class="min-h-[90vh] w-full rounded-lg bg-white">
                 <div id="fyp" class="flex w-[30%] flex-row items-center gap-2 p-5">
                     <div>
