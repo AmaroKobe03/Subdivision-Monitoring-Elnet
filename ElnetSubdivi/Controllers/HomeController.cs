@@ -65,12 +65,12 @@ namespace ElnetSubdivi.Controllers
             return View();
         }
 
-        public IActionResult UserManagement()
+        public async Task<IActionResult> UserManagement()
         {
-            ViewData["Title"] = "Service Request";
-            ViewData["HideSearch"] = true;
-            return View();
+            var users = await _userService.GetAllUsers(); // Fetch users from DB
+            return View(users);
         }
+    
 
         public IActionResult Billing()
         {

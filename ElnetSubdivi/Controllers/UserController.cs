@@ -21,7 +21,14 @@ namespace ElnetSubdivi.Controllers
         {
             var users = await _userService.GetAllUsers() ?? new List<Users>(); // Ensures it's not null
             return View(users);
-        }   
+        }
+
+        public async Task<IActionResult> UserManagement()
+        {
+            var users = await _userService.GetAllUsers(); // Fetch users from DB
+            return View(users);
+        }
+
 
 
         // Show user details
@@ -102,7 +109,7 @@ namespace ElnetSubdivi.Controllers
             {
                 newUserId = lastId + 1; // Increment user_id safely
             }
-
+                
             var user = new Users
             {
                 user_id = newUserId.ToString(), // Ensure it's stored as a string

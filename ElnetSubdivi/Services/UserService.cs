@@ -18,8 +18,26 @@ namespace ElnetSubdivi.Services
         // Fetch all users
         public async Task<List<Users>> GetAllUsers()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users
+                .Select(u => new Users
+                {
+                    user_id = u.user_id,
+                    first_name = u.first_name ?? "",
+                    middle_name = u.middle_name ?? "",
+                    last_name = u.last_name ?? "",
+                    date_of_birth = u.date_of_birth,
+                    gender = u.gender ?? "",
+                    phone_number = u.phone_number ?? "",
+                    email = u.email ?? "",
+                    valid_id = u.valid_id ?? "",
+                    address = u.address ?? "",
+                    role = u.role ?? "",
+                    profile_picture = u.profile_picture ?? "",
+                    created_at = u.created_at
+                })
+                .ToListAsync();
         }
+
 
         // Get user from user_accounts by username (for login)
         public async Task<UserAccount> GetUserByUsername(string username)
