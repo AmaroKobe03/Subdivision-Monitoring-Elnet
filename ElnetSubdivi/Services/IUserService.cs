@@ -9,8 +9,10 @@ namespace ElnetSubdivi.Services
         Task<List<Users>> GetAllUsers();
         Task<UserAccount> GetUserByUsername(string username);
         Task<Users> GetUserDetailsById(string userId);
-        Task CreateUser(Users user);
+        Task<bool> CreateUser(Users user);
         Task UpdateUser(Users user);
         Task DeleteUser(string userId);
+        Task<Users> GetLastUserId();
+
     }
 }

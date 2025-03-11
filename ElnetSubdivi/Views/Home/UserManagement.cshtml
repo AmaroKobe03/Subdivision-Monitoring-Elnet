@@ -1,10 +1,11 @@
-﻿@{
+﻿@model List<ElnetSubdivi.Models.Users>
+
+
+@{
     ViewData["Title"] = "User Management";
 }
 
-
 <div class="flex h-[100vh] w-[90%] flex-col items-center overflow-auto overflow-y-hidden bg-[#f2f2f2] font-semibold">
-
     @await Html.PartialAsync("_sharedSearch")
 
     <div class="relative mb-6 flex w-[88%] items-center justify-between">
@@ -24,149 +25,115 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="gap-2 px-4 py-3">
-                    <span>John Smith</span>
-                </td>
-                <td class="px-4 py-3">Cebu City</td>
-                <td class="px-4 py-3">smith@gmail.com</td>
-                <td class="px-4 py-3">1234567890</td>
-                <td class="px-4 py-3 font-semibold">Home Owner</td>
-                <td class="jusitfy-center relative left-5 flex cursor-pointer flex-row items-center gap-2 px-4 py-3 font-semibold text-teal-700">
-                    <div class="group relative flex cursor-pointer items-center gap-2">
-                        <!-- Action Icon -->
-                        <img class="w-[20px]" src="~/Images/actionsicon.svg" alt="actions" />
-
-                        <!-- Dropdown Menu -->
-                        <div class="absolute top-0 left-1/2 z-100 mt-2 hidden w-40 -translate-x-1/2 flex-col gap-1 rounded-lg bg-white py-2 shadow-lg group-hover:flex">
-                            <a id="viewUserbtn" href="#" class="block px-4 py-2 hover:bg-gray-200">View</a>
-                            <a id="editUserbtn" href="#" class="block px-4 py-2 hover:bg-gray-200">Edit</a>
-                            <a id="removeUserbtn" href="#" class="block px-4 py-2 hover:bg-gray-200">Remove</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">Send Activation</a>
-                        </div>
-                    </div>
-
-                </td>
-            </tr>
-            <tr>
-                <td class="gap-2 px-4 py-3">
-                    <span>John Smith</span>
-                </td>
-                <td class="px-4 py-3">Cebu City</td>
-                <td class="px-4 py-3">smith@gmail.com</td>
-                <td class="px-4 py-3">1234567890</td>
-                <td class="px-4 py-3 font-semibold">Home Owner</td>
-                <td class="jusitfy-center relative left-5 flex cursor-pointer flex-row items-center gap-2 px-4 py-3 font-semibold text-teal-700">
-                    <div class="group relative flex cursor-pointer items-center gap-2">
-                        <!-- Action Icon -->
-                        <img class="w-[20px]" src="~/Images/actionsicon.svg" alt="actions" />
-
-                        <!-- Dropdown Menu -->
-                        <div class="absolute top-0 left-1/2 z-100 mt-2 hidden w-40 -translate-x-1/2 flex-col gap-1 rounded-lg bg-white py-2 shadow-lg group-hover:flex">
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">View</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">Edit</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">Remove</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">Send Activation</a>
-                        </div>
-                    </div>
-
-            </tr>
-            <tr>
-                <td class="gap-2 px-4 py-3">
-                    <span>John Smith</span>
-                </td>
-                <td class="px-4 py-3">Cebu City</td>
-                <td class="px-4 py-3">smith@gmail.com</td>
-                <td class="px-4 py-3">1234567890</td>
-                <td class="px-4 py-3 font-semibold">Home Owner</td>
-                <td class="jusitfy-center relative left-5 flex cursor-pointer flex-row items-center gap-2 px-4 py-3 font-semibold text-teal-700">
-                    <div class="group relative flex cursor-pointer items-center gap-2">
-                        <!-- Action Icon -->
-                        <img class="w-[20px]" src="~/Images/actionsicon.svg" alt="actions" />
-
-                        <!-- Dropdown Menu -->
-                        <div class="absolute top-0 left-1/2 z-100 mt-2 hidden w-40 -translate-x-1/2 flex-col gap-1 rounded-lg bg-white py-2 shadow-lg group-hover:flex">
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">View</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">Edit</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">Remove</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">Send Activation</a>
-                        </div>
-                    </div>
-
-                </td>
-            </tr>
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td class="gap-2 px-4 py-3">
+                            <span>@user.first_name @user.middle_name @user.last_name</span>
+                        </td>
+                        <td class="px-4 py-3">@user.address</td>
+                        <td class="px-4 py-3">@user.email</td>
+                        <td class="px-4 py-3">@user.phone_number</td>
+                        <td class="px-4 py-3 font-semibold">@user.role</td>
+                        <td class="jusitfy-center relative left-5 flex cursor-pointer flex-row items-center gap-2 px-4 py-3 font-semibold text-teal-700">
+                            <div class="group relative flex cursor-pointer items-center gap-2">
+                                <img class="w-[20px]" src="~/Images/actionsicon.svg" alt="actions" />
+                                <div class="absolute top-0 left-1/2 z-100 mt-2 hidden w-40 -translate-x-1/2 flex-col gap-1 rounded-lg bg-white py-2 shadow-lg group-hover:flex">
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-200" onclick="viewUser('@user.user_id')">View</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-200" onclick="editUser('@user.user_id')">Edit</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-200" onclick="removeUser('@user.user_id')">Remove</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-200">Send Activation</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6" class="text-center py-4 text-gray-500">No users found.</td>
+                </tr>
+            }
         </tbody>
     </table>
     @await Html.PartialAsync("_pagination")
 
-    <!-- Request Pop-Up -->
     <div id="User-popup" class="fixed inset-0 z-100 flex hidden items-center justify-center bg-black/50 p-4">
         <div class="w-[600px] rounded-lg bg-white p-6 shadow-lg">
             <h1 class="text-center text-2xl font-semibold text-[#043137]">Register New User</h1>
 
-            <!-- Form Fields -->
-            <div class="mt-4 space-y-3">
-                <!-- User Role Dropdown -->
-                <div>
-                    <label class="block text-sm font-medium">User Role</label>
-                    <select class="w-full rounded border px-3 py-2 text-gray-600">
-                        <option>Select Role</option>
-                    </select>
-                </div>
-
-                <!-- Name Fields -->
-                <div class="flex w-[95.8%] flex-row gap-2">
-                    <div class="flex w-1/3 flex-col">
-                        <label class="block text-sm font-medium">First Name</label>
-                        <input type="text" class="rounded border px-3 py-2 text-gray-600" placeholder="First Name" value="John" />
-                    </div>
-                    <div class="flex w-1/3 flex-col">
-                        <label class="block text-sm font-medium">Middle Name</label>
-                        <input type="text" class="rounded border px-3 py-2 text-gray-600" placeholder="Middle Name" value="M." />
-                    </div>
-
-                    <div class="flex w-1/3 flex-col">
-                        <label class="block text-sm font-medium">Last Name</label>
-                        <input type="text" class="rounded border px-3 py-2 text-gray-600" placeholder="Last Name" value="Doe" />
-                    </div>
-                </div>
-
-                <!-- Date of Birth & Gender -->
-                <div class="flex gap-2">
-                    <div class="w-1/2">
-                        <label class="block text-sm font-medium">Date of Birth</label>
-                        <div class="relative">
-                            <input type="date" class="w-full rounded border px-3 py-2 text-gray-600" />
-                        </div>
-                    </div>
-                    <div class="w-1/2">
-                        <label class="block text-sm font-medium">Gender</label>
-                        <select class="w-full rounded border px-3 py-2 text-gray-600">
-                            <option>Select Gender</option>
+            <!-- Registration Form -->
+            <form id="registerForm">
+                <div class="mt-4 space-y-3">
+                    <!-- User Role -->
+                    <div>
+                        <label class="block text-sm font-medium">User Role</label>
+                        <select id="regRole" name="role" class="w-full rounded border px-3 py-2 text-gray-600">
+                            <option value="">Select Role</option>
+                            <option value="Homeowner">Homeowner</option>
+                            <option value="Housekeeping">Housekeeping</option>
+                            <option value="Maintenance">Maintenance</option>
+                            <option value="Security">Security</option>
                         </select>
                     </div>
+
+                    <!-- Name Fields -->
+                    <div class="flex w-[95.8%] flex-row gap-2">
+                        <div class="flex w-1/3 flex-col">
+                            <label class="block text-sm font-medium">First Name</label>
+                            <input id="regFirstName" name="first_name" type="text" class="rounded border px-3 py-2 text-gray-600" required />
+                        </div>
+                        <div class="flex w-1/3 flex-col">
+                            <label class="block text-sm font-medium">Middle Name</label>
+                            <input id="regMiddleName" name="middle_name" type="text" class="rounded border px-3 py-2 text-gray-600" />
+                        </div>
+                        <div class="flex w-1/3 flex-col">
+                            <label class="block text-sm font-medium">Last Name</label>
+                            <input id="regLastName" name="last_name" type="text" class="rounded border px-3 py-2 text-gray-600" required />
+                        </div>
+                    </div>
+
+                    <!-- Date of Birth & Gender -->
+                    <div class="flex gap-2">
+                        <div class="w-1/2">
+                            <label class="block text-sm font-medium">Date of Birth</label>
+                            <input id="regDateofBirth" name="date_of_birth" type="date" class="w-full rounded border px-3 py-2 text-gray-600" required />
+                        </div>
+                        <div class="w-1/2">
+                            <label class="block text-sm font-medium">Gender</label>
+                            <select id="regGender" name="gender" class="w-full rounded border px-3 py-2 text-gray-600" required>
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Email & Phone -->
+                    <div class="flex gap-2">
+                        <input id="regEmail" name="email" type="email" class="w-1/2 rounded border px-3 py-2 text-gray-600" required />
+                        <input id="regPhoneNumber" name="phone_number" type="text" class="w-1/2 rounded border px-3 py-2 text-gray-600" required />
+                    </div>
+
+                    <!-- Address -->
+                    <div>
+                        <label class="block text-sm font-medium">Address</label>
+                        <input id="regAddress" name="address" type="text" class="w-full rounded border px-3 py-2 text-gray-600" required />
+                    </div>
                 </div>
 
-                <!-- Email & Phone -->
-                <div class="flex gap-2">
-                    <input type="email" class="w-1/2 rounded border px-3 py-2 text-gray-600" placeholder="Email" value="johndoe@gmail.com" />
-                    <input type="text" class="w-1/2 rounded border px-3 py-2 text-gray-600" placeholder="Phone Number" value="+123 4567 890" />
+                <!-- Buttons -->
+                <div class="mt-6 flex justify-between">
+                    <button id="cancelbtn" type="button" class="w-[45%] rounded-full border px-4 py-2 text-black">Cancel</button>
+                    <button id="registerbtn" type="submit" class="w-[45%] rounded-full bg-[#043137] px-4 py-2 text-white">Register User</button>
                 </div>
-
-                <!-- Address -->
-                <div>
-                    <label class="block text-sm font-medium">Address</label>
-                    <input type="text" class="w-full rounded border px-3 py-2 text-gray-600" placeholder="Address" value="123 Bacalso St. Cebu City" />
-                </div>
-            </div>
-
-            <!-- Buttons -->
-            <div class="mt-6 flex justify-between">
-                <button id="cancelbtn" class="w-[45%] rounded-full border px-4 py-2 text-black">Cancel</button>
-                <button class="w-[45%] rounded-full bg-[#043137] px-4 py-2 text-white">Register User</button>
-            </div>
+            </form>
         </div>
     </div>
+
 
     <div id="view-user" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-white pb-4">
         @await Html.PartialAsync("_sharedViewUser")
@@ -267,43 +234,37 @@
 
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            function setupModal(triggerId, modalId, closeId, removeId = null) {
-                const trigger = document.getElementById(triggerId);
-                const modal = document.getElementById(modalId);
-                const closeBtn = document.getElementById(closeId);
-                const removeBtn = removeId ? document.getElementById(removeId) : null;
+    $(document).ready(function () {
+        $("#registerForm").submit(function (e) {
+            e.preventDefault(); // Prevent default form submission
 
-                if (!trigger || !modal || !closeBtn) {
-                    console.error(`${modalId}: Missing elements`);
-                    return;
+            $.ajax({
+                url: "/Users/Register", // Ensure this matches your UserController method
+                type: "POST",
+                data: $(this).serialize(),
+                success: function (response) {
+                    if (response.success) {
+                        alert("User registered successfully!");
+                        window.location.reload(); // Reload page or redirect if needed
+                    } else {
+                        alert("User registration failed.");
+                    }
+                },
+                error: function () {
+                    alert("Error processing request.");
                 }
-
-                trigger.addEventListener("click", (e) => {
-                    e.preventDefault();
-                    modal.classList.remove("hidden");
-                });
-
-                closeBtn.addEventListener("click", () => modal.classList.add("hidden"));
-
-                modal.addEventListener("click", (e) => {
-                    if (e.target === modal) modal.classList.add("hidden");
-                });
-
-                if (removeBtn) {
-                    removeBtn.addEventListener("click", () => {
-                        modal.classList.add("hidden");
-                        console.log(`User removed from ${modalId}`);
-                        // Add your remove function here if needed
-                    });
-                }
-            }
-
-            // Ensure the correct IDs are used
-            setupModal("viewUserbtn", "view-user", "cancel");
-            setupModal("editUserbtn", "edit-user", "cancelEdit");
-            setupModal("removeUserbtn", "remove-user", "cancelRemove", "confirmRemove");
+            });
         });
 
+        // Close modal when cancel button is clicked
+        $("#cancelbtn").click(function () {
+            $("#User-popup").addClass("hidden");
+        });
+    });
+
+    function handleButtonClick() {
+        alert("Register button clicked!");
+    }
 </script>

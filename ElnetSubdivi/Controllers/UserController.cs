@@ -19,9 +19,10 @@ namespace ElnetSubdivi.Controllers
         // Display all users
         public async Task<IActionResult> Index()
         {
-            var users = await _userService.GetAllUsers();
+            var users = await _userService.GetAllUsers() ?? new List<Users>(); // Ensures it's not null
             return View(users);
-        }
+        }   
+
 
         // Show user details
         public async Task<IActionResult> Details(string id)
@@ -89,5 +90,38 @@ namespace ElnetSubdivi.Controllers
             await _userService.DeleteUser(id);
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(string role, string first_name, string middle_name, string last_name, string date_of_birth, string gender, string email, string phone_number, string address)
+        {
+            // Get the last user_id and increment by 1
+            var lastUser = await _userService.GetLastUserId();
+            int newUserId = 1; // Default ID if no users exist
+
+            if (lastUser != null && int.TryParse(lastUser.user_id, out int lastId))
+            {
+                newUserId = lastId + 1; // Increment user_id safely
+            }
+
+            var user = new Users
+            {
+                user_id = newUserId.ToString(), // Ensure it's stored as a string
+                role = role,
+                first_name = first_name,
+                middle_name = middle_name,
+                last_name = last_name,
+                date_of_birth = DateOnly.TryParse(date_of_birth, out var dob) ? dob : DateOnly.MinValue,
+                gender = gender,
+                email = email,
+                phone_number = phone_number,
+                address = address,
+                created_at = DateTime.Now
+            };
+
+            bool success = await _userService.CreateUser(user);
+            return Json(new { success, message = success ? "User registered successfully!" : "User registration failed." });
+        }
+
+
     }
 }

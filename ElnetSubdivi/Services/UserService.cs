@@ -38,11 +38,20 @@ namespace ElnetSubdivi.Services
         }
 
         // Create a new user
-        public async Task CreateUser(Users user)
+        public async Task<bool> CreateUser(Users user)
         {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+                return true; // Return true if the user is added successfully
+            }
+            catch
+            {
+                return false; // Return false if an error occurs
+            }
         }
+
 
         // Update an existing user
         public async Task UpdateUser(Users user)
@@ -61,5 +70,12 @@ namespace ElnetSubdivi.Services
                 await _context.SaveChangesAsync();
             }
         }
+        public async Task<Users?> GetLastUserId()
+        {
+            return await _context.Users
+                .OrderByDescending(u => EF.Functions.Like(u.user_id, "%[0-9]%") ? u.user_id : "0") // Ensures numeric sorting
+                .FirstOrDefaultAsync();
+        }
+
     }
 }
