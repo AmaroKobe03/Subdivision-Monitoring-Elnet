@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Billing and Payment";
+
 }
 
 @{
@@ -71,6 +72,9 @@
     </div>
 
     <div class="relative mb-6 flex w-[88%] items-center justify-between">
+        @{
+            ViewData["DropdownItems"] = new List<string> { "Pending", "Overdue","Paid" };
+        }
         @await Html.PartialAsync("_sharedSearch2", "Pay Selected Bills")
     </div>
 

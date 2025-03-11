@@ -51,7 +51,9 @@
 }
 
 <div class="flex h-[100vh] w-[90%] flex-col items-center overflow-hidden bg-[#f2f2f2] font-semibold">
-
+    @{
+        ViewData["FilterItems"] = new List<string> { "Availability", "Available", "Unavailable", "Free", "With Fee" };
+    }
     @await Html.PartialAsync("_sharedSearch")
 
     @await Html.PartialAsync("_sortList", new List<string> { "All", "Pending", "Approved", "Completed", "Canceled" })
