@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subdivision Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
+
     <link href="~/css/output.css" rel="stylesheet">
 
     <style>
@@ -18,26 +21,35 @@
         }
     </style>
 </head>
-<body>
+<body class="flex w-[100vw] items-center" >
 
-    <main id="UserFeed" class="flex h-[100vh] w-full flex-col justify-center gap-10 bg-[#F0F2F6] md:flex-row md:gap-20">
-       
-        <section id="feed" class="flex w-[90%] flex-col items-center gap-4 overflow-y-auto bg-[#F0F2F6] px-4 md:w-[50%]">
-            <div id="activity" class="mt-5 min-h-[20vh] w-full rounded-lg bg-white">
-                <div id="add" class="flex h-[50%] w-full flex-row items-center justify-center gap-3 p-4">
-                    <a href="@Url.Action("viewProfile","Home")"><img src="~/Images/pfp.svg" /></a>
-                    <input id="post-input" type="text" class="flex-1 rounded-full border p-2 px-4 text-gray-600" placeholder="Share Something..." />
+    <main id="UserFeed" class="flex h-[100vh] w-[100vw] flex-col items-center justify-center gap-10 bg-[#F0F2F6] md:flex-row md:gap-20">
+
+        <section id="feed"
+                 class="mt-10 flex h-[100vh] w-full flex-col items-center gap-4 overflow-y-auto bg-[#F0F2F6] px-4 sm:w-full md:w-[50%]">
+            <div id="activity" class="mt-5 w-full rounded-lg bg-white p-4 shadow-md">
+                <!-- Profile Picture + Input -->
+                <div id="add" class="flex w-full items-center gap-3 p-2 sm:p-4">
+                    <a href="@Url.Action("viewProfile","Home")">
+                        <img src="~/Images/pfp.svg" class="h-8 w-8 rounded-full sm:h-10 sm:w-10" />
+                    </a>
+                    <input id="post-input" type="text"
+                           class="flex-1 rounded-full border p-2 px-4 text-sm text-gray-600 sm:text-base md:text-lg"
+                           placeholder="Share Something..." autocomplete="off" />
+
                 </div>
 
-                <div class="ml-5 flex h-[40%] w-full flex-row items-center justify-start gap-10">
+                <!-- Post Options + Button (Aligned in One Row) -->
+                <div class="mt-2 flex w-full items-center justify-between px-2 sm:px-4">
                     @await Html.PartialAsync("_sharedPost")
 
-                    <button id="anotherPost" class="ml-[15em] flex w-[10%] justify-end rounded-full bg-[#043137] px-7 py-2 text-white">
+                    <button id="anotherPost"
+                            class="rounded-full bg-[#043137] px-4 py-1.5 text-xs text-white transition hover:bg-[#065a5e] sm:text-sm">
                         Post
                     </button>
-
                 </div>
-            </div>  
+            </div>
+
 
             @* post pop up *@
 
@@ -61,22 +73,8 @@
                         </div>
 
                         <div class="flex h-[40%] w-full flex-row items-center justify-center gap-10">
-                            <a href="#" class="flex items-center gap-2 text-sm">
-                                <img class="w-[20px]" src="~/Images/strokevid.svg" />
-                                Video
-                            </a>
-                            <a href="#" class="flex items-center gap-2 text-sm">
-                                <img class="w-[15px]" src="~/Images/strokepho.svg" />
-                                Photo
-                            </a>
-                            <a href="#" class="flex items-center gap-2 text-sm">
-                                <img class="w-[20px]" src="~/Images/strokefeel.svg" />
-                                Feeling/Activity
-                            </a>
-                            <a href="#" class="flex items-center gap-2 text-sm">
-                                <img class="w-[15px]" src="~/Images/strokepool.svg" />
-                                Poll/Survey
-                            </a>
+                            @await Html.PartialAsync("_sharedPost")
+
                         </div>
                     </div>
                     <button class="mt-5 w-full rounded-lg bg-[#043137] py-2 text-lg text-white">
@@ -112,40 +110,80 @@
                     });
                 });
             </script>
-
-            <div id="contfeed" class="min-h-[90vh] w-full rounded-lg bg-white">
-                <div id="fyp" class="flex w-[30%] flex-row items-center gap-2 p-5">
+            <div id="contfeed" class="min-h-[90vh] w-full rounded-lg bg-white p-5">
+                <!-- Admin Header -->
+                <div id="fyp" class="flex flex-row items-center gap-2 p-5 sm:w-full md:w-[50%] lg:w-[30%]">
                     <div>
-                        <img src="~/Images/admin.svg" alt="Alternate Text" />
+                        <img src="~/Images/admin.svg" alt="Admin" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14">
                     </div>
                     <div class="flex flex-col">
-                        <h1 class="m-0 p-0 font-semibold">Admin</h1>
-                        <p class="m-0 p-0">Posted 2 hours ago</p>
+                        <h1 class="m-0 p-0 text-sm font-semibold sm:text-base md:text-lg">Admin</h1>
+                        <p class="m-0 p-0 text-xs text-gray-600 sm:text-sm md:text-base">Posted 2 hours ago</p>
                     </div>
                 </div>
 
+                <!-- Post Content -->
                 <div>
-                    <p class="p-5">Tree planting werty uiopa szbn rtyua dfghlz bnm...</p>
+                    <p class="p-5 text-sm sm:text-base md:text-lg">Tree planting werty uiopa szbn rtyua dfghlz bnm...</p>
                 </div>
 
+                <!-- Image and Actions -->
                 <div class="flex flex-col">
-                    <img class="w-full" src="~/Images/tree.png" alt="Tree Planting">
-                    <div class="m-10 flex flex-row gap-6">
-                        <a class="flex cursor-pointer items-center gap-2">
+                    <img class="max-h-[300px] w-full rounded-lg object-cover sm:max-h-[350px] md:max-h-[400px]" src="~/Images/tree.png" alt="Tree Planting">
+                    <div class="m-10 flex flex-row gap-6 sm:justify-start">
+                        <a class="flex cursor-pointer items-center gap-2 text-sm text-gray-700 transition hover:text-blue-600 sm:text-base md:text-lg">
                             <i class="fa-regular fa-thumbs-up"></i> Like
                         </a>
-                        <a class="flex cursor-pointer items-center gap-2">
+                        <a class="flex cursor-pointer items-center gap-2 text-sm text-gray-700 transition hover:text-blue-600 sm:text-base md:text-lg">
                             <i class="fa-regular fa-comment"></i> Comment
                         </a>
                     </div>
                 </div>
             </div>
+
         </section>
 
         <!-- Calendar Section -->
-        <section id="calendar-events" class="hidden w-full bg-[#ffff] p-4 md:w-[30%] lg:block">
+        <section id="calendar-events" class="mt-20 hidden h-full w-full rounded-lg bg-[#ffff] p-4 md:w-[30%] lg:block">
+            <!-- Search Bar -->
+            <div class="mb-4">
+                <input type="text"
+                       id="calendar-search"
+                       placeholder="Search"
+                       class="w-full rounded-full border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+
+            <!-- Calendar -->
             <div id="calendar" class="h-[500px] w-full bg-gray-100"></div>
+
+            <!-- Event List -->
+            <div id="event-list" class="mt-4">
+                <div class="flex flex-col gap-2">
+                    <div class="flex items-center gap-3 rounded-lg bg-blue-300 p-2 text-white">
+                        <span class="text-lg font-bold">2</span>
+                        <div>
+                            <p class="text-sm font-semibold">Family Day</p>
+                            <p class="text-xs">9:00 AM</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 rounded-lg bg-purple-200 p-2 text-white">
+                        <span class="text-lg font-bold">14</span>
+                        <div>
+                            <p class="text-sm font-semibold">Parent's Day</p>
+                            <p class="text-xs">9:00 AM</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 rounded-lg bg-red-200 p-2 text-white">
+                        <span class="text-lg font-bold">24</span>
+                        <div>
+                            <p class="text-sm font-semibold">Tree Planting Project</p>
+                            <p class="text-xs">9:00 AM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
+
     </main>
 
     <script>
@@ -241,6 +279,5 @@
         });
 
     </script>
-
 </body>
 </html>

@@ -44,13 +44,14 @@
 
         a {
             cursor: pointer;
+            font-size: 16px;
         }
     </style>
 </head>
 <body class="flex flex-col items-center justify-center overflow-x-hidden bg-gray-100">
 
     <!-- Navbar -->
-    <section id="landNav" class="fixed top-0 z-50 flex w-full items-center justify-center bg-white shadow-md">
+    <section id="landNav" class="fixed top-0 z-50 flex h-[5vh] w-full items-center justify-center bg-white shadow-md">
         <div class="relative flex w-11/12 justify-between p-6 text-[#1E2E33]">
             <!-- Desktop Links -->
             <div class="hidden flex-row items-center gap-8 text-[24px] md:flex">
@@ -67,16 +68,14 @@
             <!-- Desktop Links & Sign In -->
             <div class="hidden flex-row items-center gap-8 md:flex">
                 <a class="text-[24px] hover:text-[#787676]" href="#events-section">NewsFeed</a>
-                <a id="signin-btn" href="#" class="border-2 rounded-full border-[#AC602A] bg-[#FFFF] px-7 py-2 text-[#AC602A]">
+                <a id="signin-btn" href="#" class="border-2 rounded-full border-[#AC602A] bg-[#FFFF] px-5 py-1 text-[#AC602A]">
                     Sign In
                 </a>
             </div>
-
-            <!-- Menu Button -->
             <button id="landM-btn" class="text-2xl text-[#043137] md:hidden">&#9776;</button>
 
-            <!-- Mobile Menu (Hidden by Default) -->
-            <div id="L-menu" class="absolute top-full left-0 hidden w-full flex-col items-center gap-4 bg-[#AC602A] p-4 text-white md:hidden">
+            <!-- Mobile Menu (Covers Full Width) -->
+            <div id="L-menu" class="max-h-auto fixed top-0 left-0 flex w-screen -translate-y-full transform flex-col items-center gap-7 overflow-hidden bg-[#AC602A] p-4 text-white opacity-0 transition-all duration-300 ease-in-out md:hidden">
                 <a href="#home" class="block">Home</a>
                 <a href="#about" class="block">About Us</a>
                 <a href="#Facilities" class="block">Facilities</a>
@@ -86,24 +85,37 @@
         </div>
     </section>
 
-    <!-- JavaScript to Toggle Menu -->
+    <!-- JavaScript for Smooth Drawer Effect -->
     <script>
-            document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function () {
             const menuBtn = document.getElementById("landM-btn");
             const menu = document.getElementById("L-menu");
 
+            function toggleMenu() {
+                const isHidden = menu.classList.contains("opacity-0");
+
+                if (isHidden) {
+                    menu.classList.remove("opacity-0", "-translate-y-full");
+                    menu.style.maxHeight = menu.scrollHeight + "px"; // Expand height dynamically
+                } else {
+                    menu.style.maxHeight = "0px";
+                    menu.classList.add("opacity-0", "-translate-y-full");
+                }
+            }
+
             menuBtn.addEventListener("click", function (event) {
-                event.stopPropagation(); // Prevents click from bubbling up
-                menu.classList.toggle("hidden");
+                event.stopPropagation();
+                toggleMenu();
             });
 
+            // Close menu when clicking outside
             document.addEventListener("click", function (event) {
                 if (!menu.contains(event.target) && event.target !== menuBtn) {
-                    menu.classList.add("hidden");
+                    menu.style.maxHeight = "0px";
+                    menu.classList.add("opacity-0", "-translate-y-full");
                 }
             });
         });
-
     </script>
 
     <!-- Main Section -->
@@ -247,7 +259,7 @@
 
         <div id="botfac" class="mt-8 h-auto w-full max-w-[1200px] sm:flex sm:flex-col sm:items-center sm:gap-10 lg:flex lg:flex-row lg:items-center lg:justify-center lg:gap-8">
             <div id="left" class="mb-10 flex flex-col gap-4">
-                <img class="rounded-[50px] sm:w-auto md:w-auto lg:max-w-[600px]" src="./Images/facimg1.png" alt="">
+                <img class="sm:rounded-xl sm:w-auto md:rounded-[50px] md:w-auto lg:rounded-[50px] lg:max-w-[600px]" src="./Images/facimg1.png" alt="">
                 <h1 class="text-2xl font-bold text-[#AC602A] md:text-3xl lg:text-[35px]">Community Park</h1>
 
                 <p class="text-base text-[#787676] md:text-lg">Our community park offers a serene environment with walking trails, playgrounds, and picnic areas. It’s the perfect place for families to enjoy outdoor activities and connect with nature.</p>
@@ -260,7 +272,7 @@
             </div>
 
             <div id="middle" class="mb-10 flex flex-col gap-4">
-                <img class="rounded-[50px] lg:max-w-[600px]" src="./Images/facimg2.png" alt="">
+                    <img class="sm:rounded-xl sm:w-auto md:rounded-[50px] md:w-auto lg:rounded-[50px] lg:max-w-[600px]" src="./Images/facimg2.png" alt="">
                 <h1 class="text-2xl font-bold text-[#AC602A] md:text-3xl lg:text-[35px]">Clubhouse</h1>
 
                 <p class="text-base text-[#787676] md:text-lg">The clubhouse is the heart of our community, hosting social events and gatherings. It's a place where residents come together to celebrate and build lasting friendships..</p>
@@ -273,7 +285,7 @@
             </div>
 
             <div id="right" class="mb-10 flex flex-col gap-4">
-                <img class="rounded-[50px] lg:max-w-[600px]" src="./Images/facimg3.png" alt="">
+                <img class="sm:rounded-xl sm:w-auto md:rounded-[50px] md:w-auto lg:rounded-[50px] lg:max-w-[600px]" src="./Images/facimg3.png" alt="">
                 <h1 class="text-2xl font-bold text-[#AC602A] md:text-3xl lg:text-[35px]">Fitness Center</h1>
 
                 <p class="text-base text-[#787676] md:text-lg">Our state-of-the-art fitness center is equipped with modern facilities to support your health and wellness goals. Stay fit and healthy with us..</p>

@@ -1,16 +1,22 @@
-﻿<a href="#" class="flex items-center gap-2">
-    <img src="~/Images/strokevid.svg" />
-    Video
-</a>
-<a href="#" class="flex items-center gap-2">
-    <img src="~/Images/strokepho.svg" />
-    Photo
-</a>
-<a href="#" class="flex items-center gap-2">
-    <img src="~/Images/strokefeel.svg" />
-    Feeling/Activity
-</a>
-<a href="#" class="flex items-center gap-2">
-    <img src="~/Images/strokepool.svg" />
-    Poll/Survey
-</a>
+﻿<div class="flex items-center gap-3 sm:gap-5">
+    <a href="#" class="flex items-center gap-1 sm:gap-2">
+        <img src="~/Images/strokevid.svg" class="h-4 w-4 sm:h-5 sm:w-5" />
+        <span class="text-xs text-gray-700 sm:text-sm">Video</span>
+    </a>
+    <a href="#" class="flex items-center gap-1 sm:gap-2">
+        <img src="~/Images/strokepho.svg" class="h-4 w-4 sm:h-5 sm:w-5" />
+        <span class="text-xs text-gray-700 sm:text-sm">Photo</span>
+    </a>
+    <a href="#" class="flex items-center gap-1 sm:gap-2">
+        <img src="~/Images/strokefeel.svg" class="h-4 w-4 sm:h-5 sm:w-5" />
+        <span class="text-xs text-gray-700 sm:text-sm">Feeling/Activity</span>
+    </a>
+
+    @if (User.Identity != null && User.Identity.IsAuthenticated && User.Identity.Name == "admin")
+    {
+        <a href="#" class="flex items-center gap-1 sm:gap-2">
+            <img src="~/Images/strokepool.svg" class="mb-1 h-4 w-4 sm:h-5 sm:w-5" />
+            <span class="text-xs text-gray-700 sm:text-sm">Poll</span>
+        </a>
+    }
+</div>

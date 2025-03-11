@@ -10,6 +10,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     .AddCookie(options =>
     {
         options.LoginPath = "/Home/Landing";
+        options.LogoutPath = "/Home/Logout";
+
     });
 
 var app = builder.Build();  

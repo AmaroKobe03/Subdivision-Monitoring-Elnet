@@ -4,6 +4,8 @@ using ElnetSubdivi.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
+using System.Threading.Tasks;
+
 
 namespace ElnetSubdivi.Controllers
 {
@@ -89,6 +91,12 @@ namespace ElnetSubdivi.Controllers
         {
             return View();
         }
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Landing", "Home"); // Redirect to the landing page
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)

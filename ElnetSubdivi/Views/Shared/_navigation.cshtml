@@ -1,17 +1,17 @@
 ﻿<header id="navigation" class="sticky top-0 z-50 flex h-[5vh] w-full items-center justify-center bg-[#043137] shadow-md">
-    <div class="flex w-11/12 items-center justify-between gap-5 p-6 text-[#1E2E33]">
+    <div class="flex w-11/12 items-center gap-5 pl-5 text-[#1E2E33]">
 
-        <button id="menu-btn" class="text-2xl text-white md:hidden">
+        <button id="menu-btn" class="relative right-5 text-2xl text-white md:hidden">
             &#9776;
         </button>
         <!-- Logo -->
         <div>
             <img class="h-10 max-sm:w-[200px] md:h-8" src="~/Images/Logo.svg" alt="Logo">
         </div>
-        
+
         <!-- Navigation Menu -->
-        <div id="menu" class="m-0 ml-auto hidden h-[4vh] flex-col items-center gap-6 bg-[#043137] p-5 font-medium text-[21px] md:flex md:flex-row md:gap-8">
-            <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("UserDash", "Home")">Home</a>
+        <div id="menu" class="m-0 ml-auto flex hidden h-[4vh] flex-col items-center justify-between gap-6 bg-[#043137] font-medium text-[21px] md:flex md:flex-row md:gap-8">
+            <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("UserDash", "Home")">Home</a> 
             @if (User.Identity != null && User.Identity.IsAuthenticated && User.Identity.Name == "admin")
             {
                 <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("UserManagement", "Home")">Users</a>
@@ -21,7 +21,7 @@
                 if (User.Identity.Name == "staff")
                 {
                     <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("serviceRequest", "Home")">Service Request</a>
-                    <a class="cursor-pointer text-white hover:text-[#787676]" >Reports</a>
+                    <a class="cursor-pointer text-white hover:text-[#787676]">Reports</a>
                 }
             }
             @if (User.Identity != null && User.Identity.IsAuthenticated && User.Identity.Name != "staff")
@@ -53,22 +53,22 @@
                         <a href="@Url.Action("MyReservation","Home")" class="px-4 py-2 hover:bg-gray-200">My Facilities</a>
                     </div>
                 </div>
-
+         
             }
-
-        <div id="pfp-notif" class="relative flex flex-row items-center justify-center gap-4">
-            <div class="group relative">
-                <img class="w-[25px] cursor-pointer sm:w-[30px]" src="~/Images/bell.svg" />
-                <div class="drp-popup absolute top-8 right-0 hidden w-40 flex-col flex-col gap-2 rounded-lg bg-white p-3 py-2 shadow-lg group-hover:flex">
-                    <a href="#" class="px-4 py-2 hover:bg-gray-200">Visitors</a>
-                    <a href="#" class="px-4 py-2 hover:bg-gray-200">Vehicles</a>
+        </div>
+        <div id="pfp-notif" class="relative ml-10 flex flex-row items-center justify-center gap-4 md:ml-2">
+            <div class="relative">
+                    <img id="bell-drop" class="w-[25px] cursor-pointer sm:w-[30px]" src="~/Images/bell.svg" />
+                    <div class="notif-popup absolute top-8 right-0 hidden w-40 flex-col flex-col gap-2 rounded-lg bg-white p-3 py-2 shadow-lg group-hover:flex">
+                        <a href="#" class="px-4 py-2 hover:bg-gray-200">Visitors</a>
+                        <a href="#" class="px-4 py-2 hover:bg-gray-200">Vehicles</a>
+                    </div>
                 </div>
-            </div>
 
 
-            <img class="dropdown-btn relative w-[25px] sm:w-[30px]" src="~/Images/pfp.svg" alt="Profile">
+                <img class="dropdown-btn relative w-[25px] sm:w-[30px]" src="~/Images/pfp.svg" alt="Profile">
 
-            <div class="drp-popup fles-col absolute top-10 right-0 flex hidden w-40 flex-col gap-2 rounded-lg bg-white p-2 py-2 shadow-lg">
+                <div class="drp-popup fles-col absolute top-10 right-0 flex hidden w-50 flex-col gap-2 rounded-lg bg-white p-2 py-2 shadow-lg">
                     <a href="@GetProfileLink()" class="cursor-pointer">
                         <div class="mb-3 flex items-center gap-4 border-b-2 border-gray-400 py-2">
                             <img class="h-7 w-7 rounded-full object-cover" src="~/Images/pfp.svg" alt="Admin" />
@@ -100,13 +100,174 @@
                         }
                     }
 
-                <a href="@Url.Action("UserProfile", "Home")" class="px-4 hover:bg-gray-200">Profile Settings</a>
-                <a href="#" class="px-4 py-2 hover:bg-gray-200">Feedback & Report</a>
-                <a href="#" class="px-4 py-2 hover:bg-gray-200">Calendar</a>
-                <a href="@Url.Action("ContactDirectory", "Home")" class="px-4 py-2 hover:bg-gray-200">Contact Directory</a>
-                <a href="#" class="px-4 py-2 hover:bg-gray-200">Logout</a>
+                    <a href="@Url.Action("UserProfile", "Home")" class="px-4 hover:bg-gray-200">Profile Settings</a>
+                    <a href="#" class="px-4 py-2 hover:bg-gray-200">Feedback & Report</a>
+                    <a href="#" class="px-4 py-2 hover:bg-gray-200">Calendar</a>
+                    <a href="@Url.Action("ContactDirectory", "Home")" class="px-4 py-2 hover:bg-gray-200">Contact Directory</a>
+                    <!-- Logout Button -->
+                    <a href="#" onclick="confirmLogout(event)" class="px-4 py-2 text-red-500 hover:bg-gray-200">Logout</a>
+
+                    <script>
+                        function confirmLogout(event) {
+                            event.preventDefault();
+                                window.location.href = "@Url.Action("Logout", "Home")";
+             
+                        }
+                    </script>
+
             </div>
+         </div>
+        <!-- Overlay (Excludes Top Nav) -->
+       
+        <div id="menu-overlay" class="fixed inset-0 top-12 z-10 hidden bg-black/50 opacity-0 transition-opacity duration-300"></div>
+
+        <div id="mobile-menu"
+             class="absolute top-12 left-0 z-20 flex hidden h-auto w-full -translate-y-full flex-col items-start gap-5 bg-[#043137] p-4 text-white shadow-lg transition-all duration-300 md:hidden">
+
+            <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("UserDash", "Home")">Home</a>
+
+            @if (User.Identity != null && User.Identity.IsAuthenticated && User.Identity.Name == "admin")
+            {
+                <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("UserManagement", "Home")">Users</a>
+            }
+
+            @if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                if (User.Identity.Name == "staff")
+                {
+                    <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("serviceRequest", "Home")">Service Request</a>
+                    <a class="cursor-pointer text-white hover:text-[#787676]">Reports</a>
+                }
+            }
+
+            @if (User.Identity != null && User.Identity.IsAuthenticated && User.Identity.Name != "staff")
+            {
+                <!-- Facilities Dropdown -->
+                <div class="relative w-full">
+                    <a id="facs" class="flex cursor-pointer flex-row items-center gap-1 text-white hover:text-[#787676]">
+                        Facilities
+                        <img class="w-[10px] brightness-0 invert-[1]" src="/Images/drdown.svg" />
+                    </a>
+                    <div id="facs-dropdown"
+                         class="hidden w-full scale-95 transform flex-col rounded-lg bg-white p-3 py-2 opacity-0 shadow-lg transition-all duration-300">
+                        <a href="@Url.Action("FacilityReservation", "Home")" class="block px-4 py-2 text-black hover:bg-gray-200">Request</a>
+                        <a href="@Url.Action("MyReservation", "Home")" class="block px-4 py-2 text-black hover:bg-gray-200">My Facilities</a>
+                    </div>
+                </div>
+
+                <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("serviceRequest", "Home")">Service Request</a>
+                <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("Billing", "Home")">Billing</a>
+
+                <!-- Security Dropdown -->
+                <div class="relative w-full">
+                    <a id="secu" class="flex cursor-pointer flex-row items-center gap-1 text-white hover:text-[#787676]">
+                        Security
+                        <img class="w-[10px] brightness-0 invert-[1]" src="~/Images/drdown.svg" />
+                    </a>
+                    <div id="secu-dropdown"
+                         class="hidden w-full scale-95 transform flex-col rounded-lg bg-white p-3 py-2 opacity-0 shadow-lg transition-all duration-300">
+                        <a href="@Url.Action("FacilityReservation", "Home")" class="block px-4 py-2 text-black hover:bg-gray-200">Request</a>
+                        <a href="@Url.Action("MyReservation", "Home")" class="block px-4 py-2 text-black hover:bg-gray-200">My Facilities</a>
+                    </div>
+                </div>
+            }
         </div>
-    </div>
-    </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const menuBtn = document.getElementById("menu-btn");
+                const mobileMenu = document.getElementById("mobile-menu");
+                const menuOverlay = document.getElementById("menu-overlay");
+                const facsBtn = document.getElementById("facs");
+                const secuBtn = document.getElementById("secu");
+                const facsDropdown = document.getElementById("facs-dropdown");
+                const secuDropdown = document.getElementById("secu-dropdown");
+
+                // Function to toggle the mobile menu with a drawer effect
+                function toggleMenu() {
+                    const isHidden = mobileMenu.classList.contains("hidden");
+
+                    mobileMenu.classList.toggle("hidden", !isHidden);
+                    menuOverlay.classList.toggle("hidden", !isHidden);
+
+                    setTimeout(() => {
+                        mobileMenu.classList.toggle("-translate-y-full", !isHidden);
+                        mobileMenu.classList.toggle("translate-y-0", isHidden);
+                        menuOverlay.classList.toggle("opacity-0", !isHidden);
+                    }, 10);
+                }
+
+                // Function to close a dropdown smoothly
+                function closeDropdown(dropdown) {
+                    dropdown.style.maxHeight = "0px";
+                    dropdown.style.opacity = "0";
+                    dropdown.style.transform = "translateY(-10px)";
+
+                    setTimeout(() => {
+                        dropdown.classList.add("hidden");
+                    }, 300);
+                }
+
+                // Function to toggle dropdowns, ensuring only one is open at a time
+                function toggleDropdown(clickedDropdown, otherDropdown) {
+                    const isHidden = clickedDropdown.classList.contains("hidden");
+
+                    if (!isHidden) {
+                        closeDropdown(clickedDropdown);
+                    } else {
+                        // Close the other dropdown before opening the clicked one
+                        closeDropdown(otherDropdown);
+
+                        clickedDropdown.classList.remove("hidden");
+                        clickedDropdown.style.maxHeight = "0px"; // Start from height 0
+
+                        setTimeout(() => {
+                            clickedDropdown.style.maxHeight = clickedDropdown.scrollHeight + "px";
+                            clickedDropdown.style.opacity = "1";
+                            clickedDropdown.style.transform = "translateY(0)";
+                        }, 10);
+                    }
+                }
+
+                // Event listeners
+                menuBtn.addEventListener("click", function (event) {
+                    event.stopPropagation();
+                    toggleMenu();
+                });
+
+                facsBtn.addEventListener("click", function (event) {
+                    event.stopPropagation();
+                    toggleDropdown(facsDropdown, secuDropdown);
+                });
+
+                secuBtn.addEventListener("click", function (event) {
+                    event.stopPropagation();
+                    toggleDropdown(secuDropdown, facsDropdown);
+                });
+
+                // Close menu when clicking outside
+                document.addEventListener("click", function (event) {
+                    if (!mobileMenu.contains(event.target) && event.target !== menuBtn) {
+                        mobileMenu.classList.add("-translate-y-full");
+                        mobileMenu.classList.remove("translate-y-0");
+                        menuOverlay.classList.add("opacity-0");
+
+                        setTimeout(() => {
+                            mobileMenu.classList.add("hidden");
+                            menuOverlay.classList.add("hidden");
+                        }, 300);
+                    }
+
+                    // Close dropdowns if clicking outside
+                    if (!facsDropdown.contains(event.target) && event.target !== facsBtn) {
+                        closeDropdown(facsDropdown);
+                    }
+                    if (!secuDropdown.contains(event.target) && event.target !== secuBtn) {
+                        closeDropdown(secuDropdown);
+                    }
+                });
+            });
+        </script>
+
+</div>
 </header>
