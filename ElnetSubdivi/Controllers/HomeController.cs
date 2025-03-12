@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using ElnetSubdivi.Services;
 
+
 namespace ElnetSubdivi.Controllers
 {
     public class HomeController : Controller
@@ -95,6 +96,12 @@ namespace ElnetSubdivi.Controllers
         {
             return View();
         }
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Landing", "Home"); // Redirect to the landing page
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
