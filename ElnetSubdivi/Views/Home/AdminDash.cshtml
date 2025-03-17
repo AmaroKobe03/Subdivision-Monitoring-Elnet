@@ -6,9 +6,168 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subdivision Dashbaord</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="~/css/output.css" rel="stylesheet">
+    <style>
+        html{
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
-<body>
-    
+<body class="mt-10 flex h-[100vh] w-full flex-col items-center justify-center">
+    <div id="content" class="relative top-10 flex h-full w-[85%] flex-col items-center justify-center">
+        <section id="top" class="flex h-[20vh] w-full items-center justify-center gap-6">
+            @foreach (var item in Model)
+            {
+                <div class="item-center flex h-[15vh] w-[14%] flex-col rounded-lg bg-white">
+                    <div class="flex items-center justify-between p-4">
+                        <h1>@item.Title</h1>
+                        <img src="~/Images/@item.Icon" alt="Icon" />
+                    </div>
+                    <div class="flex px-4 text-2xl font-bold">
+                        <h1>@item.Count</h1>
+                    </div>
+                    @if (!string.IsNullOrEmpty(item.Label1))
+                    {
+                        <div class="flex items-center justify-between px-4 py-1">
+                            <p>@item.Label1</p>
+                            <p class="@(item.Label1 == "Paid" ? "text-green-500"
+                              : item.Label1 == "Pending" || item.Label1 == "Ongoing" ? "text-yellow-500"
+                              : item.Label1 == "Overdue" ? "text-red-500" : "")">
+                                @item.Value1
+                            </p>
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(item.Label2))
+                    {
+                        <div class="flex items-center justify-between px-4 py-1">
+                            <p>@item.Label2</p>
+                            <p class="@(item.Label2 == "Completed" ? "text-green-500"
+                              : item.Label2 == "Pending" || item.Label2 == "Ongoing" ? "text-yellow-500"
+                              : item.Label2 == "Overdue" ? "text-red-500" : "")">
+                                @item.Value2
+                            </p>
+                        </div>
+                    }
+                </div>
+            }
+
+        </section>
+        <section id="statistics" class="flex h-[70vh] w-[90.5%] items-center justify-center gap-6">
+            <!-- Revenue Overview -->
+            <div class="flex h-[90%] w-[50%] flex-col justify-center rounded-lg bg-white p-4">
+                <div class="mb-4 flex items-center justify-between">
+                    <h2 class="text-lg font-bold">Revenue Overview</h2>
+                    <div class="flex items-center gap-4">
+                        <button id="prevMonth" class="text-xl">&lt;</button>
+                        <span id="monthDisplay">January 2025</span>
+                        <button id="nextMonth" class="text-xl">&gt;</button>
+                    </div>
+                </div>
+                <canvas id="revenueChart"></canvas>
+                <p class="mt-4 border-b-2 border-gray-500 py-2">Today: <span class="ml-40">$45.00</span></p>
+                <p class="mt-10">Monthly Average: <span class="ml-21">$65.00</span></p>
+            </div>
+
+            <!-- Facility Usage -->
+            <div class="flex h-[90%] w-[50%] flex-col justify-center rounded-lg bg-white p-4">
+                <div class="mb-4 flex items-center justify-between">
+                    <h2 class="text-lg font-bold">Facility Usage</h2>
+                    <div class="flex items-center gap-4">
+                        <button id="prevMonth" class="text-xl">&lt;</button>
+                        <span id="monthDisplay">January 2025</span>
+                        <button id="nextMonth" class="text-xl">&gt;</button>
+                    </div>
+                </div>
+                <canvas class="mb-30" id="facilityChart"></canvas>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        const facilityCtx = document.getElementById('facilityChart').getContext('2d');
+        const monthDisplay = document.getElementById('monthDisplay');
+        const prevMonthBtn = document.getElementById('prevMonth');
+        const nextMonthBtn = document.getElementById('nextMonth');
+
+        const months = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+
+        let currentMonthIndex = 0;
+        let currentYear = 2025;
+
+        function updateMonth() {
+            monthDisplay.innerText = `${months[currentMonthIndex]} ${currentYear}`;
+        }
+
+        prevMonthBtn.addEventListener('click', () => {
+            currentMonthIndex--;
+            if (currentMonthIndex < 0) {
+                currentMonthIndex = 11;
+                currentYear--;
+            }
+            updateMonth();
+        });
+
+        nextMonthBtn.addEventListener('click', () => {
+            currentMonthIndex++;
+            if (currentMonthIndex > 11) {
+                currentMonthIndex = 0;
+                currentYear++;
+            }
+            updateMonth();
+        });
+
+        updateMonth(); // Initialize the month
+
+        new Chart(revenueCtx, {
+            type: 'bar',
+            data: {
+                labels: ['10', '11', '12', '13', '14'],
+                datasets: [{
+                    label: 'Revenue',
+                    data: [45, 80, 60, 75, 40],
+                    backgroundColor: ['#4169E1', '#4169E1', '#4169E1', '#4169E1', '#FF914D'],
+                    barThickness: 20,
+                    borderRadius: 10,
+
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        new Chart(facilityCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Pool', 'Tennis Court', 'Function Hall', 'Community Park', 'Basketball Court'],
+                datasets: [{
+                    label: 'Usage',
+                    data: [3, 5, 2, 7, 5],
+                    backgroundColor: ['#D1D5F6', '#D1D5F6', '#D1D5F6', '#4169E1', '#D1D5F6'],
+                    barThickness: 20,
+                    borderRadius: 10,
+
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,128 @@
+﻿@{
+    ViewData["Title"] = "Reservations Management";
+}
+@model IEnumerable<dynamic>
+
+<div class="flex h-[100vh] w-[90%] flex-col items-center overflow-auto overflow-y-hidden bg-[#f2f2f2] font-semibold">
+    @await Html.PartialAsync("_sharedSearch")
+
+    <div class="flex h-[15vh] w-[92%] items-center justify-center">
+        <div class="flex h-[15vh] w-full items-center justify-center gap-6">
+            @foreach (var item in Model)
+            {
+                <div class="flex h-[15vh] w-[23%] items-center justify-around rounded-lg border-b-[3px] bg-white @item.BorderColor shadow-lg">
+                    <div class="ml-5 flex flex-col gap-2">
+                        <h2 class="text-[16px] text-gray-400">@item.Title</h2>
+                        <p class="text-2xl">@item.Count</p>
+                    </div>
+                    <img class="w-[30px]" src="~/Images/@item.Icon" alt="status-icon" />
+                </div>
+            }
+        </div>
+    </div>
+    <div class="mt-10 mr-2 mb-6 flex w-[88%] items-center gap-4">
+        <div class="relative w-[40%]">
+            <input type="text" placeholder="Search"
+                   class="h-12 w-full rounded-full border border-gray-300 bg-white pr-4 pl-12 outline-none focus:ring-2 focus:ring-gray-300">
+                   <img class="absolute top-1/2 left-4 h-5 -translate-y-1/2" src="~/Images/find.svg" alt="Search">
+     
+        </div>
+        <div>
+            <select class="rounded-full border-[1.5px] border-gray-300 bg-white px-5 py-3 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent">
+                <option value="All Status">All Status</option>
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Cancelled">Cancelled</option>
+            </select>
+        </div>
+    </div>
+    <table class="w-[88%] border-collapse rounded-lg bg-white text-left shadow-md">
+        <thead>
+            <tr class="text-gray-500">
+                <th class="px-4 py-3">User</th>
+                <th class="px-4 py-3">Facility Booked</th>
+                <th class="px-4 py-3">Reserved Date</th>
+                <th class="px-4 py-3">Timed In</th>
+                <th class="px-4 py-3">Total</th>
+                <th class="px-4 py-3">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="cursor-pointer border-b hover:bg-gray-100" onclick="openModal()">
+                <td class="flex items-center gap-3 px-4 py-3">
+                    <img src="~/Images/pfp.svg" class="h-8 w-8 rounded-full" />
+                    <span>Kobe Amaro</span>
+                </td>
+                <td class="px-4 py-3">Swimming Pool</td>
+                <td class="px-4 py-3">March 15, 2024</td>
+                <td class="px-4 py-3">7:00 AM</td>
+                <td class="px-4 py-3">₱2000</td>
+                <td class="px-4 py-3 font-semibold text-yellow-500">Pending</td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- Modal (Hidden by default) -->
+    <div id="modal" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50" onclick="closeModal(event)">
+        <div class="w-[500px] rounded-2xl bg-white p-8" onclick="event.stopPropagation()">
+            <h2 class="mb-6 text-center text-2xl font-extrabold text-gray-800">Facility Request Details</h2>
+
+            <!-- User Profile -->
+            <div class="mb-6 flex items-center justify-center gap-2">
+                <img src="~/Images/pfp.svg" class="h-10 w-10 rounded-full" />
+                <span class="text-lg font-medium">Kobe Amaro</span>
+            </div>
+
+            <!-- Facility -->
+            <input type="text" value="Swimming Pool" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" readonly />
+
+            <!-- Date and Duration -->
+            <div class="mt-4 mb-6 flex justify-between gap-4">
+                <div class="w-1/2">
+                    <label class="mb-1 block text-base text-gray-500">Date</label>
+                    <input type="text" value="March 15, 2024" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" readonly />
+                </div>
+                <div class="w-1/2">
+                    <label class="mb-1 block text-base text-gray-500">Duration</label>
+                    <input type="text" value="7:00 AM - 7:00 PM" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" readonly />
+                </div>
+            </div>
+
+            <!-- Purpose -->
+            <div class="mb-6">
+                <label class="mb-1 block text-base text-gray-500">Purpose</label>
+                <textarea class="border-2 h-[15vh] w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" readonly>
+The interface is intuitive and easy to navigate. I particularly enjoyed the smooth transitions and responsive.
+      </textarea>
+            </div>
+
+            <!-- Total Hours and Payment -->
+            <div class="mb-6 flex flex-col justify-between text-base text-gray-600">
+                <p class="flex justify-between">Total Hours <span class="font-medium">2 hrs 30 mins</span></p>
+                <p class="mb-2 flex justify-between border-b-2">Per Hour <span class="font-medium">₱0.00</span></p>
+                <p>Total <span class="font-medium">₱0.00</span></p>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex gap-4">
+                <button class="w-1/2 rounded-full border border-[#B25828] py-2 text-[#B25828]" onclick="closeModal()">Decline</button>
+                <button class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Approve</button>
+            </div>
+        </div>
+    </div>
+
+
+    @await Html.PartialAsync("_pagination")
+
+</div>
+<script>
+    function openModal() {
+      document.getElementById('modal').classList.remove('hidden');
+    }
+
+    function closeModal(event) {
+      const modal = document.getElementById('modal');
+      if (event.target === modal || event.type === 'click') {
+        modal.classList.add('hidden');
+      }
+    }
+</script>

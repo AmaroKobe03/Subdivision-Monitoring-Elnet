@@ -42,7 +42,7 @@
                             <a id="viewUserbtn" href="#" class="block px-4 py-2 hover:bg-gray-200">View</a>
                             <a id="editUserbtn" href="#" class="block px-4 py-2 hover:bg-gray-200">Edit</a>
                             <a id="removeUserbtn" href="#" class="block px-4 py-2 hover:bg-gray-200">Remove</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">Send Activation</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">Move Out</a>
                         </div>
                     </div>
 
@@ -52,7 +52,7 @@
                 <td class="gap-2 px-4 py-3">
                     <span>John Smith</span>
                 </td>
-                <td class="px-4 py-3">Cebu City</td>
+                <td class="px-4 py-3">Cebu City</td>    
                 <td class="px-4 py-3">smith@gmail.com</td>
                 <td class="px-4 py-3">1234567890</td>
                 <td class="px-4 py-3 font-semibold">Home Owner</td>
@@ -148,11 +148,16 @@
                 </div>
 
                 <!-- Email & Phone -->
-                <div class="flex gap-2">
-                    <input type="email" class="w-1/2 rounded border px-3 py-2 text-gray-600" placeholder="Email" value="johndoe@gmail.com" />
-                    <input type="text" class="w-1/2 rounded border px-3 py-2 text-gray-600" placeholder="Phone Number" value="+123 4567 890" />
+                <div class="flex gap-1">
+                    <div class="flex w-1/2 flex-col">
+                        <label class="text-sm">Email</label>
+                        <input type="email" class="rounded-lg border px-3 py-2 text-sm text-gray-600" value="johndoe@gmail.com" placeholder="Email" />
+                    </div>
+                    <div class="flex w-1/2 flex-col">
+                        <label class="text-sm">Phone Number</label>
+                        <input type="text" class="rounded-lg border px-3 py-2 text-sm text-gray-600" value="+123 4567 890" placeholder="Phone Number" />
+                    </div>
                 </div>
-
                 <!-- Address -->
                 <div>
                     <label class="block text-sm font-medium">Address</label>
