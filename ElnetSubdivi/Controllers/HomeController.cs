@@ -60,6 +60,39 @@ namespace ElnetSubdivi.Controllers
         {
             return View();
         }
+        public IActionResult BillingManagement()
+        {
+            ViewData["HideSearch"] = true;
+            ViewData["Hidebtn"] = true;
+
+            var billing = new List<dynamic>
+            {
+                new { Title = "Total Amount Due", Count = 123, Icon = "treqs.svg", BorderColor = "border-blue-400 border-b-2" },
+                new { Title = "Pending Payments", Count = 34, Icon = "pendi.svg", BorderColor = "border-yellow-400 borber-b-2" },
+                new { Title = "Overdue Payments", Count = 15, Icon = "overd.svg", BorderColor = "border-orange-400 borber-b-2" },
+                new { Title = "Total Amount Paid (2025) ", Count = 56, Icon = "apr.svg", BorderColor = "border-green-400 borber-b-2" },
+
+            };
+
+            return View(billing);
+        }
+        public IActionResult ServiceRequestManagement()
+        {
+            ViewData["HideSearch"] = true;
+            ViewData["Hidebtn"] = true;
+
+            var reservations = new List<dynamic>
+            {
+                new { Title = "Total Requests", Count = 123, Icon = "treqs.svg", BorderColor = "border-blue-400 border-b-2" },
+                new { Title = "Pending ", Count = 34, Icon = "pendi.svg", BorderColor = "border-yellow-400 borber-b-2" },
+                new { Title = "Ongoing ", Count = 15, Icon = "ongo.svg", BorderColor = "border-orange-400 borber-b-2" },
+                new { Title = "Completed ", Count = 56, Icon = "apr.svg", BorderColor = "border-green-400 borber-b-2" },
+                new { Title = "Canceled Service ", Count = 10, Icon = "canc.svg", BorderColor = "border-red-400 borber-b-2" }
+
+            };
+
+            return View(reservations);
+        }
         public IActionResult AdminDash()
         {
             var data = new List<dynamic>
@@ -104,6 +137,18 @@ namespace ElnetSubdivi.Controllers
         {
             return View();
         }
+        public JsonResult GetEvents()
+        {
+            var events = new List<object>
+    {
+        new { title = "Meeting", start = "2025-03-20" },
+        new { title = "Conference", start = "2025-03-25" },
+        new { title = "Workshop", start = "2025-03-28" }
+    };
+
+            return Json(events);
+        }
+
         public IActionResult FacilityManagement()
         {
             ViewData["HideSearch"] = true;
@@ -115,6 +160,8 @@ namespace ElnetSubdivi.Controllers
                 new { Name = "Tennis Court", Type = "Sports", Rating = 4.8, Time = "6:00 AM - 10:00 PM", Price = "$15/hr", Available = false, Image = "~/Images/tennis.png" }
             };
 
+            var operatingHours = new List<string> { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+            ViewBag.OperatingHours = operatingHours;
 
             var reservations = new List<dynamic>
             {

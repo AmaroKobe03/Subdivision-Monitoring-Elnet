@@ -99,7 +99,7 @@ The interface is intuitive and easy to navigate. I particularly enjoyed the smoo
             <div class="mb-6 flex flex-col justify-between text-base text-gray-600">
                 <p class="flex justify-between">Total Hours <span class="font-medium">2 hrs 30 mins</span></p>
                 <p class="mb-2 flex justify-between border-b-2">Per Hour <span class="font-medium">₱0.00</span></p>
-                <p>Total <span class="font-medium">₱0.00</span></p>
+                <p class="mb-2 flex justify-between" >Total <span class="font-medium">₱0.00</span></p>
             </div>
 
             <!-- Buttons -->
@@ -112,8 +112,13 @@ The interface is intuitive and easy to navigate. I particularly enjoyed the smoo
 
 
     @await Html.PartialAsync("_pagination")
+    
 
-</div>
+    <div id="popup" class="fixed inset-0 z-20 mt-20 flex hidden items-center justify-center bg-gray-100">
+        <div id="content" class="flex h-[90vh] w-[90%] rounded-lg bg-white shadow-lg">
+
+        </div>
+    </div>
 <script>
     function openModal() {
       document.getElementById('modal').classList.remove('hidden');
@@ -126,3 +131,4 @@ The interface is intuitive and easy to navigate. I particularly enjoyed the smoo
       }
     }
 </script>
+</div>
