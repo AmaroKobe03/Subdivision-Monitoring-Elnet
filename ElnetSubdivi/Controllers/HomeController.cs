@@ -60,6 +60,54 @@ namespace ElnetSubdivi.Controllers
         {
             return View();
         }
+        public IActionResult VehicleManagement()
+        {
+            ViewData["HideSearch"] = true;
+            ViewData["Hidebtn"] = true;
+
+            var manageVehicle = new List<dynamic>
+            {
+                new { Title = "Total Vehicles", Count = 123, Icon = "vehicle.svg", BorderColor = "border-blue-400 border-b-2" },
+                new { Title = "Pending Approval", Count = 34, Icon = "pendi.svg", BorderColor = "border-yellow-400 borber-b-2" },
+                new { Title = "Approved Today", Count = 56, Icon = "activev.svg", BorderColor = "border-green-400 borber-b-2" },
+                new { Title = "Declined", Count = 10, Icon = "outv.svg", BorderColor = "border-red-400 borber-b-2" }
+
+            };
+
+            return View(manageVehicle);
+        }
+        public IActionResult VisitorsPassManagement() 
+        {
+            ViewData["HideSearch"] = true;
+            ViewData["Hidebtn"] = true;
+
+            var reservations = new List<dynamic>
+            {
+                new { Title = "Total Visitor Requests", Count = 123, Icon = "totalv.svg", BorderColor = "border-blue-400 border-b-2" },
+                new { Title = "Pending Approval", Count = 34, Icon = "pendi.svg", BorderColor = "border-yellow-400 borber-b-2" },
+                new { Title = "Active Visitors", Count = 56, Icon = "activev.svg", BorderColor = "border-green-400 borber-b-2" },
+                new { Title = "Checked-Out Visitors", Count = 10, Icon = "outv.svg", BorderColor = "border-red-400 borber-b-2" }
+
+            };
+
+            return View(reservations);
+        }
+        public IActionResult PaymentHistory()
+        {
+            ViewData["HideSearch"] = true;
+            ViewData["Hidebtn"] = true;
+
+            var billing = new List<dynamic>
+            {
+                new { Title = "Total Amount Due", Count = 123, Icon = "treqs.svg", BorderColor = "border-blue-400 border-b-2" },
+                new { Title = "Pending Payments", Count = 34, Icon = "pendi.svg", BorderColor = "border-yellow-400 borber-b-2" },
+                new { Title = "Overdue Payments", Count = 15, Icon = "overd.svg", BorderColor = "border-orange-400 borber-b-2" },
+                new { Title = "Total Amount Paid (2025) ", Count = 56, Icon = "apr.svg", BorderColor = "border-green-400 borber-b-2" },
+
+            };
+
+            return View(billing);
+        }
         public IActionResult BillingManagement()
         {
             ViewData["HideSearch"] = true;
@@ -135,16 +183,23 @@ namespace ElnetSubdivi.Controllers
         }
         public IActionResult ContactDirectory()
         {
-            return View();
+            var emergencies = new List<dynamic>
+            {
+                new { Title = "Medical Emergency", Number = "911", Description = "24/7 Emergency Response", Icon = "medic.svg", CallIcon = "phone-red.svg", BgColor = "bg-red-50", BorderColor = "border-red-500", TextColor = "text-red-700" },
+                new { Title = "Fire Department", Number = "+1 234 567 891", Description = "Fire Emergency Response", Icon = "fire-exting.svg", CallIcon = "phone-orange.svg", BgColor = "bg-orange-50", BorderColor = "border-orange-500", TextColor = "text-orange-700" },
+                new { Title = "Police Station", Number = "+1 234 567 890", Description = "24/7 Security Hotline", Icon = "protec.svg", CallIcon = "phone-blue.svg", BgColor = "bg-blue-50", BorderColor = "border-blue-500", TextColor = "text-blue-700" }
+            };
+
+            return View(emergencies);
         }
         public JsonResult GetEvents()
         {
             var events = new List<object>
-    {
-        new { title = "Meeting", start = "2025-03-20" },
-        new { title = "Conference", start = "2025-03-25" },
-        new { title = "Workshop", start = "2025-03-28" }
-    };
+        {
+            new { title = "Meeting", start = "2025-03-20" },
+            new { title = "Conference", start = "2025-03-25" },
+            new { title = "Workshop", start = "2025-03-28" }
+        };
 
             return Json(events);
         }

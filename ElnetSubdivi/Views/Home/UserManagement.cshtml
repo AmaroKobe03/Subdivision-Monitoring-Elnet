@@ -7,9 +7,28 @@
 
     @await Html.PartialAsync("_sharedSearch")
 
-    <div class="relative mb-6 flex w-[88%] items-center justify-between">
+    <div class="mt-10 mr-2 mb-6 flex w-[88.3%] items-center justify-between">
         <!-- Search Bar -->
-        @await Html.PartialAsync("_sharedSearch2", "Add User")
+        <div class="relative mr-2 w-[40%]">
+            <input type="text" placeholder="Search"
+                   class="h-12 w-full rounded-full border border-gray-300 bg-white pr-4 pl-12 outline-none focus:ring-2 focus:ring-gray-300">
+            <img class="absolute top-1/2 left-4 h-5 -translate-y-1/2" src="~/Images/find.svg" alt="Search">
+        </div>
+
+        <!-- Filter Icon with Text -->
+        <div class="relative right-50 flex cursor-pointer items-center gap-2">
+            <img src="~/Images/filter.svg" alt="Filter" class="h-5">
+            <span class="font-medium text-black">Filters</span>
+        </div>
+        <div class="relative right-90 flex cursor-pointer items-center gap-2">
+            <img src="~/Images/sortic.svg" alt="Filter" class="h-5">
+            <span class="font-medium text-black">Sort</span>
+        </div>
+        <!-- Add Facility Button -->
+        <button id="addfac" class="flex items-center gap-2 rounded-full bg-[#04373A] px-6 py-2 text-white">
+            <span class="text-xl">+</span>
+            <span class="font-medium">Add User</span>
+        </button>
     </div>
 
     <table class="bg-white-200 w-[88%] border-collapse bg-white text-left">

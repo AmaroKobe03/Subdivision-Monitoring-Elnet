@@ -2,57 +2,58 @@
 @{
     ViewData["Title"] = "Contact Directory";
 }
-@{
 
-    var contacts = new List<EmergencyContact>
-    {
-        new EmergencyContact
-        {
-            Name = "Medical Emergency",
-            PhoneNumber = "911",
-            IconPath = "~/Images/medic.svg",
-            PhoneIconPath = "~/Images/phone-red.svg",
-            Description = "24/7 Emergency Response",
-            BorderColor = "border-l-red-500",
-            BgColor = "bg-red-50",
-            TextColor = "text-red-600"
-        },
-        new EmergencyContact
-        {
-            Name = "Fire Department",
-            PhoneNumber = "+1 234 567 891",
-            IconPath = "~/Images/fire-exting.svg",
-            PhoneIconPath = "~/Images/phone-orange.svg",
-            Description = "Fire Emergency Response",
-            BorderColor = "border-l-orange-500",
-            BgColor = "bg-orange-50",
-            TextColor = "text-orange-600"
-        },
-        new EmergencyContact
-        {
-            Name = "Police Station",
-            PhoneNumber = "+1 234 567 890",
-            IconPath = "~/Images/protec.svg",
-            PhoneIconPath = "~/Images/phone-blue.svg",
-            Description = "24/7 Security Hotline",
-            BorderColor = "border-l-blue-500",
-            BgColor = "bg-blue-50",
-            TextColor = "text-blue-600"
-        }
-    };
 
-}
+@model List<dynamic>
+ 
 <div class="flex h-[100vh] w-[90%] flex-col items-center overflow-hidden bg-[#f2f2f2] font-semibold">
     @await Html.PartialAsync("_sharedSearch")
 
-    <div class="flex w-[88%] flex-col gap-4"> 
-        <div>
-            <h1 class="mb-3 text-xl font-semibold text-[#043137]">Emergency Contacts</h1>
-        </div>
-        @await Html.PartialAsync("_emergencyCard", contacts)
+    <h3 class="relative left-25 mt-4 self-start text-xl font-bold">Emergency Contacts</h3>
 
+    <div class="mt-4 flex space-x-6">
+        @foreach (var emergency in Model)
+        {
+            <div class="flex @emergency.BorderColor h-[18vh] w-[500px] flex-col justify-center rounded-lg border-l-4 p-5 @emergency.BgColor shadow-md">
+                <!-- Title & Icon -->
+                <div class="mb-2 flex items-center gap-3">
+                    <img src="~/Images/@emergency.Icon" class="h-6 w-6" alt="Icon" />
+                    <h1 class="text-lg font-semibold @emergency.TextColor">@emergency.Title</h1>
+                </div>
+
+                <!-- Emergency Number & Call Icon -->
+                <div class="mb-1 flex items-center justify-between">
+                    <h1 class="text-xl font-bold @emergency.TextColor">@emergency.Number</h1>
+                    <img src="~/Images/@emergency.CallIcon" class="h-5 w-5" />
+                </div>
+
+                <!-- Description -->
+                <p class="text-sm @emergency.TextColor">@emergency.Description</p>
+            </div>
+        }
     </div>
 
+    <div class="mt-15 mr-2 mb-6 flex w-[88%] items-center justify-between">
+        <!-- Search Bar -->
+        <div class="relative mr-2 w-[40%]">
+            <input type="text" placeholder="Search"
+                   class="h-12 w-full rounded-full border border-gray-300 bg-white pr-4 pl-12 outline-none focus:ring-2 focus:ring-gray-300">
+            <img class="absolute top-1/2 left-4 h-5 -translate-y-1/2" src="~/Images/find.svg" alt="Search">
+        </div>
+
+        <!-- Status Dropdown -->
+        <div class="relative right-80 flex cursor-pointer items-center gap-2">
+            <img src="~/Images/filter.svg" alt="Filter" class="h-5">
+            <span class="font-medium text-black">Filters</span>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <button id="openContactModal" class="flex items-center gap-2 rounded-full bg-[#04373A] px-6 py-2 text-white">
+                <span class="text-xl">+</span>
+                <span class="font-medium">Add Contact</span>
+            </button>
+        </div>
+    </div>
     <table class="mt-10 w-[88%] overflow-y-auto rounded-lg bg-white shadow-lg">
         <thead>
             <tr class="text-left text-[#787676]">
@@ -61,6 +62,8 @@
                 <th class="px-4 py-3">Role</th>
                 <th class="px-4 py-3">Email</th>
                 <th class="px-4 py-3">Contact Number</th>
+                <th class="px-4 py-3">Actions</th>
+
             </tr>
         </thead>
         <tbody>
@@ -70,6 +73,19 @@
                 <td class="px-4 py-4">Board Member</td>
                 <td class="px-4 py-4">Gela@gmail.com</td>
                 <td class="px-4 py-4">09958418165</td>
+
+                <td class="cursor-pointer px-4 py-3 font-semibold text-teal-700">
+                    <button class="contacts-btn">...</button>
+
+                    <div class="contacts-menu absolute right-40 hidden w-40 bg-white shadow-md">
+                        <ul>
+                            <li id="update-btn" class="cursor-pointer px-4 py-2 hover:bg-gray-100">Edit</li>
+                            <li class="cursor-pointer px-4 py-2 text-red-400">Delete</li>
+                        </ul>
+                    </div>
+                </td>
+
+
             </tr>
             <tr>
                 <td class="px-4 py-4">Angela</td>
@@ -77,6 +93,8 @@
                 <td class="px-4 py-4">Board Member</td>
                 <td class="px-4 py-4">Gela@gmail.com</td>
                 <td class="px-4 py-4">09958418165</td>
+                <td class="px-4 py-4">...</td>
+
             </tr>
             <tr>
                 <td class="px-4 py-4">Angela</td>
@@ -84,31 +102,158 @@
                 <td class="px-4 py-4">Board Member</td>
                 <td class="px-4 py-4">Gela@gmail.com</td>
                 <td class="px-4 py-4">09958418165</td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">Angela</td>
-                <td class="px-4 py-4">Postrero</td>
-                <td class="px-4 py-4">Board Member</td>
-                <td class="px-4 py-4">Gela@gmail.com</td>
-                <td class="px-4 py-4">09958418165</td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">Angela</td>
-                <td class="px-4 py-4">Postrero</td>
-                <td class="px-4 py-4">Board Member</td>
-                <td class="px-4 py-4">Gela@gmail.com</td>
-                <td class="px-4 py-4">09958418165</td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">Angela</td>
-                <td class="px-4 py-4">Postrero</td>
-                <td class="px-4 py-4">Board Member</td>
-                <td class="px-4 py-4">Gela@gmail.com</td>
-                <td class="px-4 py-4">09958418165</td>
+                <td class="px-4 py-4">...</td>
+
             </tr>
       
         </tbody>
     </table>
 
+    <!-- Add Contact Modal -->
+    <div id="addContactModal" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50">
+        <div id="modalContent" class="w-[500px] rounded-2xl bg-white p-8">
+            <!-- Header -->
+            <div class="mb-4 text-center">
+                <h2 class="text-2xl font-extrabold text-gray-800">Add New Contact</h2>
+            </div>
+
+            <!-- First Name & Last Name -->
+            <div class="flex gap-4">
+                <div class="w-1/2">
+                    <label class="mb-1 block text-sm font-medium text-gray-700">First Name</label>
+                    <input type="text" class="w-full rounded-md border border-gray-300 p-2">
+                </div>
+                <div class="w-1/2">
+                    <label class="mb-1 block text-sm font-medium text-gray-700">Last Name</label>
+                    <input type="text" class="w-full rounded-md border border-gray-300 p-2">
+                </div>
+            </div>
+
+            <!-- Role -->
+            <label class="mt-4 mb-1 block text-sm font-medium text-gray-700">Role</label>
+            <select class="w-full rounded-md border border-gray-300 p-2 text-gray-600">
+                <option>Choose Role</option>
+            </select>
+
+            <!-- Email -->
+            <label class="mt-4 mb-1 block text-sm font-medium text-gray-700">Email</label>
+            <input type="email" class="w-full rounded-md border border-gray-300 p-2">
+
+            <!-- Phone Number -->
+            <label class="mt-4 mb-1 block text-sm font-medium text-gray-700">Phone Number</label>
+            <input type="text" class="w-full rounded-md border border-gray-300 p-2">
+
+            <!-- Buttons -->
+            <div class="mt-6 flex gap-4">
+                <button id="closeModal" class="w-1/2 rounded-full border border-[#9B5D3D] py-2 text-[#9B5D3D]">Cancel</button>
+                <button class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Save Contact</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Update Contact Modal -->
+    <div id="updateContactModal" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50">
+        <div id="updatemodalContent" class="w-[500px] rounded-2xl bg-white p-8">
+            <!-- Header -->
+            <div class="mb-4 text-center">
+                <h2 class="text-2xl font-extrabold text-gray-800">Update</h2>
+            </div>
+
+            <!-- First Name & Last Name -->
+            <div class="flex gap-4">
+                <div class="w-1/2">
+                    <label class="mb-1 block text-sm font-medium text-gray-700">First Name</label>
+                    <input type="text" placeholder="Kobe" class="w-full rounded-md border border-gray-300 p-2">
+                </div>
+                <div class="w-1/2">
+                    <label class="mb-1 block text-sm font-medium text-gray-700">Last Name</label>
+                    <input type="text" placeholder="Amaro" class="w-full rounded-md border border-gray-300 p-2">
+                </div>
+            </div>
+
+            <!-- Role -->
+            <label class="mt-4 mb-1 block text-sm font-medium text-gray-700">Role</label>
+            <select class="w-full rounded-md border border-gray-300 p-2 text-gray-600">
+                <option>Board Member</option>
+            </select>
+
+            <!-- Email -->
+            <label class="mt-4 mb-1 block text-sm font-medium text-gray-700">Email</label>
+            <input type="email" placeholder="kbbryan.amaro@gmail.com" class="w-full rounded-md border border-gray-300 p-2">
+
+            <!-- Phone Number -->
+            <label class="mt-4 mb-1 block text-sm font-medium text-gray-700">Phone Number</label>
+            <input type="text" placeholder="09958418165" class="w-full rounded-md border border-gray-300 p-2">
+
+            <!-- Buttons -->
+            <div class="mt-6 flex gap-4">
+                <button id="closeModal" class="w-1/2 rounded-full border border-[#9B5D3D] py-2 text-[#9B5D3D]">Cancel</button>
+                <button class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Save Contact</button>
+            </div>
+        </div>
+    </div>
+
     @await Html.PartialAsync("_pagination")
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".contacts-btn").forEach(button => {
+                button.addEventListener("click", (event) => {
+                    event.stopPropagation();
+                    let menu = button.nextElementSibling;
+                    document.querySelectorAll(".contacts-menu").forEach(m => {
+                        if (m !== menu) m.classList.add("hidden");
+                    });
+                    menu.classList.toggle("hidden");
+                });
+            });
+
+            document.addEventListener("click", () => {
+                document.querySelectorAll(".contacts-menu").forEach(menu => {
+                    menu.classList.add("hidden");
+                });
+            });
+        });
+    </script>
+
+    <!-- JavaScript -->
+    <script>
+        const openModalBtn = document.getElementById("openContactModal");
+        const updateModalBtn = document.getElementById("update-btn");
+        const modal = document.getElementById("addContactModal");
+        const modalContent = document.getElementById("modalContent");
+        const upmodal = document.getElementById("updateContactModal"); // Fixed ID
+        const upmodalContent = document.getElementById("updatemodalContent"); // Defined update modal content
+
+        // Open Add Contact Modal
+        openModalBtn.addEventListener("click", () => {
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        });
+
+        // Close Add Contact Modal when clicking outside
+        modal.addEventListener("click", (event) => {
+            if (!modalContent.contains(event.target)) {
+                modal.classList.add("hidden");
+                modal.classList.remove("flex");
+            }
+        });
+
+        // Open Update Contact Modal
+        updateModalBtn.addEventListener("click", () => {
+            upmodal.classList.remove("hidden");
+            upmodal.classList.add("flex");
+        });
+
+        // Close Update Contact Modal when clicking outside
+        upmodal.addEventListener("click", (event) => {
+            if (!upmodalContent.contains(event.target)) {
+                upmodal.classList.add("hidden");
+                upmodal.classList.remove("flex");
+            }
+        });
+    </script>
+
 </div>
