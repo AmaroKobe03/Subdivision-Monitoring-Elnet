@@ -167,19 +167,39 @@ namespace ElnetSubdivi.Controllers
             ViewData["Title"] = "Service Request";
             ViewData["HideSearch"] = true;
             return View();
-        }
 
+        }
         public IActionResult serviceRequest()
         {
             ViewData["Title"] = "Service Request";
             ViewData["HideSearch"] = true;
             return View();
         }
-
+        public IActionResult Calendar()
+        {
+            ViewData["HideSearch"] = true;
+            return View();
+        }
         public IActionResult Reports()
         {
             ViewData["Title"] = "Reports";
             return View();
+        }
+        public IActionResult feedback()
+        {
+            ViewData["HideSearch"] = true;
+            ViewData["Hidebtn"] = true;
+
+            var manageReports = new List<dynamic>
+            {
+                new { Title = "Total Feedback", Count = 123, Icon = "mailfeed.svg", BorderColor = "border-blue-400 border-b-2" },
+                new { Title = "Total Complaints", Count = 34, Icon = "complaints.svg", BorderColor = "border-red-400 borber-b-2" },
+                new { Title = "Total Reports", Count = 56, Icon = "activev.svg", BorderColor = "border-green-400 borber-b-2" },
+                new { Title = "Average Satisfaction", Count = 10, Icon = "satisfaction.svg", BorderColor = "border-yellow-400 borber-b-2" }
+
+            };
+
+            return View(manageReports);
         }
         public IActionResult ContactDirectory()
         {

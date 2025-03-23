@@ -90,7 +90,7 @@
                     <img id="bell-drop" class="w-[25px] cursor-pointer sm:w-[30px]" src="~/Images/bell.svg" />
                 <div class="notif-popup absolute top-12 right-0 hidden w-80 rounded-lg bg-white p-4 shadow-lg">
                     <!-- Header -->
-                    <div class="flex items-center justify-between border-b pb-2">
+                    <div class="flex items-center justify-between border-b pb-2">  
                         <h2 class="text-lg font-bold">Notifications</h2>
                         <a href="#" class="text-sm text-gray-500 hover:underline">Mark all as read</a>
                     </div>
@@ -182,8 +182,8 @@
                     }
 
                     <a href="@Url.Action("UserProfile", "Home")" class="px-4 hover:bg-gray-200">Profile Settings</a>
-                    <a href="#" class="px-4 py-2 hover:bg-gray-200">Feedback & Report</a>
-                    <a href="#" class="px-4 py-2 hover:bg-gray-200">Calendar</a>
+                    <a href="@Url.Action("feedback", "Home")" class="px-4 py-2 hover:bg-gray-200">Feedback & Report</a>
+                    <a href="@Url.Action("Calendar", "Home")" class="px-4 py-2 hover:bg-gray-200">Calendar</a>
                     <a href="@Url.Action("ContactDirectory", "Home")" class="px-4 py-2 hover:bg-gray-200">Contact Directory</a>
                     <!-- Logout Button -->
                     <a href="#" onclick="confirmLogout(event)" class="px-4 py-2 text-red-500 hover:bg-gray-200">Logout</a>
