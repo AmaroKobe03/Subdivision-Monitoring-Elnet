@@ -75,14 +75,13 @@
                             <img class="w-[10px] brightness-0 invert-[1]" src="~/Images/drdown.svg" />
                         </a>
                         <div class="absolute top-6 right-3 hidden w-40 flex-col rounded-lg bg-white p-3 py-2 shadow-lg group-hover:flex">
-                            <a href="@Url.Action("FacilityReservation", "Home")" class="color-white px-4 py-2 hover:bg-gray-200">Visitors</a>
-                            <a href="@Url.Action("MyReservation","Home")" class="px-4 py-2 hover:bg-gray-200">Vehicles</a>
+                            <a href="@Url.Action("UserVisitors", "Home")" class="color-white px-4 py-2 hover:bg-gray-200">Visitors</a>
+                            <a href="@Url.Action("UserVehicle","Home")" class="px-4 py-2 hover:bg-gray-200">Vehicles</a>
                         </div>
                     </div>
                 }
             }
         </div>
-
 
 
         <div id="pfp-notif" class="relative ml-10 flex flex-row items-center justify-center gap-4 md:ml-2">
@@ -182,7 +181,16 @@
                     }
 
                     <a href="@Url.Action("UserProfile", "Home")" class="px-4 hover:bg-gray-200">Profile Settings</a>
-                    <a href="@Url.Action("feedback", "Home")" class="px-4 py-2 hover:bg-gray-200">Feedback & Report</a>
+                     @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+                                 if (User.Identity.Name == "admin")
+                                {
+                                    <a href="@Url.Action("feedback", "Home")" class="px-4 py-2 hover:bg-gray-200">Feedback & Report</a>
+                                }else{
+                                    <a href="@Url.Action("UserFeedback", "Home")" class="px-4 py-2 hover:bg-gray-200">Feedback & Report</a>
+
+                                }
+                        }
                     <a href="@Url.Action("Calendar", "Home")" class="px-4 py-2 hover:bg-gray-200">Calendar</a>
                     <a href="@Url.Action("ContactDirectory", "Home")" class="px-4 py-2 hover:bg-gray-200">Contact Directory</a>
                     <!-- Logout Button -->

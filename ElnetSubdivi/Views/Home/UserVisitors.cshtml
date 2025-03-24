@@ -1,0 +1,212 @@
+﻿@{
+    ViewData["Title"] = "Visitors Pass Management";
+}
+
+<div class="flex h-[100vh] w-[90%] flex-col items-center overflow-auto bg-[#f2f2f2] p-6 font-semibold">
+    @await Html.PartialAsync("_sharedSearch")
+
+    <!-- Visitors Pass Section -->
+    <div class="flex w-[88%] gap-6">
+        <!-- Left Section - Visitors Pass List -->
+        <div class="w-[70%] rounded-lg bg-white p-4 shadow">
+            <div class="flex justify-between">
+                <h2 class="text-lg font-bold">Visitors Passes</h2>
+                <div class="relative">
+                    <!-- Filter Button -->
+                    <div id="filterButton" class="border-1 flex w-[120px] cursor-pointer items-center gap-2 rounded-lg border border-gray-400 px-4 py-2">
+                        <img src="~/Images/filter.svg" alt="Filter" class="h-5">
+                        <span class="font-medium text-black">Filter</span>
+                    </div>
+
+                    <!-- Dropdown Menu -->
+                    <div id="filterDropdown" class="absolute left-0 mt-2 hidden w-[120px] rounded-lg border border-gray-400 bg-white shadow-lg">
+                        <ul class="py-2">
+                            <li class="cursor-pointer px-4 py-2 hover:bg-gray-200">Pending</li>
+                            <li class="cursor-pointer px-4 py-2 hover:bg-gray-200">Approved</li>
+                            <li class="cursor-pointer px-4 py-2 hover:bg-gray-200">Declined</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <script>
+                    document.getElementById("filterButton").addEventListener("click", function() {
+                        document.getElementById("filterDropdown").classList.toggle("hidden");
+                    });
+
+                    document.addEventListener("click", function(event) {
+                        if (!document.getElementById("filterButton").contains(event.target)) {
+                            document.getElementById("filterDropdown").classList.add("hidden");
+                        }
+                    });
+                </script>
+
+
+            </div>
+
+            <div id="sortF" class="mt-4 flex w-[88.5%] flex-row items-center gap-6">
+                <a href="#" id="userfeedbackbtn" class="cursor-pointer rounded-full bg-blue-200 px-6 py-2 text-center font-semibold text-blue-700">
+                    <span class="text-[15px]">All<span>(12)</span></span>
+                </a>
+                <a href="#" id="usercomplaintsbtn" class="cursor-pointer rounded-full px-6 py-2 text-center hover:bg-gray-200">
+                    <span class="text-[15px]">Pending<span>(3)</span></span>
+                </a>
+                <a href="#" id="usercomplaintsbtn" class="cursor-pointer rounded-full px-6 py-2 text-center hover:bg-gray-200">
+                    <span class="text-[15px]">Approved<span>(5)</span></span>
+                </a>
+                <a href="#" id="usercomplaintsbtn" class="cursor-pointer rounded-full px-6 py-2 text-center hover:bg-gray-200">
+                    <span class="text-[15px]">Rejected<span>(4)</span></span>
+                </a>
+            </div>
+
+            <!-- Visitor Card -->
+            <div class="mt-4 flex items-center justify-between rounded-lg border border-gray-400 bg-white p-4">
+                <div class="flex w-full flex-col gap-4">
+                    <div class="flex w-full flex-row items-center">
+                        <p class="font-bold">John Anderson</p>
+                        <div class="ml-auto">
+                            <button class="rounded-full bg-orange-300 px-4 py-2 text-white">Pending</button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <img src="~/Images/cal.svg" />
+                        <p class="text-sm text-gray-500">March 15, 2025 - 2:30 PM</p>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <img src="~/Images/carfront.svg" />
+                        <p class="text-sm text-gray-500"> ABC-123</p>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <a id="viewVehicleDets" href="#" class="text-blue-400">View Details</a>
+                        <a href="#">Edit</a>
+                        <a href="#" class="text-red-400">Cancel</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right Section - Request Form -->
+        <div class="w-[30%] rounded-lg bg-white p-4 shadow">
+            <h2 class="text-lg font-bold">Request Visitor Pass</h2>
+            <form class="mt-2 space-y-3">
+                <div>
+                    <label class="block text-gray-600">First Name</label>
+                    <input type="text" class="w-full rounded border p-2" value="David">
+                </div>
+                <div>
+                    <label class="block text-gray-600">Last Name</label>
+                    <input type="text" class="w-full rounded border p-2" value="Lim">
+                </div>
+                <div>
+                    <label class="block text-gray-600">Phone Number</label>
+                    <input type="text" class="w-full rounded border p-2" value="09122424533">
+                </div>
+                <div>
+                    <label class="block text-gray-600">Visit Date</label>
+                    <input type="date" class="w-full rounded border p-2">
+                </div>
+                <div>
+                    <label class="block text-gray-600">Visit Time</label>
+                    <input type="time" class="w-full rounded border p-2">
+                </div>
+                <div>
+                    <label class="block text-gray-600">Vehicle Plate (Optional)</label>
+                    <input type="text" class="w-full rounded border p-2" value="ABC 123">
+                </div>
+                <div>
+                    <label class="block text-gray-600">Reason for Visit</label>
+                    <textarea class="w-full rounded border p-2"></textarea>
+                </div>
+                <div class="flex gap-4">
+                    <button class="w-1/2 rounded-full border border-[#bg-[#003D38]] py-2">Cancel</button>
+                    <button class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Submit Request</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- View Details Button -->
+<a id="viewVehicleDets" href="#" class="text-blue-400">View Details</a>
+
+<!-- Modal -->
+<div id="viewDetailsModal" class="bg-opacity-50 fixed inset-0 flex hidden items-center justify-center bg-black/50">
+    <div class="w-[500px] rounded-lg bg-white p-6 shadow-lg">
+        <div class="flex items-center justify-between border-b pb-3">
+            <h2 class="w-full text-center text-lg font-bold text-[#003C3D]">View Details</h2>
+            <button id="closeModal" class="text-xl font-bold text-[#003C3D]">&times;</button>
+        </div>
+
+        <div class="mt-4 space-y-4">
+            <div class="flex gap-2">
+                <div class="w-1/2">
+                    <label class="text-sm font-semibold text-[#003C3D]">First Name</label>
+                    <input type="text" class="w-full rounded-md border border-[#003C3D] p-2" value="Katy" readonly>
+                </div>
+                <div class="w-1/2">
+                    <label class="text-sm font-semibold text-[#003C3D]">Last Name</label>
+                    <input type="text" class="w-full rounded-md border border-[#003C3D] p-2" value="Perry" readonly>
+                </div>
+            </div>
+
+            <div>
+                <label class="text-sm font-semibold text-[#003C3D]">Homeowner</label>
+                <input type="text" class="w-full rounded-md border border-[#003C3D] p-2" value="Kobe Amaro" readonly>
+            </div>
+
+            <div>
+                <label class="text-sm font-semibold text-[#003C3D]">Phone Number</label>
+                <input type="text" class="w-full rounded-md border border-[#003C3D] p-2" value="0123456789" readonly>
+            </div>
+
+            <div class="flex gap-2">
+                <div class="w-1/2">
+                    <label class="text-sm font-semibold text-[#003C3D]">Visit Date</label>
+                    <div class="relative">
+                        <input id="visitDate" type="date" class="w-full rounded-md border border-[#003C3D] p-2">
+                    </div>
+                </div>
+                <div class="w-1/2">
+                    <label class="text-sm font-semibold text-[#003C3D]">Visit Time</label>
+                    <div class="relative">
+                        <input id="visitTime" type="time" class="w-full rounded-md border border-[#003C3D] p-2">
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <label class="text-sm font-semibold text-[#003C3D]">Vehicle Plate (Optional)</label>
+                <input type="text" class="w-full rounded-md border border-[#003C3D] p-2" value="ABC 123" readonly>
+            </div>
+
+            <div>
+                <label class="text-sm font-semibold text-[#003C3D]">Reason for Visit</label>
+                <input type="text" class="bo rder-[#003C3D] w-full rounded-md border p-2" value="Visiting a friend" readonly>
+            </div>
+        </div>
+
+        <div class="mt-6 flex w-full justify-between gap-2">
+            <button class="w-1/2 rounded-full border border-[#003C3D] px-6 py-2 text-[#003C3D]">Decline</button>
+            <button class="w-1/2 rounded-full bg-[#003C3D] px-6 py-2 text-white">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("viewVehicleDets").addEventListener("click", function (event) {
+        event.preventDefault();
+        document.getElementById("viewDetailsModal").classList.remove("hidden");
+    });
+
+    document.getElementById("closeModal").addEventListener("click", function () {
+        document.getElementById("viewDetailsModal").classList.add("hidden");
+    });
+
+    document.addEventListener("click", function (event) {
+        if (event.target.id === "viewDetailsModal") {
+            document.getElementById("viewDetailsModal").classList.add("hidden");
+        }
+    });
+</script>

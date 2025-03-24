@@ -162,6 +162,20 @@ namespace ElnetSubdivi.Controllers
             return View();
         }
 
+        public IActionResult UserVisitors()
+        {
+            ViewData["HideSearch"] = true;
+            return View();
+
+        }
+
+        public IActionResult UserVehicle()
+        {
+            ViewData["HideSearch"] = true;
+            return View();
+
+        }
+
         public IActionResult Billing()
         {
             ViewData["Title"] = "Service Request";
@@ -184,6 +198,26 @@ namespace ElnetSubdivi.Controllers
         {
             ViewData["Title"] = "Reports";
             return View();
+        }
+        public IActionResult UserFeedback()
+        {
+            ViewData["HideSearch"] = true;
+
+            var feedback = new List<dynamic>
+            {
+                new {Icon = "ratings.svg", Title = "Great User Experience", Type = "Feedback", Description = "The Interface is intuitive and easy to navigate. I particularly enjoyedthe smooth transitions and..", Clock = "clock.svg", Duration = "2 Days ago"},
+                new {Icon = "ratings.svg", Title = "Great User Exponent", Type = "Feedback", Description = "The Interface is intuitive and easy to navigate. I particularly enjoyedthe smooth transitions and..", Clock = "clock.svg", Duration = "2 Days ago" },
+
+            };
+
+            var complaint = new List<dynamic>
+            {
+                new {Status = "Pending", Title = "Noise Complaint in Block A", Type = "Complaint", Description = "Continuous loud music from unit 302 during quiet hours...", Clock = "clock.svg", Duration = "2 Days ago"},
+                new {Status = "Resolved", Title = "Noise Complaint in Block B", Type = "Complaint", Description = "Continuous loud music from unit 302 during quiet hours...", Clock = "clock.svg", Duration = "2 Days ago" },
+            };
+                 ViewBag.Complaints = complaint;
+            return View(feedback);
+
         }
         public IActionResult feedback()
         {
