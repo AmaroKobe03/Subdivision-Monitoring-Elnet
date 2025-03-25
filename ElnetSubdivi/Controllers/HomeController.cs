@@ -160,7 +160,7 @@ namespace ElnetSubdivi.Controllers
 
             return View(data);
         }
-        public IActionResult UserManagement()
+
         public async Task<IActionResult> UserManagement()
         {
             ViewData["Title"] = "Service Request";
