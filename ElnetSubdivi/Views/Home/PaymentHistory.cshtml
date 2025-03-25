@@ -1,0 +1,283 @@
+﻿
+@{
+    ViewData["Title"] = "Payment History";
+
+}
+
+
+<div class="flex h-[100vh] w-[90%] flex-col items-center gap-4 overflow-auto overflow-y-hidden bg-[#f2f2f2] font-semibold">
+    @await Html.PartialAsync("_sharedSearch")
+
+    <a class="relative left-25 flex w-[20%] items-center gap-2 self-start" href="@Url.Action("BillingManagement","Home")">
+       <img src="~/Images/back.svg" alt="Alternate Text" />
+        <p>Return</p>
+    </a>
+    <div class="flex h-auto w-[88%] flex-col items-center justify-center rounded-lg bg-white">
+        <img class="object-fit h-40 w-30 p-1" src="~/Images/pfp.svg" />
+        <p>Kobe Amaro</p>
+    </div>
+
+    <div class="flex h-[15vh] w-[88%] items-center justify-between">
+        <div class="flex h-[10vh] w-full items-center justify-center gap-6">
+            @foreach (var item in Model)
+            {
+                <div class="flex h-[10vh] w-[25%] items-center justify-around rounded-lg border-b-[3px] bg-white @item.BorderColor shadow-lg">
+                    <div class="ml-5 flex flex-col gap-2">
+                        <h2 class="text-[16px] text-gray-400">@item.Title</h2>
+                        <div class="flex items-center">
+                            @if (item.Title != "Pending Payments")
+                            {
+                                <img src="~/Images/Peso.svg" />
+                            }
+                            <p class="text-2xl">@item.Count</p>
+                        </div>
+                    </div>
+                    <img class="w-[30px]" src="~/Images/@item.Icon" alt="status-icon" />
+                </div>
+            }
+        </div>
+    </div>
+    <div class="mr-2 mb-6 flex w-[88%] items-center justify-between">
+        <!-- Search Bar -->
+        <div class="relative mr-2 w-[40%]">
+            <input type="text" placeholder="Search"
+                   class="h-12 w-full rounded-full border border-gray-300 bg-white pr-4 pl-12 outline-none focus:ring-2 focus:ring-gray-300">
+            <img class="absolute top-1/2 left-4 h-5 -translate-y-1/2" src="~/Images/find.svg" alt="Search">
+        </div>
+
+        <!-- Status Dropdown -->
+        <div class="relative right-50 inline-block">
+            <select id="statusSelect" class="appearance-none rounded-full border border-gray-300 bg-white px-4 py-2 pr-8 font-medium text-black shadow-sm outline-none">
+                <option value="All Status">All Status</option>
+                <option value="Pending">Approved</option>
+                <option value="Approved">Pending</option>
+                <option value="Cancelled">Declined</option>
+            </select>
+            <img src="~/Images/drp.svg" alt="Dropdown" class="pointer-events-none absolute top-1/2 right-3 h-4 -translate-y-1/2">
+        </div>
+
+
+
+        <div class="flex items-center gap-4">
+            <!-- Export Report Button -->
+            <button class="flex items-center gap-2 rounded-full border border-[#04373A] bg-white px-6 py-2 text-[#04373A]">
+                <img src="~/Images/export.svg" alt="Export" class="h-4">
+                <span class="font-medium">Export Report</span>
+            </button>
+
+            <!-- New Invoice Button -->
+            <button id="openModal" class="flex items-center gap-2 rounded-full bg-[#04373A] px-6 py-2 text-white">
+                <span class="text-xl">+</span>
+                <span class="font-medium">New Invoice</span>
+            </button>
+        </div>
+    </div>
+
+    <table class="w-[88%] border-collapse bg-white text-left">
+        <thead>
+            <tr class="text-gray-500">
+
+                <th class="px-4 py-3">Homeowner</th>
+
+                <th class="px-4 py-3">Bill Type</th>
+                <th class="px-4 py-3">Billing Period</th>
+                <th class="px-4 py-3">Amount Due</th>
+                <th class="px-4 py-3">Due Date</th>
+                <th class="px-4 py-3">Status</th>
+                <th class="px-4 py-3">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="">
+                <td class="px-4 py-3">
+                    <div class="flex items-center gap-2">
+                        <img src="~/Images/pfp.svg" class="h-8 w-8 rounded-full" alt="">
+                        <span class="font-medium">Kobe Amaro</span>
+                    </div>
+                </td>
+                <td class="flex items-center gap-2 px-4 py-3">
+                    <img src="~/Images/electric.svg" class="w-5" alt="">
+                    <span>Electricity Bill</span>
+                </td>
+                <td class="px-4 py-3">March 2025</td>
+                <td class="px-4 py-3">₱5,250.00</td>
+                <td class="px-4 py-3">March 15, 2025</td>
+                <td class="px-4 py-3 font-semibold text-red-500">Overdue</td>
+                <td class="cursor-pointer px-4 py-3 font-semibold text-teal-700">
+                    <button class="actions-btn">⋮</button>
+
+                    <div class="actions-menu absolute right-40 hidden w-40 bg-white shadow-md">
+                        <ul>
+                            <li id="viewdetsbtn" class="cursor-pointer px-4 py-2 hover:bg-gray-100">View Details</li>
+                            <li class="cursor-pointer px-4 py-2 hover:bg-gray-100">Edit Invoice</li>
+                            <li class="cursor-pointer px-4 py-2 hover:bg-gray-100">Mark as Paid</li>
+                            <li class="cursor-not-allowed px-4 py-2 text-gray-400">Generate Receipt</li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    @await Html.PartialAsync("_pagination")
+
+    <!-- invoice Modal -->
+    <div id="invoiceModal" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50">
+        <div class="w-[500px] rounded-2xl bg-white p-8" id="modalContent">
+            <h2 class="mb-4 text-center text-2xl font-extrabold text-gray-800">Create New Invoice</h2>
+
+            <!-- Homeowner -->
+            <label class="mb-1 block text-base text-gray-500">Homeowner</label>
+            <select class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500">
+                <option>Select Homeowner</option>
+            </select>
+
+            <!-- Bill Type -->
+            <label class="mt-4 mb-1 block text-base text-gray-500">Bill Type</label>
+            <select class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500">
+                <option>Select Bill Type</option>
+            </select>
+
+            <!-- Billing Period -->
+            <label class="mt-4 mb-1 block text-base text-gray-500">Billing Period</label>
+            <div class="relative">
+                <input type="month" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" />
+            </div>
+
+            <!-- Due Date -->
+            <label class="mt-4 mb-1 block text-base text-gray-500">Due Date</label>
+            <div class="relative">
+                <input type="date" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" />
+            </div>
+
+            <!-- Amount Due -->
+            <label class="mt-4 mb-1 block text-base text-gray-500">Amount Due (₱)</label>
+            <input type="text" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" />
+
+            <!-- Notes -->
+            <label class="mt-4 mb-1 block text-base text-gray-500">Notes (Optional)</label>
+            <textarea class="border-2 h-[10vh] w-full rounded-md border-gray-300 bg-white p-2 text-gray-500"></textarea>
+
+            <!-- Buttons -->
+            <div class="mt-6 flex gap-4">
+                <button id="closeModal" class="w-1/2 rounded-full border border-gray-500 py-2 text-gray-500">Cancel</button>
+                <button class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Create</button>
+            </div>
+        </div>
+    </div>
+    <!-- details Modal -->
+    <div id="detailsModal" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50">
+        <div class="w-[500px] rounded-2xl bg-white p-8" id="modalContent">
+            <div class="mb-4 flex items-center justify-between">
+                <h2 class="text-center text-2xl font-extrabold text-gray-800">Invoice Details</h2>
+                <button id="closeModal" class="text-2xl text-gray-500">&times;</button>
+            </div>
+
+            <!-- Homeowner -->
+            <label class="mb-1 block text-base text-gray-500">Homeowner</label>
+            <select class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500">
+                <option>Kobe Amaro</option>
+            </select>
+
+            <!-- Bill Type -->
+            <label class="mt-4 mb-1 block text-base text-gray-500">Bill Type</label>
+            <select class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500">
+                <option>Electricity</option>
+            </select>
+
+            <!-- Billing Period -->
+            <label class="mt-4 mb-1 block text-base text-gray-500">Billing Period</label>
+            <div class="relative">
+                <input type="month" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" value="2025-03" />
+            </div>
+
+            <!-- Due Date -->
+            <label class="mt-4 mb-1 block text-base text-gray-500">Due Date</label>
+            <div class="relative">
+                <input type="date" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" value="2025-03-15" />
+            </div>
+
+            <!-- Amount Due -->
+            <label class="mt-4 mb-1 block text-base text-gray-500">Amount Due (₱)</label>
+            <input type="text" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" value="5000" />
+
+            <!-- Notes -->
+            <label class="mt-4 mb-1 block text-base text-gray-500">Notes (Optional)</label>
+            <textarea class="border-2 h-[10vh] w-full rounded-md border-gray-300 bg-white p-2 text-gray-500">Pay immediately</textarea>
+
+            <!-- Buttons -->
+            <div class="mt-6 flex gap-4">
+                <button id="closeModal" class="w-1/2 rounded-full border border-gray-500 py-2 text-gray-500">Cancel</button>
+                <button class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Update</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".actions-btn").forEach(button => {
+                button.addEventListener("click", (event) => {
+                    event.stopPropagation();
+                    let menu = button.nextElementSibling;
+                    document.querySelectorAll(".actions-menu").forEach(m => {
+                        if (m !== menu) m.classList.add("hidden");
+                    });
+                    menu.classList.toggle("hidden");
+                });
+            });
+
+            document.addEventListener("click", () => {
+                document.querySelectorAll(".actions-menu").forEach(menu => {
+                    menu.classList.add("hidden");
+                });
+            });
+        });
+    </script>
+
+    <script>
+         document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll("#viewdetsbtn").forEach(button => {
+                button.addEventListener("click", (event) => {
+                    event.stopPropagation();
+                    document.getElementById("detailsModal").classList.remove("hidden");
+                });
+            });
+
+            document.getElementById("detailsModal").addEventListener("click", (event) => {
+                if (event.target === event.currentTarget) {
+                    event.target.classList.add("hidden");
+                }
+            });
+        });
+
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const openModal = document.getElementById("openModal");
+            const closeModal = document.getElementById("closeModal");
+            const modal = document.getElementById("invoiceModal");
+            const modalContent = document.getElementById("modalContent");
+
+            openModal.addEventListener("click", function () {
+                modal.classList.remove("hidden");
+            });
+
+            closeModal.addEventListener("click", function () {
+                modal.classList.add("hidden");
+            });
+
+            // Close modal when clicking outside modal content
+            modal.addEventListener("click", function (event) {
+                if (!modalContent.contains(event.target)) {
+                    modal.classList.add("hidden");
+                }
+            });
+        });
+    </script>
+
+
+</div>
+

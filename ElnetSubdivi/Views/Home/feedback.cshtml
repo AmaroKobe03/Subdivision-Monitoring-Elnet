@@ -1,0 +1,339 @@
+﻿@{
+    ViewData["Title"] = "Feeback, Complaint, and Report Management";
+}
+
+<div class="flex h-[100vh] w-[90%] flex-col items-center overflow-auto overflow-y-hidden bg-[#f2f2f2] font-semibold">
+    @await Html.PartialAsync("_sharedSearch")
+
+    <div class="flex h-[15vh] w-[88%] items-center justify-center">
+        <div class="flex h-[15vh] w-full items-center justify-center gap-6">
+            @foreach (var item in Model)
+            {
+                <div class="flex h-[15vh] w-[25%] items-center justify-around rounded-lg border-b-[3px] bg-white @item.BorderColor shadow-lg">
+                    <div class="ml-5 flex flex-col gap-2">
+                        <h2 class="text-[16px] text-gray-400">@item.Title</h2>
+                        <p class="text-2xl">@item.Count</p>
+                    </div>
+                    <img class="w-[30px]" src="~/Images/@item.Icon" alt="status-icon" />
+                </div>
+            }
+        </div>
+    </div>
+
+    <div id="sortR" class="mt-4 flex w-[88.5%] flex-row items-center gap-6">
+        <a href="#" id="feedbackbtn" class="cursor-pointer rounded-full bg-blue-200 px-6 py-2 text-center font-semibold text-blue-700">
+            <span class="text-[15px]">Feedback<span>(2)</span></span>
+        </a>
+        <a href="#" id="complaintsbtn" class="cursor-pointer rounded-full bg-gray-100 px-6 py-2 text-center hover:bg-gray-200">
+            <span class="text-[15px]">Complaints<span>(2)</span></span>
+        </a>
+        <a href="#" id="incedentbtn" class="cursor-pointer rounded-full bg-gray-100 px-6 py-2 text-center hover:bg-gray-200">
+            <span class="text-[15px]">Incident Reports<span>(2)</span></span>
+        </a>
+    </div>
+
+    <div class="mt-10 mr-2 mb-6 flex w-[88%] items-center justify-between">
+        <!-- Search Bar -->
+        <div class="relative mr-2 w-[40%]">
+            <input type="text" placeholder="Search"
+                   class="h-12 w-full rounded-full border border-gray-300 bg-white pr-4 pl-12 outline-none focus:ring-2 focus:ring-gray-300">
+            <img class="absolute top-1/2 left-4 h-5 -translate-y-1/2" src="~/Images/find.svg" alt="Search">
+        </div>
+
+        <!-- Status Dropdown -->
+        <div class="relative right-80 inline-block">
+            <select id="statusSelect" class="appearance-none rounded-full border border-gray-300 bg-white px-4 py-2 pr-8 font-medium text-black shadow-sm outline-none">
+                <option value="All Status">All Status</option>
+                <option value="Pending">Approved</option>
+                <option value="Approved">Pending</option>
+                <option value="Cancelled">Declined</option>
+            </select>
+            <img src="~/Images/drp.svg" alt="Dropdown" class="pointer-events-none absolute top-1/2 right-3 h-4 -translate-y-1/2">
+        </div>
+
+
+        <div class="flex items-center gap-4">
+            <!-- Export Report Button -->
+            <button class="flex items-center gap-2 rounded-full border border-[#04373A] bg-white px-6 py-2 text-[#04373A]">
+                <img src="~/Images/export.svg" alt="Export" class="h-4">
+                <span class="font-medium">Export</span>
+            </button>
+        </div>
+    </div>
+
+    <table id="FeedbackTable" class="w-[88%] border-collapse bg-white text-left">
+        <thead>
+            <tr class="text-gray-500">
+
+                <th class="px-4 py-3">Homeowner</th>
+                <th class="px-4 py-3">Message Title</th>
+                <th class="px-4 py-3">Mesage Description</th>
+                <th class="px-4 py-3">Rating</th>
+                <th class="px-4 py-3">Date</th>
+                <th class="px-4 py-3">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="">
+                <td class="px-4 py-3">
+                    <div class="flex items-center gap-2">
+                        <img src="~/Images/pfp.svg" class="h-8 w-8 rounded-full" alt="">
+                        <a href="@Url.Action("PaymentHistory","Home")" class="cursor-pointer font-medium">Kobe Amaro</a>
+                    </div>
+                </td>
+                <td class="px-4 py-3">Great User Experience</td>
+                <td class="px-4 py-3">The Interface is Intuitive</td>
+                <td class="px-4 py-3"><img src="~/Images/ratings.svg" /></td>
+                <td class="px-4 py-3">March 15, 2025</td>
+                <td class="px-4 py-3 font-semibold text-[#04373A] underline"><a id="Fdets" href="#">View Details</a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table id="ComplaintsTable" class="hidden w-[88%] border-collapse bg-white text-left">
+        <thead>
+            <tr class="text-gray-500">
+
+                <th class="px-4 py-3">Homeowner</th>
+                <th class="px-4 py-3">Message Title</th>
+                <th class="px-4 py-3">Mesage Description</th>
+                <th class="px-4 py-3">Date</th>
+                <th class="px-4 py-3">Status</th>
+                <th class="px-4 py-3">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="">
+                <td class="px-4 py-3">
+                    <div class="flex items-center gap-2">
+                        <img src="~/Images/pfp.svg" class="h-8 w-8 rounded-full" alt="">
+                        <a href="@Url.Action("PaymentHistory","Home")" class="cursor-pointer font-medium">Kobe Amaro</a>
+                    </div>
+                </td>
+                <td class="px-4 py-3">Noise Complaint in..  </td>
+                <td class="px-4 py-3">Continuous loud music from...</td>
+                <td class="px-4 py-3">March 15, 2025</td>
+                <td class="px-4 py-3 text-orange-300">Pending</td>
+                <td class="px-4 py-3 font-semibold text-[#04373A] underline"><a id="Cdets" href="#">View Details</a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table id="IncedentTable" class="hidden w-[88%] border-collapse bg-white text-left">
+        <thead>
+            <tr class="text-gray-500">
+
+                <th class="px-4 py-3">Homeowner</th>
+                <th class="px-4 py-3">Staff Role</th>
+                <th class="px-4 py-3">Subject</th>
+                <th class="px-4 py-3">Description</th>
+                <th class="px-4 py-3">Date</th>
+                <th class="px-4 py-3">Status</th>
+                <th class="px-4 py-3">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="">
+                <td class="px-4 py-3">
+                    <div class="flex items-center gap-2">
+                        <img src="~/Images/pfp.svg" class="h-8 w-8 rounded-full" alt="">
+                        <a href="@Url.Action("PaymentHistory","Home")" class="cursor-pointer font-medium">Kobe Amaro</a>
+                    </div>
+                </td>
+                <td class="px-4 py-3">Maintenance</td>
+                <td class="px-4 py-3">Broken Light Post </td>
+                <td class="px-4 py-3">there's a Broken Light..'</td>
+                <td class="px-4 py-3">March 15, 2025</td>
+                <td class="px-4 py-3 text-orange-300">Pending</td>
+                <td class="px-4 py-3 font-semibold text-[#04373A] underline"><a id="Idets" href="#">View Details</a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div id="feedbackModal" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50" onclick="closeModal(event)">
+        <div class="flex w-[500px] flex-col gap-4 rounded-2xl bg-white p-8 shadow-lg" onclick="event.stopPropagation()">
+            <!-- Modal Header -->
+            <h2 class="text-center text-2xl font-bold text-[#003D38]">Feedback Details</h2>
+            <div class="flex flex-col gap-2">
+                <h2>Rating</h2>
+                <img class="m-0 w-40 p-0" src="~/Images/ratings.svg" />
+            </div>
+            <div class="flex flex-col gap-2">
+                <h2>Title</h2>
+                <input type="text" name="" placeholder="Grear User Experience" class="border-2 rounded-lg border-gray-300 px-4 py-2" value="" />
+            </div>
+            <div class="flex flex-col gap-2">
+                <h2>Description</h2>
+                <textarea class="border-2 h-[15vh] w-full resize-none rounded-lg border-gray-300 px-4 py-2 text-gray-400" readonly>The interface is intuitive and easy to navigate. I particularly enjoyed the smooth transitions and responsive
+                </textarea>
+
+            </div>
+            <button class="close-btn w-1/2 rounded-full border border-[#003D38] py-2 text-[#003D38]">Close</button>
+
+        </div>
+    </div>
+
+    <div id="ComplaintsModal" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50">
+        <div class="flex w-[500px] flex-col gap-4 rounded-2xl bg-white p-8 shadow-lg">
+            <h2 class="text-center text-2xl font-bold text-[#003D38]">Complaint Details</h2>
+
+            <h2>Subject</h2>
+            <input type="text" name="" placeholder="Noise Complaint in Block A" class="border-2 rounded-lg border-gray-300 px-4 py-2" value="" />
+
+            <!-- Description -->
+            <label class="mb-1 block text-base">Description</label>
+            <textarea class="border-2 h-[10vh] w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" readonly>Continuous loud mudic from unit 302 during quit hours aeven thought its too late.</textarea>
+
+            <!-- Attachments -->
+            <label class="mt-4 mb-1 block text-base text-gray-500">Attachments</label>
+            <img src="~/Images/attachment.png" class="border-2 h-16 w-16 rounded-md border-gray-300 object-cover" />
+
+
+            <div class="mt-6 flex gap-4">
+                <button class="close-btn w-1/2 rounded-full border border-[#003D38] py-2 text-[#003D38]">Close</button>
+                <button class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Resolve</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="IncidentModal" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50">
+        <div class="flex w-[500px] flex-col gap-4 rounded-2xl bg-white p-8 shadow-lg">
+            <h2 class="text-center text-2xl font-bold text-[#003D38]">Report Details</h2>
+
+            <h2>Subject</h2>
+            <input type="text" name="" placeholder="Noise Complaint in Block A" class="border-2 rounded-lg border-gray-300 px-4 py-2" value="" />
+
+            <!-- Description -->
+            <label class="mb-1 block text-base">Description</label>
+            <textarea class="border-2 h-[10vh] w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" readonly>Continuous loud mudic from unit 302 during quit hours aeven thought its too late.</textarea>
+
+            <!-- Attachments -->
+            <label class="mt-4 mb-1 block text-base text-gray-500">Attachments</label>
+            <img src="~/Images/attachment.png" class="border-2 h-16 w-16 rounded-md border-gray-300 object-cover" />
+
+
+            <div class="mt-6 flex gap-4">
+                <button class="w-1/2 rounded-full border border-[#B25828] py-2 text-[#003D38]">Close</button>
+                <button class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Resolve</button>
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("_pagination")
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get modal elements
+            const feedbackModal = document.getElementById("feedbackModal");
+            const complaintsModal = document.getElementById("ComplaintsModal");
+            const incidentModal = document.getElementById("IncidentModal");
+
+            // Get trigger buttons
+            const feedbackBtn = document.getElementById("Fdets");
+            const complaintsBtn = document.getElementById("Cdets");
+            const incidentBtn = document.getElementById("Idets");
+
+            // Close modals function
+            function closeModal(event) {
+                if (event.target.classList.contains("bg-black/50")) {
+                    feedbackModal.classList.add("hidden");
+                    complaintsModal.classList.add("hidden");
+                    incidentModal.classList.add("hidden");
+                }
+            }
+
+            // Open modal function
+            function openModal(modal) {
+                modal.classList.remove("hidden");
+            }
+
+            // Add click event listeners
+            feedbackBtn.addEventListener("click", () => openModal(feedbackModal));
+            complaintsBtn.addEventListener("click", () => openModal(complaintsModal));
+            incidentBtn.addEventListener("click", () => openModal(incidentModal));
+
+            // Close modal when clicking outside
+            feedbackModal.addEventListener("click", closeModal);
+            complaintsModal.addEventListener("click", closeModal);
+            incidentModal.addEventListener("click", closeModal);
+
+            // Close modal when clicking the "Close" button
+            document.querySelectorAll(".close-btn").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    feedbackModal.classList.add("hidden");
+                    complaintsModal.classList.add("hidden");
+                    incidentModal.classList.add("hidden");
+                });
+            });
+        });
+    </script>
+
+
+
+    <script>
+        document.getElementById("Idets").addEventListener("click", function () {
+            document.getElementById("IncidentModal").classList.remove("hidden");
+        });
+
+        document.getElementById("IncidentModal").addEventListener("click", function (event) {
+            if (!event.target.closest(".modal-content")) {
+                this.classList.add("hidden");
+            }
+        });
+    </script>
+
+    <script>
+        // Function to show a specific table and hide others
+        function showTable(tableId) {
+            // List of all table IDs
+            const tables = ["FeedbackTable", "ComplaintsTable", "IncedentTable"];
+
+            // Loop through tables and hide all except the selected one
+            tables.forEach(id => {
+                if (id === tableId) {
+                    document.getElementById(id).classList.remove("hidden");
+                } else {
+                    document.getElementById(id).classList.add("hidden");
+                }
+            });
+        }
+
+        // Event listeners for buttons
+        document.getElementById("feedbackbtn").addEventListener("click", function () {
+            showTable("FeedbackTable");
+        });
+
+        document.getElementById("complaintsbtn").addEventListener("click", function () {
+            showTable("ComplaintsTable");
+        });
+
+        document.getElementById("incedentbtn").addEventListener("click", function () {
+            showTable("IncedentTable");
+        });
+    </script>
+
+
+    <script>
+        document.querySelectorAll("#sortR a").forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+                e.preventDefault(); // Prevent page reload
+
+                // Reset all buttons
+                document.querySelectorAll("#sortR a").forEach(b => {
+                    b.classList.remove("bg-blue-200", "text-blue-700", "font-semibold");
+                    b.classList.add("bg-gray-100", "hover:bg-gray-200");
+                    b.querySelector("span").classList.remove("text-blue-700");
+                    b.querySelector("span").classList.add("text-black");
+                });
+
+                // Add active state to the clicked button
+                e.currentTarget.classList.add("bg-blue-200", "text-blue-700", "font-semibold");
+                e.currentTarget.classList.remove("bg-gray-100", "hover:bg-gray-200");
+
+                // Change the text inside span to blue
+                e.currentTarget.querySelector("span").classList.remove("text-black");
+                e.currentTarget.querySelector("span").classList.add("text-blue-700");
+            });
+        });
+
+    </script>
+</div>

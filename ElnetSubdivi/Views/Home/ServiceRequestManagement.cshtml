@@ -1,0 +1,158 @@
+﻿@{
+    ViewData["Title"] = "Service Requests Management";
+}
+@model IEnumerable<dynamic>
+
+<div class="flex h-[100vh] w-[90%] flex-col items-center overflow-auto overflow-y-hidden bg-[#f2f2f2] font-semibold">
+    @await Html.PartialAsync("_sharedSearch")
+
+    <div class="flex h-[15vh] w-[88%] items-center justify-center">
+        <div class="flex h-[15vh] w-full items-center justify-center gap-6">
+            @foreach (var item in Model)
+            {
+                <div class="flex h-[15vh] w-[23%] items-center justify-around rounded-lg border-b-[3px] bg-white @item.BorderColor shadow-lg">
+                    <div class="ml-5 flex flex-col gap-2">
+                        <h2 class="text-[16px] text-gray-400">@item.Title</h2>
+                        <p class="text-2xl">@item.Count</p>
+                    </div>
+                    <img class="w-[30px]" src="~/Images/@item.Icon" alt="status-icon" />
+                </div>
+            }
+        </div>
+    </div>
+    <div class="mt-10 mr-2 mb-6 flex w-[88.3%] items-center justify-between">
+        <!-- Search Bar -->
+        <div class="relative mr-2 w-[40%]">
+            <input type="text" placeholder="Search"
+                   class="h-12 w-full rounded-full border border-gray-300 bg-white pr-4 pl-12 outline-none focus:ring-2 focus:ring-gray-300">
+            <img class="absolute top-1/2 left-4 h-5 -translate-y-1/2" src="~/Images/find.svg" alt="Search">
+        </div>
+
+        <!-- Filter Icon with Text -->
+        <div class="relative right-80 flex cursor-pointer items-center gap-2">
+            <img src="~/Images/filter.svg" alt="Filter" class="h-5">
+            <span class="font-medium text-black">Filters</span>
+        </div>
+
+        <!-- Add Facility Button -->
+        <button id="addfac" class="flex items-center gap-2 rounded-full bg-[#04373A] px-6 py-2 text-white">
+            <span class="text-xl">+</span>
+            <span class="font-medium">New Submission</span>
+        </button>
+    </div>
+
+    <table class="w-[88%] border-collapse rounded-lg bg-white text-left shadow-md">
+        <thead>
+            <tr class="text-gray-500">
+                <th class="px-4 py-3">Id</th>
+                <th class="px-4 py-3">User</th>
+                <th class="px-4 py-3">Request</th>
+                <th class="px-4 py-3">Reserved Date</th>
+                <th class="px-4 py-3">Request Submitted</th>
+                <th class="px-4 py-3">Request Closed</th>
+                <th class="px-4 py-3">Assigned To</th>
+                <th class="px-4 py-3">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="cursor-pointer border-b hover:bg-gray-100" onclick="openModal()">
+                <td>SR0001</td>
+                <td class="flex items-center gap-3 px-4 py-3">
+                    <img src="~/Images/pfp.svg" class="h-8 w-8 rounded-full" />
+                    <span>Kobe Amaro</span>
+                </td>
+                <td class="px-4 py-3">House Keeping</td>
+                <td class="px-4 py-3">March 15, 2024</td>
+                <td class="px-4 py-3">March 15, 2024</td>
+                <td class="px-4 py-3">March 15, 2024</td>
+                <td class="px-4 py-3">Anjo</td>
+                <td class="px-4 py-3 font-semibold text-yellow-500">Pending</td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- Modal (Hidden by default) -->
+    <div id="modal" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50" onclick="closeModal(event)">
+        <div class="w-[500px] rounded-2xl bg-white p-8" onclick="event.stopPropagation()">
+            <h2 class="mb-4 text-center text-2xl font-extrabold text-gray-800">Service Request Details</h2>
+
+            <!-- User Profile -->
+            <div class="mb-4 flex items-center justify-center gap-2">
+                <img src="~/Images/pfp.svg" class="h-10 w-10 rounded-full" />
+                <span class="text-lg font-medium">Kobe Amaro</span>
+            </div>
+
+            <!-- Request Type -->
+            <label class="mb-1 block text-base text-gray-500">Request Type</label>
+            <select class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500">
+                <option>Repair</option>
+                <option>Maintenance</option>
+            </select>
+
+            <!-- Subject -->
+            <label class="mt-4 mb-1 block text-base text-gray-500">Subject</label>
+            <input type="text" value="Flickering Lights" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" readonly />
+
+            <!-- Date and Time -->
+            <div class="mt-4 mb-4 flex justify-between gap-4">
+                <!-- Date Picker -->
+                <div class="w-1/2">
+                    <label class="mb-1 block text-base text-gray-500">Date</label>
+                    <div class="relative">
+                        <input type="date" value="2024-03-15" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" />
+                    </div>
+                </div>
+
+                <!-- Time Picker -->
+                <div class="w-1/2">
+                    <label class="mb-1 block text-base text-gray-500">Time</label>
+                    <div class="relative">
+                        <input type="time" value="07:00" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <label class="mb-1 block text-base text-gray-500">Description</label>
+            <textarea class="border-2 h-[10vh] w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" readonly>Lights are not working.</textarea>
+
+            <!-- Attachments -->
+            <label class="mt-4 mb-1 block text-base text-gray-500">Attachments</label>
+            <img src="~/Images/attachment.png" class="border-2 h-16 w-16 rounded-md border-gray-300 object-cover" />
+
+            <!-- Assign Staff -->
+            <label class="mt-4 mb-1 block text-base text-gray-500">Assign Staff</label>
+            <select class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500">
+                <option>Bryl Gorgonio</option>
+                <option>Other Staff</option>
+            </select>
+
+            <!-- Buttons -->
+            <div class="mt-6 flex gap-4">
+                <button class="w-1/2 rounded-full border border-[#B25828] py-2 text-[#B25828]" onclick="closeModal()">Decline</button>
+                <button class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Approve</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    @await Html.PartialAsync("_pagination")
+
+
+    <div id="popup" class="fixed inset-0 z-20 mt-20 flex hidden items-center justify-center bg-gray-100">
+        <div id="content" class="flex h-[90vh] w-[90%] rounded-lg bg-white shadow-lg">
+        </div>
+    </div>
+    <script>
+        function openModal() {
+          document.getElementById('modal').classList.remove('hidden');
+        }
+
+        function closeModal(event) {
+          const modal = document.getElementById('modal');
+          if (event.target === modal || event.type === 'click') {
+            modal.classList.add('hidden');
+          }
+        }
+    </script>
+</div>

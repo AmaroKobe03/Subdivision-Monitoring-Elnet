@@ -1,20 +1,19 @@
 ﻿@model List<EmergencyContact>
 
 <div class="flex space-x-15">
-    @foreach (var contact in Model)
-    {
-        <div class="flex h-[15vh] w-[33%] flex-col justify-center rounded-lg border-l-[5px] @contact.BorderColor @contact.BgColor p-5 shadow-md">
+  
+        <div class="border-l-[5px]p-5 flex h-[15vh] w-[33%] flex-col justify-center rounded-lg shadow-md">
             <div class="mb-2 flex w-full items-center gap-3">
-                <img src="@Url.Content(contact.IconPath)" class="h-6 w-6" alt="@contact.Name Icon" />
-                <h1 class="text-xl font-semibold @contact.TextColor">@contact.Name</h1>
+                <img src="" class="h-6 w-6" alt=" Icon" />
+                <h1 class="text-xl font-semibold"></h1>
             </div>
             <div class="mb-1 flex items-center justify-between">
-                <h1 class="text-2xl font-bold @contact.TextColor">@contact.PhoneNumber</h1>
-                <img src="@Url.Content(contact.PhoneIconPath)" class="h-6 w-6" />
+                <h1 class="text-2xl font-bold"></h1>
+                <img src="" class="h-6 w-6" />
             </div>
             <div>
-                <p class="text-[12px] text-gray-500">@contact.Description</p>
+                <p class="text-[12px] text-gray-500">Description</p>
             </div>
         </div>
-    }
+    
 </div>

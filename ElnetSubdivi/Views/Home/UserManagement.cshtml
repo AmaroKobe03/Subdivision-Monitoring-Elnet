@@ -8,9 +8,28 @@
 <div class="flex h-[100vh] w-[90%] flex-col items-center overflow-auto overflow-y-hidden bg-[#f2f2f2] font-semibold">
     @await Html.PartialAsync("_sharedSearch")
 
-    <div class="relative mb-6 flex w-[88%] items-center justify-between">
+    <div class="mt-10 mr-2 mb-6 flex w-[88.3%] items-center justify-between">
         <!-- Search Bar -->
-        @await Html.PartialAsync("_sharedSearch2", "Add User")
+        <div class="relative mr-2 w-[40%]">
+            <input type="text" placeholder="Search"
+                   class="h-12 w-full rounded-full border border-gray-300 bg-white pr-4 pl-12 outline-none focus:ring-2 focus:ring-gray-300">
+            <img class="absolute top-1/2 left-4 h-5 -translate-y-1/2" src="~/Images/find.svg" alt="Search">
+        </div>
+
+        <!-- Filter Icon with Text -->
+        <div class="relative right-50 flex cursor-pointer items-center gap-2">
+            <img src="~/Images/filter.svg" alt="Filter" class="h-5">
+            <span class="font-medium text-black">Filters</span>
+        </div>
+        <div class="relative right-90 flex cursor-pointer items-center gap-2">
+            <img src="~/Images/sortic.svg" alt="Filter" class="h-5">
+            <span class="font-medium text-black">Sort</span>
+        </div>
+        <!-- Add Facility Button -->
+        <button id="addfac" class="flex items-center gap-2 rounded-full bg-[#04373A] px-6 py-2 text-white">
+            <span class="text-xl">+</span>
+            <span class="font-medium">Add User</span>
+        </button>
     </div>
 
     <table class="bg-white-200 w-[88%] border-collapse bg-white text-left">
@@ -25,38 +44,77 @@
             </tr>
         </thead>
         <tbody>
-            @if (Model != null && Model.Any())
-            {
-                @foreach (var user in Model)
-                {
-                    <tr>
-                        <td class="gap-2 px-4 py-3">
-                            <span>@user.first_name @user.middle_name @user.last_name</span>
-                        </td>
-                        <td class="px-4 py-3">@user.address</td>
-                        <td class="px-4 py-3">@user.email</td>
-                        <td class="px-4 py-3">@user.phone_number</td>
-                        <td class="px-4 py-3 font-semibold">@user.role</td>
-                        <td class="jusitfy-center relative left-5 flex cursor-pointer flex-row items-center gap-2 px-4 py-3 font-semibold text-teal-700">
-                            <div class="group relative flex cursor-pointer items-center gap-2">
-                                <img class="w-[20px]" src="~/Images/actionsicon.svg" alt="actions" />
-                                <div class="absolute top-0 left-1/2 z-100 mt-2 hidden w-40 -translate-x-1/2 flex-col gap-1 rounded-lg bg-white py-2 shadow-lg group-hover:flex">
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-200" onclick="viewUser('@user.user_id')">View</a>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-200" onclick="editUser('@user.user_id')">Edit</a>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-200" onclick="removeUser('@user.user_id')">Remove</a>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-200">Send Activation</a>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="6" class="text-center py-4 text-gray-500">No users found.</td>
-                </tr>
-            }
+            <tr>
+                <td class="gap-2 px-4 py-3">
+                    <span>John Smith</span>
+                </td>
+                <td class="px-4 py-3">Cebu City</td>
+                <td class="px-4 py-3">smith@gmail.com</td>
+                <td class="px-4 py-3">1234567890</td>
+                <td class="px-4 py-3 font-semibold">Home Owner</td>
+                <td class="jusitfy-center relative left-5 flex cursor-pointer flex-row items-center gap-2 px-4 py-3 font-semibold text-teal-700">
+                    <div class="group relative flex cursor-pointer items-center gap-2">
+                        <!-- Action Icon -->
+                        <img class="w-[20px]" src="~/Images/actionsicon.svg" alt="actions" />
+
+                        <!-- Dropdown Menu -->
+                        <div class="absolute top-0 left-1/2 z-100 mt-2 hidden w-40 -translate-x-1/2 flex-col gap-1 rounded-lg bg-white py-2 shadow-lg group-hover:flex">
+                            <a id="viewUserbtn" href="#" class="block px-4 py-2 hover:bg-gray-200">View</a>
+                            <a id="editUserbtn" href="#" class="block px-4 py-2 hover:bg-gray-200">Edit</a>
+                            <a id="removeUserbtn" href="#" class="block px-4 py-2 hover:bg-gray-200">Remove</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">Move Out</a>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td class="gap-2 px-4 py-3">
+                    <span>John Smith</span>
+                </td>
+                <td class="px-4 py-3">Cebu City</td>    
+                <td class="px-4 py-3">smith@gmail.com</td>
+                <td class="px-4 py-3">1234567890</td>
+                <td class="px-4 py-3 font-semibold">Home Owner</td>
+                <td class="jusitfy-center relative left-5 flex cursor-pointer flex-row items-center gap-2 px-4 py-3 font-semibold text-teal-700">
+                    <div class="group relative flex cursor-pointer items-center gap-2">
+                        <!-- Action Icon -->
+                        <img class="w-[20px]" src="~/Images/actionsicon.svg" alt="actions" />
+
+                        <!-- Dropdown Menu -->
+                        <div class="absolute top-0 left-1/2 z-100 mt-2 hidden w-40 -translate-x-1/2 flex-col gap-1 rounded-lg bg-white py-2 shadow-lg group-hover:flex">
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">View</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">Edit</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">Remove</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">Send Activation</a>
+                        </div>
+                    </div>
+
+            </tr>
+            <tr>
+                <td class="gap-2 px-4 py-3">
+                    <span>John Smith</span>
+                </td>
+                <td class="px-4 py-3">Cebu City</td>
+                <td class="px-4 py-3">smith@gmail.com</td>
+                <td class="px-4 py-3">1234567890</td>
+                <td class="px-4 py-3 font-semibold">Home Owner</td>
+                <td class="jusitfy-center relative left-5 flex cursor-pointer flex-row items-center gap-2 px-4 py-3 font-semibold text-teal-700">
+                    <div class="group relative flex cursor-pointer items-center gap-2">
+                        <!-- Action Icon -->
+                        <img class="w-[20px]" src="~/Images/actionsicon.svg" alt="actions" />
+
+                        <!-- Dropdown Menu -->
+                        <div class="absolute top-0 left-1/2 z-100 mt-2 hidden w-40 -translate-x-1/2 flex-col gap-1 rounded-lg bg-white py-2 shadow-lg group-hover:flex">
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">View</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">Edit</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">Remove</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">Send Activation</a>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
         </tbody>
     </table>
     @await Html.PartialAsync("_pagination")

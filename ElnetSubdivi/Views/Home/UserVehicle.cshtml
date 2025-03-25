@@ -1,0 +1,269 @@
+﻿@{
+    ViewData["Title"] = "Vehicle Management";
+}
+
+<div class="flex h-[100vh] w-[90%] flex-col items-center overflow-auto overflow-y-hidden bg-[#f2f2f2] font-semibold">
+    @await Html.PartialAsync("_sharedSearch")
+
+    <div class="mt-15 mr-2 mb-6 flex w-[88%] items-center justify-between">
+        <!-- Search Bar -->
+        <div class="relative mr-2 w-[40%]">
+            <input type="text" placeholder="Search"
+                   class="h-12 w-full rounded-full border border-gray-300 bg-white pr-4 pl-12 outline-none focus:ring-2 focus:ring-gray-300">
+            <img class="absolute top-1/2 left-4 h-5 -translate-y-1/2" src="~/Images/find.svg" alt="Search">
+        </div>
+
+        <!-- Status Dropdown -->
+        <div class="relative right-80 flex cursor-pointer items-center gap-2">
+            <img src="~/Images/filter.svg" alt="Filter" class="h-5">
+            <span class="font-medium text-black">Filters</span>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <button id="addVehiclebtn" class="flex items-center gap-2 rounded-full bg-[#04373A] px-6 py-2 text-white">
+                <span class="text-xl">+</span>
+                <span class="font-medium">Add Vehicle</span>
+            </button>
+        </div>
+    </div>
+
+    <table class="w-[88%] border-collapse bg-white text-left">
+        <thead>
+            <tr class="text-gray-500">
+                <th class="px-4 py-3">Visitor </th>
+                <th class="px-4 py-3">Brand</th>
+                <th class="px-4 py-3">Model</th>
+                <th class="px-4 py-3">Color</th>
+                <th class="px-4 py-3">Plate Number</th>
+                <th class="px-4 py-3">Owner</th>
+                <th class="px-4 py-3">Relationship</th>
+                <th class="px-4 py-3">Status</th>
+                <th class="px-4 py-3">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="">
+                <td class="px-4 py-3"><img src="~/Images/car.svg" alt="Car" /></td>
+                <td class="px-4 py-3">Toyota</td>
+                <td class="px-4 py-3">Camry</td>
+                <td class="px-4 py-3">Black</td>
+                <td class="px-4 py-3">ABC 123</td>
+                <td class="px-4 py-3">John Dwayne</td>
+                <td class="px-4 py-3">Self</td>
+                <td class="px-4 py-3 text-orange-400">Pending</td>
+                <td class="cursor-pointer px-4 py-3 font-semibold text-teal-700">
+                    <button class="Vactions-btn">⋮</button>
+                    <div class="Vactions-menu absolute right-40 hidden w-40 bg-white shadow-md">
+                        <ul>
+                            <li id="viewVehiclebtn" class="cursor-pointer px-4 py-2 hover:bg-gray-100">View Details</li>
+                            <li class="cursor-pointer px-4 py-2 hover:bg-gray-100">Approve</li>
+                            <li class="cursor-not-allowed px-4 py-2 text-red-400">Decline</li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            <tr class="">
+                <td class="px-4 py-3"><img src="~/Images/motor.svg" alt="Motor" /></td>
+                <td class="px-4 py-3">Toyota</td>
+                <td class="px-4 py-3">Camry</td>
+                <td class="px-4 py-3">Black</td>
+                <td class="px-4 py-3">ABC 123</td>
+                <td class="px-4 py-3">John Dwayne</td>
+                <td class="px-4 py-3">Self</td>
+                <td class="px-4 py-3 text-orange-400">Pending</td>
+                <td class="cursor-pointer px-4 py-3 font-semibold text-teal-700">
+                    <button class="Vactions-btn">⋮</button>
+                    <div class="Vactions-menu absolute right-40 hidden w-40 bg-white shadow-md">
+                        <ul>
+                            <li id="viewVehiclebtn" class="cursor-pointer px-4 py-2 hover:bg-gray-100">View Details</li>
+                            <li class="cursor-pointer px-4 py-2 hover:bg-gray-100">Approve</li>
+                            <li class="cursor-not-allowed px-4 py-2 text-red-400">Decline</li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    @await Html.PartialAsync("_pagination")
+        <!-- Add EventsaModal (Hidden by default) -->
+    <div id="addVehiclemodal" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50" onclick="closeModal(event)">
+        <div class="w-[500px] rounded-2xl bg-white p-8 shadow-lg" onclick="event.stopPropagation()">
+            <!-- Modal Header -->
+            <h2 class="text-center text-2xl font-bold text-[#003D38]">Add Vehicle</h2>
+
+            <!-- Vehicle Details -->
+            <div class="mt-4 grid grid-cols-2 gap-4">
+                <div>
+                    <label class="text-gray-600">Type</label>
+                    <input type="text" value="Car" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-600" />
+                </div>
+                <div>
+                    <label class="text-gray-600">Model</label>
+                    <input type="text" value="RAV4" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-600" />
+                </div>
+                <div>
+                    <label class="text-gray-600">Brand</label>
+                    <input type="text" value="Toyota" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-600" />
+                </div>
+                <div>
+                    <label class="text-gray-600">Color</label>
+                    <input type="text" value="Black" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-600" />
+                </div>
+            </div>
+
+            <!-- Plate Number -->
+            <div class="mt-4 flex gap-4">
+                <div class="w-1/2">
+                    <label class="text-gray-600">Plate Number</label>
+                    <input type="text" value="2025-03-15" class="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-600" />
+                </div>
+                <div class="w-1/2">
+                    <label class="text-gray-600">Color</label>
+                    <input type="text" value="Black" class="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-600" />
+                </div>
+            </div>
+
+            <!-- Name Fields -->
+            <div class="mt-4 grid grid-cols-2 gap-4">
+                <div>
+                    <label class="text-gray-600">First Name</label>
+                    <input type="text" value="Casy" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-600" />
+                </div>
+                <div>
+                    <label class="text-gray-600">Last Name</label>
+                    <input type="text" value="Chan" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-600" />
+                </div>
+            </div>
+
+            <!-- Relationship -->
+            <label class="mt-4 block text-gray-600">Relationship</label>
+            <input type="text" value="Self" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-600" />
+
+            <!-- OR CR -->
+            <div class="mt-4">
+                <label class="text-gray-600">OR CR</label>
+                <a href="#" class="block text-[#003D38] underline">myorcr.pdf</a>
+            </div>
+
+            <!-- Buttons -->
+            <div class="mt-6 flex gap-4">
+                <button class="w-1/2 rounded-full border border-[#003D38] py-2 font-bold hover:text-white">Decline</button>
+                <button class="w-1/2 rounded-full bg-[#003D38] py-2 font-bold text-white transition hover:bg-[#002C2A]">Approve</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal (Hidden by default) -->
+    <div id="Vehiclemodal" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50" onclick="closeModal(event)">
+        <div class="w-[500px] rounded-2xl bg-white p-8 shadow-lg" onclick="event.stopPropagation()">
+            <!-- Modal Header -->
+            <h2 class="text-center text-2xl font-bold text-[#003D38]">Vehicle Details</h2>
+
+            <!-- Vehicle Details -->
+            <div class="mt-4 grid grid-cols-2 gap-4">
+                <div>
+                    <label class="text-gray-600">Type</label>
+                    <input type="text" value="Car" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+                </div>
+                <div>
+                    <label class="text-gray-600">Model</label>
+                    <input type="text" value="RAV4" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+                </div>
+                <div>
+                    <label class="text-gray-600">Brand</label>
+                    <input type="text" value="Toyota" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+                </div>
+                <div>
+                    <label class="text-gray-600">Color</label>
+                    <input type="text" value="Black" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+                </div>
+            </div>
+
+            <!-- Plate Number & Color in One Row -->
+            <div class="mt-4 flex gap-4">
+                <div class="w-1/2">
+                    <label class="text-gray-600">Plate Number</label>
+                    <input type="text" value="2025-03-15" class="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-400" readonly />
+                </div>
+                <div class="w-1/2">
+                    <label class="text-gray-600">Color</label>
+                    <input type="text" value="Black" class="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-400" readonly />
+                </div>
+            </div>
+
+            <!-- Name Fields -->
+            <div class="mt-4 grid grid-cols-2 gap-4">
+                <div>
+                    <label class="text-gray-600">First Name</label>
+                    <input type="text" value="Casy" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+                </div>
+                <div>
+                    <label class="text-gray-600">Last Name</label>
+                    <input type="text" value="Chan" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+                </div>
+            </div>
+
+            <!-- Relationship -->
+            <label class="mt-4 block text-gray-600">Relationship</label>
+            <input type="text" value="Self" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+
+            <!-- OR CR -->
+            <div class="mt-4">
+                <label class="text-gray-600">OR CR</label>
+                <a href="#" class="block text-[#003D38] underline">myorcr.pdf</a>
+            </div>
+
+            <!-- Buttons -->
+            <div class="mt-6 flex gap-4">
+                <button class="w-1/2 rounded-full border border-[#003D38] py-2 font-bold hover:text-white">Decline</button>
+                <button class="w-1/2 rounded-full bg-[#003D38] py-2 font-bold text-white transition hover:bg-[#002C2A]">Approve</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById("viewVehiclebtn").addEventListener("click", function () {
+        document.getElementById("Vehiclemodal").classList.remove("hidden");
+    });
+
+    document.getElementById("Vehiclemodal").addEventListener("click", function (event) {
+        if (!event.target.closest(".modal-content")) {
+            this.classList.add("hidden");
+        }zx
+    });
+</script>
+<script>
+    document.getElementById("addVehiclebtn").addEventListener("click", function () {
+        document.getElementById("addVehiclemodal").classList.remove("hidden");
+    });
+
+    document.getElementById("addVehiclemodal").addEventListener("click", function (event) {
+        if (!event.target.closest(".modal-content")) {
+            this.classList.add("hidden");
+        }zx
+    });
+</script>
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".Vactions-btn").forEach(button => {
+            button.addEventListener("click", (event) => {
+                event.stopPropagation();
+                let menu = button.nextElementSibling;
+                document.querySelectorAll(".Vactions-menu").forEach(m => {
+                    if (m !== menu) m.classList.add("hidden");
+                });
+                menu.classList.toggle("hidden");
+            });
+        });
+
+        document.addEventListener("click", () => {
+            document.querySelectorAll(".Vactions-menu").forEach(menu => {
+                menu.classList.add("hidden");
+            });
+        });
+    });
+</script>
