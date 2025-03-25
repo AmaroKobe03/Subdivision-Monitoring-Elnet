@@ -41,10 +41,10 @@
                         <input id="post-input1" type="text" class="flex-1 rounded-full border p-2 px-4 text-gray-600" placeholder="Share Something..." />
                     </div>
 
-                    <div class="ml-5 flex h-[40%] w-full flex-row items-center justify-start gap-10">
+                    <div class="ml-5 flex h-[40%] w-[97%] flex-row items-center justify-between gap-10">
                         @await Html.PartialAsync("_sharedPost")
 
-                        <button id="anotherPost1" class="ml-[23em] w-[10%] rounded-full bg-[#043137] px-7 py-2 text-white">
+                        <button id="anotherPost1" class="ml-[23em] w-[10%] cursor-pointer rounded-full bg-[#043137] px-7 py-2 text-white">
                             Post
                         </button>
 
@@ -98,22 +98,7 @@
             </div>
 
             <div class="flex h-[40%] w-full flex-row items-center justify-center gap-10">
-                <a href="#" class="flex items-center gap-2 text-sm">
-                    <img class="w-[20px]" src="~/Images/strokevid.svg" />
-                    Video
-                </a>
-                <a href="#" class="flex items-center gap-2 text-sm">
-                    <img class="w-[15px]" src="~/Images/strokepho.svg" />
-                    Photo
-                </a>
-                <a href="#" class="flex items-center gap-2 text-sm">
-                    <img class="w-[20px]" src="~/Images/strokefeel.svg" />
-                    Feeling/Activity
-                </a>
-                <a href="#" class="flex items-center gap-2 text-sm">
-                    <img class="w-[15px]" src="~/Images/strokepool.svg" />
-                    Poll/Survey
-                </a>
+                @await Html.PartialAsync("_sharedPost")
             </div>
         </div>
         <button class="mt-5 w-full rounded-lg bg-[#043137] py-2 text-lg text-white">
@@ -125,12 +110,24 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        const videoBtn = document.getElementById("vid");
+        const photoBtn = document.getElementById("pho");
+        const feelingBtn = document.getElementById("feel");
         const buttonPost = document.getElementById("anotherPost1")
         const postInput = document.getElementById("post-input1");
         const popup = document.getElementById("post-popup1");
         const closeBtn = document.querySelector(".close1");
 
 
+        feelingBtn.addEventListener("click", function () {
+            popup.classList.remove("hidden");
+        });
+        photoBtn.addEventListener("click", function () {
+            popup.classList.remove("hidden");
+        });
+        videoBtn.addEventListener("click", function () {
+            popup.classList.remove("hidden");
+        });
         buttonPost.addEventListener("click", function () {
             popup.classList.remove("hidden");
         });

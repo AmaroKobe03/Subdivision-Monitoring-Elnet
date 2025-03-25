@@ -1,0 +1,248 @@
+﻿@{
+    ViewData["Title"] = "Visitors Pass Management";
+}
+@model IEnumerable<dynamic>
+
+<div class="flex h-[100vh] w-[90%] flex-col items-center overflow-auto overflow-y-hidden bg-[#f2f2f2] font-semibold">
+    @await Html.PartialAsync("_sharedSearch")
+
+    <div class="flex h-[15vh] w-[88%] items-center justify-center">
+        <div class="flex h-[15vh] w-full items-center justify-center gap-6">
+            @foreach (var item in Model)
+            {
+                <div class="flex h-[15vh] w-[25%] items-center justify-around rounded-lg border-b-[3px] bg-white @item.BorderColor shadow-lg">
+                    <div class="ml-5 flex flex-col gap-2">
+                        <h2 class="text-[16px] text-gray-400">@item.Title</h2>
+                        <p class="text-2xl">@item.Count</p>
+                    </div>
+                    <img class="w-[30px]" src="~/Images/@item.Icon" alt="status-icon" />
+                </div>
+            }
+        </div>
+    </div>
+
+    <div id="sortV" class="mt-4 flex w-[88.5%] flex-row items-center gap-6">
+        <a href="#" class="cursor-pointer rounded-full bg-blue-200 px-6 py-2 text-center font-semibold text-blue-700">
+            <span class="text-[15px]">Visitor Request</span>
+        </a>
+        <a href="#" class="cursor-pointer rounded-full bg-gray-100 px-6 py-2 text-center hover:bg-gray-200">
+            <span class="text-[15px] text-black">Visitor Logs</span>
+        </a>
+    </div>
+
+    <div class="mt-10 mr-2 mb-6 flex w-[88%] items-center justify-between">
+        <!-- Search Bar -->
+        <div class="relative mr-2 w-[40%]">
+            <input type="text" placeholder="Search"
+                   class="h-12 w-full rounded-full border border-gray-300 bg-white pr-4 pl-12 outline-none focus:ring-2 focus:ring-gray-300">
+            <img class="absolute top-1/2 left-4 h-5 -translate-y-1/2" src="~/Images/find.svg" alt="Search">
+        </div>
+
+        <!-- Status Dropdown -->
+        <div class="relative right-80 inline-block">
+            <select id="statusSelect" class="appearance-none rounded-full border border-gray-300 bg-white px-4 py-2 pr-8 font-medium text-black shadow-sm outline-none">
+                <option value="All Status">All Status</option>
+                <option value="Pending">Approved</option>
+                <option value="Approved">Pending</option>
+                <option value="Cancelled">Declined</option>
+            </select>
+            <img src="~/Images/drp.svg" alt="Dropdown" class="pointer-events-none absolute top-1/2 right-3 h-4 -translate-y-1/2">
+        </div>
+
+
+
+        <div class="flex items-center gap-4">
+            <!-- Export Report Button -->
+            <button class="flex items-center gap-2 rounded-full border border-[#04373A] bg-white px-6 py-2 text-[#04373A]">
+                <img src="~/Images/export.svg" alt="Export" class="h-4">
+                <span class="font-medium">Export</span>
+            </button>
+        </div>
+    </div>
+    <table class="w-[88%] border-collapse bg-white text-left">
+        <thead>
+            <tr class="text-gray-500">
+
+                <th class="px-4 py-3">Visitor Name</th>
+                <th class="px-4 py-3">Home Owner</th>
+                <th class="px-4 py-3">Visit Date</th>
+                <th class="px-4 py-3">Visit Time</th>
+                <th class="px-4 py-3">Vehicle Plate</th>
+                <th class="px-4 py-3">Status</th>
+                <th class="px-4 py-3">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="">
+                <td class="px-4 py-3">Mark Tol</td>
+                <td class="px-4 py-3">Kobe Amaro</td>
+                <td class="px-4 py-3">March 2025</td>
+                <td class="px-4 py-3">7:00 AM</td>
+                <td class="px-4 py-3">ABCD</td>
+                <td class="px-4 py-3 font-semibold text-green-500">....</td>
+                <td class="cursor-pointer px-4 py-3 font-semibold text-teal-700">
+                    <button class="Vactions-btn">⋮</button>
+
+                    <div class="Vactions-menu absolute right-40 hidden w-40 bg-white shadow-md">
+                        <ul>
+                            <li id="viewVisitbtn" class="cursor-pointer px-4 py-2 hover:bg-gray-100">View Details</li>
+                            <li class="cursor-pointer px-4 py-2 hover:bg-gray-100">Approve</li>
+                            <li class="cursor-not-allowed px-4 py-2 text-red-400">Decline</li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- Modal (Hidden by default) -->
+    <div id="Vmodal" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50" onclick="closeModal(event)">
+        <div class="w-[520px] rounded-2xl bg-white p-8 shadow-lg" onclick="event.stopPropagation()">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between">
+                <h2 class="flex-grow text-center text-2xl font-bold text-[#043137]">Visitor Request Details</h2>
+            </div>
+
+            <!-- Name Fields -->
+            <div class="mt-4 flex gap-4">
+                <div class="w-1/2">
+                    <label class="text-gray-600">First Name</label>
+                    <input type="text" value="Mark" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+                </div>
+                <div class="w-1/2">
+                    <label class="text-gray-600">Last Name</label>
+                    <input type="text" value="Tol" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+                </div>
+            </div>
+
+            <!-- Homeowner -->
+            <label class="mt-4 block text-gray-600">Homeowner</label>
+            <input type="text" value="Kobe Amaro" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+
+            <!-- Phone Number -->
+            <label class="mt-4 block text-gray-600">Phone Number</label>
+            <input type="text" value="0123456789" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+
+            <!-- Date and Time -->
+            <div class="mt-4 flex gap-4">
+                <div class="relative w-1/2">
+                    <label class="text-gray-600">Visit Date</label>
+                    <div class="relative">
+                        <input type="date" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" value="2025-03-15" />
+                    </div>
+                </div>
+                <div class="relative w-1/2">
+                    <label class="text-gray-600">Visit Time</label>
+                    <div class="relative">
+                        <input type="time" id="visitTime" class="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-400" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vehicle Plate -->
+            <label class="mt-4 block text-gray-600">Vehicle Plate (Optional)</label>
+            <input type="text" value="ABC 123" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+
+            <!-- Reason for Visit -->
+            <label class="mt-4 block text-gray-600">Reason for Visit</label>
+            <input type="text" value="Visiting a friend" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+
+            <!-- Buttons -->
+            <div class="mt-6 flex gap-4">
+                <button class="w-1/2 rounded-full border border-[#B25828] py-2 font-bold text-[#B25828] transition hover:bg-[#B25828] hover:text-white">Decline</button>
+                <button class="w-1/2 rounded-full bg-[#003D38] py-2 font-bold text-white transition hover:bg-[#002C2A]">Approve</button>
+            </div>
+        </div>
+    </div>
+
+    @await Html.PartialAsync("_pagination")
+
+
+    <div id="popup" class="fixed inset-0 z-20 mt-20 flex hidden items-center justify-center bg-gray-100">
+        <div id="content" class="flex h-[90vh] w-[90%] rounded-lg bg-white shadow-lg">
+        </div>
+    </div>
+
+    <script>
+            document.getElementById("viewVisitbtn").addEventListener("click", function () {
+                document.getElementById("Vmodal").classList.remove("hidden");
+            });
+
+            document.getElementById("Vmodal").addEventListener("click", function (event) {
+                if (!event.target.closest(".modal-content")) {
+                    this.classList.add("hidden");
+                }zx
+            });
+    </script>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".Vactions-btn").forEach(button => {
+                button.addEventListener("click", (event) => {
+                    event.stopPropagation();
+                    let menu = button.nextElementSibling;
+                    document.querySelectorAll(".Vactions-menu").forEach(m => {
+                        if (m !== menu) m.classList.add("hidden");
+                    });
+                    menu.classList.toggle("hidden");
+                });
+            });
+
+            document.addEventListener("click", () => {
+                document.querySelectorAll(".Vactions-menu").forEach(menu => {
+                    menu.classList.add("hidden");
+                });
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const openModal = document.getElementById("openModal");
+            const closeModal = document.getElementById("closeModal");
+            const modal = document.getElementById("invoiceModal");
+            const modalContent = document.getElementById("modalContent");
+
+            openModal.addEventListener("click", function () {
+                modal.classList.remove("hidden");
+            });
+
+            closeModal.addEventListener("click", function () {
+                modal.classList.add("hidden");
+            });
+
+            // Close modal when clicking outside modal content
+            modal.addEventListener("click", function (event) {
+                if (!modalContent.contains(event.target)) {
+                    modal.classList.add("hidden");
+                }
+            });
+        });
+    </script>
+
+
+    <script>
+        document.querySelectorAll("#sortV a").forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+                e.preventDefault(); // Prevent page reload
+
+                // Reset all buttons
+                document.querySelectorAll("#sortV a").forEach(b => {
+                    b.classList.remove("bg-blue-200", "text-blue-700", "font-semibold");
+                    b.classList.add("bg-gray-100", "hover:bg-gray-200");
+                    b.querySelector("span").classList.remove("text-blue-700");
+                    b.querySelector("span").classList.add("text-black");
+                });
+
+                // Add active state to the clicked button
+                e.currentTarget.classList.add("bg-blue-200", "text-blue-700", "font-semibold");
+                e.currentTarget.classList.remove("bg-gray-100", "hover:bg-gray-200");
+
+                // Change the text inside span to blue
+                e.currentTarget.querySelector("span").classList.remove("text-black");
+                e.currentTarget.querySelector("span").classList.add("text-blue-700");
+            });
+        });
+
+    </script>
+</div>

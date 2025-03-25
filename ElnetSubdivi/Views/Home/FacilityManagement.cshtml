@@ -1,0 +1,647 @@
+﻿@{
+    ViewData["Title"] = "Facility Management";
+}
+
+@model List<dynamic>
+@{
+    var reservations = ViewBag.Reservations as List<dynamic>;
+}
+<style>
+   input, select, textarea{
+        color: gray;
+        font-weight: 500; /* Medium */
+    }
+
+    .fc-prev-button, .fc-next-button {
+        background: #002B2D !important;
+        color: white !important;
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .fc-day-today {
+        background: #a855f7 !important;
+        border-radius: 50%;
+        color: white !important;
+    }
+
+</style>
+
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
+
+<div class="flex h-[100vh] w-[90%] flex-col items-center overflow-auto overflow-y-hidden bg-[#f2f2f2] font-semibold">
+    @await Html.PartialAsync("_sharedSearch")
+
+    <div class="flex h-[15vh] w-[92%] items-center justify-center">
+        <div class="flex h-[15vh] w-full items-center justify-center gap-6">
+
+            @foreach (var item in reservations)
+            {
+                <div class="flex h-[15vh] w-[23%] items-center justify-around rounded-lg bg-white shadow-lg @item.BorderColor">
+                    <div class="ml-5 flex flex-col gap-2">
+                        <h2 class="text-[16px] text-gray-400">@item.Title</h2>
+                        <p class="text-2xl">@item.Count</p>
+                    </div>
+                    <img class="w-[30px]" src="@Url.Content(item.Icon)" alt="status-icon" />
+                </div>
+            }
+
+        </div>
+    </div>
+
+    <div class="mt-10 mr-2 mb-6 flex w-[88.3%] items-center justify-between">
+        <!-- Search Bar -->
+        <div class="relative mr-2 w-[40%]">
+            <input type="text" placeholder="Search"
+                   class="h-12 w-full rounded-full border border-gray-300 bg-white pr-4 pl-12 outline-none focus:ring-2 focus:ring-gray-300">
+            <img class="absolute top-1/2 left-4 h-5 -translate-y-1/2" src="~/Images/find.svg" alt="Search">
+        </div>
+
+        <!-- Filter Icon with Text -->
+        <div class="relative right-80 flex cursor-pointer items-center gap-2">
+            <img src="~/Images/filter.svg" alt="Filter" class="h-5">
+            <span class="font-medium text-black">Filters</span>
+        </div>
+
+        <!-- Add Facility Button -->
+        <button id="addfac" class="flex items-center gap-2 rounded-full bg-[#04373A] px-6 py-2 text-white">
+            <span class="text-xl">+</span>
+            <span class="font-medium">Add Facility</span>
+        </button>
+    </div>
+
+    <div id="sort" class="flex w-[88.5%] flex-row items-center gap-6">
+        <a href="#" class="cursor-pointer rounded-full bg-blue-200 px-6 py-2 text-center font-semibold text-blue-700">
+            <span class="text-[15px]">All Facilities</span>
+        </a>
+        <a href="#" class="cursor-pointer rounded-full bg-gray-100 px-6 py-2 text-center hover:bg-gray-200">
+            <span class="text-[15px] text-black">Sports</span>
+        </a>
+        <a href="#" class="cursor-pointer rounded-full bg-gray-100 px-6 py-2 text-center hover:bg-gray-200">
+            <span class="text-[15px] text-black">Events</span>
+        </a>
+        <a href="#" class="cursor-pointer rounded-full bg-gray-100 px-6 py-2 text-center hover:bg-gray-200">
+            <span class="text-[15px] text-black">Recreation</span>
+        </a>
+    </div>
+
+    <div class="mt-6 flex w-[88.5%] grid-cols-3 items-center justify-center gap-6 overflow-y-auto">
+        @foreach (var facility in Model)
+        {
+            <div class="w-[88.5%] rounded-lg bg-white shadow-lg">
+                <!-- Image Section -->
+                <div class="relative w-full">
+                    <img class="h-[200px] w-full rounded-t-lg object-cover" src="@Url.Content(facility.Image)" alt="@facility.Name">
+                    <span class="absolute top-2 right-2 z-10 rounded-full px-3 py-1 text-sm font-semibold text-white shadow-md @(facility.Available ? "bg-green-500" : "bg-red-500")">
+                        @(facility.Available ? "Available" : "Unavailable")
+                    </span>
+                </div>
+
+                <!-- Title and Toggle -->
+                <div class="mt-4 flex items-center justify-between px-4">
+                    <h1 class="text-lg font-semibold">
+                        @facility.Name
+                    </h1>
+                    <label class="relative inline-flex cursor-pointer items-center">
+                        <input type="checkbox" class="toggleSwitch sr-only">
+                        <div class="relative h-6 w-11 rounded-full bg-gray-300 transition-colors duration-300 ease-in-out">
+                            <div class="absolute top-1 left-1 h-4 w-4 rounded-full bg-white transition-all duration-300 ease-in-out"></div>
+                        </div>
+                    </label>
+
+                </div>
+
+                <!-- Type & Rating -->
+                <p class="px-4 text-sm text-gray-500">@facility.Type</p>
+                <div class="flex items-center gap-2 px-4 text-gray-700">
+                    <img src="~/Images/star.svg" class="h-4 w-4" />
+                    <p class="text-sm font-medium">@facility.Rating</p>
+                </div>
+
+                <!-- Time & Price -->
+                <div class="mt-2 flex items-center gap-4 px-4 text-gray-700">
+                    <div class="flex items-center gap-2">
+                        <img src="~/Images/timeic.svg" class="h-4 w-4" />
+                        <p class="text-sm">@facility.Time</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <img src="~/Images/dollar.svg" class="h-4 w-4" />
+                        <p class="text-sm">@facility.Price</p>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="mt-4 mb-4 flex items-center justify-between gap-4 px-4">
+                    <button id="" type="button" class="viewbtn w-full rounded-full bg-[#043137] px-3 py-2 font-semibold text-white hover:bg-opacity-75">
+                        View Details
+                    </button>
+                    <div class="flex gap-1">
+                        <img src="~/Images/edit.svg" class="h-8 w-8 cursor-pointer" />
+                        <img src="~/Images/trash.svg" class="h-8 w-8 cursor-pointer" />
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+
+    @{
+        var days = ViewBag.OperatingHours as List<string>;
+    }
+
+    <div id="addfacpopup" class="fixed inset-0 z-20 mt-20 flex hidden h-auto items-center justify-center overflow-y-auto bg-gray-100">
+        <div id="popupContent" class="mt-[20em] flex w-[50%] flex-col justify-center rounded-lg bg-white p-6 shadow-lg">
+            <h2 class="mb-8 border-b py-10 text-4xl font-bold text-[#04373A]">Add Facility</h2>
+            <div class="flex w-full gap-2">
+                <div class="flex w-[60%] flex-col">
+                    <label>Facility Name</label>
+                    <input type="text" class="mb-2 h-10 w-full rounded-lg border p-2" placeholder="Swimming Pool">
+                </div>
+                <div class="flex w-[40%] flex-col">
+                    <label>Category</label>
+                    <select class="mb-2 h-10 w-full rounded-lg border p-2">
+                        <option class="p-0" selected>Sports</option>
+                        <option class="p-0">Recreation</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <label>Description</label>
+            <textarea class="mb-2 w-full rounded-lg border p-2">Rahm</textarea>
+            <label>Facility Images</label>
+
+            <div class="border-2 mb-2 flex h-[15vh] items-center justify-center border-dashed border-gray-400 p-6">
+                <label for="fileUpload" class="flex cursor-pointer items-center gap-2 rounded-lg bg-gray-100 px-4 py-2">
+                    <img src="~/Images/upload.svg" alt="Upload" class="h-5 w-5">
+                    <span>Upload Images</span>
+                </label>
+                <input type="file" id="fileUpload" class="hidden">
+            </div>
+
+
+            <label>Rate</label>
+            <input type="number" class="mb-2 w-full rounded-lg border p-2" value="100.00">
+            <label>Operating Hours</label>
+            <div id="operatingHours">
+                @foreach (var day in days)
+                {
+                    <div class="mb-2 flex w-full items-center justify-between gap-2">
+                        <label class="relative inline-flex cursor-pointer items-center">
+                            <input type="checkbox" class="toggleSwitchDay sr-only" id="toggle_@day.Replace(" ", "")">
+                            <div class="relative h-6 w-11 rounded-full bg-gray-300 transition-colors duration-300 ease-in-out">
+                                <div class="absolute top-1 left-1 h-4 w-4 rounded-full bg-white transition-all duration-300 ease-in-out"></div>
+                            </div>
+                            <span class="ml-2">@day</span>
+                        </label>
+                        <div class="">
+                            <input type="text" class="from-time rounded-lg border p-2" placeholder="From ---" id="from_@day.Replace(" ", "")" disabled> to
+                            <input type="text" class="to-time rounded-lg border p-2" placeholder="To ---" id="to_@day.Replace(" ", "")" disabled>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="flex w-full items-center gap-2">
+                <div class="w-full">
+                    <label>Amenities</label>
+                    <input type="text" class="mb-2 w-full rounded-lg border p-2" value="Hot spring">
+                </div>
+                <img class="mt-2" src="~/Images/deleteic.svg" alt="Delete" />
+            </div>
+            <button class="mb-4 cursor-pointer self-start">
+                + <span>Add Amenities</span>
+            </button>
+            <div class="flex w-full items-center gap-2">
+                <div class="w-full">
+                    <label>Guidelines</label>
+                    <input type="text" class="mb-2 w-full rounded-lg border p-2" value="Hot spring">
+                </div>
+                <img class="mt-2" src="~/Images/deleteic.svg" alt="Delete" />
+            </div>
+            <button class="mb-4 cursor-pointer self-start">
+                + <span>Add Guidelines</span>
+            </button>
+            <div class="flex justify-end gap-2">
+                <button id="closePopup" class="border-1 w-[120px] cursor-pointer rounded-full px-6 py-2">Cancel</button>
+                <button class="w-[120px] cursor-pointer rounded-full bg-[#04373A] px-6 py-2 text-white">Add</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="viewdetailspop" class="fixed inset-0 z-20 mt-20 flex hidden items-center justify-center bg-gray-100">
+        <div id="detailscontent" class="flex h-[90vh] w-[90%] rounded-lg bg-white shadow-lg">
+            <!-- Left Section -->
+            <div class="mt-4 flex h-auto w-[70%] flex-col items-center gap-4 overflow-auto p-2">
+                <div class="flex w-full items-center justify-between">
+                    <div class="flex w-[20%] items-center gap-2">
+                        <a href="@Url.Action("FacilityManagement","Home")"><img src="~/Images/back.svg" alt="Alternate Text" /></a>
+                        <p>Facility Details</p>
+                    </div>
+                    <div>
+                        <label class="relative inline-flex cursor-pointer items-center">
+                            <input type="checkbox" class="toggleSwitch sr-only">
+                            <div class="relative h-6 w-11 rounded-full bg-gray-300 transition-colors duration-300 ease-in-out">
+                                <div class="absolute top-1 left-1 h-4 w-4 rounded-full bg-white transition-all duration-300 ease-in-out"></div>
+                            </div>
+                            <span class="ml-2 text-green-500">Available</span>
+                        </label>
+                    </div>
+                </div>
+                <img class="h-[60vh] w-full" src="~/Images/facimg1.png" alt="Community Park">
+                <div class="mt-10 flex w-[90%] flex-row items-center justify-between">
+                    <h1 class="text-center text-4xl font-semibold text-[#043137]">Community Park</h1>
+                    <div class="flex flex-row items-center gap-2">
+                        <img src="~/Images/dollar.svg" alt="Alternate Text" />
+                        <p>25/hr</p>
+                    </div>
+                </div>
+
+                <div class="ml-[4em] flex flex-col gap-3 self-start">
+                    <p class="text-[#787676] text-[20px]">Multi-Purpose Recreation Space</p>
+                    <div class="flex flex-row items-center gap-1">
+                        <img src="~/Images/star.svg" alt="Alternate Text" />
+                        <p>4.8</p>
+                        <span>•</span>
+                        <p><span>128 reviews</span></p>
+                    </div>
+
+                    <div id="description" class="mt-2 w-[95%] font-medium text-[#787676] text-[18px]">
+                        Our community park provides a peaceful and scenic environment, perfect for relaxation and outdoor
+                        activities. It features walking trails, playgrounds, and picnic areas where families can enjoy quality
+                        time together. The park offers reservations for community parties, celebrations, and special events.
+                        Whether you're taking a morning stroll, playing with your children, or hosting a gathering, our park
+                        is a welcoming space to connect with nature and the community.
+                    </div>
+
+                    <div class="text-[#787676]">
+                        <h2 class="font-bold">Guidelines:</h2>
+                        <ul class="ml-6 list-disc font-medium">
+                            <li>Keep the park clean; dispose of trash properly.</li>
+                            <li>Respect park facilities and equipment.</li>
+                            <li>Pets must be on a leash at all times.</li>
+                            <li>No smoking, alcohol, or illegal substances.</li>
+                            <li>Loud music and disruptive behavior are not allowed.</li>
+                            <li>Follow all posted signs and guidelines.</li>
+                            <li>When Park closes —please leave on time.</li>
+                        </ul>
+                    </div>
+
+                    <div class="w-[95%] border-b-2 border-gray-400 text-[#787676]">
+                        <h2 class="font-bold">Included Amneties:</h2>
+                        <ul class="ml-6 list-disc font-medium">
+                            <li>Parking Available.</li>
+                            <li>Free Wifi.</li>
+                            <li>Rest Rooms.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="comment-section" class="mt-10 flex h-auto w-[90%] flex-col">
+                    <div class="flex items-center justify-between">
+                        <h1 class="text-center text-2xl font-semibold text-[#043137]"> Reviews</h1>
+                    </div>
+
+                    <div class="mt-5 flex flex-row items-center gap-2">
+                        <div>
+                            <img src="~/Images/sarah.svg" alt="Alternate Text" />
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <p class="font-bold">Sarah Johnson</p>
+                            <div class="flex flex-row items-center">
+                                <img class="mb-1" src="~/Images/5star.svg" />
+                                <p class="m-0 p-0">2 days ago</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 mb-10 w-[90%] font-medium">
+                        <p>Great park for families! The playground is well-maintained and my kids love it. The walking trails are perfect for morning exercises.</p>
+                    </div>
+
+                    <div class="mt-5 flex flex-row items-center gap-3">
+                        <div>
+                            <img src="~/Images/micheal.svg" alt="Alternate Text" />
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <p class="font-bold">Micheal Chen</p>
+                            <div class="flex flex-row items-center">
+                                <img class="mb-1" src="~/Images/4star.svg" />
+                                <p class="m-0 p-0">1 days ago</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 mb-10 w-[90%] font-medium">
+                        <p>Clean and well-maintained facility. The basketball court could use some renovation, but overall a great community space.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Section -->
+            <div class="flex w-[30%] flex-col gap-6 bg-gray-100 p-6">
+                <!-- Calendar -->
+                <div class="h-[60vh] w-full rounded-lg bg-white p-6 shadow-md">
+                    <h2 class="text-center text-2xl font-bold text-[#043137]">Booking Calendar</h2>
+                    <div id="calendar" class="mt-4"></div>
+                </div>
+                <!-- Event List -->
+                <div id="event-list" class="mt-4">
+                    <div class="flex flex-col gap-2">
+                        <div class="flex items-center gap-3 rounded-lg bg-blue-300 p-2 text-white">
+                            <span class="text-lg font-bold">2</span>
+                            <div>
+                                <p class="text-sm font-semibold">Family Day</p>
+                                <p class="text-xs">9:00 AM</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 rounded-lg bg-purple-200 p-2 text-white">
+                            <span class="text-lg font-bold">14</span>
+                            <div>
+                                <p class="text-sm font-semibold">Parent's Day</p>
+                                <p class="text-xs">9:00 AM</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 rounded-lg bg-red-200 p-2 text-white">
+                            <span class="text-lg font-bold">24</span>
+                            <div>
+                                <p class="text-sm font-semibold">Tree Planting Project</p>
+                                <p class="text-xs">9:00 AM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Operating Hours -->
+                <div class="w-full rounded-lg bg-white p-6 shadow-md">
+                    <h2 class="text-center text-lg font-bold">Operating Hours</h2>
+                    <div class="mt-3 text-gray-700">
+                        <p class="flex justify-between"><span>Sunday</span> <span>7:00 AM - 12:00 AM</span></p>
+                        <p class="flex justify-between"><span>Mon-Sat</span> <span>7:00 AM - 6:00 PM</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Close Button -->
+        <button id="closePopupBtn" class="absolute top-4 right-4 hidden rounded-full bg-red-500 px-4 py-2 text-white">
+            Close
+        </button>
+
+        <div id="review-popup" class="fixed inset-0 z-100 flex hidden items-center justify-center gap-4 bg-black/50 p-4">
+            <div class="flex h-[400px] w-[500px] flex-col items-center justify-center gap-4 bg-white p-4">
+                <h1 class="text-center text-4xl font-semibold text-[#043137]">Leave a Review</h1>
+                <img src="~/Images/reviewstar.svg" />
+                <textarea id="post-input" placeholder="Enter Rewiew?" class="h-[90vh] w-full resize-none rounded-lg border-none bg-[#F0F2F6] p-4 text-start outline-none"></textarea>
+                <button id="review-btn" type="button" class="w-[90%] cursor-pointer rounded-full bg-[#043137] px-6 py-3 font-bold text-white transition hover:bg-opacity-75">
+                    Submit Review
+                </button>
+
+            </div>
+        </div>
+
+        <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                const calendarContainer = document.getElementById("calendar");
+                const currentDate = new Date();
+                let selectedDate = null;
+
+                function generateCalendar(year, month) {
+                    calendarContainer.innerHTML = "";
+                    const daysInMonth = new Date(year, month + 1, 0).getDate();
+                    const firstDay = new Date(year, month, 1).getDay();
+
+                    const header = document.createElement("div");
+                    header.classList.add("flex", "justify-between", "items-center", "p-2", "bg-[#ffff]");
+
+                    const prevBtn = document.createElement("button");
+                    prevBtn.innerText = "<";
+                    prevBtn.classList.add("px-2", "py-1", "bg-[#ffff]", "rounded");
+                    prevBtn.onclick = () => generateCalendar(year, month - 1);
+
+                    const nextBtn = document.createElement("button");
+                    nextBtn.innerText = ">";
+                    nextBtn.classList.add("px-2", "py-1", "bg-[#ffff]", "rounded");
+                    nextBtn.onclick = () => generateCalendar(year, month + 1);
+
+                    const title = document.createElement("h3");
+                    title.innerText = `${new Date(year, month).toLocaleString('default', { month: 'long' })} ${year}`;
+                    title.classList.add("text-lg", "font-bold");
+
+                    header.appendChild(prevBtn);
+                    header.appendChild(title);
+                    header.appendChild(nextBtn);
+                    calendarContainer.appendChild(header);
+
+                    const daysRow = document.createElement("div");
+                    daysRow.classList.add("grid", "grid-cols-7", "text-center", "font-bold", "mt-2");
+                    ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].forEach(day => {
+                        const dayElement = document.createElement("div");
+                        dayElement.innerText = day;
+                        daysRow.appendChild(dayElement);
+                    });
+                    calendarContainer.appendChild(daysRow);
+
+                    const datesGrid = document.createElement("div");
+                    datesGrid.classList.add("grid", "grid-cols-7", "gap-1", "mt-2");
+
+                    for (let i = 0; i < firstDay; i++) {
+                        const emptyCell = document.createElement("div");
+                        datesGrid.appendChild(emptyCell);
+                    }
+
+                    for (let day = 1; day <= daysInMonth; day++) {
+                        const dateElement = document.createElement("div");
+                        dateElement.innerText = day;
+                        dateElement.classList.add("p-2", "text-center", "cursor-pointer", "rounded", "hover:bg-[#F7EFEA]");
+
+                        dateElement.addEventListener("click", function () {
+                            if (selectedDate) {
+                                selectedDate.classList.remove("bg-blue-500", "text-white");
+                            }
+                            dateElement.classList.add("bg-[#AC602A]", "text-white");
+                            selectedDate = dateElement;
+                        });
+
+                        datesGrid.appendChild(dateElement);
+                    }
+
+                    calendarContainer.appendChild(datesGrid);
+                }
+
+                generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+            });
+
+            document.addEventListener("DOMContentLoaded", function () {
+                const mobileMenuToggle = document.getElementById("mobile-menu-toggle");
+                const sidenav = document.getElementById("sidenav");
+
+                function checkWindowSize() {
+                    if (window.innerWidth <= 768) {
+                        sidenav.classList.add("hidden");
+                    } else {
+                        sidenav.classList.remove("hidden");
+                    }
+                }
+
+                mobileMenuToggle.addEventListener("click", function () {
+                    sidenav.classList.toggle("hidden");
+                });
+
+                window.addEventListener("resize", checkWindowSize);
+                checkWindowSize();
+            });
+
+        </script>
+
+        <script>
+             document.addEventListener("DOMContentLoaded", function () {
+              const popup = document.getElementById("viewdetailspop");
+              const content = document.getElementById("detailscontent");
+              const bookNowBtns = document.querySelectorAll(".viewbtn");
+
+              bookNowBtns.forEach(btn => {
+                btn.addEventListener("click", function () {
+                  popup.classList.remove("hidden");
+                });
+              });
+
+              popup.addEventListener("click", function (event) {
+                if (event.target === popup && !popup.classList.contains("review-popup")) {
+                  popup.classList.add("hidden");
+                }
+              });
+
+              const reviewBtn = document.getElementById("review-btn");
+              const mbsigninBtn = document.getElementById("review-fac-btn");
+              const reviewPopup = document.getElementById("review-popup");
+              const closeBtn = document.getElementById("close-btn");
+
+              function openPopup() {
+                reviewPopup.classList.remove("hidden");
+              }
+
+              function closePopup() {
+                reviewPopup.classList.add("hidden");
+              }
+
+              if (reviewBtn) reviewBtn.addEventListener("click", openPopup);
+              if (mbsigninBtn) mbsigninBtn.addEventListener("click", openPopup);
+              if (closeBtn) closeBtn.addEventListener("click", closePopup);
+
+              window.addEventListener("click", function (e) {
+                if (e.target === reviewPopup) {
+                  closePopup();
+                }
+              });
+            });
+
+        </script>
+
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".toggleSwitchDay").forEach(function (toggle) {
+                toggle.addEventListener("change", function () {
+                    let slider = this.nextElementSibling; // The outer toggle background
+                    let circle = slider.querySelector("div"); // The moving circle
+                    let day = this.id.replace("toggle_", "");
+                    let fromTime = document.getElementById("from_" + day);
+                    let toTime = document.getElementById("to_" + day);
+
+                    if (this.checked) {
+                        // Toggle appearance
+                        slider.classList.remove("bg-gray-300");
+                        slider.classList.add("bg-blue-500");
+                        circle.classList.add("translate-x-5");
+
+                        // Enable and set time
+                        fromTime.disabled = false;
+                        toTime.disabled = false;
+                        fromTime.value = "07:00 AM";
+                        toTime.value = "07:00 AM";
+                    } else {
+                        // Reset toggle appearance
+                        slider.classList.remove("bg-blue-500");
+                        slider.classList.add("bg-gray-300");
+                        circle.classList.remove("translate-x-5");
+
+                        // Disable and clear time
+                        fromTime.disabled = true;
+                        toTime.disabled = true;
+                        fromTime.value = "";
+                        toTime.value = "";
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        document.getElementById("addfac").addEventListener("click", function() {
+            document.getElementById("addfacpopup").classList.remove("hidden");
+        });
+        document.getElementById("closePopup").addEventListener("click", function() {
+            document.getElementById("addfacpopup").classList.add("hidden");
+        });
+        document.getElementById("addfacpopup").addEventListener("click", function(event) {
+            if (event.target === this) {
+                this.classList.add("hidden");
+            }
+        });
+    </script>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".toggleSwitch").forEach(function (toggle) {
+                toggle.addEventListener("change", function () {
+                    let slider = this.nextElementSibling; // The outer toggle background
+                    let circle = slider.querySelector("div"); // The moving circle
+
+                    if (this.checked) {
+                        slider.classList.remove("bg-gray-300");
+                        slider.classList.add("bg-green-500");
+                        circle.classList.add("translate-x-5");
+                    } else {
+                        slider.classList.remove("bg-green-500");
+                        slider.classList.add("bg-gray-300");
+                        circle.classList.remove("translate-x-5");
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        document.querySelectorAll("#sort a").forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+                e.preventDefault(); // Prevent page reload
+
+                // Reset all buttons
+                document.querySelectorAll("#sort a").forEach(b => {
+                    b.classList.remove("bg-blue-200", "text-blue-700", "font-semibold");
+                    b.classList.add("bg-gray-100", "hover:bg-gray-200");
+                    b.querySelector("span").classList.remove("text-blue-700");
+                    b.querySelector("span").classList.add("text-black");
+                });
+
+                // Add active state to the clicked button
+                e.currentTarget.classList.add("bg-blue-200", "text-blue-700", "font-semibold");
+                e.currentTarget.classList.remove("bg-gray-100", "hover:bg-gray-200");
+
+                // Change the text inside span to blue
+                e.currentTarget.querySelector("span").classList.remove("text-black");
+                e.currentTarget.querySelector("span").classList.add("text-blue-700");
+            });
+        });
+
+    </script>
+</div>
+
+
+

@@ -66,6 +66,10 @@
     <div id="content" class="flex h-[90vh] w-[90%] rounded-lg bg-white shadow-lg">
         <!-- Left Section -->
         <div class="flex h-auto w-[70%] flex-col items-center gap-4 overflow-auto">
+            <div class="flex w-[20%] items-center gap-2">
+                <a href="@Url.Action("FacilityReservation","Home")"><img src="~/Images/back.svg" alt="Alternate Text" /></a>
+                <p>Facility Details</p>
+            </div>
             <img class="h-[60vh] w-full" src="~/Images/facimg1.png" alt="Community Park">
             <div class="mt-10 flex w-[90%] flex-row items-center justify-between">
                 <h1 class="text-center text-4xl font-semibold text-[#043137]">Community Park</h1>
@@ -230,48 +234,48 @@
        </div>
     </div>
 
+    <script>
+         document.addEventListener("DOMContentLoaded", function () {
+          const popup = document.getElementById("popup");
+          const content = document.getElementById("content");
+          const bookNowBtns = document.querySelectorAll(".book-now-btn");
+
+          bookNowBtns.forEach(btn => {
+            btn.addEventListener("click", function () {
+              popup.classList.remove("hidden");
+            });
+          });
+
+          popup.addEventListener("click", function (event) {
+            if (event.target === popup && !popup.classList.contains("review-popup")) {
+              popup.classList.add("hidden");
+            }
+          });
+
+          const reviewBtn = document.getElementById("review-btn");
+          const mbsigninBtn = document.getElementById("review-fac-btn");
+          const reviewPopup = document.getElementById("review-popup");
+          const closeBtn = document.getElementById("close-btn");
+
+          function openPopup() {
+            reviewPopup.classList.remove("hidden");
+          }
+
+          function closePopup() {
+            reviewPopup.classList.add("hidden");
+          }
+
+          if (reviewBtn) reviewBtn.addEventListener("click", openPopup);
+          if (mbsigninBtn) mbsigninBtn.addEventListener("click", openPopup);
+          if (closeBtn) closeBtn.addEventListener("click", closePopup);
+
+          window.addEventListener("click", function (e) {
+            if (e.target === reviewPopup) {
+              closePopup();
+            }
+          });
+        });
+
+    </script>
 
 </div>
-<script>
-     document.addEventListener("DOMContentLoaded", function () {
-      const popup = document.getElementById("popup");
-      const content = document.getElementById("content");
-      const bookNowBtns = document.querySelectorAll(".book-now-btn");
-
-      bookNowBtns.forEach(btn => {
-        btn.addEventListener("click", function () {
-          popup.classList.remove("hidden");
-        });
-      });
-
-      popup.addEventListener("click", function (event) {
-        if (event.target === popup && !popup.classList.contains("review-popup")) {
-          popup.classList.add("hidden");
-        }
-      });
-
-      const reviewBtn = document.getElementById("review-btn");
-      const mbsigninBtn = document.getElementById("review-fac-btn");
-      const reviewPopup = document.getElementById("review-popup");
-      const closeBtn = document.getElementById("close-btn");
-
-      function openPopup() {
-        reviewPopup.classList.remove("hidden");
-      }
-
-      function closePopup() {
-        reviewPopup.classList.add("hidden");
-      }
-
-      if (reviewBtn) reviewBtn.addEventListener("click", openPopup);
-      if (mbsigninBtn) mbsigninBtn.addEventListener("click", openPopup);
-      if (closeBtn) closeBtn.addEventListener("click", closePopup);
-
-      window.addEventListener("click", function (e) {
-        if (e.target === reviewPopup) {
-          closePopup();
-        }
-      });
-    });
-
-</script>
