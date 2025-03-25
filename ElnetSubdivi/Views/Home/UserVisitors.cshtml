@@ -43,7 +43,7 @@
 
             </div>
 
-            <div id="sortF" class="mt-4 flex w-[88.5%] flex-row items-center gap-6">
+            <div id="sortVisiors" class="mt-4 flex w-[88.5%] flex-row items-center gap-6">
                 <a href="#" id="userfeedbackbtn" class="cursor-pointer rounded-full bg-blue-200 px-6 py-2 text-center font-semibold text-blue-700">
                     <span class="text-[15px]">All<span>(12)</span></span>
                 </a>
@@ -209,4 +209,28 @@
             document.getElementById("viewDetailsModal").classList.add("hidden");
         }
     });
+</script>
+<script>
+    document.querySelectorAll("#sortVisiors a").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+            e.preventDefault(); // Prevent page reload
+
+            // Reset all buttons
+            document.querySelectorAll("#sortVisiors a").forEach(b => {
+                b.classList.remove("bg-blue-200", "text-blue-700", "font-semibold");
+                b.classList.add("bg-gray-100", "hover:bg-gray-200");
+                b.querySelector("span").classList.remove("text-blue-700");
+                b.querySelector("span").classList.add("text-black");
+            });
+
+            // Add active state to the clicked button
+            e.currentTarget.classList.add("bg-blue-200", "text-blue-700", "font-semibold");
+            e.currentTarget.classList.remove("bg-gray-100", "hover:bg-gray-200");
+
+            // Change the text inside span to blue
+            e.currentTarget.querySelector("span").classList.remove("text-black");
+            e.currentTarget.querySelector("span").classList.add("text-blue-700");
+        });
+    });
+
 </script>

@@ -62,6 +62,8 @@
 
     </div>
 
+
+
     <!-- Table -->
     <table class="w-[88%] overflow-y-auto rounded-lg bg-white shadow-lg">
         <thead>
@@ -82,7 +84,7 @@
                 <td class="px-4 py-4">March 03, 2025</td>
                 <td class="px-4 py-4">---</td>
                 <td class="flex gap-3 px-4 py-4">
-                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
+                    <img id="editIc" src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
                     <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
                 </td>
             </tr>
@@ -233,5 +235,55 @@
     </table>
 
     @await Html.PartialAsync("_pagination")
+
+</div>
+
+<!--Edit Request Pop-Up -->
+<div id="editReq-popup" class="fixed inset-0 z-100 flex hidden items-center justify-center bg-black/50 p-4">
+    <div class="w-[600px] rounded-lg bg-white p-6 shadow-lg">
+        <h1 class="text-center text-xl font-semibold text-[#043137]">Edit Request</h1>
+
+        <div class="mt-4 space-y-3">
+            <label class="block font-medium">Request Type</label>
+            <select class="w-full rounded border px-3 py-2">
+                <option>Maintenance Request</option>
+            </select>
+
+            <label class="block font-medium">Subject</label>
+            <input type="text" class="w-full rounded border px-3 py-2" value="Maintenance Request" />
+
+            <div class="flex gap-4">
+                <div class="w-1/2">
+                    <label class="block font-medium">Date</label>
+                    <input type="date" class="w-full rounded border px-3 py-2" placeholder="mm/dd/yyyy" />
+                </div>
+                <div class="w-1/2">
+                    <label class="block font-medium">Time</label>
+                    <input type="time" class="w-full rounded border px-3 py-2" placeholder="--:-- --" />
+                </div>
+            </div>
+
+            <label class="block font-medium">Description</label>
+            <textarea class="h-24 w-full rounded border px-3 py-2">Lights are not working.</textarea>
+
+            <label class="block text-sm font-medium">Attachments</label>
+            <button class="w-[20%] rounded-full bg-[#043137] py-2 text-white">Upload</button>
+
+            <div class="mt-4 flex justify-between">
+                <button id="cancelbtn" class="w-[45%] rounded-full border px-4 py-2">Cancel</button>
+                <button class="w-[45%] rounded-full bg-[#043137] px-4 py-2 text-white">Request</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById("editIc").addEventListener("click", function() {
+            document.getElementById("editReq-popup").classList.remove("hidden");
+        });
+        document.getElementById("editReq-popup").addEventListener("click", function(event) {
+            if (event.target === this) {
+                this.classList.add("hidden");
+            }
+        });
+    </script>
 
 </div>
