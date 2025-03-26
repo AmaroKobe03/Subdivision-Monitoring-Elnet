@@ -168,6 +168,11 @@ namespace ElnetSubdivi.Controllers
             return View();
 
         }
+        public IActionResult UserCalendar()
+        {
+            ViewData["HideSearch"] = true;
+            return View();
+        }
 
         public IActionResult UserVehicle()
         {

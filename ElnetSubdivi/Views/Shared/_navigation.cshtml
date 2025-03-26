@@ -63,8 +63,8 @@
                             <img class="w-[10px] brightness-0 invert-[1]" src="/Images/drdown.svg" />
                         </a>
                         <div class="absolute hidden w-40 flex-col rounded-lg bg-white p-3 py-2 shadow-lg group-hover:flex">
-                                <a href="@Url.Action("FacilityReservation", "Home")" class="px-4 py-2 hover:bg-gray-200">Request</a>
-                                <a href="@Url.Action("MyReservation","Home")" class="px-4 py-2 hover:bg-gray-200">My Facilities</a>
+                            <a href="@Url.Action("FacilityReservation", "Home")" class="px-4 py-2 hover:bg-gray-200">Request</a>
+                            <a href="@Url.Action("MyReservation","Home")" class="px-4 py-2 hover:bg-gray-200">My Facilities</a>
                         </div>
                     </div>
                     <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("serviceRequest", "Home")">Service Request</a>
@@ -86,7 +86,8 @@
 
         <div id="pfp-notif" class="relative ml-10 flex flex-row items-center justify-center gap-4 md:ml-2">
             <div class="relative">
-                    <img id="bell-drop" class="w-[25px] cursor-pointer sm:w-[30px]" src="~/Images/bell.svg" />
+                <img id="bell-drop" class="w-[25px] cursor-pointer sm:w-[30px]" src="~/Images/bell.svg" />
+                <!--Admin Notification Items -->
                 <div class="notif-popup absolute top-12 right-0 hidden w-80 rounded-lg bg-white p-4 shadow-lg">
                     <!-- Header -->
                     <div class="flex items-center justify-between border-b pb-2">  
@@ -143,55 +144,67 @@
                     </div>
                 </div>
 
-                </div>
+            </div>
 
 
-                <img class="dropdown-btn relative w-[25px] cursor-pointer sm:w-[30px]" src="~/Images/pfp.svg" alt="Profile">
+            <img class="dropdown-btn relative w-[25px] cursor-pointer sm:w-[30px]" src="~/Images/pfp.svg" alt="Profile">
 
-                <div class="drp-popup fles-col absolute top-10 right-0 flex hidden w-50 flex-col gap-2 rounded-lg bg-white p-2 py-2 shadow-lg">
-                    <a href="@GetProfileLink()" class="cursor-pointer">
-                        <div class="mb-3 flex items-center gap-4 border-b-2 border-gray-400 py-2">
-                            <img class="h-7 w-7 rounded-full object-cover" src="~/Images/pfp.svg" alt="Admin" />
-                            <span>@User.Identity.Name</span>
-                        </div>
-                    </a>
+            <div class="drp-popup fles-col absolute top-10 right-0 flex hidden w-50 flex-col gap-2 rounded-lg bg-white p-2 py-2 shadow-lg">
+                <a href="@GetProfileLink()" class="cursor-pointer">
+                    <div class="mb-3 flex items-center gap-4 border-b-2 border-gray-400 py-2">
+                        <img class="h-7 w-7 rounded-full object-cover" src="~/Images/pfp.svg" alt="Admin" />
+                        <span>@User.Identity.Name</span>
+                    </div>
+                </a>
 
-                    @functions {
-                        string GetProfileLink()
+                @functions {
+                    string GetProfileLink()
+                    {
+                        if (User.Identity.IsAuthenticated)
                         {
-                            if (User.Identity.IsAuthenticated)
+                            if (User.IsInRole("admin"))
                             {
-                                if (User.IsInRole("admin"))
-                                {
-                                    return Url.Action("AdminProfile", "Home") ?? "/";
-                                }
-                                else if (User.IsInRole("staff"))
-                                {
-                                    return Url.Action("StaffProfile", "Home") ?? "/";
-                                }
-                                else
-                                {
-                                    return Url.Action("UserProfile", "Home") ?? "/";
-                                }
-
+                                return Url.Action("AdminProfile", "Home") ?? "/";
+                            }
+                            else if (User.IsInRole("staff"))
+                            {
+                                return Url.Action("StaffProfile", "Home") ?? "/";
+                            }
+                            else
+                            {
+                                return Url.Action("UserProfile", "Home") ?? "/";
                             }
 
-                            return Url.Action("Login", "Home"); // ala ni siya pa
                         }
+
+                        return Url.Action("Login", "Home"); // ala ni siya pa
+                    }
                     }
 
                     <a href="@Url.Action("UserProfile", "Home")" class="px-4 hover:bg-gray-200">Profile Settings</a>
                      @if (User.Identity != null && User.Identity.IsAuthenticated)
-                        {
-                                 if (User.Identity.Name == "admin")
-                                {
-                                    <a href="@Url.Action("feedback", "Home")" class="px-4 py-2 hover:bg-gray-200">Feedback & Report</a>
-                                }else{
-                                    <a href="@Url.Action("UserFeedback", "Home")" class="px-4 py-2 hover:bg-gray-200">Feedback & Report</a>
+                {
+                    if (User.Identity.Name == "admin")
+                    {
+                        <a href="@Url.Action("feedback", "Home")" class="px-4 py-2 hover:bg-gray-200">Feedback & Report</a>
+                    }else{
+                        <a href="@Url.Action("UserFeedback", "Home")" class="px-4 py-2 hover:bg-gray-200">Feedback & Report</a>
 
-                                }
-                        }
-                    <a href="@Url.Action("Calendar", "Home")" class="px-4 py-2 hover:bg-gray-200">Calendar</a>
+                    }
+                }
+
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    if (User.Identity.Name == "admin")
+                    {
+                        <a href="@Url.Action("Calendar", "Home")" class="px-4 py-2 hover:bg-gray-200">Calendar</a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("UserCalendar", "Home")" class="px-4 py-2 hover:bg-gray-200">Calendar</a>
+
+                    }
+                }
                     <a href="@Url.Action("ContactDirectory", "Home")" class="px-4 py-2 hover:bg-gray-200">Contact Directory</a>
                     <!-- Logout Button -->
                     <a href="#" onclick="confirmLogout(event)" class="px-4 py-2 text-red-500 hover:bg-gray-200">Logout</a>
