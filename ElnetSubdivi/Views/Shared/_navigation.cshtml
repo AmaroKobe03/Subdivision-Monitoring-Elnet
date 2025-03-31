@@ -48,13 +48,31 @@
                         </div>
                     </div>
                 }
-                else if (User.Identity.Name == "staff")
+                else if (User.Identity.Name.StartsWith("staff/"))
                 {
                     <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("UserDash", "Home")">Home</a>
-                    <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("serviceRequest", "Home")">Service Request</a>
-                    <a class="cursor-pointer text-white hover:text-[#787676]">Reports</a>
+
+                    if (User.Identity.Name.StartsWith("staff/maintenance"))
+                    {
+                        <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("MaintenanceServiceRequest", "Home")">Service Request</a>
+                    }
+                    else if (User.Identity.Name.StartsWith("staff/housekeeping"))
+                    {
+                        <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("HousekeepingServiceRequest", "Home")">Service Request</a>
+                    }
+                    else if (User.Identity.Name.StartsWith("staff/security"))
+                    {
+                        <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("SecurityServiceRequest", "Home")">Service Request</a>
+                    }
+                    else
+                    {
+                        // Default Service Request Link if no subtype matches (optional)
+                        <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("MaintenanceServiceRequest", "Home")">Service Request</a> 
+                    }
+
+                    <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("IncidentReport", "Home")">Reports</a>
                 }
-                else
+                                else
                 {
                     <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("UserDash", "Home")">Home</a>
                     <div class="group relative">
@@ -182,29 +200,41 @@
                     }
 
                     <a href="@Url.Action("UserProfile", "Home")" class="px-4 hover:bg-gray-200">Profile Settings</a>
+                    @if (User.Identity != null && User.Identity.IsAuthenticated)
+                    {
+                        if (User.Identity.Name == "admin")
+                        {
+                            <a href="@Url.Action("feedback", "Home")" class="px-4 py-2 hover:bg-gray-200">Feedback & Report</a>
+                        }
+                        else if (!User.Identity.Name.StartsWith("staff/")) // Check if user is NOT staff (any subtype)
+                        {
+                            <a href="@Url.Action("UserFeedback", "Home")" class="px-4 py-2 hover:bg-gray-200">Feedback & Report</a>
+                        }
+                        // If the user is staff (any subtype), nothing is rendered here.
+                    }
                      @if (User.Identity != null && User.Identity.IsAuthenticated)
-                {
-                    if (User.Identity.Name == "admin")
                     {
-                        <a href="@Url.Action("feedback", "Home")" class="px-4 py-2 hover:bg-gray-200">Feedback & Report</a>
-                    }else{
-                        <a href="@Url.Action("UserFeedback", "Home")" class="px-4 py-2 hover:bg-gray-200">Feedback & Report</a>
-
+                        if (User.Identity.Name == "admin")
+                        {
+                            <a href="@Url.Action("Calendar", "Home")" class="px-4 py-2 hover:bg-gray-200">Calendar</a>
+                        }
+                        else if (User.Identity.Name.StartsWith("staff/maintenance"))
+                        {
+                            <a href="@Url.Action("MaintenanceCalendar", "Home")" class="px-4 py-2 hover:bg-gray-200">Calendar</a>
+                        }
+                        else if (User.Identity.Name.StartsWith("staff/housekeeping"))
+                        {
+                            <a href="@Url.Action("HouseKeepingCalendar", "Home")" class="px-4 py-2 hover:bg-gray-200">Calendar</a>
+                        }
+                        else if (User.Identity.Name.StartsWith("staff/security"))
+                        {
+                            <a href="@Url.Action("SecurityCalendar", "Home")" class="px-4 py-2 hover:bg-gray-200">Calendar</a>
+                        }
+                        else 
+                        {
+                            <a href="@Url.Action("UserCalendar", "Home")" class="px-4 py-2 hover:bg-gray-200">Calendar</a>
+                        }
                     }
-                }
-
-                @if (User.Identity != null && User.Identity.IsAuthenticated)
-                {
-                    if (User.Identity.Name == "admin")
-                    {
-                        <a href="@Url.Action("Calendar", "Home")" class="px-4 py-2 hover:bg-gray-200">Calendar</a>
-                    }
-                    else
-                    {
-                        <a href="@Url.Action("UserCalendar", "Home")" class="px-4 py-2 hover:bg-gray-200">Calendar</a>
-
-                    }
-                }
                     <a href="@Url.Action("ContactDirectory", "Home")" class="px-4 py-2 hover:bg-gray-200">Contact Directory</a>
                     <!-- Logout Button -->
                     <a href="#" onclick="confirmLogout(event)" class="px-4 py-2 text-red-500 hover:bg-gray-200">Logout</a>
@@ -213,15 +243,13 @@
                         function confirmLogout(event) {
                             event.preventDefault();
                                 window.location.href = "@Url.Action("Logout", "Home")";
-             
                         }
                     </script>
-
             </div>
          </div>
         <!-- Overlay (Excludes Top Nav) -->
        
-        <div id="menu-overlay" class="fixed inset-0 top-12 z-10 hidden bg-black/50 opacity-0 transition-opacity duration-300"></div>
+        <d id="menu-overlay" class="fixed inset-0 top-12 z-10 hidden bg-black/50 opacity-0 transition-opacity duration-300"></d iv>
 
         <div id="mobile-menu"
              class="absolute top-12 left-0 z-20 flex hidden h-auto w-full -translate-y-full flex-col items-start gap-5 bg-[#043137] p-4 text-white shadow-lg transition-all duration-300 md:hidden">
@@ -235,7 +263,7 @@
 
             @if (User.Identity != null && User.Identity.IsAuthenticated)
             {
-                if (User.Identity.Name == "staff")
+                    if (User.Identity.Name.StartsWith("staff/maintenance"))
                 {
                     <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("serviceRequest", "Home")">Service Request</a>
                     <a class="cursor-pointer text-white hover:text-[#787676]">Reports</a>

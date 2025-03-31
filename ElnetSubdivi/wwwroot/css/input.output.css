@@ -1,4 +1,4 @@
-/*! tailwindcss v4.0.15 | MIT License | https://tailwindcss.com */
+/*! tailwindcss v4.0.17 | MIT License | https://tailwindcss.com */
 @layer theme, base, components, utilities;
 @layer theme {
   :root, :host {
@@ -352,23 +352,17 @@
   .right-75 {
     right: calc(var(--spacing) * 75);
   }
-  .right-76 {
-    right: calc(var(--spacing) * 76);
-  }
   .right-77 {
     right: calc(var(--spacing) * 77);
-  }
-  .right-79 {
-    right: calc(var(--spacing) * 79);
   }
   .right-80 {
     right: calc(var(--spacing) * 80);
   }
-  .right-85 {
-    right: calc(var(--spacing) * 85);
-  }
   .right-90 {
     right: calc(var(--spacing) * 90);
+  }
+  .right-200 {
+    right: calc(var(--spacing) * 200);
   }
   .bottom-0 {
     bottom: calc(var(--spacing) * 0);
@@ -391,6 +385,9 @@
   .left-1 {
     left: calc(var(--spacing) * 1);
   }
+  .left-2 {
+    left: calc(var(--spacing) * 2);
+  }
   .left-4 {
     left: calc(var(--spacing) * 4);
   }
@@ -402,9 +399,6 @@
   }
   .left-7 {
     left: calc(var(--spacing) * 7);
-  }
-  .left-10 {
-    left: calc(var(--spacing) * 10);
   }
   .left-25 {
     left: calc(var(--spacing) * 25);
@@ -855,6 +849,12 @@
   }
   .w-16 {
     width: calc(var(--spacing) * 16);
+  }
+  .w-20 {
+    width: calc(var(--spacing) * 20);
+  }
+  .w-24 {
+    width: calc(var(--spacing) * 24);
   }
   .w-25 {
     width: calc(var(--spacing) * 25);

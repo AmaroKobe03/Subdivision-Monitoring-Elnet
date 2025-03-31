@@ -1,0 +1,227 @@
+﻿@{
+    ViewData["Title"] = "Maintenance Calendar";
+
+}
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+
+
+<div class="flex h-[100vh] w-[90%] flex-col items-center overflow-auto overflow-y-hidden bg-[#f2f2f2] font-semibold">
+    @await Html.PartialAsync("_sharedSearch")
+
+
+    <div id='calendar' class="h-[80vh] w-full max-w-7xl rounded-lg bg-white p-4 shadow"></div>
+</div>
+
+
+<!-- Modal for adding event -->
+<div id="eventModal" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50">
+    <div class="flex w-[450px] flex-col rounded-2xl bg-white p-6 shadow-lg">
+        <h2 class="mb-4 text-center text-2xl font-bold text-gray-800">Add New Event</h2>
+
+        <!-- Title -->
+        <label class="font-medium text-gray-700">Title</label>
+        <input type="text" id="eventTitle" class="mb-3 w-full rounded-lg border border-gray-300 px-4 py-2" placeholder="Enter event title" />
+
+        <!-- Date & Time Row -->
+        <div class="flex gap-3">
+            <div class="w-1/2">
+                <label class="font-medium text-gray-700">Date</label>
+                <div class="relative">
+                    <input type="text" id="eventDate" class="w-full rounded-lg border border-gray-300 bg-gray-100 px-4 py-2 pr-10" readonly />
+                    <span class="absolute top-1/2 right-3 -translate-y-1/2 text-gray-500">
+                    </span>
+                </div>
+            </div>
+            <div class="w-1/2">
+                <label class="font-medium text-gray-700">Time</label>
+                <div class="relative">
+                    <input type="time" id="eventTime" class="w-full rounded-lg border border-gray-300 px-4 py-2 pr-10" />
+                    <span class="absolute top-1/2 right-3 -translate-y-1/2 text-gray-500">
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description -->
+        <label class="mt-3 font-medium text-gray-700">Description</label>
+        <textarea id="eventDesc" class="mb-3 h-20 w-full rounded-lg border border-gray-300 px-4 py-2" placeholder="Enter event details"></textarea>
+
+        <!-- Visibility Dropdown -->
+        <label class="hidden font-medium text-gray-700">Visibility</label>
+        <select id="eventVisibility" class="mb-3 hidden w-full rounded-lg border border-gray-300 px-3 py-2">
+            <option value="all">All Users</option>
+            <option value="specific">Specific Users</option>
+        </select>
+
+        <!-- Specific Users Dropdown (Hidden by Default) -->
+        <input type="text" id="specificUsersSearch" class="mb-3 hidden w-full rounded-lg border border-gray-300 px-3 py-2" placeholder="Search specific users...">
+
+
+        <!-- Buttons -->
+        <div class="mt-4 flex justify-between gap-2">
+            <button onclick="closeModal()" class="w-1/2 rounded-full border border-gray-600 py-2 text-gray-600">Cancel</button>
+            <button onclick="saveEvent()" class="w-1/2 rounded-full bg-[#043137] py-2 text-white">Save Event</button>
+        </div>
+    </div>
+</div>
+
+<!-- Update Event Modal -->
+<div id="updateEventModal" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50">
+    <div class="relative flex w-[450px] flex-col rounded-2xl bg-white p-6 shadow-lg">
+        <h2 class="mb-4 text-center text-2xl font-bold text-gray-800">Update Event</h2>
+
+        <button onclick="closeUpdateModal()" class="absolute top-4 right-8 text-lg text-gray-600 hover:text-red-600">
+            ✖
+        </button>
+
+        <!-- Title -->
+        <label class="font-medium text-gray-700">Title</label>
+        <input type="text" id="updateEventTitle" class="mb-3 w-full rounded-lg border border-gray-300 px-4 py-2" />
+
+        <!-- Date & Time -->
+        <div class="flex gap-3">
+            <div class="w-1/2">
+                <label class="font-medium text-gray-700">Date</label>
+                <input type="date" id="updateEventDate" class="w-full rounded-lg border border-gray-300 px-4 py-2" />
+            </div>
+            <div class="w-1/2">
+                <label class="font-medium text-gray-700">Time</label>
+                <input type="time" id="updateEventTime" class="w-full rounded-lg border border-gray-300 px-4 py-2" />
+            </div>
+        </div>
+
+        <!-- Description -->
+        <label class="mt-3 font-medium text-gray-700">Description</label>
+        <textarea id="updateEventDesc" class="mb-3 h-20 w-full rounded-lg border border-gray-300 px-4 py-2"></textarea>
+
+        <!-- Visibility Dropdown -->
+        <label class="hidden font-medium text-gray-700">Visibility</label>
+        <select id="updateEventVisibility" class="mb-3 hidden w-full rounded-lg border border-gray-300 px-3 py-2">
+            <option value="all">All Users</option>
+            <option value="specific">Specific Users</option>
+        </select>
+
+        <!-- Specific Users Dropdown (Hidden by Default) -->
+        <input type="text" id="updateSpecificUsersSearch" class="mb-3 hidden w-full rounded-lg border border-gray-300 px-3 py-2" placeholder="Search specific users...">
+
+
+        <!-- Buttons -->
+        <div class="mt-4 flex justify-between gap-2">
+            <button onclick="deleteEvent()" class="w-1/2 rounded-full border border-red-600 py-2 text-red-600">Delete Event</button>
+            <button onclick="updateEvent()" class="w-1/2 rounded-full bg-[#043137] py-2 text-white">Update Event</button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var calendar;
+    var selectedEvent;
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var calendarEl = document.getElementById('calendar');
+        calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            selectable: true,
+            editable: true,
+            eventClick: function (info) {
+                selectedEvent = info.event;
+
+                // Populate update modal fields
+                document.getElementById("updateEventTitle").value = selectedEvent.title;
+                document.getElementById("updateEventDate").value = selectedEvent.start.toISOString().split("T")[0];
+                document.getElementById("updateEventTime").value = selectedEvent.start.toTimeString().slice(0, 5);
+                document.getElementById("updateEventDesc").value = selectedEvent.extendedProps.description || "";
+                document.getElementById("updateEventVisibility").value = selectedEvent.extendedProps.visibility || "all";
+
+                // Show update modal
+                document.getElementById("updateEventModal").classList.remove("hidden");
+            },
+            select: function (info) {
+                // When a date is selected, open the Add Event modal
+                document.getElementById("eventDate").value = info.startStr;
+                document.getElementById("eventModal").classList.remove("hidden");
+            },
+            events: [
+                { title: 'Meeting', start: '2025-03-15T09:00:00', description: 'Please attend.', visibility: 'all' }
+            ]
+        });
+        calendar.render();
+    });
+
+    // Close modals
+    function closeModal() {
+        document.getElementById("eventModal").classList.add("hidden");
+    }
+    function closeUpdateModal() {
+        document.getElementById("updateEventModal").classList.add("hidden");
+    }
+
+    // Save new event
+    function saveEvent() {
+        let title = document.getElementById("eventTitle").value;
+        let date = document.getElementById("eventDate").value;
+        let time = document.getElementById("eventTime").value;
+        let desc = document.getElementById("eventDesc").value;
+        let visibility = document.getElementById("eventVisibility").value;
+
+        if (title && date) {
+            calendar.addEvent({
+                title: title,
+                start: date + "T" + (time || "00:00"),
+                description: desc,
+                visibility: visibility
+            });
+
+            closeModal();
+        } else {
+            alert("Title and Date are required!");
+        }
+    }
+
+    // Update existing event
+    function updateEvent() {
+        if (selectedEvent) {
+            selectedEvent.setProp("title", document.getElementById("updateEventTitle").value);
+            selectedEvent.setStart(document.getElementById("updateEventDate").value + "T" + document.getElementById("updateEventTime").value);
+            selectedEvent.setExtendedProp("description", document.getElementById("updateEventDesc").value);
+            selectedEvent.setExtendedProp("visibility", document.getElementById("updateEventVisibility").value);
+
+            closeUpdateModal();
+        }
+    }
+
+    // Delete event
+    function deleteEvent() {
+        if (selectedEvent) {
+            selectedEvent.remove();
+            closeUpdateModal();
+        }
+    }
+
+</script>
+<script>
+    function toggleSpecificUsers(selectId, searchInputId) {
+        const visibility = document.getElementById(selectId).value;
+        const searchInput = document.getElementById(searchInputId);
+
+        if (visibility === "specific") {
+            searchInput.classList.remove("hidden");
+        } else {
+            searchInput.classList.add("hidden");
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("eventVisibility").addEventListener("change", function () {
+            toggleSpecificUsers("eventVisibility", "specificUsersSearch");
+        });
+
+        document.getElementById("updateEventVisibility").addEventListener("change", function () {
+            toggleSpecificUsers("updateEventVisibility", "updateSpecificUsersSearch");
+        });
+    });
+
+
+</script>

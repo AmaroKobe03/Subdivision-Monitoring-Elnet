@@ -181,6 +181,31 @@ namespace ElnetSubdivi.Controllers
 
         }
 
+        public IActionResult MaintenanceServiceRequest()
+        {
+            ViewData["HideSearch"] = true;
+            return View();
+
+        }
+        public IActionResult MaintenanceCalendar()
+        {
+            ViewData["HideSearch"] = true;
+            return View();
+
+        }
+        public IActionResult IncidentReport()
+        {
+            ViewData["HideSearch"] = true;
+            var reports = new List<dynamic>
+            {
+                new {Status = "Pending", Title = "Broken Light Post", Type = "Incident Report", Description = "There’s a broken light post in street xxxx, it’s very hard to see...", Icon = "incident_icon.svg", Clock = "clock.svg", Duration = "2 Days ago"},
+                new {Status = "Resolved", Title = "Street Hole", Type = "Incident Report", Description = "In the street xxx, there’s a massive hole filled with water, the vehicles...", Icon = "incident_icon.svg", Clock = "clock.svg", Duration = "3 Days ago" }
+            };
+            return View(reports);
+        }
+
+
+
         public IActionResult Billing()
         {
             ViewData["Title"] = "Service Request";
@@ -202,6 +227,16 @@ namespace ElnetSubdivi.Controllers
         public IActionResult Reports()
         {
             ViewData["Title"] = "Reports";
+            return View();
+        }
+        public IActionResult HousekeepingServiceRequest ()
+        {
+            ViewData["HideSearch"] = true;
+            return View();
+        }
+        public IActionResult HouseKeepingCalendar()
+        {
+            ViewData["HideSearch"] = true;
             return View();
         }
         public IActionResult UserFeedback()
@@ -318,9 +353,9 @@ namespace ElnetSubdivi.Controllers
             if (username == "admin" && password == "a")
             {
                 var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, "admin")
-                };
+        {
+            new Claim(ClaimTypes.Name, "admin"),
+        };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var authProperties = new AuthenticationProperties();
@@ -332,9 +367,9 @@ namespace ElnetSubdivi.Controllers
             else if (username == "user" && password == "u")
             {
                 var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, "user")
-                };
+        {
+            new Claim(ClaimTypes.Name, "user"),
+        };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var authProperties = new AuthenticationProperties();
@@ -343,19 +378,44 @@ namespace ElnetSubdivi.Controllers
 
                 return RedirectToAction("UserDash", "Home");
             }
-            else if (username == "staff" && password == "s")
+            // Handle staff subtypes
+            else if (username.StartsWith("staff/") && password == "s") // Example: staff/maintenance, staff/housekeeping
             {
-                var claims = new List<Claim>
+                string[] parts = username.Split('/');
+                if (parts.Length == 2)
                 {
-                    new Claim(ClaimTypes.Name, "staff")
-                };
+                    string staffType = parts[1]; // Get the subtype (maintenance, housekeeping, security)
 
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var authProperties = new AuthenticationProperties();
+                    var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, username), // Store the full username (staff/maintenance)
+                new Claim(ClaimTypes.Role, "staff"), // Base staff role
+                new Claim("StaffType", staffType) // Custom claim for subtype
+            };
 
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var authProperties = new AuthenticationProperties();
 
-                return RedirectToAction("UserDash", "Home");
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+
+                    // Redirect based on staff subtype
+                    switch (staffType.ToLower())
+                    {
+                        case "maintenance":
+                            return RedirectToAction("UserDash", "Home");
+                        case "housekeeping":
+                            return RedirectToAction("UserDash", "Home");
+                        case "security":
+                            return RedirectToAction("SecurityDash", "Home");
+                        default:
+                            return RedirectToAction("UserDash", "Home"); // Default redirect for unknown subtypes
+                    }
+                }
+                else
+                {
+                    TempData["Error"] = "Invalid Staff Username Format!";
+                    return RedirectToAction("Landing");
+                }
             }
             else
             {
