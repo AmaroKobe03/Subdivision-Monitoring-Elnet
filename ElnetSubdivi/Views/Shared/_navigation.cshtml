@@ -12,10 +12,9 @@
 
         <!-- Navigation Menu -->
         <div id="menu" class="m-0 ml-auto flex hidden h-[4vh] flex-col items-center justify-between gap-6 bg-[#043137] font-medium text-[21px] md:flex md:flex-row md:gap-8">
-            <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("UserDash", "Home")">Home</a>
-            @if (User.Identity != null && User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+            @if (User.Identity != null && User.Identity.IsAuthenticated)
             {
-                @if (User.Identity.Name == "admin")
+                @if (User.IsInRole("Admin"))
                 {
                     <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("AdminDash", "Home")">Home</a>
                     <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("UserDash", "Home")">Community</a>
@@ -30,7 +29,9 @@
                             {
                                 <a href="@Url.Action("ReservationsManagement", "Home")" class="px-4 py-2 hover:bg-gray-200">Reservations</a>
                                 <a href="@Url.Action("FacilityManagement", "Home")" class="px-4 py-2 hover:bg-gray-200">Facility Management</a>
-                            }else{
+                            }
+                            else
+                            {
                                 <a href="@Url.Action("FacilityReservation", "Home")" class="px-4 py-2 hover:bg-gray-200">Request</a>
                                 <a href="@Url.Action("MyReservation","Home")" class="px-4 py-2 hover:bg-gray-200">My Facilities</a>
                             }
@@ -68,12 +69,12 @@
                     else
                     {
                         // Default Service Request Link if no subtype matches (optional)
-                        <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("MaintenanceServiceRequest", "Home")">Service Request</a> 
+                        <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("MaintenanceServiceRequest", "Home")">Service Request</a>
                     }
 
                     <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("IncidentReport", "Home")">Reports</a>
                 }
-                                else
+                else
                 {
                     <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("UserDash", "Home")">Home</a>
                     <div class="group relative">

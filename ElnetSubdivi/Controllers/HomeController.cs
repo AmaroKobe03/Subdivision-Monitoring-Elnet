@@ -356,68 +356,23 @@ namespace ElnetSubdivi.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
-            // Use UserService to fetch user from the database
-            var userAccount = await _userService.GetUserByUsername(username);
-
-            if (userAccount != null && userAccount.password == password) // (Replace with password hashing later)
+            // Check predefined admin and user credentials
+            if (username == "admin" && password == "a")
             {
-                var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, "admin"),
-        };
-
-                // Fetch user details from users table using user_id
-                var userDetails = await _userService.GetUserDetailsById(userId);
-
-                if (userDetails != null)
+                return await SignInUser("admin", "AdminDash");
+            }
+            else if (username == "user" && password == "u")
+            {
+                return await SignInUser("user", "UserDash");
+            }
+            // Handle staff login with predefined structure
+            else if (username.StartsWith("staff/") && password == "s")
+            {
+                string[] parts = username.Split('/');
+                if (parts.Length == 2)
                 {
-                    // Store user details in Users model
-                    Users loggedInUser = new Users
-                    {
-                        user_id = userDetails.user_id,
-                        first_name = userDetails.first_name,
-                        last_name = userDetails.last_name,
-                        email = userDetails.email,
-                        phone_number = userDetails.phone_number,
-                        role = userDetails.role
-                    };
-
-                    UserAccount loggedInAccount = new UserAccount
-                    {
-                        user_id = userAccount.user_id,
-                        username = userAccount.username,
-                        password = userAccount.password
-                    };
-
-                    // Create authentication claims
-                    var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, loggedInAccount.username),
-                        new Claim(ClaimTypes.Role, loggedInUser.role), // Store role
-                        new Claim("UserId", loggedInUser.user_id.ToString()) // Store user_id
-                    };
-
-                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    var authProperties = new AuthenticationProperties();
-
-                    await HttpContext.SignInAsync(
-                        CookieAuthenticationDefaults.AuthenticationScheme,
-                        new ClaimsPrincipal(claimsIdentity),
-                        authProperties
-                    );
-
-                    // Redirect based on staff subtype
-                    switch (staffType.ToLower())
-                    {
-                        case "maintenance":
-                            return RedirectToAction("UserDash", "Home");
-                        case "housekeeping":
-                            return RedirectToAction("UserDash", "Home");
-                        case "security":
-                            return RedirectToAction("SecurityDash", "Home");
-                        default:
-                            return RedirectToAction("UserDash", "Home"); // Default redirect for unknown subtypes
-                    }
+                    string staffType = parts[1];
+                    return await SignInUser(username, "UserDash", "staff", staffType);
                 }
                 else
                 {
@@ -425,12 +380,67 @@ namespace ElnetSubdivi.Controllers
                     return RedirectToAction("Landing");
                 }
             }
+            // Fetch user from database
             else
             {
-                TempData["Error"] = "Invalid Credentials!";
-                return RedirectToAction("Landing");
+                var userAccount = await _userService.GetUserByUsername(username);
+
+                if (userAccount != null && userAccount.password == password) // (Replace with password hashing later)
+                {
+                    var userDetails = await _userService.GetUserDetailsById(userAccount.user_id);
+                    if (userDetails != null)
+                    {
+                        return await SignInUser(userAccount.username, GetRedirectAction(userDetails.role), userDetails.role, userDetails.user_id);
+                    }
+                }
             }
+
+            TempData["Error"] = "Invalid Credentials!";
+            return RedirectToAction("Landing");
         }
+
+        private async Task<IActionResult> SignInUser(string username, string redirectAction, string role = "", string additionalClaim = "")
+        {
+            var claims = new List<Claim>
+    {
+        new Claim(ClaimTypes.Name, username)
+    };
+
+            if (!string.IsNullOrEmpty(role))
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+
+            if (!string.IsNullOrEmpty(additionalClaim))
+            {
+                claims.Add(new Claim("UserId", additionalClaim));
+            }
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var authProperties = new AuthenticationProperties();
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authProperties
+            );
+
+            return RedirectToAction(redirectAction, "Home");
+        }
+
+
+        private string GetRedirectAction(string role)
+        {
+            return role?.ToLower() switch
+            {
+                "admin" => "AdminDash",
+                "maintenance" => "UserDash",
+                "housekeeping" => "UserDash",
+                "security" => "UserDash",
+                _ => "UserDash"
+            };
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
