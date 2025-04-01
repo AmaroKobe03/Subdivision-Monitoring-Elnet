@@ -1,0 +1,142 @@
+﻿@model IEnumerable<dynamic>
+
+@{
+    ViewData["Title"] = "Incident Report";
+}
+
+<div class="flex h-[100vh] w-[90%] flex-col items-center overflow-auto overflow-y-hidden bg-[#f2f2f2] font-semibold">
+    @await Html.PartialAsync("_sharedSearch")
+
+    <div class="mt-10 mr-2 mb-6 flex w-[88.3%] items-center justify-between">
+        <div class="relative mr-4 w-[40%]">
+            <input type="text" placeholder="Search"
+                   class="h-12 w-full rounded-full border border-gray-300 bg-white pr-4 pl-12 outline-none focus:ring-2 focus:ring-gray-300">
+            <img class="absolute top-1/2 left-4 h-5 -translate-y-1/2" src="~/Images/find.svg" alt="Search">
+        </div>
+
+        <div id="drDown" class="relative right-75 flex cursor-pointer items-center gap-2">
+            <a id="drop" class="font-medium text-black">All Status</a>
+            <img src="~/Images/drp.svg" alt="Filter" class="h-5">
+            <div id="statSelection" class="absolute top-full left-0 mt-2 hidden w-32 flex-col rounded-lg bg-white p-2 shadow-md">
+                <a class="block px-4 py-2 hover:bg-gray-200">Pending</a>
+                <a class="block px-4 py-2 hover:bg-gray-200">Resolved</a>
+            </div>
+        </div>
+
+        <button id="addType" class="flex items-center gap-2 rounded-full bg-[#04373A] px-6 py-2 text-white">
+            <span class="text-xl">+</span>
+            <span class="cursor-pointer font-medium">New Submission</span>
+        </button>
+    </div>
+
+    <div id="IncidentReports" class="flex h-[50vh] w-[88%] gap-4">
+        @foreach (var item in Model)
+        {
+            <div class="incident-card flex h-[24vh] w-[30%] flex-col gap-3 rounded-lg bg-white p-4 shadow-lg">
+                <button class="flex w-[110px] items-center gap-2 rounded-full px-6 py-2 font-bold text-white @(item.Status == "Pending" ? "bg-[#FBBF24]" : "bg-green-500")">
+                    <span class="cursor-pointer font-semibold">@item.Status</span>
+                </button>
+                <h2 class="text-bold text-xl">@item.Title</h2>
+                <p class="text-gray-400">@item.Type</p>
+                <p class="text-sm font-semibold">@item.Description</p>
+                <div class="flex items-center justify-between">
+                    <span class="flex items-center gap-2 text-[14px] text-gray-400">
+                        <img src="~/Images/@item.Clock" cl ass="h-4 w-4" /> @item.Duration
+                    </span>
+                    <a href="#" class="view-details text-blue-400 underline" data-type="incident">View Details</a>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div id="addReport" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50">
+        <div class="flex w-[500px] flex-col gap-4 rounded-2xl bg-white p-8 shadow-lg">
+            <h2 class="text-center text-2xl font-bold text-[#003D38]">Submit Report</h2>
+
+            <div class="flex flex-col gap-2">
+                <label class="font-semibold">Subject</label>
+                <input type="text" placeholder="Broken Light Post" class="border-2 rounded-lg border-gray-300 px-4 py-2" />
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <label class="font-semibold">Description</label>
+                <textarea class="border-2 h-[15vh] w-full resize-none rounded-lg border-gray-300 px-4 py-2">
+There's a broken light post in street XXX, it's very hard to see in the evening because of this.
+            </textarea>
+            </div>
+
+            <div class="border-2 mb-2 flex h-[15vh] items-center justify-center border-dashed border-gray-400 p-6">
+                <label for="fileUpload" class="flex cursor-pointer items-center gap-2 rounded-lg bg-gray-100 px-4 py-2">
+                    <img src="~/Images/upload.svg" alt="Upload" class="h-5 w-5">
+                    <span>Upload Images</span>
+                </label>
+                <input type="file" id="fileUpload" class="hidden">
+            </div>
+
+            <div class="mt-6 flex gap-4">
+                <button class="cancel-btn w-1/2 rounded-full border border-[#003D38] py-2 text-[#003D38]">Cancel</button>
+                <button class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Submit Report</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="viewReport" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50">
+        <div class="flex w-[500px] flex-col gap-4 rounded-2xl bg-white p-8 shadow-lg">
+            <h2 class="text-center text-2xl font-bold text-[#003D38]">Edit Report</h2>
+
+            <div class="flex flex-col gap-2">
+                <label class="font-semibold">Subject</label>
+                <input type="text" value="Broken Light Post" class="border-2 rounded-lg border-gray-300 px-4 py-2" />
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <label class="font-semibold">Description</label>
+                <textarea class="border-2 h-[15vh] w-full resize-none rounded-lg border-gray-300 px-4 py-2">
+There's a broken light post in street XXX, it's very hard to see in the evening because of this.
+            </textarea>
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <label class="font-semibold">Attach Image</label>
+                <img src="~/Images/broken_light_post.jpg" alt="Broken Light Post" class="w-full rounded-lg" />
+            </div>
+
+            <div class="mt-6 flex gap-4">
+                <button class="cancel-btn w-1/2 rounded-full border border-[#003D38] py-2 text-[#003D38]">Cancel</button>
+                <button class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Save</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.getElementById("drDown").addEventListener("click", function () {
+        document.getElementById("statSelection").classList.toggle("hidden");
+    });
+
+    document.querySelectorAll(".view-details").forEach((btn) => {
+        btn.addEventListener("click", function (event) {
+            event.preventDefault();
+            document.getElementById("viewReport").classList.remove("hidden"); // Corrected to addReport
+        });
+    });
+
+    document.querySelectorAll(".cancel-btn").forEach((btn) => {
+        btn.addEventListener("click", function () {
+            document.getElementById("addReport").classList.add("hidden"); // Corrected to addReport
+            document.getElementById("viewReport").classList.add("hidden"); // Corrected to addReport
+
+        });
+    });
+
+    document.getElementById("addType").addEventListener("click", function () {
+        document.getElementById("addReport").classList.remove("hidden"); // Corrected to addReport
+    });
+
+    document.getElementById("addReport").addEventListener("click", function (event) {
+        if (event.target === this) {
+            this.classList.add("hidden");
+        }
+    });
+</script>

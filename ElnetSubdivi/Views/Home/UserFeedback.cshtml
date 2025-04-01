@@ -17,22 +17,55 @@
     </div>
     <div class="mt-10 mr-2 mb-6 flex w-[88.3%] items-center justify-between">
         <!-- Search Bar -->
-        <div class="relative mr-2 w-[40%]">
+        <div class="relative mr-4 w-[40%]">
             <input type="text" placeholder="Search"
             class="h-12 w-full rounded-full border border-gray-300 bg-white pr-4 pl-12 outline-none focus:ring-2 focus:ring-gray-300">
             <img class="absolute top-1/2 left-4 h-5 -translate-y-1/2" src="~/Images/find.svg" alt="Search">
         </div>
 
         <!-- Filter Icon with Text -->
-        <div class="relative right-80 flex cursor-pointer items-center gap-2">
+        <div id="filter" class="relative right-80 flex cursor-pointer items-center gap-2">
             <img src="~/Images/filter.svg" alt="Filter" class="h-5">
-            <span class="font-medium text-black">Filters</span>
+            <a id="drop" class="font-medium text-black">Filter</a>
+
+            <div id="filterSelection" class="absolute top-full left-0 mt-2 hidden w-32 flex-col rounded-lg bg-white p-2 shadow-md">
+                <a class="block px-4 py-2 hover:bg-gray-200">Newest</a>
+                <a class="block px-4 py-2 hover:bg-gray-200">Oldest</a>
+                <a class="block px-4 py-2 hover:bg-gray-200">Ascending</a>
+                <a class="block px-4 py-2 hover:bg-gray-200">Descending</a>
+
+            </div>
+
+        </div>
+        <script>
+            document.getElementById("filter").addEventListener("click", function(){
+                document.getElementById("filterSelection").classList.toggle("hidden");
+            });
+        </script>
+
+
+        <!-- Status Icon with Text -->
+        <div id="drDown" class="relative right-75 flex hidden cursor-pointer items-center gap-2">
+            <a id="drop" class="font-medium text-black">All Status</a>
+            <img src="~/Images/drp.svg" alt="Filter" class="h-5">
+
+            <div id="statSelection" class="absolute top-full left-0 mt-2 hidden w-32 flex-col rounded-lg bg-white p-2 shadow-md">
+                <a class="block px-4 py-2 hover:bg-gray-200">Pending</a>
+                <a class="block px-4 py-2 hover:bg-gray-200">Resolved</a>
+            </div>
         </div>
 
+        <script>
+            document.getElementById("drDown").addEventListener("click", function(){
+                document.getElementById("statSelection").classList.toggle("hidden");
+            });
+        </script>
+
+
         <!-- Add Facility Button -->
-        <button id="addfeed" class="flex items-center gap-2 rounded-full bg-[#04373A] px-6 py-2 text-white">
+        <button id="addType" class="flex items-center gap-2 rounded-full bg-[#04373A] px-6 py-2 text-white">
             <span class="text-xl">+</span>
-            <span id="addfeed" class="cursor-pointer font-medium">New Submission</span>
+            <span id="" class="addcomplaint cursor-pointer font-medium">New Submission</span>
         </button>
     </div>
 
@@ -84,6 +117,7 @@
     </div>
 
     <!-- Modal Popup -->
+    
     <div id="detailsModal" class="bg-opacity-50 fixed inset-0 flex hidden items-center justify-center bg-black/50">
         <div class="flex w-[40%] flex-col gap-4 rounded-lg bg-white p-5 shadow-lg">
             <img id="modalIcon" class="w-50" src="" alt="Alternate Text" />
@@ -93,7 +127,7 @@
             <span id="modalDuration" class="text-xs text-gray-400"></span>
         </div>
     </div>
-
+    <!--Script for Modal Popup -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             document.querySelectorAll(".view-details").forEach((button) => {
@@ -140,12 +174,36 @@
         });
     </script>
 
-
-
     <div id="addFeedback" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50" >
         <div class="flex w-[500px] flex-col gap-4 rounded-2xl bg-white p-8 shadow-lg">
             <!-- Modal Header -->
             <h2 class="text-center text-2xl font-bold text-[#003D38]">Submit Feedback</h2>
+            <div class="flex flex-col gap-2">
+                <h2>Rating</h2>
+                <img class="m-0 w-40 p-0" src="~/Images/ratings.svg" />
+            </div>
+            <div class="flex flex-col gap-2">
+                <h2>Title</h2>
+                <input type="text" name="" placeholder="Grear User Experience" class="-2 rounded-lg border border-gray-300 px-4 py-2" value="" />
+            </div>
+            <div class="flex flex-col gap-2">
+                <h2>Description</h2>
+                <textarea class="border-2 h-[15vh] w-full resize-none rounded-lg border-gray-300 px-4 py-2 text-gray-400" readonly>The interface is intuitive and easy to navigate. I particularly enjoyed the smooth transitions and responsive
+                </textarea>
+
+            </div>
+            <div class="mt-6 flex gap-4">
+                <button class="cancel-btn w-1/2 rounded-full border border-[#003D38] py-2 text-[#003D38]">Cancel</button>
+                <button class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Submit </button>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="addComplaint" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50">
+        <div class="flex w-[500px] flex-col gap-4 rounded-2xl bg-white p-8 shadow-lg">
+            <!-- Modal Header -->
+            <h2 class="text-center text-2xl font-bold text-[#003D38]">Submit Complaint</h2>
             <div class="flex flex-col gap-2">
                 <h2>Rating</h2>
                 <img class="m-0 w-40 p-0" src="~/Images/ratings.svg" />
@@ -161,29 +219,68 @@
 
             </div>
             <div class="mt-6 flex gap-4">
-                <button class="w-1/2 rounded-full border border-[#003D38] py-2 text-[#003D38]">Cancel</button>
-                <button class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Submit Feedback</button>
+                <button class="cancel-btn w-1/2 rounded-full border border-[#003D38] py-2 text-[#003D38]">Cancel</button>
+                <button class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Submit </button>
             </div>
         </div>
 
     </div>
+    <div id="submitType" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50">
+        <div class="flex w-[500px] flex-col items-center gap-4 rounded-2xl bg-white p-8 shadow-lg">
+            <h1 class="text-center text-2xl font-bold text-[#003D38]">Choose Submission Type</h1>
+            <button id="addfeed" class="w-1/2 cursor-pointer rounded-full bg-[#003D38] py-2 text-white"> Feedback</button>
+            <button id="addcomp" class="w-1/2 cursor-pointer rounded-full bg-[#003D38] py-2 text-white"> Complaint</button>
+
+        </div>
+    </div>
 </div>
-<script> 
-    document.getElementById("addfeed").addEventListener("click", function (){
+<script>
+    // Function to close modals
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.add("hidden");
+    }
+
+    // Close modals when clicking outside the content
+    document.getElementById("submitType").addEventListener("click", function(event) {
+        if (event.target === this) closeModal("submitType");
+    });
+    document.getElementById("addFeedback").addEventListener("click", function(event) {
+        if (event.target === this) closeModal("addFeedback");
+    });
+    document.getElementById("addComplaint").addEventListener("click", function(event) {
+        if (event.target === this) closeModal("addComplaint");
+    });
+
+    // Open modals
+    document.getElementById("addType").addEventListener("click", function() {
+        document.getElementById("submitType").classList.remove("hidden");
+    });
+    document.getElementById("addfeed").addEventListener("click", function() {
+        document.getElementById("submitType").classList.add("hidden");
         document.getElementById("addFeedback").classList.remove("hidden");
     });
-            document.getElementById("addFeedback").addEventListener("click", function (event) {
-            if (!event.target.closest(".modal-content")) {
-                this.classList.add("hidden");
-            }
+    document.getElementById("addcomp").addEventListener("click", function() {
+        document.getElementById("submitType").classList.add("hidden");
+        document.getElementById("addComplaint").classList.remove("hidden");
+    });
+
+    // Cancel button functionality
+    document.querySelectorAll(".cancel-btn").forEach(btn => {
+        btn.addEventListener("click", function() {
+            closeModal(this.closest(".fixed").id);
         });
+    });
 </script>   
 <script>
     document.getElementById("usercomplaintsbtn").addEventListener("click", function (){
+        document.getElementById("drDown").classList.remove("hidden")
+        document.getElementById("filter").classList.add("hidden")
         document.getElementById("userComplaints").classList.remove("hidden");
         document.getElementById("userFeedback").classList.add("hidden");
     });
         document.getElementById("userfeedbackbtn").addEventListener("click", function (){
+        document.getElementById("drDown").classList.add("hidden")
+        document.getElementById("filter").classList.remove("hidden")
         document.getElementById("userFeedback").classList.remove("hidden");
         document.getElementById("userComplaints").classList.add("hidden");
     });

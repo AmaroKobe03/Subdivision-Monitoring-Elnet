@@ -1,4 +1,4 @@
-/*! tailwindcss v4.0.15 | MIT License | https://tailwindcss.com */
+/*! tailwindcss v4.0.17 | MIT License | https://tailwindcss.com */
 @layer theme, base, components, utilities;
 @layer theme {
   :root, :host {
@@ -322,6 +322,9 @@
   .top-100 {
     top: calc(var(--spacing) * 100);
   }
+  .top-full {
+    top: 100%;
+  }
   .right-0 {
     right: calc(var(--spacing) * 0);
   }
@@ -349,6 +352,9 @@
   .right-50 {
     right: calc(var(--spacing) * 50);
   }
+  .right-75 {
+    right: calc(var(--spacing) * 75);
+  }
   .right-77 {
     right: calc(var(--spacing) * 77);
   }
@@ -357,6 +363,9 @@
   }
   .right-90 {
     right: calc(var(--spacing) * 90);
+  }
+  .right-200 {
+    right: calc(var(--spacing) * 200);
   }
   .bottom-0 {
     bottom: calc(var(--spacing) * 0);
@@ -381,6 +390,9 @@
   }
   .left-1\/2 {
     left: calc(1/2 * 100%);
+  }
+  .left-2 {
+    left: calc(var(--spacing) * 2);
   }
   .left-4 {
     left: calc(var(--spacing) * 4);
@@ -657,6 +669,9 @@
   }
   .mr-2 {
     margin-right: calc(var(--spacing) * 2);
+  }
+  .mr-4 {
+    margin-right: calc(var(--spacing) * 4);
   }
   .mr-\[3em\] {
     margin-right: 3em;
@@ -946,11 +961,20 @@
   .w-16 {
     width: calc(var(--spacing) * 16);
   }
+  .w-20 {
+    width: calc(var(--spacing) * 20);
+  }
+  .w-24 {
+    width: calc(var(--spacing) * 24);
+  }
   .w-25 {
     width: calc(var(--spacing) * 25);
   }
   .w-30 {
     width: calc(var(--spacing) * 30);
+  }
+  .w-32 {
+    width: calc(var(--spacing) * 32);
   }
   .w-40 {
     width: calc(var(--spacing) * 40);
@@ -1468,6 +1492,9 @@
   .border-\[\#B25828\] {
     border-color: #B25828;
   }
+  .border-\[\#E47547\] {
+    border-color: #E47547;
+  }
   .border-\[\#bg-\[\#003D38\]\] {
     border-color: #bg-[#003D38];
   }
@@ -1930,6 +1957,9 @@
   }
   .text-\[\#B25828\] {
     color: #B25828;
+  }
+  .text-\[\#E47547\] {
+    color: #E47547;
   }
   .text-black {
     color: var(--color-black);

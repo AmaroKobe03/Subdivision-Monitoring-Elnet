@@ -1,0 +1,203 @@
+﻿@{
+    ViewData["Title"] = "Maintenance Service Request";
+}
+<style>
+    th {
+        align-self: center;
+    }
+</style>
+<div class="flex h-[100vh] w-[90%] flex-col items-center overflow-auto overflow-y-hidden bg-[#f2f2f2] font-semibold">
+
+    @await Html.PartialAsync("_sharedSearch")
+
+    <div class="relative mb-6 flex w-[88%] items-center justify-between">
+        <!-- Search Bar -->
+        @{
+            ViewData["DropdownItems"] = new List<string> { "Pending", "Ongoing", "Completed", "Canceled" };
+        }
+        <div class="mt-10 mr-2 mb-6 flex w-[88%] items-center gap-4">
+            <div class="relative w-[40%]">
+                <input type="text" placeholder="Search"
+                       class="h-12 w-full rounded-full border border-gray-300 bg-white pr-4 pl-12 outline-none focus:ring-2 focus:ring-gray-300">
+                <img class="absolute top-1/2 left-4 h-5 -translate-y-1/2" src="~/Images/find.svg" alt="Search">
+
+            </div>
+            <div class="relative inline-block">
+                <select id="statusSelect" class="appearance-none rounded-full border border-gray-300 bg-white px-4 py-2 pr-8 font-medium text-black shadow-sm outline-none">
+                    <option value="All Status">All Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+                <img src="~/Images/drp.svg" alt="Dropdown" class="pointer-events-none absolute top-1/2 right-3 h-4 -translate-y-1/2">
+            </div>
+
+        </div>        <!-- Close Button -->
+        <button id="closePopupBtn" class="top-4 right-4 hidden rounded-full bg-red-500 px-4 py-2 text-white">
+            Close
+        </button>
+
+        <!-- Request Pop-Up -->
+        <div id="request-popup" class="fixed inset-0 z-100 flex hidden items-center justify-center bg-black/50 p-4">
+            <div class="w-[600px] rounded-lg bg-white p-6 shadow-lg">
+                <h1 class="text-center text-xl font-semibold text-[#043137]">Service Request Details</h1>
+
+                <div class="mt-4 space-y-3">
+                    <div class="flex items-center gap-4">
+                        <div class="w-1/2">
+                            <label class="block font-medium">Homeowner</label>
+                            <div class="relative">
+                                <input type="text" class="w-full rounded border py-2 pl-12" value="Kobe Amaro" />
+                                <img src="~/Images/pfp.svg" alt="Kobe Amaro" class="absolute top-1/2 left-2 h-8 w-8 -translate-y-1/2 transform rounded-full" />
+                            </div>
+                        </div>
+                        <div class="w-1/2">
+                            <label class="block font-medium">House number</label>
+                            <input type="text" class="w-full rounded border px-3 py-2" value="House Number 4 Block C" />
+                        </div>
+                    </div>
+
+                    <label class="block font-medium">Request Type</label>
+                    <select class="w-full rounded border px-3 py-2">
+                        <option>Repair</option>
+                    </select>
+
+                    <label class="block font-medium">Subject</label>
+                    <input type="text" class="w-full rounded border px-3 py-2" value="Flickering Lights" />
+
+                    <div class="flex gap-4">
+                        <div class="w-1/2">
+                            <label class="block font-medium">Date</label>
+                            <input type="date" class="w-full rounded border px-3 py-2" value="2024-03-15" />
+                        </div>
+                        <div class="w-1/2">
+                            <label class="block font-medium">Time</label>
+                            <input type="time" class="w-full rounded border px-3 py-2" value="7:00 AM - 7:00 PM" />
+                        </div>
+                    </div>
+
+                    <label class="block font-medium">Description</label>
+                    <textarea class="h-24 w-full rounded border px-3 py-2">Lights are not working.</textarea>
+
+                    <label class="block text-sm font-medium">Attachments</label>
+                    <div class="flex">
+                        <img src="path/to/attachment_image.jpg" alt="Attachment" class="h-24 w-24 rounded border">
+                    </div>
+
+                    <div class="mt-4 flex justify-between">
+                        <button id="cancelbtn" class="w-[45%] rounded-full border px-4 py-2">Back</button>
+                        <button class="w-[45%] rounded-full bg-[#043137] px-4 py-2 text-white">Start</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Table -->
+    <table class="w-[88%] overflow-y-auto rounded-lg bg-white shadow-lg">
+        <thead>
+            <tr class="text-left text-[#787676]">
+                <th class="px-4 py-3">ID</th>
+                <th class="px-4 py-3">User</th>
+                <th class="px-4 py-3">Request</th>
+                <th class="px-4 py-3">Preferred Date</th>
+                <th class="px-4 py-3">Request Submitted</th>
+                <th class="px-4 py-3">Request Closed</th>
+                <th class="px-4 py-3">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="px-4 py-4">SR0002</td>
+                <td class="flex items-center gap-2 px-4 py-4">
+                    <img src="~/Images/pfp.svg" alt="User Avatar" class="h-8 w-8 rounded-full">
+                    <span>Kobe Amaro</span>
+                </td>
+                <td class="px-4 py-4">Plumbing</td>
+                <td class="px-4 py-4">March 05, 2025</td>
+                <td class="px-4 py-4">March 03, 2025</td>
+                <td class="px-4 py-4">March 05, 2025</td>
+                <td class="px-4 py-4 text-yellow-500">Pending</td>
+            </tr>
+            <tr>
+                <td class="px-4 py-4">SR0002</td>
+                <td class="flex items-center gap-2 px-4 py-4">
+                    <img src="~/Images/pfp.svg" alt="User Avatar" class="h-8 w-8 rounded-full">
+                    <span>Kobe Amaro</span>
+                </td>
+                <td class="px-4 py-4">Electrical</td>
+                <td class="px-4 py-4">March 05, 2025</td>
+                <td class="px-4 py-4">March 03, 2025</td>
+                <td class="px-4 py-4">March 05, 2025</td>
+                <td class="px-4 py-4 text-blue-500">Ongoing</td>
+            </tr>
+            <tr>
+                <td class="px-4 py-4">SR0002</td>
+                <td class="flex items-center gap-2 px-4 py-4">
+                    <img src="~/Images/pfp.svg" alt="User Avatar" class="h-8 w-8 rounded-full">
+                    <span>Kobe Amaro</span>
+                </td>
+                <td class="px-4 py-4">Pest Control</td>
+                <td class="px-4 py-4">March 05, 2025</td>
+                <td class="px-4 py-4">March 03, 2025</td>
+                <td class="px-4 py-4">March 05, 2025</td>
+                <td class="px-4 py-4 text-green-500">Completed</td>
+            </tr>
+            <tr>
+                <td class="px-4 py-4">SR0002</td>
+                <td class="flex items-center gap-2 px-4 py-4">
+                    <img src="~/Images/pfp.svg" alt="User Avatar" class="h-8 w-8 rounded-full">
+                    <span>Kobe Amaro</span>
+                </td>
+                <td class="px-4 py-4">Pest Control</td>
+                <td class="px-4 py-4">March 05, 2025</td>
+                <td class="px-4 py-4">March 03, 2025</td>
+                <td class="px-4 py-4">March 05, 2025</td>
+                <td class="px-4 py-4 text-red-500">Cancelled</td>
+            </tr>
+        </tbody>
+    </table>
+
+    @await Html.PartialAsync("_pagination")
+
+    
+    <script>
+        document.getElementById("editIc").addEventListener("click", function() {
+            document.getElementById("editReq-popup").classList.remove("hidden");
+        });
+        document.getElementById("editReq-popup").addEventListener("click", function(event) {
+            if (event.target === this) {
+                this.classList.add("hidden");
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const rows = document.querySelectorAll("tbody tr"); // Select all table rows
+            const popup = document.getElementById("request-popup");
+            const cancelBtn = document.getElementById("cancelbtn");
+
+            // Show pop-up when a row is clicked
+            rows.forEach(row => {
+                row.addEventListener("click", () => {
+                    popup.classList.remove("hidden"); // Show the pop-up
+                });
+            });
+
+            // Hide pop-up when cancel button is clicked
+            cancelBtn.addEventListener("click", () => {
+                popup.classList.add("hidden"); // Hide the pop-up
+            });
+
+            // Close popup when clicking outside the modal content
+            popup.addEventListener("click", (event) => {
+                if (event.target === popup) {
+                    popup.classList.add("hidden");
+                }
+            });
+        });
+    </script>
+
+</div>

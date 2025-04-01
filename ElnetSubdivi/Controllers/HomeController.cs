@@ -174,6 +174,11 @@ namespace ElnetSubdivi.Controllers
             return View();
 
         }
+        public IActionResult UserCalendar()
+        {
+            ViewData["HideSearch"] = true;
+            return View();
+        }
 
         public IActionResult UserVehicle()
         {
@@ -181,7 +186,31 @@ namespace ElnetSubdivi.Controllers
             return View();
 
         }
-    
+
+        public IActionResult MaintenanceServiceRequest()
+        {
+            ViewData["HideSearch"] = true;
+            return View();
+
+        }
+        public IActionResult MaintenanceCalendar()
+        {
+            ViewData["HideSearch"] = true;
+            return View();
+
+        }
+        public IActionResult IncidentReport()
+        {
+            ViewData["HideSearch"] = true;
+            var reports = new List<dynamic>
+            {
+                new {Status = "Pending", Title = "Broken Light Post", Type = "Incident Report", Description = "There’s a broken light post in street xxxx, it’s very hard to see...", Icon = "incident_icon.svg", Clock = "clock.svg", Duration = "2 Days ago"},
+                new {Status = "Resolved", Title = "Street Hole", Type = "Incident Report", Description = "In the street xxx, there’s a massive hole filled with water, the vehicles...", Icon = "incident_icon.svg", Clock = "clock.svg", Duration = "3 Days ago" }
+            };
+            return View(reports);
+        }
+
+
 
         public IActionResult Billing()
         {
@@ -204,6 +233,16 @@ namespace ElnetSubdivi.Controllers
         public IActionResult Reports()
         {
             ViewData["Title"] = "Reports";
+            return View();
+        }
+        public IActionResult HousekeepingServiceRequest ()
+        {
+            ViewData["HideSearch"] = true;
+            return View();
+        }
+        public IActionResult HouseKeepingCalendar()
+        {
+            ViewData["HideSearch"] = true;
             return View();
         }
         public IActionResult UserFeedback()
@@ -322,7 +361,10 @@ namespace ElnetSubdivi.Controllers
 
             if (userAccount != null && userAccount.password == password) // (Replace with password hashing later)
             {
-                string userId = userAccount.user_id;
+                var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, "admin"),
+        };
 
                 // Fetch user details from users table using user_id
                 var userDetails = await _userService.GetUserDetailsById(userId);
@@ -364,12 +406,30 @@ namespace ElnetSubdivi.Controllers
                         authProperties
                     );
 
-                    return RedirectToAction("UserDash", "Home");
+                    // Redirect based on staff subtype
+                    switch (staffType.ToLower())
+                    {
+                        case "maintenance":
+                            return RedirectToAction("UserDash", "Home");
+                        case "housekeeping":
+                            return RedirectToAction("UserDash", "Home");
+                        case "security":
+                            return RedirectToAction("SecurityDash", "Home");
+                        default:
+                            return RedirectToAction("UserDash", "Home"); // Default redirect for unknown subtypes
+                    }
+                }
+                else
+                {
+                    TempData["Error"] = "Invalid Staff Username Format!";
+                    return RedirectToAction("Landing");
                 }
             }
-
-            TempData["Error"] = "Invalid Credentials!";
-            return RedirectToAction("Landing");
+            else
+            {
+                TempData["Error"] = "Invalid Credentials!";
+                return RedirectToAction("Landing");
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
