@@ -28,33 +28,37 @@
 
                 <div class="mt-4 space-y-3">
                     <label class="block font-medium">Request Type</label>
-                    <select class="w-full rounded border px-3 py-2">
-                        <option>Maintenance Request</option>
+                    <select id="request_type" class="w-full rounded border px-3 py-2">
+                        <option>Maintenance</option>
+                        <option>Plumbing</option>
+                        <option>Electrical</option>
+                        <option>Structural Repairs</option>
+                        <option>Pest Control</option>
                     </select>
 
                     <label class="block font-medium">Subject</label>
-                    <input type="text" class="w-full rounded border px-3 py-2" value="Maintenance Request" />
+                    <input id="request_subject" type="text" class="w-full rounded border px-3 py-2"/>
 
                     <div class="flex gap-4">
                         <div class="w-1/2">
                             <label class="block font-medium">Date</label>
-                            <input type="date" class="w-full rounded border px-3 py-2" placeholder="mm/dd/yyyy" />
+                            <input id="request_date" type="date" class="w-full rounded border px-3 py-2" placeholder="mm/dd/yyyy" />
                         </div>
                         <div class="w-1/2">
                             <label class="block font-medium">Time</label>
-                            <input type="time" class="w-full rounded border px-3 py-2" placeholder="--:-- --" />
+                            <input id="request_time" type="time" class="w-full rounded border px-3 py-2" placeholder="--:-- --" />
                         </div>
                     </div>
 
                     <label class="block font-medium">Description</label>
-                    <textarea class="h-24 w-full rounded border px-3 py-2">Lights are not working.</textarea>
+                    <textarea id="request_description" class="h-24 w-full rounded border px-3 py-2"></textarea>
 
                     <label class="block text-sm font-medium">Attachments</label>
-                    <button class="w-[20%] rounded-full bg-[#043137] py-2 text-white">Upload</button>
+                    <button id="upload_btn" class="w-[20%] rounded-full bg-[#043137] py-2 text-white">Upload</button>
 
                     <div class="mt-4 flex justify-between">
                         <button id="cancelbtn" class="w-[45%] rounded-full border px-4 py-2">Cancel</button>
-                        <button class="w-[45%] rounded-full bg-[#043137] px-4 py-2 text-white">Request</button>
+                        <button id="requestbtn" class="w-[45%] rounded-full bg-[#043137] px-4 py-2 text-white">Request</button>
                     </div>
                 </div>
             </div>
@@ -282,6 +286,39 @@
         document.getElementById("editReq-popup").addEventListener("click", function(event) {
             if (event.target === this) {
                 this.classList.add("hidden");
+            }
+        });
+
+                document.getElementById("requestbtn").addEventListener("click", async function () {
+            const data = {
+                Request_Type: document.getElementById("request_type").value,
+                Request_Subject: document.getElementById("request_subject").value,
+                Request_Date: document.getElementById("request_date").value,
+                Request_Time: document.getElementById("request_time").value,
+                Request_Description: document.getElementById("request_description").value
+            };
+
+            const response = await fetch("/ServiceRequest/CreateRequest", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                // Close the popup
+                document.getElementById("request-popup").classList.add("hidden");
+
+                // Clear form fields
+                document.getElementById("request_type").value = '';
+                document.getElementById("request_subject").value = '';
+                document.getElementById("request_date").value = '';
+                document.getElementById("request_time").value = '';
+                document.getElementById("request_description").value = '';
+
+                // Optionally refresh the requests list
+                location.reload(); // Or update the table dynamically
+            } else {
+                alert("Failed to submit request.");
             }
         });
     </script>

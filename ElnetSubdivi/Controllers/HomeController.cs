@@ -16,16 +16,22 @@ namespace ElnetSubdivi.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IUserService _userService;
+        private readonly ApplicationDbContext _context;
+        private readonly IPostService _postService;
 
-        public HomeController(ILogger<HomeController> logger, IUserService userService)
+
+        public HomeController(ILogger<HomeController> logger, IUserService userService, ApplicationDbContext context, IPostService postService)
         {
             _logger = logger;
             _userService = userService;
+            _context = context;
+            _postService = postService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var posts = await _postService.GetAllPost() ?? new List<Post>(); // Ensures it's not null
+            return View(posts);
         }
 
         public IActionResult Privacy()
@@ -39,9 +45,10 @@ namespace ElnetSubdivi.Controllers
             return View();
         }
 
-        public IActionResult UserDash()
+        public async Task<IActionResult> UserDash()
         {
-            return View();
+            var posts = await _postService.GetAllPost() ?? new List<Post>(); // Fetch posts or initialize an empty list
+            return View(posts);
         }
 
         public IActionResult UserProfile()
@@ -454,8 +461,6 @@ namespace ElnetSubdivi.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
-
 
     }
 }

@@ -11,6 +11,7 @@ namespace ElnetSubdivi.data
         public DbSet<Users> Users { get; set; }
         public DbSet<UserAccount> User_Accounts { get; set; }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<ServiceRequest> Service_Request { get; set; }
 
     }
 }

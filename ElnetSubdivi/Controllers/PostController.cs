@@ -10,17 +10,22 @@ namespace ElnetSubdivi.Controllers
     {
         private readonly IUserService _userService;
         private readonly ApplicationDbContext _context;
+        private readonly IPostService _postService;
 
-        public PostController(IUserService userService, ApplicationDbContext context)
+        public PostController(IUserService userService, ApplicationDbContext context, IPostService postService)
         {
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _postService = postService ?? throw new ArgumentNullException(nameof(postService));
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var posts = await _postService.GetAllPost() ?? new List<Post>(); // Ensures it's not null
+            return View(posts);
         }
+
+
 
         [HttpPost]
         public async Task<IActionResult> CreatePost([FromBody] PostViewModel postData)
@@ -50,5 +55,11 @@ namespace ElnetSubdivi.Controllers
             return Ok(new { message = "Post created successfully." });
         }
 
+        // In PostController.cs (or relevant controller)
+        public async Task<IActionResult> UserDash()
+        {
+                var posts = await _postService.GetAllPost();
+                return View(posts);
+        }
     }
 }
