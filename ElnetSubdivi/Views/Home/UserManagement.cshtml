@@ -8,28 +8,9 @@
 <div class="flex h-[100vh] w-[90%] flex-col items-center overflow-auto overflow-y-hidden bg-[#f2f2f2] font-semibold">
     @await Html.PartialAsync("_sharedSearch")
 
-    <div class="mt-10 mr-2 mb-6 flex w-[88.3%] items-center justify-between">
+    <div class="relative mb-6 flex w-[88%] items-center justify-between">
         <!-- Search Bar -->
-        <div class="relative mr-2 w-[40%]">
-            <input type="text" placeholder="Search"
-                   class="h-12 w-full rounded-full border border-gray-300 bg-white pr-4 pl-12 outline-none focus:ring-2 focus:ring-gray-300">
-            <img class="absolute top-1/2 left-4 h-5 -translate-y-1/2" src="~/Images/find.svg" alt="Search">
-        </div>
-
-        <!-- Filter Icon with Text -->
-        <div class="relative right-50 flex cursor-pointer items-center gap-2">
-            <img src="~/Images/filter.svg" alt="Filter" class="h-5">
-            <span class="font-medium text-black">Filters</span>
-        </div>
-        <div class="relative right-90 flex cursor-pointer items-center gap-2">
-            <img src="~/Images/sortic.svg" alt="Filter" class="h-5">
-            <span class="font-medium text-black">Sort</span>
-        </div>
-        <!-- Add Facility Button -->
-        <button id="addfac" class="flex items-center gap-2 rounded-full bg-[#04373A] px-6 py-2 text-white">
-            <span class="text-xl">+</span>
-            <span class="font-medium">Add User</span>
-        </button>
+        @await Html.PartialAsync("_sharedSearch2", "Add User")
     </div>
 
     <table class="bg-white-200 w-[88%] border-collapse bg-white text-left">
@@ -44,77 +25,38 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="gap-2 px-4 py-3">
-                    <span>John Smith</span>
-                </td>
-                <td class="px-4 py-3">Cebu City</td>
-                <td class="px-4 py-3">smith@gmail.com</td>
-                <td class="px-4 py-3">1234567890</td>
-                <td class="px-4 py-3 font-semibold">Home Owner</td>
-                <td class="jusitfy-center relative left-5 flex cursor-pointer flex-row items-center gap-2 px-4 py-3 font-semibold text-teal-700">
-                    <div class="group relative flex cursor-pointer items-center gap-2">
-                        <!-- Action Icon -->
-                        <img class="w-[20px]" src="~/Images/actionsicon.svg" alt="actions" />
-
-                        <!-- Dropdown Menu -->
-                        <div class="absolute top-0 left-1/2 z-100 mt-2 hidden w-40 -translate-x-1/2 flex-col gap-1 rounded-lg bg-white py-2 shadow-lg group-hover:flex">
-                            <a id="viewUserbtn" href="#" class="block px-4 py-2 hover:bg-gray-200">View</a>
-                            <a id="editUserbtn" href="#" class="block px-4 py-2 hover:bg-gray-200">Edit</a>
-                            <a id="removeUserbtn" href="#" class="block px-4 py-2 hover:bg-gray-200">Remove</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">Move Out</a>
-                        </div>
-                    </div>
-
-                </td>
-            </tr>
-            <tr>
-                <td class="gap-2 px-4 py-3">
-                    <span>John Smith</span>
-                </td>
-                <td class="px-4 py-3">Cebu City</td>    
-                <td class="px-4 py-3">smith@gmail.com</td>
-                <td class="px-4 py-3">1234567890</td>
-                <td class="px-4 py-3 font-semibold">Home Owner</td>
-                <td class="jusitfy-center relative left-5 flex cursor-pointer flex-row items-center gap-2 px-4 py-3 font-semibold text-teal-700">
-                    <div class="group relative flex cursor-pointer items-center gap-2">
-                        <!-- Action Icon -->
-                        <img class="w-[20px]" src="~/Images/actionsicon.svg" alt="actions" />
-
-                        <!-- Dropdown Menu -->
-                        <div class="absolute top-0 left-1/2 z-100 mt-2 hidden w-40 -translate-x-1/2 flex-col gap-1 rounded-lg bg-white py-2 shadow-lg group-hover:flex">
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">View</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">Edit</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">Remove</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">Send Activation</a>
-                        </div>
-                    </div>
-
-            </tr>
-            <tr>
-                <td class="gap-2 px-4 py-3">
-                    <span>John Smith</span>
-                </td>
-                <td class="px-4 py-3">Cebu City</td>
-                <td class="px-4 py-3">smith@gmail.com</td>
-                <td class="px-4 py-3">1234567890</td>
-                <td class="px-4 py-3 font-semibold">Home Owner</td>
-                <td class="jusitfy-center relative left-5 flex cursor-pointer flex-row items-center gap-2 px-4 py-3 font-semibold text-teal-700">
-                    <div class="group relative flex cursor-pointer items-center gap-2">
-                        <!-- Action Icon -->
-                        <img class="w-[20px]" src="~/Images/actionsicon.svg" alt="actions" />
-
-                        <!-- Dropdown Menu -->
-                        <div class="absolute top-0 left-1/2 z-100 mt-2 hidden w-40 -translate-x-1/2 flex-col gap-1 rounded-lg bg-white py-2 shadow-lg group-hover:flex">
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">View</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">Edit</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">Remove</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-200">Send Activation</a>
-                        </div>
-                    </div>
-
-                </td>
-            </tr>
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td class="gap-2 px-4 py-3">
+                            <span>@user.first_name @user.middle_name @user.last_name</span>
+                        </td>
+                        <td class="px-4 py-3">@user.address</td>
+                        <td class="px-4 py-3">@user.email</td>
+                        <td class="px-4 py-3">@user.phone</td>
+                        <td class="px-4 py-3 font-semibold">@user.type_of_user</td>
+                        <td class="jusitfy-center relative left-5 flex cursor-pointer flex-row items-center gap-2 px-4 py-3 font-semibold text-teal-700">
+                            <div class="group relative flex cursor-pointer items-center gap-2">
+                                <img class="w-[20px]" src="~/Images/actionsicon.svg" alt="actions" />
+                                <div class="absolute top-0 left-1/2 z-100 mt-2 hidden w-40 -translate-x-1/2 flex-col gap-1 rounded-lg bg-white py-2 shadow-lg group-hover:flex">
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-200" onclick="viewUser('@user.user_id')">View</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-200" onclick="editUser('@user.user_id')">Edit</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-200" onclick="removeUser('@user.user_id')">Remove</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-200">Send Activation</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6" class="text-center py-4 text-gray-500">No users found.</td>
+                </tr>
+            }
         </tbody>
     </table>
     @await Html.PartialAsync("_pagination")
@@ -129,12 +71,12 @@
                     <!-- User Role -->
                     <div>
                         <label class="block text-sm font-medium">User Role</label>
-                        <select id="regRole" name="role" class="w-full rounded border px-3 py-2 text-gray-600">
-                            <option value="">Select Role</option>
-                            <option value="Homeowner">Homeowner</option>
-                            <option value="Housekeeping">Housekeeping</option>
-                            <option value="Maintenance">Maintenance</option>
-                            <option value="Security">Security</option>
+                        <select id="regRole" name="type_of_user" class="w-full rounded border px-3 py-2 text-gray-600">
+                            <option value="">Select User Type</option>
+                            <option value="2">Homeowner</option>
+                            <option value="3">Housekeeping</option>
+                            <option value="3">Maintenance</option>
+                            <option value="3">Security</option>
                         </select>
                     </div>
 
@@ -172,8 +114,14 @@
 
                     <!-- Email & Phone -->
                     <div class="flex gap-2">
-                        <input id="regEmail" name="email" type="email" class="w-1/2 rounded border px-3 py-2 text-gray-600" required />
-                        <input id="regPhoneNumber" name="phone_number" type="text" class="w-1/2 rounded border px-3 py-2 text-gray-600" required />
+                        <div class="w-1/2">
+                            <label class="block text-sm font-medium">Email</label>
+                            <input id="regEmail" name="email" type="email" class="w-1/2 rounded border px-3 py-2 text-gray-600" required />
+                        </div>
+                        <div class="w-1/2">
+                            <label class="block text-sm font-medium">Phone Number</label>
+                            <input id="regPhoneNumber" name="phone" type="text" class="w-1/2 rounded border px-3 py-2 text-gray-600" required />
+                        </div>
                     </div>
 
                     <!-- Address -->
@@ -240,7 +188,7 @@
                     </div>
                     <div class="flex w-1/2 flex-col">
                         <label class="text-sm">Gender</label>
-                        <select class="rounded-lg border px-3 py-2 text-sm">    
+                        <select class="rounded-lg border px-3 py-2 text-sm">
                             <option selected>Male</option>
                             <option>Female</option>
                         </select>
@@ -273,20 +221,20 @@
                     <button class="w-1/2 rounded-full bg-[#043137] px-6 py-2 text-white">Save Changes</button>
                 </div>
             </div>
-    </div>
+        </div>
 
-</div>
+    </div>
 
     <div id="remove-user" class="bg-opacity-50 fixed inset-0 z-20 flex hidden items-center justify-center gap-4 bg-black/50 p-4">
 
-         <div class="flex w-[20%] flex-col items-center justify-center gap-6 rounded-lg bg-white p-6 shadow-xl">
-             <h1 class="text-3xl">Remove User</h1>
-             <h2 class="text-center">Are you sure you want to remove this owner? This action is irreversable.</h2>
+        <div class="flex w-[20%] flex-col items-center justify-center gap-6 rounded-lg bg-white p-6 shadow-xl">
+            <h1 class="text-3xl">Remove User</h1>
+            <h2 class="text-center">Are you sure you want to remove this owner? This action is irreversable.</h2>
             <div class="flex w-full gap-4">
                 <button id="cancelRemove" class="w-1/2 rounded-full border px-6 py-2 text-black">Cancel</button>
                 <button id="confirmRemove" class="w-1/2 rounded-full bg-[#043137] px-6 py-2 text-white">Confirm</button>
             </div>
-         </div>
+        </div>
 
     </div>
 
@@ -321,8 +269,4 @@
             $("#User-popup").addClass("hidden");
         });
     });
-
-    function handleButtonClick() {
-        alert("Register button clicked!");
-    }
 </script>

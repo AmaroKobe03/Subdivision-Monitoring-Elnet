@@ -18,25 +18,36 @@ namespace ElnetSubdivi.Services
         // Fetch all users
         public async Task<List<Users>> GetAllUsers()
         {
-            return await _context.Users
-                .Select(u => new Users
-                {
-                    user_id = u.user_id,
-                    first_name = u.first_name ?? "",
-                    middle_name = u.middle_name ?? "",
-                    last_name = u.last_name ?? "",
-                    date_of_birth = u.date_of_birth,
-                    gender = u.gender ?? "",
-                    phone_number = u.phone_number ?? "",
-                    email = u.email ?? "",
-                    valid_id = u.valid_id ?? "",
-                    address = u.address ?? "",
-                    role = u.role ?? "",
-                    profile_picture = u.profile_picture ?? "",
-                    created_at = u.created_at
-                })
-                .ToListAsync();
+            try
+            {
+                var users = await _context.Users
+                    .Select(u => new Users
+                    {
+                        user_id = u.user_id ?? "",
+                        first_name = u.first_name ?? "",
+                        middle_name = u.middle_name ?? "",
+                        last_name = u.last_name ?? "",
+                        date_of_birth = u.date_of_birth,
+                        gender = u.gender ?? "",
+                        phone = u.phone ?? "",
+                        email = u.email ?? "",
+                        address = u.address ?? "",
+                        type_of_user = u.type_of_user ?? 0,
+                        profile_picture = u.profile_picture ?? "",
+                        created_at = u.created_at ?? DateTime.MinValue
+                    })
+                    .ToListAsync();
+
+                return users; // Always returns a List<Users> (never null)
+            }
+            catch (Exception ex)
+            {
+                // Log errors and return an empty list
+                Console.WriteLine($"Error fetching users: {ex.Message}");
+                return new List<Users>();
+            }
         }
+
 
 
         // Get user from user_accounts by username (for login)
@@ -58,17 +69,67 @@ namespace ElnetSubdivi.Services
         // Create a new user
         public async Task<bool> CreateUser(Users user)
         {
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+
             try
             {
+                // Step 1: Generate user_id based on type_of_user
+                string prefix = user.type_of_user switch
+                {
+                    1 => "ADM",
+                    2 => "RES",
+                    3 => "STF",
+                    _ => "USR"
+                };
+
+                var lastUser = await _context.Users
+                    .Where(u => u.type_of_user == user.type_of_user && u.user_id.StartsWith(prefix))
+                    .OrderByDescending(u => u.user_id)
+                    .FirstOrDefaultAsync();
+
+                int nextId = 1;
+                if (lastUser != null)
+                {
+                    var parts = lastUser.user_id.Split('-');
+                    if (parts.Length == 2 && int.TryParse(parts[1], out var id))
+                    {
+                        nextId = id + 1;
+                    }
+                }
+
+                user.user_id = $"{prefix}-{nextId:D4}";
+                user.created_at = DateTime.UtcNow; // Optional: make sure created_at is set
+
+                // Step 2: Save user with generated ID
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
-                return true; // Return true if the user is added successfully
+
+                // Step 3: Create corresponding user account
+                var userAccount = new UserAccount
+                {
+                    user_id = user.user_id,
+                    username = user.email,
+                    password = "123" // Ideally hash this
+                };
+
+                _context.User_Accounts.Add(userAccount);
+                await _context.SaveChangesAsync();
+
+                // Step 4: Commit transaction
+                await transaction.CommitAsync();
+                return true;
             }
-            catch
+            catch (Exception ex)
             {
-                return false; // Return false if an error occurs
+                await transaction.RollbackAsync();
+                Console.WriteLine($"Error creating user: {ex.Message}");
+                return false;
             }
         }
+
+
+
+
 
 
         // Update an existing user
@@ -88,10 +149,11 @@ namespace ElnetSubdivi.Services
                 await _context.SaveChangesAsync();
             }
         }
-        public async Task<Users?> GetLastUserId()
+        public async Task<Users?> GetLastUserId(int typeOfUser)
         {
             return await _context.Users
-                .OrderByDescending(u => EF.Functions.Like(u.user_id, "%[0-9]%") ? u.user_id : "0") // Ensures numeric sorting
+                .Where(u => u.type_of_user == typeOfUser)
+                .OrderByDescending(u => u.user_id)
                 .FirstOrDefaultAsync();
         }
 

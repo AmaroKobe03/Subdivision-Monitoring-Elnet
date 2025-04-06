@@ -12,12 +12,11 @@ namespace ElnetSubdivi.Models
         public string? last_name { get; set; }
         public DateOnly date_of_birth { get; set; }
         public string? gender { get; set; }
-        public string? phone_number { get; set; }
         public string? email { get; set; }
-        public string? valid_id { get; set; }
         public string? address { get; set; }
-        public string? role { get; set; }
+        public string? phone { get; set; }
         public string? profile_picture { get; set; }
+        public int? type_of_user { get; set; }
         public DateTime? created_at { get; set; }
 
         public Users()
@@ -28,12 +27,11 @@ namespace ElnetSubdivi.Models
             last_name = string.Empty;
             date_of_birth = DateOnly.MinValue;
             gender = string.Empty;
-            phone_number = string.Empty;
             email = string.Empty;
-            valid_id = string.Empty;
             address = string.Empty;
-            role = string.Empty;
+            phone = string.Empty;
             profile_picture = string.Empty;
+            type_of_user = null;
             created_at = DateTime.MinValue;
         }
     }

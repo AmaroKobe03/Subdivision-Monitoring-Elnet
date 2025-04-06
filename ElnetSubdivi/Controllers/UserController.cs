@@ -25,7 +25,7 @@ namespace ElnetSubdivi.Controllers
 
         public async Task<IActionResult> UserManagement()
         {
-            var users = await _userService.GetAllUsers(); // Fetch users from DB
+            var users = await _userService.GetAllUsers() ?? new List<Users>(); // Handle null
             return View(users);
         }
 
@@ -99,34 +99,45 @@ namespace ElnetSubdivi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(string role, string first_name, string middle_name, string last_name, string date_of_birth, string gender, string email, string phone_number, string address)
+        public async Task<IActionResult> Register(string first_name, string middle_name, string last_name, string date_of_birth, string gender, string email, string address, string phone, int type_of_user)
         {
             // Get the last user_id and increment by 1
-            var lastUser = await _userService.GetLastUserId();
+            var lastUser = await _userService.GetLastUserId(type_of_user);
             int newUserId = 1; // Default ID if no users exist
+            string userPrefix = "USR"; // Default prefix (you can change based on type_of_user if needed)
 
-            if (lastUser != null && int.TryParse(lastUser.user_id, out int lastId))
+            if (lastUser != null && lastUser.user_id.Contains('-'))
             {
-                newUserId = lastId + 1; // Increment user_id safely
+                var parts = lastUser.user_id.Split('-'); // "ADM-0001" => ["ADM", "0001"]
+                userPrefix = parts[0]; // Take the prefix (ADM, RES, STF)
+
+                if (parts.Length == 2 && int.TryParse(parts[1], out int lastId))
+                {
+                    newUserId = lastId + 1; // Increment safely
+                }
             }
-                
+
+            // Format new user_id properly: e.g., ADM-0002
+            string formattedUserId = $"{userPrefix}-{newUserId.ToString("D4")}";
+
             var user = new Users
             {
-                user_id = newUserId.ToString(), // Ensure it's stored as a string
-                role = role,
+                user_id = newUserId.ToString(),
+                type_of_user = type_of_user,
                 first_name = first_name,
                 middle_name = middle_name,
                 last_name = last_name,
                 date_of_birth = DateOnly.TryParse(date_of_birth, out var dob) ? dob : DateOnly.MinValue,
                 gender = gender,
                 email = email,
-                phone_number = phone_number,
+                phone = phone,
                 address = address,
                 created_at = DateTime.Now
             };
 
             bool success = await _userService.CreateUser(user);
-            return Json(new { success, message = success ? "User registered successfully!" : "User registration failed." });
+
+            return Json(new { success, message = success ? "User and account registered successfully!" : "Registration failed." });
         }
 
 

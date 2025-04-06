@@ -14,7 +14,7 @@
         <div id="menu" class="m-0 ml-auto flex hidden h-[4vh] flex-col items-center justify-between gap-6 bg-[#043137] font-medium text-[21px] md:flex md:flex-row md:gap-8">
             @if (User.Identity != null && User.Identity.IsAuthenticated)
             {
-                @if (User.IsInRole("Admin"))
+                @if (User.IsInRole("admin"))
                 {
                     <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("AdminDash", "Home")">Home</a>
                     <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("UserDash", "Home")">Community</a>

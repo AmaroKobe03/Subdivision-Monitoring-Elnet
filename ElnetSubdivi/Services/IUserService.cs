@@ -12,7 +12,7 @@ namespace ElnetSubdivi.Services
         Task<bool> CreateUser(Users user);
         Task UpdateUser(Users user);
         Task DeleteUser(string userId);
-        Task<Users> GetLastUserId();
+        Task<Users> GetLastUserId(int type_of_user);
 
 
     }

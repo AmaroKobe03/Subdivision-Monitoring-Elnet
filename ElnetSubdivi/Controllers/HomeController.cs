@@ -163,9 +163,8 @@ namespace ElnetSubdivi.Controllers
 
         public async Task<IActionResult> UserManagement()
         {
-            ViewData["Title"] = "Service Request";
-            ViewData["HideSearch"] = true;
-            return View();
+            var users = await _userService.GetAllUsers(); // Fetch users from DB
+            return View(users);
         }
 
         public IActionResult UserVisitors()
@@ -359,11 +358,11 @@ namespace ElnetSubdivi.Controllers
             // Check predefined admin and user credentials
             if (username == "admin" && password == "a")
             {
-                return await SignInUser("admin", "AdminDash");
+                return await SignInUser("Admin", "", "AdminDash", "admin");
             }
             else if (username == "user" && password == "u")
             {
-                return await SignInUser("user", "UserDash");
+                return await SignInUser("User", "", "UserDash", "user");
             }
             // Handle staff login with predefined structure
             else if (username.StartsWith("staff/") && password == "s")
@@ -390,7 +389,14 @@ namespace ElnetSubdivi.Controllers
                     var userDetails = await _userService.GetUserDetailsById(userAccount.user_id);
                     if (userDetails != null)
                     {
-                        return await SignInUser(userAccount.username, GetRedirectAction(userDetails.role), userDetails.role, userDetails.user_id);
+                        string role = userDetails.type_of_user switch
+                        {
+                            1 => "admin",
+                            2 => "homeowner",
+                            3 => "staff",
+                            _ => "user"
+                        };
+                        return await SignInUser(userDetails.first_name, userDetails.last_name, GetRedirectAction(role), role, userDetails.user_id);
                     }
                 }
             }
@@ -399,8 +405,10 @@ namespace ElnetSubdivi.Controllers
             return RedirectToAction("Landing");
         }
 
-        private async Task<IActionResult> SignInUser(string username, string redirectAction, string role = "", string additionalClaim = "")
+        private async Task<IActionResult> SignInUser(string first_name, string last_name, string redirectAction, string role = "", string additionalClaim = "")
         {
+            var username = first_name + " " + last_name;
+
             var claims = new List<Claim>
     {
         new Claim(ClaimTypes.Name, username)
@@ -427,7 +435,6 @@ namespace ElnetSubdivi.Controllers
 
             return RedirectToAction(redirectAction, "Home");
         }
-
 
         private string GetRedirectAction(string role)
         {
