@@ -31,7 +31,7 @@
                     <a href="@Url.Action("viewProfile","Home")">
                         <img src="~/Images/pfp.svg" class="h-8 w-8 rounded-full sm:h-10 sm:w-10" />
                     </a>
-                    <input id="post-input" type="text"
+                    <input id="post-input1" type="text"
                            class="flex-1 rounded-full border p-2 px-4 text-sm text-gray-600 sm:text-base md:text-lg"
                            placeholder="Share Something..." autocomplete="off" />
 
@@ -62,10 +62,10 @@
                                 <img class="flex self-start" src="~/Images/pfp.svg" />
                                     <div class="flex flex-col">
                                         <h2 class="font-semibold text-[16px]">
-                                            Kobe Amaro
+                                            @User.Identity.Name
                                         </h2>
                                         <p class="text-[12px] text-gray-500">
-                                            House No.4
+                                            
                                         </p>
                                     </div>
                             </div>
@@ -91,7 +91,7 @@
                             </a>
                         </div>
                     </div>
-                    <button class="mt-5 w-full rounded-lg bg-[#043137] py-2 text-lg text-white">
+                    <button id="submitPost" class="mt-5 w-full rounded-lg bg-[#043137] py-2 text-lg text-white">
                         POST
                     </button>
                 </div>
@@ -104,7 +104,7 @@
                     const phoBtn = document.getElementById("pho");
                     const feelBtn = document.getElementById("feel");
                     const buttonPost = document.getElementById("anotherPost")
-                    const postInput = document.getElementById("post-input");
+                    const postInput = document.getElementById("post-input1");
                     const popup = document.getElementById("post-popup");
                     const closeBtn = document.querySelector(".close");
 
@@ -305,6 +305,31 @@
             window.addEventListener("resize", checkWindowSize);
             checkWindowSize();
         });
+
+                document.addEventListener("DOMContentLoaded", function () {
+            const submitPostBtn = document.getElementById("submitPost");
+
+            submitPostBtn.addEventListener("click", async function () {
+                const postText = document.getElementById("post-input").value;
+                console.log(postText);
+
+                const response = await fetch('/Post/CreatePost', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ postText: postText })
+                });
+
+                if (response.ok) {
+                    alert("Post created!");
+                    location.reload(); // or better: fetch and append the new post
+                } else {
+                    alert("Error creating post");
+                }
+            });
+        });
+
 
     </script>
 </body>

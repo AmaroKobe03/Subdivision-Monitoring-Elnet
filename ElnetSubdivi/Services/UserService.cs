@@ -3,6 +3,7 @@ using ElnetSubdivi.data;
 using ElnetSubdivi.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace ElnetSubdivi.Services
 {
@@ -64,6 +65,18 @@ namespace ElnetSubdivi.Services
             return await _context.Users
                 .Where(u => u.user_id == userId)
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<string> GetUserType(int type_of_user)
+        {
+            string prefix = type_of_user switch
+            {
+                1 => "Admin",
+                2 => "Homeowner",
+                3 => "Staff",
+                _ => "User"
+            };
+            return prefix;
         }
 
         // Create a new user
@@ -157,5 +170,9 @@ namespace ElnetSubdivi.Services
                 .FirstOrDefaultAsync();
         }
 
+        public string GetCurrentUserId(ClaimsPrincipal user)
+        {
+            return user.FindFirst("UserId")?.Value;
+        }
     }
 }

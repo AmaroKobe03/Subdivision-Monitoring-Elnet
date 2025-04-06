@@ -81,7 +81,7 @@ namespace ElnetSubdivi.Controllers
 
             return View(manageVehicle);
         }
-        public IActionResult VisitorsPassManagement() 
+        public IActionResult VisitorsPassManagement()
         {
             ViewData["HideSearch"] = true;
             ViewData["Hidebtn"] = true;
@@ -234,7 +234,7 @@ namespace ElnetSubdivi.Controllers
             ViewData["Title"] = "Reports";
             return View();
         }
-        public IActionResult HousekeepingServiceRequest ()
+        public IActionResult HousekeepingServiceRequest()
         {
             ViewData["HideSearch"] = true;
             return View();
@@ -260,7 +260,7 @@ namespace ElnetSubdivi.Controllers
                 new {Status = "Pending", Title = "Noise Complaint in Block A", Type = "Complaint", Description = "Continuous loud music from unit 302 during quiet hours...", Clock = "clock.svg", Duration = "2 Days ago"},
                 new {Status = "Resolved", Title = "Noise Complaint in Block B", Type = "Complaint", Description = "Continuous loud music from unit 302 during quiet hours...", Clock = "clock.svg", Duration = "2 Days ago" },
             };
-                 ViewBag.Complaints = complaint;
+            ViewBag.Complaints = complaint;
             return View(feedback);
 
         }
@@ -325,7 +325,7 @@ namespace ElnetSubdivi.Controllers
                 new { Title = "Available Facilities", Count = 3, Icon = "~/Images/apr.svg", BorderColor = "border-b-[3px] border-green-400" }
             };
 
-                    ViewBag.Reservations = reservations;
+            ViewBag.Reservations = reservations;
 
             return View(facilities);
         }
@@ -454,6 +454,8 @@ namespace ElnetSubdivi.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
 
     }
 }

@@ -4,6 +4,7 @@ using ElnetSubdivi.data;
 using ElnetSubdivi.Models;
 using System.Threading.Tasks;
 using ElnetSubdivi.Services;
+using System.Security.Claims;
 
 namespace ElnetSubdivi.Controllers
 {
@@ -139,7 +140,6 @@ namespace ElnetSubdivi.Controllers
 
             return Json(new { success, message = success ? "User and account registered successfully!" : "Registration failed." });
         }
-
 
     }
 }

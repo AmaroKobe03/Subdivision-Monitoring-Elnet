@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ElnetSubdivi.Models;
 
@@ -13,7 +14,6 @@ namespace ElnetSubdivi.Services
         Task UpdateUser(Users user);
         Task DeleteUser(string userId);
         Task<Users> GetLastUserId(int type_of_user);
-
-
+        string GetCurrentUserId(ClaimsPrincipal user);
     }
 }
