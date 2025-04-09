@@ -1,14 +1,15 @@
 ﻿@{
     ViewData["Title"] = "Service Requests Management";
 }
-@model IEnumerable<dynamic>
+@model ElnetSubdivi.Models.ServiceRequestManagementViewModel
+
 
 <div class="flex h-[100vh] w-[90%] flex-col items-center overflow-auto overflow-y-hidden bg-[#f2f2f2] font-semibold">
     @await Html.PartialAsync("_sharedSearch")
 
     <div class="flex h-[15vh] w-[88%] items-center justify-center">
         <div class="flex h-[15vh] w-full items-center justify-center gap-6">
-            @foreach (var item in Model)
+            @foreach (var item in Model.SummaryCards)
             {
                 <div class="flex h-[15vh] w-[23%] items-center justify-around rounded-lg border-b-[3px] bg-white @item.BorderColor shadow-lg">
                     <div class="ml-5 flex flex-col gap-2">
@@ -68,6 +69,36 @@
                 <td class="px-4 py-3">Anjo</td>
                 <td class="px-4 py-3 font-semibold text-yellow-500">Pending</td>
             </tr>
+        </tbody>
+        <thead>
+            <tr class="text-gray-500">
+                <th class="px-4 py-3">Id</th>
+                <th class="px-4 py-3">User</th>
+                <th class="px-4 py-3">Request</th>
+                <th class="px-4 py-3">Reserved Date</th>
+                <th class="px-4 py-3">Request Submitted</th>
+                <th class="px-4 py-3">Request Closed</th>
+                <th class="px-4 py-3">Assigned To</th>
+                <th class="px-4 py-3">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var request in Model.ServiceRequests)
+            {
+                <tr class="cursor-pointer border-b hover:bg-gray-100" onclick="openModal()">
+                    <td>@request.Request_Id</td>
+                    <td class="flex items-center gap-3 px-4 py-3">
+                        <img src="~/Images/pfp.svg" class="h-8 w-8 rounded-full" />
+                        <span>@request.User_Id</span>
+                    </td>
+                    <td class="px-4 py-3">@request.Request_Type</td>
+                    <td class="px-4 py-3">@request.Request_Date</td>
+                    <td class="px-4 py-3">@request.Request_Creation</td>
+                    <td class="px-4 py-3">@request.Request_Date</td>
+                    <td class="px-4 py-3">@request.Request_Id</td>
+                    <td class="px-4 py-3 font-semibold text-yellow-500">@request.Request_Status</td>
+                </tr>
+            }
         </tbody>
     </table>
     <!-- Modal (Hidden by default) -->

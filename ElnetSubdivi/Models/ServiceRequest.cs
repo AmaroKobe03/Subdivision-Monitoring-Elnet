@@ -14,6 +14,7 @@ namespace ElnetSubdivi.Models
         public string Request_Time { get; set; }
         public string Request_Description { get; set; }
         public DateTime Request_Creation { get; set; }
+        public string Request_Status { get; set; }
     }
 
 }

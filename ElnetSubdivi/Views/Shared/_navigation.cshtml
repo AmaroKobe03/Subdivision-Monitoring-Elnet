@@ -25,7 +25,7 @@
                             <img class="w-[10px] brightness-0 invert-[1]" src="/Images/drdown.svg" />
                         </a>
                         <div class="absolute hidden w-50 flex-col rounded-lg bg-white p-3 py-2 shadow-lg group-hover:flex">
-                            @if (User.Identity.Name == "admin")
+                            @if (User.IsInRole("admin"))
                             {
                                 <a href="@Url.Action("ReservationsManagement", "Home")" class="px-4 py-2 hover:bg-gray-200">Reservations</a>
                                 <a href="@Url.Action("FacilityManagement", "Home")" class="px-4 py-2 hover:bg-gray-200">Facility Management</a>
@@ -50,7 +50,7 @@
                         </div>
                     </div>
                 }
-                else if (User.Identity.Name.StartsWith("staff/"))
+                else if (User.IsInRole("staff"))
                     {
                         <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("UserDash", "Home")">Home</a>
 

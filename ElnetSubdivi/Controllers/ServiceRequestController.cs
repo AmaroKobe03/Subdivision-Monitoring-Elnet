@@ -24,6 +24,7 @@ namespace ElnetSubdivi.Controllers
         {
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> CreateRequest([FromBody] ServiceRequestViewModel model)
         {
@@ -60,7 +61,8 @@ namespace ElnetSubdivi.Controllers
                 Request_Date = model.Request_Date,
                 Request_Time = model.Request_Time,
                 Request_Description = model.Request_Description,
-                Request_Creation = DateTime.Now
+                Request_Creation = DateTime.Now,
+                Request_Status = model.Request_Status,
             };
 
             _context.Set<ServiceRequest>().Add(newRequest);
@@ -68,6 +70,62 @@ namespace ElnetSubdivi.Controllers
 
             return Ok(new { message = "Request submitted successfully!" });
         }
+
+        // ✅ New private helper method that just gets the list
+        private async Task<List<ServiceRequest>> GetAllServiceRequestsAsync()
+        {
+            return await _context.Set<ServiceRequest>()
+                .OrderByDescending(r => r.Request_Creation)
+                .ToListAsync();
+        }
+
+        public async Task<IActionResult> ServiceRequestManagement()
+        {
+            if (!User.Identity.IsAuthenticated)
+                return Unauthorized();
+
+            var viewModel = await BuildServiceRequestManagementViewModelAsync();
+            return View(viewModel); // ✅ Correct type passed into the View
+        }
+
+
+        public async Task<IActionResult> ListRequests()
+        {
+            var serviceRequests = await GetAllServiceRequestsAsync(); // ✅ now this is a real list
+
+            var summaryCards = new List<dynamic>
+        {
+        new { Title = "Pending", Count = serviceRequests.Count(r => r.Request_Status == "Pending"), Icon = "pending.svg", BorderColor = "border-yellow-500" },
+        new { Title = "Approved", Count = serviceRequests.Count(r => r.Request_Status == "Approved"), Icon = "approved.svg", BorderColor = "border-green-500" },
+        new { Title = "Declined", Count = serviceRequests.Count(r => r.Request_Status == "Declined"), Icon = "declined.svg", BorderColor = "border-red-500" },
+        };
+
+            var viewModel = new ServiceRequestManagementViewModel
+            {
+                ServiceRequests = serviceRequests,
+                SummaryCards = summaryCards
+            };
+
+            return View(viewModel);
+        }
+
+        private async Task<ServiceRequestManagementViewModel> BuildServiceRequestManagementViewModelAsync()
+            {
+                var serviceRequests = await GetAllServiceRequestsAsync();
+
+                var summaryCards = new List<dynamic>
+        {
+            new { Title = "Pending", Count = serviceRequests.Count(r => r.Request_Status == "Pending"), Icon = "pending.svg", BorderColor = "border-yellow-500" },
+            new { Title = "Approved", Count = serviceRequests.Count(r => r.Request_Status == "Approved"), Icon = "approved.svg", BorderColor = "border-green-500" },
+            new { Title = "Declined", Count = serviceRequests.Count(r => r.Request_Status == "Declined"), Icon = "declined.svg", BorderColor = "border-red-500" },
+        };
+
+                return new ServiceRequestManagementViewModel
+                {
+                    ServiceRequests = serviceRequests,
+                    SummaryCards = summaryCards
+                };
+            }
 
 
     }
