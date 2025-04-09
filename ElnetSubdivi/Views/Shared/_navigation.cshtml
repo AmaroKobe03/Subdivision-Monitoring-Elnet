@@ -51,29 +51,29 @@
                     </div>
                 }
                 else if (User.Identity.Name.StartsWith("staff/"))
-                {
-                    <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("UserDash", "Home")">Home</a>
+                    {
+                        <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("UserDash", "Home")">Home</a>
 
-                    if (User.Identity.Name.StartsWith("staff/maintenance"))
-                    {
-                        <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("MaintenanceServiceRequest", "Home")">Service Request</a>
-                    }
-                    else if (User.Identity.Name.StartsWith("staff/housekeeping"))
-                    {
-                        <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("HousekeepingServiceRequest", "Home")">Service Request</a>
-                    }
-                    else if (User.Identity.Name.StartsWith("staff/security"))
-                    {
-                        <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("SecurityServiceRequest", "Home")">Service Request</a>
-                    }
-                    else
-                    {
-                        // Default Service Request Link if no subtype matches (optional)
-                        <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("MaintenanceServiceRequest", "Home")">Service Request</a>
-                    }
+                        if (User.Identity.Name.StartsWith("staff/maintenance"))
+                        {
+                            <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("MaintenanceServiceRequest", "Home")">Service Request</a>
+                        }
+                        else if (User.Identity.Name.StartsWith("staff/housekeeping"))
+                        {
+                            <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("HousekeepingServiceRequest", "Home")">Service Request</a>
+                        }
+                        else if (User.Identity.Name.StartsWith("staff/security"))
+                        {
+                            <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("SecurityServiceRequest", "Home")">Service Request</a>
+                        }
+                        else
+                        {
+                            // Default Service Request Link if no subtype matches (optional)
+                            <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("MaintenanceServiceRequest", "Home")">Service Request</a> 
+                        }
 
-                    <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("IncidentReport", "Home")">Reports</a>
-                }
+                        <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("IncidentReport", "Home")">Reports</a>
+                    }
                 else
                 {
                     <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("UserDash", "Home")">Home</a>
@@ -112,7 +112,7 @@
                     <!-- Header -->
                     <div class="flex items-center justify-between border-b pb-2">  
                         <h2 class="text-lg font-bold">Notifications</h2>
-                        <a href="#" class="text-sm text-gray-500 hover:underline">Mark all as read</a>
+                        <a href="#" class="text-[12px] text-gray-500 hover:underline">Mark all as read</a>
                     </div>
 
                     <!-- Notification Items -->

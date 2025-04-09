@@ -35,7 +35,7 @@
         </div>
 
         <!-- Add Facility Button -->
-        <button id="addfac" class="flex items-center gap-2 rounded-full bg-[#04373A] px-6 py-2 text-white">
+        <button id="addReq" class="flex items-center gap-2 rounded-full bg-[#04373A] px-6 py-2 text-white" onclick="openAdd()">
             <span class="text-xl">+</span>
             <span class="font-medium">New Submission</span>
         </button>
@@ -128,12 +128,75 @@
 
             <!-- Buttons -->
             <div class="mt-6 flex gap-4">
-                <button class="w-1/2 rounded-full border border-[#B25828] py-2 text-[#B25828]" onclick="closeModal()">Decline</button>
+                <button class="w-1/2 rounded-full border border-[#B25828] py-2 text-[#B25828]" onclick="closeModal(event)">Decline</button>
                 <button class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Approve</button>
             </div>
         </div>
     </div>
 
+    <!-- Modal (Hidden by default) -->
+    <div id="ReqModal" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50" onclick="closeAdd(event)">
+        <div class="w-[500px] rounded-2xl bg-white p-8" onclick="event.stopPropagation()">
+            <h2 class="mb-4 text-center text-2xl font-extrabold text-gray-800">Add Request</h2>
+
+            <!-- User Profile -->
+            <div class="mb-4 flex items-center justify-center gap-2">
+                <img src="~/Images/pfp.svg" class="h-10 w-10 rounded-full" />
+                <span class="text-lg font-medium">Admin</span>
+            </div>
+
+            <!-- Request Type -->
+            <label class="mb-1 block text-base text-gray-500">Request Type</label>
+            <select class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500">
+                <option>Repair</option>
+                <option>Maintenance</option>
+            </select>
+
+            <!-- Subject -->
+            <label class="mt-4 mb-1 block text-base text-gray-500">Subject</label>
+            <input type="text" value="Flickering Lights" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" readonly />
+
+            <!-- Date and Time -->
+            <div class="mt-4 mb-4 flex justify-between gap-4">
+                <!-- Date Picker -->
+                <div class="w-1/2">
+                    <label class="mb-1 block text-base text-gray-500">Date</label>
+                    <div class="relative">
+                        <input type="date" value="2024-03-15" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" />
+                    </div>
+                </div>
+
+                <!-- Time Picker -->
+                <div class="w-1/2">
+                    <label class="mb-1 block text-base text-gray-500">Time</label>
+                    <div class="relative">
+                        <input type="time" value="07:00" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <label class="mb-1 block text-base text-gray-500">Description</label>
+            <textarea class="border-2 h-[10vh] w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" readonly>Lights are not working.</textarea>
+
+            <!-- Attachments -->
+            <label class="mt-4 mb-1 block text-base text-gray-500">Attachments</label>
+            <img src="~/Images/attachment.png" class="border-2 h-16 w-16 rounded-md border-gray-300 object-cover" />
+
+            <!-- Assign Staff -->
+            <label class="mt-4 mb-1 block text-base text-gray-500">Assign Staff</label>
+            <select class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500">
+                <option>Bryl Gorgonio</option>
+                <option>Other Staff</option>
+            </select>
+
+            <!-- Buttons -->
+            <div class="mt-6 flex gap-4">
+                <button class="w-1/2 rounded-full border border-[#B25828] py-2 text-[#B25828]" onclick="closeAdd(event)">Cancel</button>
+                <button class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Submit</button>
+            </div>
+        </div>
+    </div>
 
 
     @await Html.PartialAsync("_pagination")
@@ -150,6 +213,18 @@
 
         function closeModal(event) {
           const modal = document.getElementById('modal');
+          if (event.target === modal || event.type === 'click') {
+            modal.classList.add('hidden');
+          }
+        }
+    </script>
+    <script>
+        function openAdd() {
+          document.getElementById('ReqModal').classList.remove('hidden');
+        }
+
+        function closeAdd(event) {
+          const modal = document.getElementById('ReqModal');
           if (event.target === modal || event.type === 'click') {
             modal.classList.add('hidden');
           }
