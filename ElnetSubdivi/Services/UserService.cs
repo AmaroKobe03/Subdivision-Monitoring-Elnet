@@ -34,7 +34,7 @@ namespace ElnetSubdivi.Services
                         email = u.email ?? "",
                         address = u.address ?? "",
                         type_of_user = u.type_of_user ?? 0,
-                        profile_picture = u.profile_picture ?? "",
+                        profile_picture = u.profile_picture ?? null,
                         created_at = u.created_at ?? DateTime.MinValue
                     })
                     .ToListAsync();
@@ -140,17 +140,25 @@ namespace ElnetSubdivi.Services
             }
         }
 
-
-
-
-
-
-        // Update an existing user
-        public async Task UpdateUser(Users user)
+        public async Task<bool> UpdateUser(Users updatedUser)
         {
-            _context.Users.Update(user);
+            var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.user_id == updatedUser.user_id);
+            if (existingUser == null) return false;
+
+            // Only update fields that are meant to be changed
+            existingUser.first_name = updatedUser.first_name;
+            existingUser.middle_name = updatedUser.middle_name;
+            existingUser.last_name = updatedUser.last_name;
+            existingUser.date_of_birth = updatedUser.date_of_birth;
+            existingUser.gender = updatedUser.gender;
+            existingUser.email = updatedUser.email;
+            existingUser.phone = updatedUser.phone;
+            existingUser.address = updatedUser.address;
+
             await _context.SaveChangesAsync();
+            return true;
         }
+
 
         // Delete a user by ID
         public async Task DeleteUser(string userId)

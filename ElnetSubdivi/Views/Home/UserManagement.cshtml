@@ -21,7 +21,6 @@
                 <th class="px-4 py-3">Email</th>
                 <th class="px-4 py-3">Phone Number</th>
                 <th class="px-4 py-3">Role</th>
-                <th class="px-4 py-3">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -29,24 +28,17 @@
             {
                 @foreach (var user in Model)
                 {
-                    <tr>
+                    <tr onclick="viewUser('@user.user_id')">
                         <td class="gap-2 px-4 py-3">
                             <span>@user.first_name @user.middle_name @user.last_name</span>
                         </td>
                         <td class="px-4 py-3">@user.address</td>
                         <td class="px-4 py-3">@user.email</td>
                         <td class="px-4 py-3">@user.phone</td>
-                        <td class="px-4 py-3 font-semibold">@user.type_of_user</td>
-                        <td class="jusitfy-center relative left-5 flex cursor-pointer flex-row items-center gap-2 px-4 py-3 font-semibold text-teal-700">
-                            <div class="group relative flex cursor-pointer items-center gap-2">
-                                <img class="w-[20px]" src="~/Images/actionsicon.svg" alt="actions" />
-                                <div class="absolute top-0 left-1/2 z-100 mt-2 hidden w-40 -translate-x-1/2 flex-col gap-1 rounded-lg bg-white py-2 shadow-lg group-hover:flex">
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-200" onclick="viewUser('@user.user_id')">View</a>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-200" onclick="editUser('@user.user_id')">Edit</a>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-200" onclick="removeUser('@user.user_id')">Remove</a>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-200">Send Activation</a>
-                                </div>
-                            </div>
+                        <td class="px-4 py-3 font-semibold">
+                            @(user.type_of_user == 1 ? "Admin" : user.type_of_user == 2 ? "Homeowner" : user.type_of_user == 3 ? "Staff" : "Unknown")
+                        </td>
+                        <td class="justify-center relative left-5 flex cursor-pointer flex-row items-center gap-2 px-4 py-3 font-semibold text-teal-700">
                         </td>
                     </tr>
                 }
@@ -60,6 +52,10 @@
         </tbody>
     </table>
     @await Html.PartialAsync("_pagination")
+
+
+
+    <!--Regiser User-->
 
     <div id="User-popup" class="fixed inset-0 z-100 flex hidden items-center justify-center bg-black/50 p-4">
         <div class="w-[600px] rounded-lg bg-white p-6 shadow-lg">
@@ -141,98 +137,27 @@
     </div>
 
 
+
+
+
+
+    <!--View User-->
     <div id="view-user" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-white pb-4">
-        @await Html.PartialAsync("_sharedViewUser")
+        @await Html.PartialAsync("_sharedViewUser", new ElnetSubdivi.Models.Users())
     </div>
 
-    <div id="edit-user" class="bg-opacity-50 fixed inset-0 z-20 flex hidden items-center justify-center gap-4 bg-black/50 p-4">
-        <div class="w-[32%] rounded-lg bg-white p-6 shadow-xl">
-            <!-- Modal Title -->
-            <h1 class="text-center text-xl font-semibold text-gray-800">Edit User</h1>
 
-            <!-- Profile Section -->
-            <div class="mt-4 flex flex-col items-center">
-                <!-- Profile Picture -->
-                <div class="relative">
-                    <img class="h-50 w-50 rounded-full border border-gray-300" src="~/Images/pfp.svg" alt="Profile Picture" />
-                    <label class="absolute right-6 bottom-3 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white shadow">
-                        <input type="file" class="hidden" />
-                        <img class="h-8 w-8" src="~/Images/camera-icon.svg" alt="Edit Profile" />
-                    </label>
-                </div>
-            </div>
 
-            <!-- User Information Form -->
-            <div class="mt-6 space-y-3">
-                <!-- Name Fields -->
-                <div class="flex gap-1">
-                    <div class="flex w-1/3 flex-col">
-                        <label class="text-sm">First Name</label>
-                        <input type="text" class="rounded-lg border px-3 py-2 text-sm" value="John" placeholder="First Name" />
-                    </div>
-                    <div class="flex w-1/3 flex-col">
-                        <label class="text-sm">Middle Name</label>
-                        <input type="text" class="rounded-lg border px-3 py-2 text-sm" value="Rahm" placeholder="Middle Name" />
-                    </div>
-                    <div class="flex w-1/3 flex-col">
-                        <label class="text-sm">Last Name</label>
-                        <input type="text" class="rounded-lg border px-3 py-2 text-sm" value="Doe" placeholder="Last Name" />
-                    </div>
-                </div>
 
-                <!-- Date of Birth & Gender -->
-                <div class="flex gap-2">
-                    <div class="flex w-1/2 flex-col">
-                        <label class="text-sm">Date of Birth</label>
-                        <input type="date" class="rounded-lg border px-3 py-2 text-sm" value="1990-01-15" />
-                    </div>
-                    <div class="flex w-1/2 flex-col">
-                        <label class="text-sm">Gender</label>
-                        <select class="rounded-lg border px-3 py-2 text-sm">
-                            <option selected>Male</option>
-                            <option>Female</option>
-                        </select>
-                    </div>
-                </div>
 
-                <!-- Email & Phone -->
-                <div class="flex gap-1">
-                    <div class="flex w-1/2 flex-col">
-                        <label class="text-sm">Email</label>
-                        <input type="email" class="rounded-lg border px-3 py-2 text-sm" value="johndoe@gmail.com" placeholder="Email" />
-                    </div>
-                    <div class="flex w-1/2 flex-col">
-                        <label class="text-sm">Phone Number</label>
-                        <input type="text" class="rounded-lg border px-3 py-2 text-sm" value="+123 4567 890" placeholder="Phone Number" />
-                    </div>
-                </div>
-
-                <!-- Address -->
-                <div class="flex flex-col">
-                    <label class="text-sm">Address</label>
-                    <input type="text" class="w-full rounded-lg border px-3 py-2 text-sm" value="123 Bacalso St. Cebu City" placeholder="Address" />
-                </div>
-            </div>
-
-            <!-- Buttons -->
-            <div class="mt-6 flex w-full justify-between">
-                <div class="flex w-full gap-4">
-                    <button id="cancelEdit" class="w-1/2 rounded-full border px-6 py-2 text-black">Cancel</button>
-                    <button class="w-1/2 rounded-full bg-[#043137] px-6 py-2 text-white">Save Changes</button>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <div id="remove-user" class="bg-opacity-50 fixed inset-0 z-20 flex hidden items-center justify-center gap-4 bg-black/50 p-4">
+    <div id="moveout-user" class="bg-opacity-50 fixed inset-0 z-20 flex hidden items-center justify-center gap-4 bg-black/50 p-4">
 
         <div class="flex w-[20%] flex-col items-center justify-center gap-6 rounded-lg bg-white p-6 shadow-xl">
-            <h1 class="text-3xl">Remove User</h1>
-            <h2 class="text-center">Are you sure you want to remove this owner? This action is irreversable.</h2>
+            <h1 class="text-3xl">Move Out User</h1>
+            <h2 class="text-center">Are you sure you want to move out this owner? This action is irreversable.</h2>
             <div class="flex w-full gap-4">
-                <button id="cancelRemove" class="w-1/2 rounded-full border px-6 py-2 text-black">Cancel</button>
-                <button id="confirmRemove" class="w-1/2 rounded-full bg-[#043137] px-6 py-2 text-white">Confirm</button>
+                <button id="cancelMoveOut" class="w-1/2 rounded-full border px-6 py-2 text-black">Cancel</button>
+                <button id="confirmMoveOut" class="w-1/2 rounded-full bg-[#043137] px-6 py-2 text-white">Confirm</button>
             </div>
         </div>
 
@@ -241,6 +166,9 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    const users = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model));
+</script>
 <script>
     $(document).ready(function () {
         $("#registerForm").submit(function (e) {
@@ -268,5 +196,92 @@
         $("#cancelbtn").click(function () {
             $("#User-popup").addClass("hidden");
         });
+    });
+
+        document.getElementById('cancelbtn').onclick = () => {
+        document.getElementById('User-popup').classList.add('hidden');
+    };
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (!modal) {
+                console.error(`Modal ${modalId} not found.`);
+                return;
+            }
+            modal.classList.remove("hidden");
+
+            modal.addEventListener("click", (e) => {
+                if (e.target === modal) {
+                    closeModal(modalId);
+                }
+            });
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add("hidden");
+            }
+        }
+
+        function getUserById(userId) {
+            return users.find(u => u.user_id === userId);
+        }
+
+    window.viewUser = function (userId) {
+        console.log(`Viewing user ${userId}`);
+        const user = getUserById(userId);
+
+        if (user) {
+            const roles = {
+                1: "Admin",
+                2: "Homeowner",
+                3: "Staff"
+            };
+            const role = roles[user.type_of_user] ?? "Unknown";
+
+            console.log(`${user.first_name ?? ''} ${user.middle_name ?? ''} ${user.last_name ?? ''}`.trim());
+            
+            document.getElementById('viewUserId').value = user.user_id;
+            document.getElementById("viewUserFullName").innerText = `${user.first_name ?? ''} ${user.middle_name ?? ''} ${user.last_name ?? ''}`.trim();
+            document.getElementById("viewUserRole").innerText = role;
+            document.getElementById("viewUserFirstName").value = user.first_name ?? '';
+            document.getElementById("viewUserMiddleName").value = user.middle_name ?? '';
+            document.getElementById("viewUserLastName").value = user.last_name ?? '';
+            document.getElementById("viewUserDOB").value = user.date_of_birth ?? '';
+            document.getElementById("viewUserGender").value = user.gender ?? '';
+            document.getElementById("viewUserEmail").value = user.email ?? '';
+            document.getElementById("viewUserPhone").value = user.phone ?? '';
+            document.getElementById("viewUserAddress").value = user.address ?? '';
+
+            const profilePic = document.getElementById('profilePic');
+                if (profilePic) {
+                    profilePic.src = `/User/ProfilePicture/${user.user_id}`;
+            }
+        }
+
+        openModal("view-user");
+    };
+
+        function setupCloseButtons(modalId, closeBtnId, confirmBtnId = null) {
+            const closeBtn = document.getElementById(closeBtnId);
+            const confirmBtn = confirmBtnId ? document.getElementById(confirmBtnId) : null;
+
+            if (closeBtn) {
+                closeBtn.addEventListener("click", () => closeModal(modalId));
+            }
+
+            if (confirmBtn) {
+                confirmBtn.addEventListener("click", () => {
+                    closeModal(modalId);
+                    console.log(`Confirmed action in ${modalId}`);
+                });
+            }
+        }
+
+        setupCloseButtons("view-user", "cancelView");
+        setupCloseButtons("moveout-user", "cancelMoveOut", "confirmMoveOut");
     });
 </script>

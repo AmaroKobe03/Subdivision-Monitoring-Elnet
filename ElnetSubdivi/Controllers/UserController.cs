@@ -5,6 +5,7 @@ using ElnetSubdivi.Models;
 using System.Threading.Tasks;
 using ElnetSubdivi.Services;
 using System.Security.Claims;
+using ElnetSubdivi.Views.Shared;
 
 namespace ElnetSubdivi.Controllers
 {
@@ -29,7 +30,6 @@ namespace ElnetSubdivi.Controllers
             var users = await _userService.GetAllUsers() ?? new List<Users>(); // Handle null
             return View(users);
         }
-
 
 
         // Show user details
@@ -59,28 +59,42 @@ namespace ElnetSubdivi.Controllers
             return View(user);
         }
 
-        // Show edit form for a user
+        // Show form for editing a user
+        [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+
             var user = await _userService.GetUserDetailsById(id);
             if (user == null) return NotFound();
-            return View(user);
+
+            return View(user); // This expects Views/Users/Edit.cshtml
         }
 
-        // Handle form submission to edit a user
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, Users user)
+        [HttpPost("Users/Edit/{id}")]
+        public async Task<IActionResult> Edit(string id, [FromBody] Users user)
         {
-            if (id != user.user_id) return NotFound();
+            if (id != user.user_id)
+                return NotFound();
+
+            var existingUser = await _userService.GetUserDetailsById(id);
+            if (existingUser == null)
+                return NotFound();
+
+            // Preserve type_of_user and role_id
+            user.type_of_user = existingUser.type_of_user;
 
             if (ModelState.IsValid)
             {
                 await _userService.UpdateUser(user);
-                return RedirectToAction(nameof(Index));
+                return Ok(new { success = true });
             }
-            return View(user);
+
+            return BadRequest(ModelState);
         }
+
+
+
 
         // Show confirmation page for deleting a user
         public async Task<IActionResult> Delete(string id)
@@ -140,6 +154,59 @@ namespace ElnetSubdivi.Controllers
 
             return Json(new { success, message = success ? "User and account registered successfully!" : "Registration failed." });
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateWithPicture(IFormCollection form, IFormFile profile_picture)
+        {
+            var userId = form["user_id"];
+            var user = await _userService.GetUserDetailsById(userId);
+            if (user == null) return NotFound();
+
+            // Update fields
+            user.first_name = form["first_name"];
+            user.middle_name = form["middle_name"];
+            user.last_name = form["last_name"];
+            user.date_of_birth = DateOnly.TryParse(form["date_of_birth"], out var dob) ? dob : user.date_of_birth;
+            user.gender = form["gender"];
+            user.email = form["email"];
+            user.phone = form["phone"];
+            user.address = form["address"];
+
+            // If picture was uploaded, handle and save it
+            if (profile_picture != null && profile_picture.Length > 0)
+            {
+                using var ms = new MemoryStream();
+                await profile_picture.CopyToAsync(ms);
+                user.profile_picture = ms.ToArray(); // assuming this is a byte[] in DB
+            }
+
+            await _userService.UpdateUser(user);
+            return Ok(new { success = true });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetProfilePicture(string id)
+        {
+            var user = await _userService.GetUserDetailsById(id);
+            if (user == null || user.profile_picture == null)
+                return File("~/Images/pfp.svg", "image/svg+xml"); // fallback image
+
+            return File(user.profile_picture, "image/jpeg"); // or image/png depending on your storage
+        }
+
+        [HttpGet("/User/ProfilePicture/{userId}")]
+        public async Task<IActionResult> ProfilePicture(string userId)
+        {
+            var user = await _userService.GetUserDetailsById(userId);
+            if (user?.profile_picture == null || user.profile_picture.Length == 0)
+            {
+                return PhysicalFile("wwwroot/Images/pfp.svg", "image/svg+xml"); // fallback
+            }
+
+            return File(user.profile_picture, "image/jpeg"); // or "image/png" based on your image type
+        }
+
 
     }
 }

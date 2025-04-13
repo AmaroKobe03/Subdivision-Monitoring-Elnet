@@ -15,7 +15,7 @@ namespace ElnetSubdivi.Models
         public string? email { get; set; }
         public string? address { get; set; }
         public string? phone { get; set; }
-        public string? profile_picture { get; set; }
+        public byte[]? profile_picture { get; set; }
         public int? type_of_user { get; set; }
         public DateTime? created_at { get; set; }
 
@@ -30,7 +30,7 @@ namespace ElnetSubdivi.Models
             email = string.Empty;
             address = string.Empty;
             phone = string.Empty;
-            profile_picture = string.Empty;
+            profile_picture = null;
             type_of_user = null;
             created_at = DateTime.MinValue;
         }
