@@ -1,4 +1,5 @@
-﻿@model List<ElnetSubdivi.Models.Post>
+﻿@model ElnetSubdivi.Models.PostAndUserViewModel
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -93,7 +94,7 @@
                             </a>
                         </div>
                     </div>
-                    <button id="submitPost" class="mt-5 w-full rounded-lg bg-[#043137] py-2 text-lg text-white">
+                    <button id="submitPost" type="submit"class="mt-5 w-full rounded-lg bg-[#043137] py-2 text-lg text-white">
                         POST
                     </button>
                 </div>
@@ -141,7 +142,7 @@
                 });
             </script>
             <div id="contfeed" class="min-h-[90vh] w-full rounded-lg bg-white p-5">
-                @foreach (var post in Model)
+                @foreach (var post in Model.Posts)
                 {
                     <div class="mb-8 border-b pb-6">
                         <!-- Admin Header -->
@@ -252,7 +253,7 @@
                 nextBtn.onclick = () => generateCalendar(year, month + 1);
 
                 const title = document.createElement("h3");
-                title.innerText = ${new Date(year, month).toLocaleString('default', { month: 'long' })} ${year};
+                title.innerText = `${new Date(year, month).toLocaleString('default', { month: 'long' })} ${year}`;
                 title.classList.add("text-lg", "font-bold");
 
                 header.appendChild(prevBtn);
@@ -319,30 +320,29 @@
             checkWindowSize();
         });
 
-                document.addEventListener("DOMContentLoaded", function () {
-            const submitPostBtn = document.getElementById("submitPost");
+                            document.addEventListener("DOMContentLoaded", function () {
+             const submitPostBtn = document.getElementById("submitPost");
 
-            submitPostBtn.addEventListener("click", async function () {
-                const postText = document.getElementById("post-input").value;
-                console.log(postText);
+             submitPostBtn.addEventListener("click", async function () {
+                 const postText = document.getElementById("post-input").value;
+                 console.log(postText);
 
-                const response = await fetch('/Post/CreatePost', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ postText: postText })
-                });
+                 const response = await fetch('/Post/CreatePost', {
+                     method: 'POST',
+                     headers: {
+                         'Content-Type': 'application/json',
+                     },
+                     body: JSON.stringify({ postText: postText })
+                 });
 
-                if (response.ok) {
-                    alert("Post created!");
-                    location.reload(); // or better: fetch and append the new post
-                } else {
-                    alert("Error creating post");
-                }
-            });
-        });
-
+                 if (response.ok) {
+                     alert("Post created!");
+                     location.reload(); // or better: fetch and append the new post
+                 } else {
+                     alert("Error creating post");
+                 }
+             });
+         });
 
     </script>
 </body>

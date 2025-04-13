@@ -30,8 +30,20 @@ namespace ElnetSubdivi.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var posts = await _postService.GetAllPost() ?? new List<Post>(); // Ensures it's not null
-            return View(posts);
+            // Get posts from your database/service
+            var posts = _context.Posts.OrderByDescending(p => p.post_date).ToList();
+
+            // Get current user (example - adjust based on your auth system)
+            var currentUser = _context.Users.FirstOrDefault(u => u.user_id == User.Identity.Name);
+
+            // Create the view model
+            var viewModel = new PostAndUserViewModel
+            {
+                Posts = posts,
+                User = currentUser
+            };
+
+            return View(viewModel);
         }
 
         public IActionResult Privacy()
@@ -47,9 +59,22 @@ namespace ElnetSubdivi.Controllers
 
         public async Task<IActionResult> UserDash()
         {
-            var posts = await _postService.GetAllPost() ?? new List<Post>(); // Fetch posts or initialize an empty list
-            return View(posts);
+            // Get posts from your database/service
+            var posts = _context.Posts.OrderByDescending(p => p.post_date).ToList();
+
+            // Get current user (example - adjust based on your auth system)
+            var currentUser = _context.Users.FirstOrDefault(u => u.user_id == User.Identity.Name);
+
+            // Create the view model
+            var viewModel = new PostAndUserViewModel
+            {
+                Posts = posts,
+                User = currentUser
+            };
+
+            return View(viewModel);
         }
+
 
         public IActionResult UserProfile()
         {
