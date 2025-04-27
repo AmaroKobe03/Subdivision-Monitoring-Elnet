@@ -15,6 +15,7 @@ namespace ElnetSubdivi.data
         public DbSet<ServiceRequest> Service_Request { get; set; }
         public DbSet<Facility> Facilities { get; set; }
         public DbSet<FacilityOperatingHour> FacilityOperatingHours { get; set; }
+        public DbSet<Reservation> Reservation { get; set; }
     }
 
 }

@@ -8,6 +8,7 @@ using ElnetSubdivi.data;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using ElnetSubdivi.Services;
+using ElnetSubdivi.ViewModels;
 
 
 namespace ElnetSubdivi.Controllers
@@ -20,9 +21,10 @@ namespace ElnetSubdivi.Controllers
         private readonly IPostService _postService;
         private readonly IFacilityService _facilityService;
         private readonly IRequestService _requestService;
+        private readonly IReservationService _reservationService;
 
 
-        public HomeController(ILogger<HomeController> logger, IUserService userService, ApplicationDbContext context, IPostService postService, IFacilityService facilityService, IRequestService requestService)
+        public HomeController(ILogger<HomeController> logger, IUserService userService, ApplicationDbContext context, IPostService postService, IFacilityService facilityService, IRequestService requestService, IReservationService reservationService)
         {
             _logger = logger;
             _userService = userService;
@@ -30,6 +32,7 @@ namespace ElnetSubdivi.Controllers
             _postService = postService;
             _facilityService = facilityService;
             _requestService = requestService;
+            _reservationService = reservationService;
         }
 
         public async Task<IActionResult> Index()
@@ -435,8 +438,46 @@ namespace ElnetSubdivi.Controllers
             return RedirectToAction("FacilityManagement");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateReservation(ReservationViewModel model)
+        {
+            // Generate new Reservation ID
+            var lastReservation = await _reservationService.GetLastReservationAsync();
+            int nextIdNumber = 1;
 
+            if (lastReservation != null && !string.IsNullOrEmpty(lastReservation.reservation_id))
+            {
+                var idPart = lastReservation.reservation_id.Replace("RES-", "");
+                if (int.TryParse(idPart, out int numericId))
+                {
+                    nextIdNumber = numericId + 1;
+                }
+            }
 
+            string newReservationId = $"RES-{nextIdNumber.ToString("D4")}";
+            model.ReservationId = newReservationId;
+            ModelState.Remove(nameof(model.ReservationId));
+
+            if (ModelState.IsValid)
+            {
+                var reservation = new Reservation
+                {
+                    reservation_id = model.ReservationId,
+                    facility_id = model.FacilityId ?? string.Empty,
+                    user_id = User.Identity.Name,
+                    reservation_date = model.ReservationDate,
+                    time_in = model.TimeIn,
+                    time_out = model.TimeOut,
+                    reservation_purpose = model.ReservationPurpose ?? string.Empty
+                };
+
+                await _reservationService.AddReservationAsync(reservation);
+                return RedirectToAction("FacilityReservation");
+            }
+
+            // If we got this far, something failed
+            return View("FacilityReservation", model);
+        }
 
 
 

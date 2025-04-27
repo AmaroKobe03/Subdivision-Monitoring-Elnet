@@ -1,4 +1,4 @@
-﻿@model FacilityViewModel
+﻿@model ElnetSubdivi.ViewModels.ReservationViewModel
 
 @{
     ViewData["Title"] = "Facility Reservation";
@@ -166,45 +166,49 @@
 
         <!-- Right Section -->
         <div class="flex w-[30%] flex-col gap-6 bg-gray-100 p-6">
+
             <!-- Reservation Form -->
-            <div class="w-full rounded-lg bg-white p-6 shadow-md">
-                <h2 class="text-center text-lg font-bold">Create a Reservation</h2>
-                <div class="mt-4">
-                    <label class="text-sm font-semibold">Date</label>
-                </div>
-                <div class="mt-3">
-                    <input type="date" class="border-1 w-full rounded-md border-[#AC602A] px-4 py-2 outline-none">
-                    <label class="text-sm font-semibold">Time In</label>
-                    <input type="time" class="border-1 w-full rounded-md border-[#AC602A] px-4 py-2">
-                </div>
-                <div class="mt-3">
-                    <label class="text-sm font-semibold">Time Out</label>
-                    <input type="time" class="border-1 w-full rounded-md border-[#AC602A] px-4 py-2 outline-none">
-                </div>
-                <div class="mt-3">
-                    <label class="text-sm font-semibold">Purpose</label>
-                    <input type="text" class="border-1 w-full rounded-md border-[#AC602A] px-4 py-2 outline-none">
-                </div>
+            <form asp-action="CreateReservation" method="post" enctype="multipart/form-data">
+                <div class="w-full rounded-lg bg-white p-6 shadow-md">
+                    <h2 class="text-center text-lg font-bold">Create a Reservation</h2>
+                    <div class="mt-4">
+                        <label class="text-sm font-semibold">Date</label>
+                        <input name="ReservationDate" type="date" class="border-1 w-full rounded-md border-[#AC602A] px-4 py-2 outline-none">
+                    </div>
+                    <div class="mt-3">
+                        <label class="text-sm font-semibold">Time In</label>
+                        <input name="TimeIn" type="time" class="border-1 w-full rounded-md border-[#AC602A] px-4 py-2">
+                    </div>
+                    <div class="mt-3">
+                        <label class="text-sm font-semibold">Time Out</label>
+                        <input name="TimeOut" type="time" class="border-1 w-full rounded-md border-[#AC602A] px-4 py-2 outline-none">
+                    </div>
+                    <div class="mt-3">
+                        <label class="text-sm font-semibold">Purpose</label>
+                        <input name="ReservationPurpose" type="text" class="border-1 w-full rounded-md border-[#AC602A] px-4 py-2 outline-none">
+                    </div>
 
-                <div class="mt-3 flex flex-col">
-                    <div class="flex flex-row justify-between">
-                        <p>Total Hours</p>
-                        <p>2 hrs 30 mins</p>
+                    <div class="mt-3 flex flex-col">
+                        <div class="flex flex-row justify-between">
+                            <p>Total Hours</p>
+                            <p>2 hrs 30 mins</p>
+                        </div>
+                        <div class="flex flex-row justify-between">
+                            <p>Per Hour</p>
+                            <p>0</p>
+                        </div>
+                        <div class="flex flex-row justify-between">
+                            <p>Total</p>
+                            <p>2 hrs 30 mins</p>
+                        </div>
                     </div>
-                    <div class="flex flex-row justify-between">
-                        <p>Per Hour</p>
-                        <p>0</p>
-                    </div>
-                    <div class="flex flex-row justify-between">
-                        <p>Total</p>
-                        <p>2 hrs 30 mins</p>
-                    </div>
-                </div>
 
-                <button class="mt-5 w-full rounded-full bg-[#AC602A] py-2 font-semibold text-white hover:bg-[#924e21]">
-                    Book Now
-                </button>
-            </div>
+                    <button type="submit" class="mt-5 w-full rounded-full bg-[#AC602A] py-2 font-semibold text-white hover:bg-[#924e21]">
+                        Book Now
+                    </button>
+                </div>
+            </form>
+            <!-- -->
 
             <!-- Operating Hours -->
             <div class="w-full rounded-lg bg-white p-6 shadow-md">
