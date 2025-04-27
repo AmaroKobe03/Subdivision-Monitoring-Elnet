@@ -16,7 +16,7 @@
     public decimal ServiceFeePerHour { get; set; }
     public string FacilityGuidelines { get; set; }
     public string FacilityAminities { get; set; }
-    public int TypeOfStatus { get; set; }
+    public string FacilityStatus { get; set; } = "Available";
 
     // Operating hours
     public List<OperatingHourDto>? OperatingHours { get; set; }

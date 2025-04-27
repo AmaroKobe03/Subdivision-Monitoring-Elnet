@@ -385,16 +385,11 @@ namespace ElnetSubdivi.Controllers
             return View(facilities);
         }
 
+
+
         [HttpPost]
         public async Task<IActionResult> AddFacility(FacilityViewModel model)
         {
-
-            var allFacilities = await _context.Facilities.ToListAsync();
-            foreach (var f in allFacilities)
-            {
-                Console.WriteLine($"ID: {f.Facility_Id}");
-            }
-
             // Ensure last FacilityId is retrieved from the table and sorted by numeric part
             var lastFacility = await _facilityService.GetLastFacilityAsync(); // This now pulls from Facility table directly
 

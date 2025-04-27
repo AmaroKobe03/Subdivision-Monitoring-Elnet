@@ -27,7 +27,7 @@ namespace ElnetSubdivi.Controllers
                 ServiceFeePerHour = f.Service_Fee_Per_Hour,
                 FacilityGuidelines = f.Facility_Guidelines,
                 FacilityAminities = f.Facility_Aminities,
-                TypeOfStatus = f.TypeOf_Status,
+                FacilityStatus = f.Facility_Status,
                 OperatingHours = f.OperatingHours.Select(h => new FacilityViewModel.OperatingHourDto
                 {
                     DayOfWeek = h.DayOfWeek,

@@ -43,20 +43,42 @@ namespace ElnetSubdivi.Services
 
         public async Task<Facility> GetLastFacilityAsync()
         {
-            var facilities = await _context.Facilities
-                .Where(f => f.Facility_Id.Trim().StartsWith("FAC-"))
-                .ToListAsync(); // fetches from DB into memory
+            try
+            {
+                var facilities = await _context.Facilities
+                    .Select(f => new Facility
+                    {
+                        Facility_Id = f.Facility_Id ?? "",
+                        Facility_Name = f.Facility_Name ?? "",
+                        Facility_Category = f.Facility_Category ?? "",
+                        Facility_Description = f.Facility_Description ?? "",
+                        Facility_Img = f.Facility_Img ?? "",
+                        Service_Fee_Per_Hour = f.Service_Fee_Per_Hour,
+                        Facility_Guidelines = f.Facility_Guidelines ?? "",
+                        Facility_Aminities = f.Facility_Aminities ?? "",
+                        Facility_Status = f.Facility_Status ?? "Available",
+                        OperatingHours = f.OperatingHours ?? new List<FacilityOperatingHour>()
+                    })
+                    .ToListAsync();
 
-            return facilities
-                .OrderByDescending(f =>
-                {
-                    var idPart = f.Facility_Id.Replace("FAC-", "");
-                    return int.TryParse(idPart, out int num) ? num : 0;
-                })
-                .FirstOrDefault(); // parses and sorts in memory
+                // Get the facility with the highest numeric ID
+                var lastFacility = facilities
+                    .Where(f => f.Facility_Id.StartsWith("FAC-"))
+                    .OrderByDescending(f =>
+                    {
+                        var idPart = f.Facility_Id.Replace("FAC-", "");
+                        return int.TryParse(idPart, out int num) ? num : 0;
+                    })
+                    .FirstOrDefault();
+
+                return lastFacility;
+            }
+            catch (Exception ex)
+            {
+                // Log errors and return null
+                Console.WriteLine($"Error fetching last facility: {ex.Message}");
+                return null;
+            }
         }
-
-
-
     }
 }
