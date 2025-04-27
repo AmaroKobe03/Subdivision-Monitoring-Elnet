@@ -1,6 +1,7 @@
 ﻿using ElnetSubdivi.data;
 using ElnetSubdivi.Models;
 using ElnetSubdivi.Services;
+using ElnetSubdivi.Views.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,18 +13,53 @@ namespace ElnetSubdivi.Controllers
         private readonly IUserService _userService;
         private readonly ApplicationDbContext _context;
         private readonly IPostService _postService;
+        private readonly IRequestService _requestService;
 
-        public ServiceRequestController(IUserService userService, ApplicationDbContext context, IPostService postService)
+        public ServiceRequestController(IUserService userService, ApplicationDbContext context, IPostService postService, IRequestService requestService)
         {
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _postService = postService ?? throw new ArgumentNullException(nameof(postService));
+            _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var requests = await _requestService.GetAllRequest() ?? new List<ServiceRequest>(); // Ensures it's not null
+            return View(requests);
         }
+
+
+        /*
+        var summaryCards = new List<SummaryCard>
+        {
+            new SummaryCard {
+                Title = "Pending",
+                Count = serviceRequests.Count(r => r.Request_Status == "Pending"),
+                Icon = "pending.svg",
+                BorderColor = "border-yellow-500"
+            },
+            new SummaryCard {
+                Title = "Approved",
+                Count = serviceRequests.Count(r => r.Request_Status == "Approved"),
+                Icon = "approved.svg",
+                BorderColor = "border-green-500"
+            },
+            new SummaryCard {
+                Title = "Declined",
+                Count = serviceRequests.Count(r => r.Request_Status == "Declined"),
+                Icon = "declined.svg",
+                BorderColor = "border-red-500"
+            }
+        };
+
+        var viewModel = new ServiceRequestManagementViewModel
+        {
+            ServiceRequests = serviceRequests,
+            SummaryCards = summaryCards
+        };
+        */
+
 
         [HttpPost]
         public async Task<IActionResult> CreateRequest([FromBody] ServiceRequestViewModel model)
@@ -72,13 +108,15 @@ namespace ElnetSubdivi.Controllers
         }
 
         // ✅ New private helper method that just gets the list
+        /*
         private async Task<List<ServiceRequest>> GetAllServiceRequestsAsync()
         {
             return await _context.Set<ServiceRequest>()
                 .OrderByDescending(r => r.Request_Creation)
                 .ToListAsync();
         }
-
+        */
+        /*
         public async Task<IActionResult> ServiceRequestManagement()
         {
             if (!User.Identity.IsAuthenticated)
@@ -86,10 +124,10 @@ namespace ElnetSubdivi.Controllers
 
             var viewModel = await BuildServiceRequestManagementViewModelAsync();
             return View(viewModel); // ✅ Correct type passed into the View
-        }
+        }*/
 
 
-        public async Task<IActionResult> ListRequests()
+      /*  public async Task<IActionResult> ListRequests()
         {
             var serviceRequests = await GetAllServiceRequestsAsync(); // ✅ now this is a real list
 
@@ -127,6 +165,6 @@ namespace ElnetSubdivi.Controllers
                 };
             }
 
-
+        */
     }
 }

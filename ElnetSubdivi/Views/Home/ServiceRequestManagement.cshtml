@@ -7,20 +7,6 @@
 <div class="flex h-[100vh] w-[90%] flex-col items-center overflow-auto overflow-y-hidden bg-[#f2f2f2] font-semibold">
     @await Html.PartialAsync("_sharedSearch")
 
-    <div class="flex h-[15vh] w-[88%] items-center justify-center">
-        <div class="flex h-[15vh] w-full items-center justify-center gap-6">
-            @foreach (var item in Model.SummaryCards)
-            {
-                <div class="flex h-[15vh] w-[23%] items-center justify-around rounded-lg border-b-[3px] bg-white @item.BorderColor shadow-lg">
-                    <div class="ml-5 flex flex-col gap-2">
-                        <h2 class="text-[16px] text-gray-400">@item.Title</h2>
-                        <p class="text-2xl">@item.Count</p>
-                    </div>
-                    <img class="w-[30px]" src="~/Images/@item.Icon" alt="status-icon" />
-                </div>
-            }
-        </div>
-    </div>
     <div class="mt-10 mr-2 mb-6 flex w-[88.3%] items-center justify-between">
         <!-- Search Bar -->
         <div class="relative mr-2 w-[40%]">
@@ -43,34 +29,6 @@
     </div>
 
     <table class="w-[88%] border-collapse rounded-lg bg-white text-left shadow-md">
-        <thead>
-            <tr class="text-gray-500">
-                <th class="px-4 py-3">Id</th>
-                <th class="px-4 py-3">User</th>
-                <th class="px-4 py-3">Request</th>
-                <th class="px-4 py-3">Reserved Date</th>
-                <th class="px-4 py-3">Request Submitted</th>
-                <th class="px-4 py-3">Request Closed</th>
-                <th class="px-4 py-3">Assigned To</th>
-                <th class="px-4 py-3">Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="cursor-pointer border-b hover:bg-gray-100" onclick="openModal()">
-                <td>SR0001</td>
-                <td class="flex items-center gap-3 px-4 py-3">
-                    <img src="~/Images/pfp.svg" class="h-8 w-8 rounded-full" />
-                    <span>Kobe Amaro</span>
-                </td>
-                <td class="px-4 py-3">House Keeping</td>
-                <td class="px-4 py-3">March 15, 2024</td>
-                <td class="px-4 py-3">March 15, 2024</td>
-                <td class="px-4 py-3">March 15, 2024</td>
-                <td class="px-4 py-3">Anjo</td>
-                <td class="px-4 py-3 font-semibold text-yellow-500">Pending</td>
-            </tr>
-        </tbody>
-        <thead>
             <tr class="text-gray-500">
                 <th class="px-4 py-3">Id</th>
                 <th class="px-4 py-3">User</th>

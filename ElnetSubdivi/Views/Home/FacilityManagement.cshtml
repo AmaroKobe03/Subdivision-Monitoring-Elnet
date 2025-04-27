@@ -1,13 +1,19 @@
 ﻿@{
     ViewData["Title"] = "Facility Management";
 }
-
 @model List<dynamic>
 @{
     var reservations = ViewBag.Reservations as List<dynamic>;
 }
+@{
+    var operatingDays = ViewBag.OperatingDays as List<string> ?? new List<string>
+    {
+        "Monday", "Tuesday", "Wednesday", "Thursday",
+        "Friday", "Saturday", "Sunday"
+    };
+}
 <style>
-   input, select, textarea{
+    input, select, textarea {
         color: gray;
         font-weight: 500; /* Medium */
     }
@@ -154,84 +160,81 @@
         var days = ViewBag.OperatingHours as List<string>;
     }
 
-    <div id="addfacpopup" class="fixed inset-0 z-20 mt-20 flex hidden h-auto items-center justify-center overflow-y-auto bg-gray-100">
-        <div id="popupContent" class="mt-[20em] flex w-[50%] flex-col justify-center rounded-lg bg-white p-6 shadow-lg">
-            <h2 class="mb-8 border-b py-10 text-4xl font-bold text-[#04373A]">Add Facility</h2>
-            <div class="flex w-full gap-2">
-                <div class="flex w-[60%] flex-col">
-                    <label>Facility Name</label>
-                    <input type="text" class="mb-2 h-10 w-full rounded-lg border p-2" placeholder="Swimming Pool">
-                </div>
-                <div class="flex w-[40%] flex-col">
-                    <label>Category</label>
-                    <select class="mb-2 h-10 w-full rounded-lg border p-2">
-                        <option class="p-0" selected>Sports</option>
-                        <option class="p-0">Recreation</option>
-                    </select>
-                </div>
-            </div>
 
 
-            <label>Description</label>
-            <textarea class="mb-2 w-full rounded-lg border p-2">Rahm</textarea>
-            <label>Facility Images</label>
+    <form asp-action="AddFacility" method="post" enctype="multipart/form-data">
+        <div id="addfacpopup" class="fixed inset-0 z-20 mt-20 flex hidden h-auto items-center justify-center overflow-y-auto bg-gray-100">
+            <div id="popupContent" class="mt-[20em] flex w-[50%] flex-col justify-center rounded-lg bg-white p-6 shadow-lg">
+                <h2 class="mb-8 border-b py-10 text-4xl font-bold text-[#04373A]">Add Facility</h2>
 
-            <div class="border-2 mb-2 flex h-[15vh] items-center justify-center border-dashed border-gray-400 p-6">
-                <label for="fileUpload" class="flex cursor-pointer items-center gap-2 rounded-lg bg-gray-100 px-4 py-2">
-                    <img src="~/Images/upload.svg" alt="Upload" class="h-5 w-5">
-                    <span>Upload Images</span>
-                </label>
-                <input type="file" id="fileUpload" class="hidden">
-            </div>
-
-
-            <label>Rate</label>
-            <input type="number" class="mb-2 w-full rounded-lg border p-2" value="100.00">
-            <label>Operating Hours</label>
-            <div id="operatingHours">
-                @foreach (var day in days)
-                {
-                    <div class="mb-2 flex w-full items-center justify-between gap-2">
-                        <label class="relative inline-flex cursor-pointer items-center">
-                            <input type="checkbox" class="toggleSwitchDay sr-only" id="toggle_@day.Replace(" ", "")">
-                            <div class="relative h-6 w-11 rounded-full bg-gray-300 transition-colors duration-300 ease-in-out">
-                                <div class="absolute top-1 left-1 h-4 w-4 rounded-full bg-white transition-all duration-300 ease-in-out"></div>
-                            </div>
-                            <span class="ml-2">@day</span>
-                        </label>
-                        <div class="">
-                            <input type="text" class="from-time rounded-lg border p-2" placeholder="From ---" id="from_@day.Replace(" ", "")" disabled> to
-                            <input type="text" class="to-time rounded-lg border p-2" placeholder="To ---" id="to_@day.Replace(" ", "")" disabled>
-                        </div>
+                <div class="flex w-full gap-2">
+                    <div class="flex w-[60%] flex-col">
+                        <label>Facility Name</label>
+                        <input type="text" name="FacilityName" class="mb-2 h-10 w-full rounded-lg border p-2" placeholder="Swimming Pool" required>
                     </div>
-                }
-            </div>
-            <div class="flex w-full items-center gap-2">
-                <div class="w-full">
-                    <label>Amenities</label>
-                    <input type="text" class="mb-2 w-full rounded-lg border p-2" value="Hot spring">
+                    <div class="flex w-[40%] flex-col">
+                        <label>Category</label>
+                        <select name="FacilityCategory" class="mb-2 h-10 w-full rounded-lg border p-2" required>
+                            <option value="Sports">Sports</option>
+                            <option value="Recreation">Recreation</option>
+                            <option value="Events">Events</option>
+                        </select>
+                    </div>
                 </div>
-                <img class="mt-2" src="~/Images/deleteic.svg" alt="Delete" />
-            </div>
-            <button class="mb-4 cursor-pointer self-start">
-                + <span>Add Amenities</span>
-            </button>
-            <div class="flex w-full items-center gap-2">
-                <div class="w-full">
-                    <label>Guidelines</label>
-                    <input type="text" class="mb-2 w-full rounded-lg border p-2" value="Hot spring">
+
+                <label>Description</label>
+                <textarea name="FacilityDescription" class="mb-2 w-full rounded-lg border p-2" required></textarea>
+
+                <label>Facility Images</label>
+                <div class="border-2 mb-2 flex h-[15vh] items-center justify-center border-dashed border-gray-400 p-6">
+                    <label for="ImageFile" class="flex cursor-pointer items-center gap-2 rounded-lg bg-gray-100 px-4 py-2">
+                        <img src="~/Images/upload.svg" alt="Upload" class="h-5 w-5">
+                        <span>Upload Images</span>
+                    </label>
+                    <input type="file" name="ImageFile" id="ImageFile" class="hidden">
                 </div>
-                <img class="mt-2" src="~/Images/deleteic.svg" alt="Delete" />
-            </div>
-            <button class="mb-4 cursor-pointer self-start">
-                + <span>Add Guidelines</span>
-            </button>
-            <div class="flex justify-end gap-2">
-                <button id="closePopup" class="border-1 w-[120px] cursor-pointer rounded-full px-6 py-2">Cancel</button>
-                <button class="w-[120px] cursor-pointer rounded-full bg-[#04373A] px-6 py-2 text-white">Add</button>
+
+                <label>Rate</label>
+                <input type="number" name="ServiceFeePerHour" class="mb-2 w-full rounded-lg border p-2" value="0" required>
+
+                <label>Operating Hours</label>
+                <div id="operatingHours">
+                    @foreach (var day in operatingDays)
+                    {
+                        <div class="mb-2 flex w-full items-center justify-between gap-2">
+                            <label class="relative inline-flex cursor-pointer items-center">
+                                <input type="checkbox" class="toggleSwitchDay sr-only" name="SelectedDays" value="@day" id="toggle_@day.Replace(" ", "")">
+                                <div class="relative h-6 w-11 rounded-full bg-gray-300 transition-colors duration-300 ease-in-out">
+                                    <div class="absolute top-1 left-1 h-4 w-4 rounded-full bg-white transition-all duration-300 ease-in-out"></div>
+                                </div>
+                                <span class="ml-2">@day</span>
+                            </label>
+                            <div>
+                                <input type="time" name="OpeningTime_@day" class="from-time rounded-lg border p-2" placeholder="From ---">
+                                to
+                                <input type="time" name="ClosingTime_@day" class="to-time rounded-lg border p-2" placeholder="To ---">
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <label>Amenities</label>
+                <input type="text" name="FacilityAminities" class="mb-2 w-full rounded-lg border p-2" required>
+
+                <label>Guidelines</label>
+                <input type="text" name="FacilityGuidelines" class="mb-2 w-full rounded-lg border p-2" required>
+
+                <div class="flex justify-end gap-2">
+                    <button type="button" id="closePopup" class="border-1 w-[120px] cursor-pointer rounded-full px-6 py-2">Cancel</button>
+                    <button type="submit" class="w-[120px] cursor-pointer rounded-full bg-[#04373A] px-6 py-2 text-white">Add</button>
+                </div>
             </div>
         </div>
-    </div>
+    </form>
+
+
+
+
 
     <div id="viewdetailspop" class="fixed inset-0 z-20 mt-20 flex hidden items-center justify-center bg-gray-100">
         <div id="detailscontent" class="flex h-[90vh] w-[90%] rounded-lg bg-white shadow-lg">
@@ -428,7 +431,7 @@
                     nextBtn.onclick = () => generateCalendar(year, month + 1);
 
                     const title = document.createElement("h3");
-                    title.innerText = `${new Date(year, month).toLocaleString('default', { month: 'long' })} ${year}`;
+                    title.innerText = ${new Date(year, month).toLocaleString('default', { month: 'long' })} ${year};
                     title.classList.add("text-lg", "font-bold");
 
                     header.appendChild(prevBtn);
@@ -642,6 +645,3 @@
 
     </script>
 </div>
-
-
-

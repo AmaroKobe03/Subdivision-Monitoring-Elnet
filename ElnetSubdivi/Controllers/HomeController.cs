@@ -18,14 +18,18 @@ namespace ElnetSubdivi.Controllers
         private readonly IUserService _userService;
         private readonly ApplicationDbContext _context;
         private readonly IPostService _postService;
+        private readonly IFacilityService _facilityService;
+        private readonly IRequestService _requestService;
 
 
-        public HomeController(ILogger<HomeController> logger, IUserService userService, ApplicationDbContext context, IPostService postService)
+        public HomeController(ILogger<HomeController> logger, IUserService userService, ApplicationDbContext context, IPostService postService, IFacilityService facilityService, IRequestService requestService)
         {
             _logger = logger;
             _userService = userService;
             _context = context;
             _postService = postService;
+            _facilityService = facilityService;
+            _requestService = requestService;
         }
 
         public async Task<IActionResult> Index()
@@ -44,6 +48,41 @@ namespace ElnetSubdivi.Controllers
             };
 
             return View(viewModel);
+        }
+
+        public async Task<IActionResult> ServiceRequestManagement(bool showDashboard = false)
+        {
+            if (showDashboard)
+            {
+                ViewData["HideSearch"] = true;
+                ViewData["Hidebtn"] = true;
+
+                var dashboardStats = new List<dynamic>
+        {
+            new { Title = "Total Requests", Count = 123, Icon = "treqs.svg", BorderColor = "border-blue-400 border-b-2" },
+            new { Title = "Pending ", Count = 34, Icon = "pendi.svg", BorderColor = "border-yellow-400 borber-b-2" },
+            new { Title = "Ongoing ", Count = 15, Icon = "ongo.svg", BorderColor = "border-orange-400 borber-b-2" },
+            new { Title = "Completed ", Count = 56, Icon = "apr.svg", BorderColor = "border-green-400 borber-b-2" },
+            new { Title = "Canceled Service ", Count = 10, Icon = "canc.svg", BorderColor = "border-red-400 borber-b-2" }
+        };
+
+                return View("DashboardView", dashboardStats);
+            }
+            else
+            {
+                // Get posts from your database/service
+                var requests = await _context.Service_Request
+                    .OrderByDescending(p => p.Request_Date)
+                    .ToListAsync();
+
+                // Create the view model
+                var viewModel = new ServiceRequestManagementViewModel
+                {
+                    ServiceRequests = requests
+                };
+
+                return View(viewModel);
+            }
         }
 
         public IActionResult Privacy()
@@ -161,23 +200,7 @@ namespace ElnetSubdivi.Controllers
 
             return View(billing);
         }
-        public IActionResult ServiceRequestManagement()
-        {
-            ViewData["HideSearch"] = true;
-            ViewData["Hidebtn"] = true;
 
-            var reservations = new List<dynamic>
-            {
-                new { Title = "Total Requests", Count = 123, Icon = "treqs.svg", BorderColor = "border-blue-400 border-b-2" },
-                new { Title = "Pending ", Count = 34, Icon = "pendi.svg", BorderColor = "border-yellow-400 borber-b-2" },
-                new { Title = "Ongoing ", Count = 15, Icon = "ongo.svg", BorderColor = "border-orange-400 borber-b-2" },
-                new { Title = "Completed ", Count = 56, Icon = "apr.svg", BorderColor = "border-green-400 borber-b-2" },
-                new { Title = "Canceled Service ", Count = 10, Icon = "canc.svg", BorderColor = "border-red-400 borber-b-2" }
-
-            };
-
-            return View(reservations);
-        }
         public IActionResult AdminDash()
         {
             var data = new List<dynamic>
@@ -361,6 +384,67 @@ namespace ElnetSubdivi.Controllers
 
             return View(facilities);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddFacility(FacilityViewModel model)
+        {
+
+            var allFacilities = await _context.Facilities.ToListAsync();
+            foreach (var f in allFacilities)
+            {
+                Console.WriteLine($"ID: {f.Facility_Id}");
+            }
+
+            // Ensure last FacilityId is retrieved from the table and sorted by numeric part
+            var lastFacility = await _facilityService.GetLastFacilityAsync(); // This now pulls from Facility table directly
+
+            int nextIdNumber = 1;
+            if (lastFacility != null && !string.IsNullOrEmpty(lastFacility.Facility_Id))
+            {
+                var idPart = lastFacility.Facility_Id.Replace("FAC-", "");
+                if (int.TryParse(idPart, out int numericId))
+                {
+                    nextIdNumber = numericId + 1;
+                }
+            }
+
+            string newFacilityId = $"FAC-{nextIdNumber.ToString("D4")}";
+            model.FacilityId = newFacilityId;
+            ModelState.Remove(nameof(model.FacilityId));
+
+            if (ModelState.IsValid)
+            {
+                var facility = new Facility
+                {
+                    Facility_Id = model.FacilityId,
+                    Facility_Name = model.FacilityName,
+                    Facility_Category = model.FacilityCategory,
+                    Facility_Description = model.FacilityDescription,
+                    Service_Fee_Per_Hour = model.ServiceFeePerHour,
+                    Facility_Guidelines = model.FacilityGuidelines,
+                    Facility_Aminities = model.FacilityAminities,
+                    OperatingHours = model.OperatingHours != null
+                    ? model.OperatingHours.Select(oh => new FacilityOperatingHour
+                    {
+                        DayOfWeek = oh.DayOfWeek,
+                        OpeningTime = oh.OpeningTime,
+                        ClosingTime = oh.ClosingTime
+                    }).ToList()
+                    : new List<FacilityOperatingHour>()
+                };
+
+                await _facilityService.AddFacilityAsync(facility);
+                return RedirectToAction("FacilityManagement");
+            }
+
+            return RedirectToAction("FacilityManagement");
+        }
+
+
+
+
+
+
         public IActionResult ReservationsManagement()
         {
             ViewData["HideSearch"] = true;
@@ -486,6 +570,7 @@ namespace ElnetSubdivi.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
 
     }
 }

@@ -18,6 +18,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPostService, PostService>();
+builder.Services.AddScoped<IFacilityService, FacilityService>();
+builder.Services.AddScoped<IRequestService, RequestService>();
+
 
 
 
