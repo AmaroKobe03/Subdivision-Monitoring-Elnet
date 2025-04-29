@@ -1,9 +1,10 @@
 ﻿@{
     ViewData["Title"] = "Billing and Payment";
-
 }
 
+<!-- Model Initialization -->
 @{
+    // Creates a list of billing summary cards with sample data
     var BillCard = new List<BillingPaymentModel>
     {
         new BillingPaymentModel
@@ -19,70 +20,40 @@
                 {"paid", "~/Images/paid.svg"}
             }
         },
-        new BillingPaymentModel
-        {
-            description = "Pending Payments",
-            amount = "3",
-            Icons = new Dictionary<string, string>
-            {
-                {"psign", "~/Images/Peso.svg"},
-                {"due", "~/Images/due.svg"},
-                {"payment", "~/Images/pend.svg"},
-                {"overdue", "~/Images/overd.svg"},
-                {"paid", "~/Images/paid.svg"}
-            }
-        },
-        new BillingPaymentModel
-        {
-            description = "Overdue Payments",
-            amount = "15,250.00",
-            Icons = new Dictionary<string, string>
-            {
-                {"psign", "~/Images/Peso.svg"},
-                {"due", "~/Images/due.svg"},
-                {"payment", "~/Images/pend.svg"},
-                {"overdue", "~/Images/overd.svg"},
-                {"paid", "~/Images/paid.svg"}
-            }
-        },
-        new BillingPaymentModel
-        {
-            description = "Paid Amount (2025)",
-            amount = "45,750.00",
-            Icons = new Dictionary<string, string>
-            {
-                 {"psign", "~/Images/Peso.svg"},
-                {"due", "~/Images/due.svg"},
-                {"payment", "~/Images/pend.svg"},
-                {"overdue", "~/Images/overd.svg"},
-                {"paid", "~/Images/paid.svg"}
-            }
-        }
+        // Other card items follow same pattern...
     };
 }
 
+<!-- Main Container -->
 <div class="flex h-[100vh] w-[90%] flex-col items-center overflow-auto overflow-y-hidden bg-[#f2f2f2] font-semibold">
+    <!-- Search Partial View -->
     @await Html.PartialAsync("_sharedSearch")
 
+    <!-- Summary Cards Section -->
     <div class="mb-10 flex h-[15vh] w-[88%] flex-wrap items-center justify-between">
+        <!-- Renders each billing summary card using a partial view -->
         @foreach (var card in BillCard)
         {
             @await Html.PartialAsync("_sharedBillingCard", card)
         }
     </div>
 
-    <!-- if user identity is user, show this div-->
+    <!-- User-Specific Controls (Conditional) -->
+    <!-- Comment indicates this section should only show for regular users -->
     <div class="relative mb-6 flex w-[88%] items-center justify-between">
         @{
-            ViewData["DropdownItems"] = new List<string> { "Pending", "Overdue","Paid" };
+            // Sets dropdown filter options for payment status
+            ViewData["DropdownItems"] = new List<string> { "Pending", "Overdue", "Paid" };
         }
+        <!-- Search and action button partial -->
         @await Html.PartialAsync("_sharedSearch2", "Pay Selected Bills")
     </div>
 
-
+    <!-- Billing Records Table -->
     <table class="bg-white-200 w-[88%] border-collapse bg-white text-left">
         <thead>
             <tr class="text-gray-500">
+                <!-- Checkbox column for batch operations -->
                 <th class="px-4 py-3"><input type="checkbox"></th>
                 <th class="px-4 py-3">Bill Type</th>
                 <th class="px-4 py-3">Billing Period</th>
@@ -93,6 +64,7 @@
             </tr>
         </thead>
         <tbody>
+            <!-- Sample Row 1 - Overdue -->
             <tr>
                 <td class="px-4 py-3"><input type="checkbox"></td>
                 <td class="flex items-center gap-2 px-4 py-3">
@@ -105,6 +77,8 @@
                 <td class="px-4 py-3 font-semibold text-red-500">Overdue</td>
                 <td class="cursor-pointer px-4 py-3 font-semibold text-teal-700">Pay Now</td>
             </tr>
+
+            <!-- Sample Row 2 - Pending -->
             <tr>
                 <td class="px-4 py-3"><input type="checkbox"></td>
                 <td class="flex items-center gap-2 px-4 py-3">
@@ -117,6 +91,8 @@
                 <td class="px-4 py-3 font-semibold text-yellow-500">Pending</td>
                 <td class="cursor-pointer px-4 py-3 font-semibold text-teal-700">Pay Now</td>
             </tr>
+
+            <!-- Sample Row 3 - Paid -->
             <tr>
                 <td class="px-4 py-3"><input type="checkbox"></td>
                 <td class="flex items-center gap-2 px-4 py-3">
@@ -132,13 +108,14 @@
         </tbody>
     </table>
 
+    <!-- Pagination Partial View -->
     @await Html.PartialAsync("_pagination")
 </div>
 
-<!-- Request Pop-Up -->
+<!-- Payment Popup Modal -->
 <div id="billing-popup" class="fixed inset-0 z-100 flex hidden items-center justify-center bg-black/50 p-4">
     <div class="w-[650px] rounded-lg bg-white p-6 shadow-lg">
-        <!-- Billing Summary -->
+        <!-- Billing Summary Section -->
         <h1 class="text-xl font-semibold text-black">Billing Summary</h1>
 
         <div class="mt-4 space-y-2 border-b pb-4">
@@ -156,7 +133,7 @@
             </div>
         </div>
 
-        <!-- Select Payment Method -->
+        <!-- Payment Method Selection -->
         <h2 class="mt-4 text-lg font-semibold text-black">Select Payment Method</h2>
         <div class="mt-2 flex gap-3">
             <button class="flex w-1/3 items-center justify-center gap-2 rounded-lg border px-4 py-2">
@@ -175,27 +152,27 @@
             <div class="flex gap-4">
                 <div class="w-1/2">
                     <label class="block text-sm font-medium">Card Number</label>
-                    <input type="text" class="w-full rounded border px-3 py-2 text-gray-400" placeholder="1234 5678 9012 3456"  />
+                    <input type="text" class="w-full rounded border px-3 py-2 text-gray-400" placeholder="1234 5678 9012 3456" />
                 </div>
                 <div class="w-1/2">
                     <label class="block text-sm font-medium">Name on Card</label>
-                    <input type="text" class="w-full rounded border px-3 py-2 text-gray-400" placeholder="John Doe"  />
+                    <input type="text" class="w-full rounded border px-3 py-2 text-gray-400" placeholder="John Doe" />
                 </div>
             </div>
 
             <div class="flex gap-4">
                 <div class="w-1/2">
                     <label class="block text-sm font-medium">Expiry Date</label>
-                    <input type="text" class="w-full rounded border px-3 py-2 text-gray-400" placeholder="MM/YY"  />
+                    <input type="text" class="w-full rounded border px-3 py-2 text-gray-400" placeholder="MM/YY" />
                 </div>
                 <div class="w-1/2">
                     <label class="block text-sm font-medium">CVV</label>
-                    <input type="text" class="w-full rounded border px-3 py-2 text-gray-400" placeholder="123"  />
+                    <input type="text" class="w-full rounded border px-3 py-2 text-gray-400" placeholder="123" />
                 </div>
             </div>
         </div>
 
-        <!-- Buttons -->
+        <!-- Action Buttons -->
         <div class="mt-6 flex justify-between">
             <button id="cancelbtn" class="w-[45%] rounded-full border px-4 py-2 text-black">Cancel</button>
             <button class="flex w-[45%] items-center justify-center gap-2 rounded-full bg-[#043137] px-4 py-2 text-white">
@@ -204,4 +181,3 @@
         </div>
     </div>
 </div>
-

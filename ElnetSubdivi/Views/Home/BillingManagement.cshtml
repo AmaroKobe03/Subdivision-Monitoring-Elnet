@@ -1,32 +1,12 @@
-﻿@{
+﻿@model ElnetSubdivi.Models.BillingPaymentViewModel
+@{
     ViewData["Title"] = "Billing and Payment";
-
+    var bills = Model.BillStatements;  // Directly access ViewModel property
 }
 
 
 <div class="flex h-[100vh] w-[90%] flex-col items-center overflow-auto overflow-y-hidden bg-[#f2f2f2] font-semibold">
     @await Html.PartialAsync("_sharedSearch")
-
-    <div class="flex h-[15vh] w-[88%] items-center justify-between">
-        <div class="flex h-[15vh] w-full items-center justify-center gap-6">
-            @foreach (var item in Model)
-            {
-                <div class="flex h-[15vh] w-[25%] items-center justify-around rounded-lg border-b-[3px] bg-white @item.BorderColor shadow-lg">
-                    <div class="ml-5 flex flex-col gap-2">
-                        <h2 class="text-[16px] text-gray-400">@item.Title</h2>
-                        <div class="flex items-center">
-                            @if (item.Title != "Pending Payments")
-                            {
-                                <img src="~/Images/Peso.svg" />
-                            }
-                            <p class="text-2xl">@item.Count</p>
-                        </div>
-                    </div>
-                    <img class="w-[30px]" src="~/Images/@item.Icon" alt="status-icon" />
-                </div>
-            }
-        </div>
-    </div>
 
     <div class="mt-15 mr-2 mb-6 flex w-[88%] items-center justify-between">
         <!-- Search Bar -->
@@ -78,93 +58,37 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="">
+            @foreach (var bill in bills)
+            {
+                <tr>
                     <td class="px-4 py-3">
                         <div class="flex items-center gap-2">
                             <img src="~/Images/pfp.svg" class="h-8 w-8 rounded-full" alt="">
-                        <a href="@Url.Action("PaymentHistory","Home")" class="cursor-pointer font-medium">Kobe Amaro</a>
+                            <a href="@Url.Action("PaymentHistory", "Home")" class="cursor-pointer font-medium">@bill.user_name</a>
                         </div>
                     </td>
-                <td class="flex items-center gap-2 px-4 py-3">
-                    <img src="~/Images/electric.svg" class="w-5" alt="">
-                    <span>Electricity Bill</span>
-                </td>
-                <td class="px-4 py-3">March 2025</td>
-                <td class="px-4 py-3">₱5,250.00</td>
-                <td class="px-4 py-3">March 15, 2025</td>
-                <td class="px-4 py-3 font-semibold text-red-500">Overdue</td>
-                <td class="cursor-pointer px-4 py-3 font-semibold text-teal-700">
-                    <button class="actions-btn">⋮</button>
-
-                    <div class="actions-menu absolute right-40 hidden w-40 bg-white shadow-md">
-                        <ul>
-                            <li id="viewdetsbtn" class="cursor-pointer px-4 py-2 hover:bg-gray-100">View Details</li>
-                            <li class="cursor-pointer px-4 py-2 hover:bg-gray-100">Edit Invoice</li>
-                            <li class="cursor-pointer px-4 py-2 hover:bg-gray-100">Mark as Paid</li>
-                            <li class="cursor-not-allowed px-4 py-2 text-gray-400">Generate Receipt</li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-
-            <tr class="">                
-                    <td class="px-4 py-3">
-                        <div class="flex items-center gap-2">
-                        <img src="~/Images/pfp.svg" class="h-8 w-8 rounded-full" alt="">
-                        <span class="font-medium">Jane Doe</span>
+                    <td class="flex items-center gap-2 px-4 py-3">
+                        <img src="~/Images/@(bill.bill_type.ToLower()).svg" class="w-5" alt="">
+                        <span>@bill.bill_type</span>
+                    </td>
+                    <td class="px-4 py-3">@bill.billing_period.ToString("MMMM yyyy")</td>
+                    <td class="px-4 py-3">₱@bill.amount_due.ToString("N2")</td>
+                    <td class="px-4 py-3">@bill.due_date.ToString("MMMM dd, yyyy")</td>
+                    <td class="px-4 py-3 font-semibold @(bill.bill_status == "Paid" ? "text-green-500" : bill.bill_status == "Pending" ? "text-yellow-500" : "text-red-500")">@bill.bill_status</td>
+                    <td class="cursor-pointer px-4 py-3 font-semibold text-teal-700">
+                        <button class="actions-btn">⋮</button>
+                        <div class="actions-menu absolute right-40 hidden w-40 bg-white shadow-md">
+                            <ul>
+                                <li class="cursor-pointer px-4 py-2 hover:bg-gray-100 viewdetsbtn">View Details</li>
+                                <li class="cursor-pointer px-4 py-2 hover:bg-gray-100">Edit Invoice</li>
+                                <li class="cursor-pointer px-4 py-2 hover:bg-gray-100">Mark as Paid</li>
+                                <li class="cursor-not-allowed px-4 py-2 text-gray-400">Generate Receipt</li>
+                            </ul>
                         </div>
                     </td>
-      
-                <td class="flex items-center gap-2 px-4 py-3">
-                    <img src="~/Images/mechanic.svg" class="w-5" alt="">
-                    <span>Maintenance Fee</span>
-                </td>
-                <td class="px-4 py-3">April 2025</td>
-                <td class="px-4 py-3">₱2,250.00</td>
-                <td class="px-4 py-3">April 30, 2025</td>
-                <td class="px-4 py-3 font-semibold text-yellow-500">Pending</td>
-                <td class="cursor-pointer px-4 py-3 font-semibold text-teal-700">
-                    <button class="actions-btn">⋮</button>
+                </tr>
+            }
 
-                    <div class="actions-menu absolute right-40 hidden w-40 bg-white shadow-md">
-                        <ul>
-                            <li class="cursor-pointer px-4 py-2 hover:bg-gray-100">View Details</li>
-                            <li class="cursor-pointer px-4 py-2 hover:bg-gray-100">Edit Invoice</li>
-                            <li class="cursor-pointer px-4 py-2 hover:bg-gray-100">Mark as Paid</li>
-                            <li class="cursor-not-allowed px-4 py-2 text-gray-400">Generate Receipt</li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-
-            <tr class="">
-                    <td class="px-4 py-3">
-                        <div class="flex items-center gap-2">
-                        <img src="~/Images/pfp.svg" class="h-8 w-8 rounded-full" alt="">
-                        <span class="font-medium">John Smith</span>
-                        </div>
-                    </td>
-                <td class="flex items-center gap-2 px-4 py-3">
-                    <img src="~/Images/water.svg" class="w-5" alt="">
-                    <span>Water Bill</span>
-                </td>
-                <td class="px-4 py-3">February 2025</td>
-                <td class="px-4 py-3">₱1,850.00</td>
-                <td class="px-4 py-3">February 28, 2025</td>
-                <td class="px-4 py-3 font-semibold text-green-500">Paid</td>
-                <td class="cursor-pointer px-4 py-3 font-semibold text-teal-700">
-                    <button class="actions-btn">⋮</button>
-
-                    <div class="actions-menu absolute right-40 hidden w-40 bg-white shadow-md">
-                        <ul>
-                            <li class="cursor-pointer px-4 py-2 hover:bg-gray-100">View Details</li>
-                            <li class="cursor-pointer px-4 py-2 hover:bg-gray-100">Edit Invoice</li>
-                            <li class="cursor-pointer px-4 py-2 hover:bg-gray-100">Mark as Paid</li>
-                            <li class="cursor-not-allowed px-4 py-2 text-gray-400">Generate Receipt</li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
         </tbody>
     </table>
 
@@ -172,49 +96,56 @@
     @await Html.PartialAsync("_pagination")
 
     <!-- invoice Modal -->
-    <div id="invoiceModal" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50">
-        <div class="w-[500px] rounded-2xl bg-white p-8" id="modalContent">
-            <h2 class="mb-4 text-center text-2xl font-extrabold text-gray-800">Create New Invoice</h2>
+    <form asp-action="CreateInvoice" method="post" asp-antiforgery="true">
+        <div id="invoiceModal" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50">
+            <div class="w-[500px] rounded-2xl bg-white p-8" id="modalContent">
+                <h2 class="mb-4 text-center text-2xl font-extrabold text-gray-800">Create New Invoice</h2>
 
-            <!-- Homeowner -->
-            <label class="mb-1 block text-base text-gray-500">Homeowner</label>
-            <select class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500">
-                <option>Select Homeowner</option>
-            </select>
+                <!-- Homeowner -->
+                <label class="mb-1 block text-base text-gray-500">Homeowner</label>
+                <select name="user_id" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500">
+                    <option value="">Select Homeowner</option>
+                    @foreach (var user in ViewData["Homeowners"] as List<ElnetSubdivi.Services.BillingPaymentService.UserBasicInfoDto>)
+                    {
+                        <option value="@user.UserId">@user.FullName</option>
+                    }
+                </select>
 
-            <!-- Bill Type -->
-            <label class="mt-4 mb-1 block text-base text-gray-500">Bill Type</label>
-            <select class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500">
-                <option>Select Bill Type</option>
-            </select>
+                <!-- Bill Type -->
+                <label class="mt-4 mb-1 block text-base text-gray-500">Bill Type</label>
+                <select name="bill_type" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500">
+                    <option value="">Select Bill Type</option>
+                    <option value="Water">Water</option>
+                    <option value="Electric">Electric</option>
+                    <option value="Garbage">Garbage</option>
+                </select>
 
-            <!-- Billing Period -->
-            <label class="mt-4 mb-1 block text-base text-gray-500">Billing Period</label>
-            <div class="relative">
-                <input type="month" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" />
-            </div>
+                <!-- Billing Period -->
+                <label class="mt-4 mb-1 block text-base text-gray-500">Billing Period</label>
+                <input type="month" name="billing_period" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" />
 
-            <!-- Due Date -->
-            <label class="mt-4 mb-1 block text-base text-gray-500">Due Date</label>
-            <div class="relative">
-                <input type="date" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" />
-            </div>
+                <!-- Due Date -->
+                <label class="mt-4 mb-1 block text-base text-gray-500">Due Date</label>
+                <input type="date" name="due_date" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" />
 
-            <!-- Amount Due -->
-            <label class="mt-4 mb-1 block text-base text-gray-500">Amount Due (₱)</label>
-            <input type="text" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" />
+                <!-- Amount Due -->
+                <label class="mt-4 mb-1 block text-base text-gray-500">Amount Due (₱)</label>
+                <input type="number" step="0.01" name="amount_due" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" />
 
-            <!-- Notes -->
-            <label class="mt-4 mb-1 block text-base text-gray-500">Notes (Optional)</label>
-            <textarea class="border-2 h-[10vh] w-full rounded-md border-gray-300 bg-white p-2 text-gray-500"></textarea>
+                <!-- Notes -->
+                <label class="mt-4 mb-1 block text-base text-gray-500">Notes (Optional)</label>
+                <textarea name="description" class="border-2 h-[10vh] w-full rounded-md border-gray-300 bg-white p-2 text-gray-500"></textarea>
 
-            <!-- Buttons -->
-            <div class="mt-6 flex gap-4">
-                <button id="closeModal" class="w-1/2 rounded-full border border-gray-500 py-2 text-gray-500">Cancel</button>
-                <button class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Create</button>
+                <!-- Buttons -->
+                <div class="mt-6 flex gap-4">
+                    <button type="button" id="closeModal" class="w-1/2 rounded-full border border-gray-500 py-2 text-gray-500">Cancel</button>
+                    <button type="submit" class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Create</button>
+                </div>
             </div>
         </div>
-    </div>
+    </form>
+
+
     <!-- details Modal -->
     <div id="detailsModal" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50">
         <button id="closeModal" class="hidden text-2xl text-gray-500">&times;</button>

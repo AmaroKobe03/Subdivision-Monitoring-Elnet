@@ -22,9 +22,10 @@ namespace ElnetSubdivi.Controllers
         private readonly IFacilityService _facilityService;
         private readonly IRequestService _requestService;
         private readonly IReservationService _reservationService;
+        private readonly IBillingPaymentService _billingService;
 
 
-        public HomeController(ILogger<HomeController> logger, IUserService userService, ApplicationDbContext context, IPostService postService, IFacilityService facilityService, IRequestService requestService, IReservationService reservationService)
+        public HomeController(ILogger<HomeController> logger, IUserService userService, ApplicationDbContext context, IPostService postService, IFacilityService facilityService, IRequestService requestService, IReservationService reservationService, IBillingPaymentService billingService)
         {
             _logger = logger;
             _userService = userService;
@@ -33,6 +34,7 @@ namespace ElnetSubdivi.Controllers
             _facilityService = facilityService;
             _requestService = requestService;
             _reservationService = reservationService;
+            _billingService = billingService;
         }
 
         public async Task<IActionResult> Index()
@@ -187,22 +189,62 @@ namespace ElnetSubdivi.Controllers
 
             return View(billing);
         }
-        public IActionResult BillingManagement()
+
+        public async Task<IActionResult> BillingManagement()
         {
             ViewData["HideSearch"] = true;
             ViewData["Hidebtn"] = true;
+            ViewData["Bills"] = await _billingService.GetAll();
+            ViewData["Homeowners"] = await _billingService.GetAllUsersBasicInfo(); // Add this
 
-            var billing = new List<dynamic>
+            var billing = new BillingPaymentViewModel
             {
-                new { Title = "Total Amount Due", Count = 123, Icon = "treqs.svg", BorderColor = "border-blue-400 border-b-2" },
-                new { Title = "Pending Payments", Count = 34, Icon = "pendi.svg", BorderColor = "border-yellow-400 borber-b-2" },
-                new { Title = "Overdue Payments", Count = 15, Icon = "overd.svg", BorderColor = "border-orange-400 borber-b-2" },
-                new { Title = "Total Amount Paid (2025) ", Count = 56, Icon = "apr.svg", BorderColor = "border-green-400 borber-b-2" },
-
+                BillStatements = await _billingService.GetAll()// Await the Task to resolve the issue
             };
 
             return View(billing);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateInvoice(BillingPaymentModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Fetch list of homeowners
+                var homeowners = await _billingService.GetAllUsersBasicInfo();
+
+                // Find the user whose ID matches the selected user_id
+                var selectedUser = homeowners.FirstOrDefault(u => u.UserId == model.user_id);
+
+                // If found, assign the FullName to model.user_name
+                if (selectedUser != null)
+                {
+                    model.user_name = selectedUser.FullName;
+                }
+
+                model.bill_status = "Pending";
+                await _billingService.Add(model);
+                TempData["Success"] = "Bill added successfully!";
+                return RedirectToAction("BillingManagement");
+            }
+
+            // If model is invalid, reprepare data for the view
+            ViewData["HideSearch"] = true;
+            ViewData["Hidebtn"] = true;
+            ViewData["Bills"] = await _billingService.GetAll();
+            ViewData["Homeowners"] = await _billingService.GetAllUsersBasicInfo();
+
+            var billingViewModel = new BillingPaymentViewModel
+            {
+                BillStatements = await _billingService.GetAll()
+            };
+
+            return View("BillingManagement", billingViewModel);
+        }
+
+
+
 
         public IActionResult AdminDash()
         {
