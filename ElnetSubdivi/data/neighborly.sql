@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 27, 2025 at 08:31 PM
+-- Generation Time: Apr 29, 2025 at 09:21 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -22,6 +22,31 @@ SET time_zone = "+00:00";
 --
 CREATE DATABASE IF NOT EXISTS `neighborly` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE `neighborly`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `billing_statements`
+--
+
+CREATE TABLE `billing_statements` (
+  `bill_no` varchar(11) NOT NULL,
+  `user_id` varchar(11) NOT NULL,
+  `user_name` varchar(50) NOT NULL,
+  `bill_type` varchar(50) NOT NULL,
+  `billing_period` date NOT NULL,
+  `amount_due` int(255) NOT NULL,
+  `due_date` date NOT NULL,
+  `bill_status` set('Overdue','Pending','Paid') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `billing_statements`
+--
+
+INSERT INTO `billing_statements` (`bill_no`, `user_id`, `user_name`, `bill_type`, `billing_period`, `amount_due`, `due_date`, `bill_status`) VALUES
+('BILL-981123', 'RES-0001', 'Angela Lopez Gonzalez', 'Water', '2025-04-01', 3000, '2025-04-30', 'Pending'),
+('BILL-198591', 'ADM-0001', 'Bryl Brown Gorgonio', 'Electric', '2025-04-01', 3000, '2025-04-30', 'Pending');
 
 -- --------------------------------------------------------
 
@@ -752,6 +777,13 @@ ALTER TABLE `requests`
   ADD CONSTRAINT `requests_ibfk_3` FOREIGN KEY (`typeof_status`) REFERENCES `status` (`status_id`),
   ADD CONSTRAINT `requests_ibfk_4` FOREIGN KEY (`rtype_id`) REFERENCES `request_type` (`rtype_id`),
   ADD CONSTRAINT `requests_ibfk_5` FOREIGN KEY (`requested_by`) REFERENCES `residents` (`resident_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `reservation_request_details`
+--
+ALTER TABLE `reservation_request_details`
+  ADD CONSTRAINT `reservation_request_details_ibfk_1` FOREIGN KEY (`reservation_id`) REFERENCES `requests` (`request_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `reservation_request_details_ibfk_2` FOREIGN KEY (`facility_id`) REFERENCES `facilities` (`facility_id`);
 
 --
 -- Constraints for table `residents`
