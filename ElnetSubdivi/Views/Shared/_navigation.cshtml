@@ -51,7 +51,7 @@
                         </div>
                     </div>
                 }
-                else if (User.IsInRole("staff"))
+                else if (User.IsInRole("housekeeping"))
                     {
                         <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("UserDash", "Home")">Home</a>
 
@@ -75,6 +75,24 @@
 
                         <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("IncidentReport", "Home")">Reports</a>
                     }
+                else if (User.IsInRole("housekeeping"))
+                {
+                    <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("UserDash", "Home")">Home</a>
+                    <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("HousekeepingServiceRequest", "Home")">Service Request</a>
+                    <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("IncidentReport", "Home")">Reports</a>
+                }
+                else if (User.IsInRole("security"))
+                {
+                    <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("UserDash", "Home")">Home</a>
+                    <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("SecurityServiceRequest", "Home")">Service Request</a>
+                    <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("IncidentReport", "Home")">Reports</a>
+                }
+                else if (User.IsInRole("maintenance"))
+                {
+                    <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("UserDash", "Home")">Home</a>
+                    <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("MaintenanceServiceRequest", "Home")">Service Request</a>
+                    <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("IncidentReport", "Home")">Reports</a>
+                }
                 else
                 {
                     <a class="cursor-pointer text-white hover:text-[#787676]" href="@Url.Action("UserDash", "Home")">Home</a>

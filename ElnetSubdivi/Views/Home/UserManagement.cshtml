@@ -36,7 +36,7 @@
                         <td class="px-4 py-3">@user.email</td>
                         <td class="px-4 py-3">@user.phone</td>
                         <td class="px-4 py-3 font-semibold">
-                            @(user.type_of_user == 1 ? "Admin" : user.type_of_user == 2 ? "Homeowner" : user.type_of_user == 3 ? "Staff" : "Unknown")
+                            @(user.type_of_user == 1 ? "Admin" : user.type_of_user == 2 ? "Homeowner" : user.type_of_user == 3 ? "Housekeeping" : user.type_of_user == 4 ? "Maintenance" : user.type_of_user == 5 ? "Security" : "Unknown")
                         </td>
                         <td class="justify-center relative left-5 flex cursor-pointer flex-row items-center gap-2 px-4 py-3 font-semibold text-teal-700">
                         </td>
@@ -71,8 +71,8 @@
                             <option value="">Select User Type</option>
                             <option value="2">Homeowner</option>
                             <option value="3">Housekeeping</option>
-                            <option value="3">Maintenance</option>
-                            <option value="3">Security</option>
+                            <option value="4">Maintenance</option>
+                            <option value="5">Security</option>
                         </select>
                     </div>
 

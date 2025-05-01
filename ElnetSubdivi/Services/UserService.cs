@@ -73,13 +73,15 @@ namespace ElnetSubdivi.Services
             {
                 1 => "Admin",
                 2 => "Homeowner",
-                3 => "Staff",
+                3 => "Housekeeping",
+                4 => "Maintenance",
+                5 => "Security",
                 _ => "User"
             };
             return prefix;
         }
 
-        // Create a new user
+
         public async Task<bool> CreateUser(Users user)
         {
             await using var transaction = await _context.Database.BeginTransactionAsync();
@@ -91,7 +93,9 @@ namespace ElnetSubdivi.Services
                 {
                     1 => "ADM",
                     2 => "RES",
-                    3 => "STF",
+                    3 => "HSK",
+                    4 => "MTN",
+                    5 => "SCT",
                     _ => "USR"
                 };
 
@@ -116,6 +120,7 @@ namespace ElnetSubdivi.Services
                 // Step 2: Save user with generated ID
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
+
 
                 // Step 3: Create corresponding user account
                 var userAccount = new UserAccount

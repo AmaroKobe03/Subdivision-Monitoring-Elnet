@@ -587,7 +587,9 @@ namespace ElnetSubdivi.Controllers
                         {
                             1 => "admin",
                             2 => "homeowner",
-                            3 => "staff",
+                            3 => "housekeeping",
+                            4 => "maintenance",
+                            5 => "security",
                             _ => "user"
                         };
                         return await SignInUser(userDetails.first_name, userDetails.last_name, GetRedirectAction(role), role, userDetails.user_id);
