@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Service Request";
 }
+@model ElnetSubdivi.Models.ServiceRequestManagementViewModel
 <style>
     th{
         align-self: center;
@@ -81,160 +82,22 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="px-4 py-4">SR0001</td>
-                <td class="px-4 py-4">House Keeping</td>
-                <td class="px-4 py-4 text-yellow-500">Pending</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img id="editIc" src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4 text-blue-500">Ongoing</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4 text-green-500">Completed</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4 text-red-500">Canceled</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4 text-red-500">Canceled</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4 text-red-500">Canceled</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4 text-red-500">Canceled</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4 text-red-500">Canceled</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4 text-red-500">Canceled</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
-                        <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4 text-red-500">Canceled</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4 text-red-500">Canceled</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4 text-red-500">Canceled</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4 text-red-500">Canceled</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4 text-red-500">Canceled</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
+            @foreach (var request in Model.ServiceRequests)
+            {
+                <tr class="cursor-pointer border-b hover:bg-gray-100" onclick="openModal()">
+                    <td>@request.Request_Id</td>
+                    <td class="flex items-center gap-3 px-4 py-3">
+                        <img src="~/Images/pfp.svg" class="h-8 w-8 rounded-full" />
+                        <span>@request.User_Id</span>
+                    </td>
+                    <td class="px-4 py-3">@request.Request_Type</td>
+                    <td class="px-4 py-3">@request.Request_Date</td>
+                    <td class="px-4 py-3">@request.Request_Creation</td>
+                    <td class="px-4 py-3">@request.Request_Date</td>
+                    <td class="px-4 py-3">@request.Request_Id</td>
+                    <td class="px-4 py-3 font-semibold text-yellow-500">@request.Request_Status</td>
+                </tr>
+            }
         </tbody>
     </table>
 
@@ -280,14 +143,7 @@
         </div>
     </div>
     <script>
-        document.getElementById("editIc").addEventListener("click", function() {
-            document.getElementById("editReq-popup").classList.remove("hidden");
-        });
-        document.getElementById("editReq-popup").addEventListener("click", function(event) {
-            if (event.target === this) {
-                this.classList.add("hidden");
-            }
-        });
+
 
                 document.getElementById("requestbtn").addEventListener("click", async function () {
             const data = {
@@ -321,6 +177,17 @@
                 alert("Failed to submit request.");
             }
         });
+
+        /*
+                    document.getElementById("editIc").addEventListener("click", function() {
+            document.getElementById("editReq-popup").classList.remove("hidden");
+        });
+        document.getElementById("editReq-popup").addEventListener("click", function(event) {
+            if (event.target === this) {
+                this.classList.add("hidden");
+            }
+        });
+        */
     </script>
 
 </div>

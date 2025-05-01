@@ -318,12 +318,42 @@ namespace ElnetSubdivi.Controllers
             return View();
 
         }
-        public IActionResult serviceRequest()
+
+        public async Task<IActionResult> serviceRequest(bool showDashboard = false)
         {
-            ViewData["Title"] = "Service Request";
-            ViewData["HideSearch"] = true;
-            return View();
+            if (showDashboard)
+            {
+                ViewData["HideSearch"] = true;
+                ViewData["Hidebtn"] = true;
+
+                var dashboardStats = new List<dynamic>
+        {
+            new { Title = "Total Requests", Count = 123, Icon = "treqs.svg", BorderColor = "border-blue-400 border-b-2" },
+            new { Title = "Pending ", Count = 34, Icon = "pendi.svg", BorderColor = "border-yellow-400 borber-b-2" },
+            new { Title = "Ongoing ", Count = 15, Icon = "ongo.svg", BorderColor = "border-orange-400 borber-b-2" },
+            new { Title = "Completed ", Count = 56, Icon = "apr.svg", BorderColor = "border-green-400 borber-b-2" },
+            new { Title = "Canceled Service ", Count = 10, Icon = "canc.svg", BorderColor = "border-red-400 borber-b-2" }
+        };
+
+                return View("DashboardView", dashboardStats);
+            }
+            else
+            {
+                // Get posts from your database/service
+                var requests = await _context.Service_Request
+                    .OrderByDescending(p => p.Request_Date)
+                    .ToListAsync();
+
+                // Create the view model
+                var viewModel = new ServiceRequestManagementViewModel
+                {
+                    ServiceRequests = requests
+                };
+
+                return View(viewModel);
+            }
         }
+
         public IActionResult Calendar()
         {
             ViewData["HideSearch"] = true;
