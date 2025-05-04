@@ -43,79 +43,65 @@
         <tbody>
             @foreach (var request in Model.ServiceRequests)
             {
-                <tr class="cursor-pointer border-b hover:bg-gray-100" onclick="openModal()">
+                <tr class="cursor-pointer border-b hover:bg-gray-100" data-request-id="@request.Request_Id">
                     <td>@request.Request_Id</td>
                     <td class="flex items-center gap-3 px-4 py-3">
                         <img src="~/Images/pfp.svg" class="h-8 w-8 rounded-full" />
                         <span>@request.User_Id</span>
                     </td>
                     <td class="px-4 py-3">@request.Request_Type</td>
-                    <td class="px-4 py-3">@request.Request_Date</td>
+                    <td class="px-4 py-3">@request.Request_Date.Date.ToShortDateString()</td>
                     <td class="px-4 py-3">@request.Request_Creation</td>
-                    <td class="px-4 py-3">@request.Request_Date</td>
-                    <td class="px-4 py-3">@request.Request_Id</td>
+                    <td class="px-4 py-3">@request.Request_Closed</td>
+                    <td class="px-4 py-3">@request.Assigned_Staff</td>
                     <td class="px-4 py-3 font-semibold text-yellow-500">@request.Request_Status</td>
                 </tr>
             }
         </tbody>
     </table>
-    <!-- Modal (Hidden by default) -->
+
+    <!-- Edit Modal (Hidden by default) -->
     <div id="modal" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50" onclick="closeModal(event)">
         <div class="w-[500px] rounded-2xl bg-white p-8" onclick="event.stopPropagation()">
             <h2 class="mb-4 text-center text-2xl font-extrabold text-gray-800">Service Request Details</h2>
 
-            <!-- User Profile -->
             <div class="mb-4 flex items-center justify-center gap-2">
                 <img src="~/Images/pfp.svg" class="h-10 w-10 rounded-full" />
-                <span class="text-lg font-medium">Kobe Amaro</span>
+                <span class="text-lg font-medium" id="edit-user">User</span>
             </div>
 
-            <!-- Request Type -->
             <label class="mb-1 block text-base text-gray-500">Request Type</label>
-            <select class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500">
-                <option>Repair</option>
+            <select id="edit-type" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500">
                 <option>Maintenance</option>
+                <option>Housekeeping</option>
+                <option>Security</option>
             </select>
 
-            <!-- Subject -->
             <label class="mt-4 mb-1 block text-base text-gray-500">Subject</label>
-            <input type="text" value="Flickering Lights" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" readonly />
+            <input id="edit-subject" type="text" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" readonly />
 
-            <!-- Date and Time -->
             <div class="mt-4 mb-4 flex justify-between gap-4">
-                <!-- Date Picker -->
                 <div class="w-1/2">
                     <label class="mb-1 block text-base text-gray-500">Date</label>
-                    <div class="relative">
-                        <input type="date" value="2024-03-15" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" />
-                    </div>
+                    <input id="edit-date" type="date" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" />
                 </div>
-
-                <!-- Time Picker -->
                 <div class="w-1/2">
                     <label class="mb-1 block text-base text-gray-500">Time</label>
-                    <div class="relative">
-                        <input type="time" value="07:00" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" />
-                    </div>
+                    <input id="edit-time" type="time" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" />
                 </div>
             </div>
 
-            <!-- Description -->
             <label class="mb-1 block text-base text-gray-500">Description</label>
-            <textarea class="border-2 h-[10vh] w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" readonly>Lights are not working.</textarea>
+            <textarea id="edit-description" class="border-2 h-[10vh] w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" readonly></textarea>
 
-            <!-- Attachments -->
             <label class="mt-4 mb-1 block text-base text-gray-500">Attachments</label>
-            <img src="~/Images/attachment.png" class="border-2 h-16 w-16 rounded-md border-gray-300 object-cover" />
+            <div id="attachment-container" class="mb-2"></div>
 
-            <!-- Assign Staff -->
             <label class="mt-4 mb-1 block text-base text-gray-500">Assign Staff</label>
             <select class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500">
-                <option>Bryl Gorgonio</option>
-                <option>Other Staff</option>
+                <option>Assign Staff</option>
             </select>
 
-            <!-- Buttons -->
             <div class="mt-6 flex gap-4">
                 <button class="w-1/2 rounded-full border border-[#B25828] py-2 text-[#B25828]" onclick="closeModal(event)">Decline</button>
                 <button class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Approve</button>
@@ -123,7 +109,7 @@
         </div>
     </div>
 
-    <!-- Modal (Hidden by default) -->
+    <!-- Request Modal (Hidden by default) -->
     <div id="ReqModal" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50" onclick="closeAdd(event)">
         <div class="w-[500px] rounded-2xl bg-white p-8" onclick="event.stopPropagation()">
             <h2 class="mb-4 text-center text-2xl font-extrabold text-gray-800">Add Request</h2>
@@ -197,16 +183,74 @@
         </div>
     </div>
     <script>
-        function openModal() {
-          document.getElementById('modal').classList.remove('hidden');
+        @{
+            var jsonSerializerOptions = new System.Text.Json.JsonSerializerOptions
+            {
+                PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase,
+                WriteIndented = true
+            };
+        }
+            const modelData = {
+            serviceRequests: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ServiceRequests, jsonSerializerOptions))
+            };
+        console.log("Model data loaded:", modelData); // Debugging
+        console.log("Service Requests:", modelData.serviceRequests); // Debugging
+
+
+        // Function to open the Edit-modal
+           function openModal(requestId) {
+            console.log("Attempting to open modal for request ID:", requestId);
+            const request = modelData.serviceRequests.find(r => r.request_Id === requestId);
+            console.log(requestId)
+            if (!request) {
+                console.error("Request not found for ID:", requestId);
+                console.log("Available requests:", modelData.serviceRequests);
+                return;
+            }
+
+            console.log("Found request:", request);
+
+            document.getElementById('edit-user').innerText = request.user_Id;
+            document.getElementById('edit-type').value = request.request_Type;
+            document.getElementById('edit-subject').value = request.request_Subject;
+
+            const date = new Date(request.request_Date);
+            document.getElementById('edit-date').value = date.toISOString().split('T')[0];
+            document.getElementById('edit-time').value = request.request_Time || "";
+
+            document.getElementById('edit-description').value = request.request_Description || "";
+
+            const attachmentContainer = document.getElementById('attachment-container');
+            attachmentContainer.innerHTML = "";
+
+            if (request.attachment_Path) {
+                const img = document.createElement('img');
+                img.src = request.attachment_Path;
+                img.className = "border-2 h-25 w-50 rounded-md border-gray-300 object-cover";
+                attachmentContainer.appendChild(img);
+            }
+
+            document.getElementById('modal').classList.remove('hidden');
         }
 
         function closeModal(event) {
-          const modal = document.getElementById('modal');
-          if (event.target === modal || event.type === 'click') {
-            modal.classList.add('hidden');
-          }
+            const modal = document.getElementById('modal');
+            if (event.target === modal || event.type === 'click') {
+                modal.classList.add('hidden');
+            }
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Modify your table rows to include onclick with request ID
+            document.querySelectorAll('tbody tr').forEach(row => {
+                const requestId = row.cells[0].textContent.trim();
+                row.onclick = function (e) {
+                    // Prevent clicking on nested elements from triggering
+                    if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON') return;
+                    openModal(requestId);
+                };
+            });
+            });
     </script>
     <script>
         function openAdd() {
