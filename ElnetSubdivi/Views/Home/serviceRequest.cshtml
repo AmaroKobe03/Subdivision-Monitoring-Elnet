@@ -223,7 +223,7 @@
             console.log("Attempting to open modal for request ID:", requestId);
 
             // Find the request in your model data
-            const request = modelData.serviceRequests.find(r => r.requestId === requestId);
+            const request = modelData.serviceRequests.find(r => r.request_Id === requestId);
 
             if (!request) {
                 console.error("Request not found for ID:", requestId);
@@ -234,30 +234,29 @@
             console.log("Found request:", request);
 
             // Populate the edit form
-            document.querySelector('#editReq-popup select').value = request.requestType;
-            document.querySelector('#editReq-popup input[type="text"]').value = request.requestSubject;
+            document.querySelector('#editReq-popup select').value = request.request_Type;
+            document.querySelector('#editReq-popup input[type="text"]').value = request.request_Subject;
 
             // Format date properly (handle both string and Date objects)
-            const requestDate = request.requestDate instanceof Date ?
-                request.requestDate :
-                new Date(request.requestDate);
-            document.querySelector('#editReq-popup input[type="date"]').value =
-                requestDate.toISOString().split('T')[0];
-
-            document.querySelector('#editReq-popup input[type="time"]').value = request.requestTime;
-            document.querySelector('#editReq-popup textarea').value = request.requestDescription;
+            document.querySelector('#editReq-popup select').value = request.request_Type;
+            document.querySelector('#editReq-popup input[type="text"]').value = request.request_Subject;
+            const requestDate = new Date(request.request_Date);
+            document.querySelector('#editReq-popup input[type="date"]').value = requestDate.toISOString().split('T')[0];
+            document.querySelector('#editReq-popup input[type="time"]').value = request.request_Time;
+            document.querySelector('#editReq-popup textarea').value = request.request_Description;
 
             // Display attached photo if exists
             const attachmentContainer = document.getElementById('attachment-container');
             attachmentContainer.innerHTML = '';
 
-            if (request.requestAttachmentPath) {
+            if (request.attachment_Path) {
                 const img = document.createElement('img');
-                img.src = `/uploads/${request.requestAttachmentPath}`;
+                img.src = `${request.attachment_Path}`;
                 img.className = 'max-w-full h-auto mt-2';
                 img.alt = 'Request attachment';
                 attachmentContainer.appendChild(img);
             }
+            console.log(request.attachement_Path)
 
             // Show the modal
             document.getElementById("editReq-popup").classList.remove("hidden");
