@@ -43,11 +43,15 @@
         <tbody>
             @foreach (var request in Model.ServiceRequests)
             {
+                var user = Model.Users.FirstOrDefault(u => u.user_id == request.User_Id);
+                var fullName = user != null ? $"{user.first_name} {user.last_name}" : "Unknown";
+                var profileImage = $"data:image/jpeg;base64,{Convert.ToBase64String(user.profile_picture)}";
+
                 <tr class="cursor-pointer border-b hover:bg-gray-100" data-request-id="@request.Request_Id">
                     <td>@request.Request_Id</td>
                     <td class="flex items-center gap-3 px-4 py-3">
-                        <img src="~/Images/pfp.svg" class="h-8 w-8 rounded-full" />
-                        <span>@request.User_Id</span>
+                        <img id="user-img-@request.Request_Id" src="@profileImage" class="h-8 w-8 rounded-full" />
+                        <span id="user-name-@request.Request_Id">@fullName</span>
                     </td>
                     <td class="px-4 py-3">@request.Request_Type</td>
                     <td class="px-4 py-3">@request.Request_Date.Date.ToShortDateString()</td>
@@ -66,8 +70,8 @@
             <h2 class="mb-4 text-center text-2xl font-extrabold text-gray-800">Service Request Details</h2>
 
             <div class="mb-4 flex items-center justify-center gap-2">
-                <img src="~/Images/pfp.svg" class="h-10 w-10 rounded-full" />
-                <span class="text-lg font-medium" id="edit-user">User</span>
+                <img id="user-img" src="~/Images/pfp.svg" class="h-10 w-10 rounded-full" />
+                <span id="user-name" class="text-lg font-medium" id="edit-user">User</span>
             </div>
 
             <label class="mb-1 block text-base text-gray-500">Request Type</label>
@@ -196,21 +200,43 @@
         console.log("Model data loaded:", modelData); // Debugging
         console.log("Service Requests:", modelData.serviceRequests); // Debugging
 
+            const userModelData = {
+            Users: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Users, jsonSerializerOptions))
+            };
+        console.log("Model data loaded:", userModelData); // Debugging
+        console.log("Users:", userModelData.Users); // Debugging
 
         // Function to open the Edit-modal
            function openModal(requestId) {
             console.log("Attempting to open modal for request ID:", requestId);
+
             const request = modelData.serviceRequests.find(r => r.request_Id === requestId);
-            console.log(requestId)
+            console.log(requestId);
+            console.log(request.user_Id);
+
+            const user = userModelData.Users.find(u => u.user_id === request.user_Id);
+            console.log(user.user_id);
+            console.log(user);
+
             if (!request) {
                 console.error("Request not found for ID:", requestId);
                 console.log("Available requests:", modelData.serviceRequests);
                 return;
             }
 
-            console.log("Found request:", request);
 
-            document.getElementById('edit-user').innerText = request.user_Id;
+            console.log(user.user_id);
+            console.log(user.first_name);
+
+           // document.getElementById('user-name').innerText = `${user.first_Name} ${user.last_Name}`;
+           // document.getElementById('user-img').src = user.profile_picture || "~/Images/pfp.svg";
+
+            console.log("Found request:", request);
+            console.log(user.first_name);
+            document.getElementById('user-name').innerText = user.first_name + ' ' + user.last_name;
+            document.getElementById('user-img').src = `data:image/jpeg;base64,${user.profile_picture}`;
+
+            //document.getElementById('edit-user').innerText = request.user_Id;
             document.getElementById('edit-type').value = request.request_Type;
             document.getElementById('edit-subject').value = request.request_Subject;
 
@@ -249,10 +275,12 @@
                     if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON') return;
                     openModal(requestId);
                 };
+
             });
             });
     </script>
     <script>
+
         function openAdd() {
           document.getElementById('ReqModal').classList.remove('hidden');
         }

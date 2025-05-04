@@ -83,7 +83,8 @@ namespace ElnetSubdivi.Controllers
                 // Create the view model
                 var viewModel = new ServiceRequestManagementViewModel
                 {
-                    ServiceRequests = requests
+                    ServiceRequests = requests,
+                    Users = await _userService.GetAllUsers() // Fetch users from DB
                 };
 
                 return View(viewModel);

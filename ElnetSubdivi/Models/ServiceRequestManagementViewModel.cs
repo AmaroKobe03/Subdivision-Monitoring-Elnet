@@ -5,5 +5,6 @@ namespace ElnetSubdivi.Models
     {
         public List<ServiceRequest> ServiceRequests { get; set; } = new();
         public List<SummaryCard> SummaryCards { get; set; } = new();
+        public List<Users> Users { get; set; }
     }
 }
