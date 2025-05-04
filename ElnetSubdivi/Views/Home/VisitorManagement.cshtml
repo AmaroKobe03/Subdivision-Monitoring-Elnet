@@ -1,0 +1,440 @@
+﻿@{
+    ViewData["Title"] = "Visitor Management";
+}
+<style>
+    th {
+        align-self: center;
+    }
+</style>
+<div class="flex h-[100vh] w-[90%] flex-col items-center overflow-auto overflow-y-hidden bg-[#f2f2f2] font-semibold">
+
+    @await Html.PartialAsync("_sharedSearch")
+
+    <div id="sortV" class="mt-4 flex w-[88.5%] flex-row items-center gap-6">
+        <a href="#" class="cursor-pointer rounded-full bg-blue-200 px-6 py-2 text-center font-semibold text-blue-700">
+            <span class="text-[15px]">Visitor Request</span>
+        </a>
+        <a href="#" class="cursor-pointer rounded-full bg-gray-100 px-6 py-2 text-center hover:bg-gray-200">
+            <span class="text-[15px] text-black">Visitor Logs</span>
+        </a>
+    </div>
+
+    <div class="relative mb-6 flex w-[88%] items-center justify-between">
+        <!-- Search Bar -->
+        @{
+            ViewData["DropdownItems"] = new List<string> { "Pending", "Ongoing", "Completed", "Canceled" };
+        }
+        <div class="mt-10 mr-2 mb-6 flex w-[88%] items-center gap-4">
+            <div class="relative w-[40%]">
+                <input type="text" placeholder="Search"
+                       class="h-12 w-full rounded-full border border-gray-300 bg-white pr-4 pl-12 outline-none focus:ring-2 focus:ring-gray-300">
+                <img class="absolute top-1/2 left-4 h-5 -translate-y-1/2" src="~/Images/find.svg" alt="Search">
+            </div>
+            <div class="relative inline-block">
+                <select id="statusSelect" class="appearance-none rounded-full border border-gray-300 bg-white px-4 py-2 pr-8 font-medium text-black shadow-sm outline-none">
+                    <option value="All Status">All Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+                <img src="~/Images/drp.svg" alt="Dropdown" class="pointer-events-none absolute top-1/2 right-3 h-4 -translate-y-1/2">
+            </div>
+
+            <!-- Moved this button to the right using ml-auto -->
+            <button id="addType" class="relative left-45 ml-auto flex items-center gap-2 rounded-full bg-[#04373A] px-6 py-2 text-white">
+                <span class="text-xl">+</span>
+                <span class="cursor-pointer font-medium">New Visitor</span>
+            </button>
+        </div>
+
+        <!-- Close Button -->
+        <button id="closePopupBtn" class="top-4 right-4 hidden rounded-full bg-red-500 px-4 py-2 text-white">
+            Close
+        </button>
+
+        <!-- Visitor Request Pop-Up -->
+        <div id="request-popup" class="fixed inset-0 z-50 flex hidden items-center justify-center bg-black/50 p-4">
+            <div class="w-[600px] rounded-lg bg-white p-6 shadow-lg">
+                <div class="flex items-center justify-between">
+                    <h1 class="w-full text-center text-xl font-semibold text-[#043137]">Visitor Request Details</h1>
+                    <button id="closeBtn" class="text-xl font-bold text-gray-400 hover:text-black">&times;</button>
+                </div>
+
+                <div class="mt-4 space-y-3">
+                    <div class="flex gap-4">
+                        <div class="w-1/2">
+                            <label class="block font-medium">First Name</label>
+                            <input type="text" class="w-full rounded border px-3 py-2" value="Mark" />
+                        </div>
+                        <div class="w-1/2">
+                            <label class="block font-medium">Last Name</label>
+                            <input type="text" class="w-full rounded border px-3 py-2" value="Tol" />
+                        </div>
+                    </div>
+
+                    <label class="block font-medium">Homeowner</label>
+                    <div class="relative">
+                        <input type="text" class="w-full rounded border py-2 pl-12" value="Kobe Amaro" />
+                        <div class="absolute top-1/2 left-2 flex h-8 w-8 -translate-y-1/2 transform items-center justify-center rounded-full bg-yellow-400 font-bold text-white">C</div>
+                    </div>
+
+                    <label class="block font-medium">Phone Number</label>
+                    <input type="text" class="w-full rounded border px-3 py-2" value="0123456789" />
+
+                    <div class="flex gap-4">
+                        <div class="w-1/2">
+                            <label class="block font-medium">Visit Date</label>
+                            <div class="relative">
+                                <input type="text" class="w-full rounded border px-3 py-2" value="03/15/2025" />
+                                <div class="absolute top-1/2 right-3 -translate-y-1/2">
+                                    <svg class="h-5 w-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M6 2a1 1 0 100 2h8a1 1 0 100-2H6zM3 6a2 2 0 012-2h10a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V6zm2 2v8h10V8H5z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-1/2">
+                            <label class="block font-medium">Visit Time</label>
+                            <div class="relative">
+                                <input type="text" class="w-full rounded border px-3 py-2" value="01:00 PM" />
+                                <div class="absolute top-1/2 right-3 -translate-y-1/2">
+                                    <svg class="h-5 w-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 9H9V5a1 1 0 112 0v6z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <label class="block font-medium">Vehicle Plate (Optional)</label>
+                    <input type="text" class="w-full rounded border px-3 py-2" value="ABC 123" />
+
+                    <label class="block font-medium">Reason for Visit</label>
+                    <input type="text" class="w-full rounded border px-3 py-2" value="Visiting a friend" />
+
+                    <div class="mt-4 flex justify-between">
+                        <button class="w-[45%] rounded-full border border-[#BF6522] px-4 py-2 text-[#BF6522] hover:bg-[#BF6522] hover:text-white">Decline</button>
+                        <button class="w-[45%] rounded-full bg-[#043137] px-4 py-2 text-white hover:bg-[#065A57]">Approve</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <!-- Visitor  Table -->
+    <table class="w-[88%] overflow-y-auto rounded-lg bg-white shadow-lg">
+        <thead>
+            <tr class="text-left text-[#787676]">
+                <th class="px-4 py-3">Visitor Name</th>
+                <th class="px-4 py-3">Homeowner</th>
+                <th class="px-4 py-3">Visit Date</th>
+                <th class="px-4 py-3">Visit Time</th>
+                <th class="px-4 py-3">Vehicle Plate</th>
+                <th class="px-4 py-3">Status </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="visitor-row">
+
+                <td class="px-4 py-4">Mark Tol</td>
+                <td class="flex items-center gap-2 px-4 py-4">
+                    <span>Kobe Amaro</span>
+                </td>
+                <td class="px-4 py-4">March 05, 2025</td>
+                <td class="px-4 py-4">01:00 PM</td>
+                <td class="px-4 py-4">ABC-123</td>
+                <td class="px-4 py-4">Pending</td>
+            </tr>
+        
+        </tbody>
+    </table>
+
+
+    <!-- duplicate modal for logs table -->
+    <div id="logs-popup" class="fixed inset-0 z-50 flex hidden items-center justify-center bg-black/50 p-4">
+        <div class="w-[600px] rounded-lg bg-white p-6 shadow-lg">
+            <div class="flex items-center justify-between">
+                <h1 class="w-full text-center text-xl font-semibold text-[#043137]">Visitor Log Details</h1>
+                <button id="closeLogsBtn" class="text-xl font-bold text-gray-400 hover:text-black">&times;</button>
+            </div>
+
+            <div class="mt-4 space-y-3">
+                <div class="flex gap-4">
+                    <div class="w-1/2">
+                        <label class="block font-medium">First Name</label>
+                        <p class="mt-1 rounded border px-3 py-2">Mark</p>
+                    </div>
+                    <div class="w-1/2">
+                        <label class="block font-medium">Last Name</label>
+                        <p class="mt-1 rounded border px-3 py-2">Tol</p>
+                    </div>
+                </div>
+
+                <label class="block font-medium">Homeowner</label>
+                <div class="relative">
+                    <p class="w-full rounded border py-2 pl-12">Kobe Amaro</p>
+                    <div class="absolute top-1/2 left-2 flex h-8 w-8 -translate-y-1/2 transform items-center justify-center rounded-full bg-yellow-400 font-bold text-white">C</div>
+                </div>
+
+                <label class="block font-medium">Phone Number</label>
+                <p class="w-full rounded border px-3 py-2">0123456789</p>
+
+                <div class="flex gap-4">
+                    <div class="w-1/2">
+                        <label class="block font-medium">Check-in</label>
+                        <p class="w-full rounded border px-3 py-2">04/15/2025 - 01:00 PM</p>
+                    </div>
+                    <div class="w-1/2">
+                        <label class="block font-medium">Check-out</label>
+                        <p class="w-full rounded border px-3 py-2">04/15/2025 - 02:30 PM</p>
+                    </div>
+                </div>
+
+                <label class="block font-medium">Vehicle Plate</label>
+                <p class="w-full rounded border px-3 py-2">ABC 123</p>
+
+                <label class="block font-medium">Reason for Visit</label>
+                <p class="w-full rounded border px-3 py-2">Visiting a friend</p>
+
+                <div class="mt-4 flex justify-end">
+                    <button class="rounded-full bg-[#043137] px-6 py-2 text-white hover:bg-[#065A57]">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- duplicate modal for new visitor table -->
+    <div id="visitor-popup" class="fixed inset-0 z-50 flex hidden items-center justify-center bg-black/50 p-4">
+        <div class="w-[600px] rounded-lg bg-white p-6 shadow-lg">
+            <div class="flex items-center justify-between">
+                <h1 class="w-full text-center text-xl font-semibold text-[#043137]">New Visitor</h1>
+                <button id="closeVisitBtn" class="text-xl font-bold text-gray-400 hover:text-black">&times;</button>
+            </div>
+
+            <div class="mt-4 space-y-3">
+                <div class="flex gap-4">
+                    <div class="w-1/2">
+                        <label class="block font-medium">First Name</label>
+                        <p class="mt-1 rounded border px-3 py-2">Mark</p>
+                    </div>
+                    <div class="w-1/2">
+                        <label class="block font-medium">Last Name</label>
+                        <p class="mt-1 rounded border px-3 py-2">Tol</p>
+                    </div>
+                </div>
+
+                <label class="block font-medium">Homeowner</label>
+                <div class="relative">
+                    <p class="w-full rounded border py-2 pl-12">Kobe Amaro</p>
+                    <div class="absolute top-1/2 left-2 flex h-8 w-8 -translate-y-1/2 transform items-center justify-center rounded-full bg-yellow-400 font-bold text-white">C</div>
+                </div>
+
+                <label class="block font-medium">Phone Number</label>
+                <p class="w-full rounded border px-3 py-2">0123456789</p>
+
+                <div class="flex gap-4">
+                    <div class="w-1/2">
+                        <label class="block font-medium">Visot Date</label>
+                        <p class="w-full rounded border px-3 py-2">04/15/2025 - 01:00 PM</p>
+                    </div>
+                    <div class="w-1/2">
+                        <label class="block font-medium">Visit Time</label>
+                        <p class="w-full rounded border px-3 py-2">04/15/2025 - 02:30 PM</p>
+                    </div>
+                </div>
+
+                <label class="block font-medium">Vehicle Plate</label>
+                <p class="w-full rounded border px-3 py-2">ABC 123</p>
+
+                <label class="block font-medium">Reason for Visit</label>
+                <p class="w-full rounded border px-3 py-2">Visiting a friend</p>
+
+                <div class="mt-4 flex justify-between">
+                    <button class="w-[45%] rounded-full border border-[#BF6522] px-4 py-2 text-[#BF6522] hover:bg-[#BF6522] hover:text-white">Decline</button>
+                    <button class="w-[45%] rounded-full bg-[#043137] px-4 py-2 text-white hover:bg-[#065A57]">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const openBtn = document.getElementById("addType");
+        const modal = document.getElementById("visitor-popup");
+        const modalContent = modal.querySelector("div");
+        const closeBtn = document.getElementById("closeVisitBtn");
+
+        openBtn.addEventListener("click", () => {
+            modal.classList.remove("hidden");
+        });
+
+        closeBtn.addEventListener("click", () => {
+            modal.classList.add("hidden");
+        });
+
+        // Close when clicking outside the modal content
+        modal.addEventListener("click", (e) => {
+            if (!modalContent.contains(e.target)) {
+                modal.classList.add("hidden");
+            }
+        });
+    </script>
+
+    <!-- Update the logs table to match the image -->
+    <table class="hidden w-[88%] overflow-y-auto rounded-lg bg-white shadow-lg">
+        <thead>
+            <tr class="text-left text-[#787676]">
+                <th class="px-4 py-3">Visitor Name</th>
+                <th class="px-4 py-3">Homeowner</th>
+                <th class="px-4 py-3">Check-in</th>
+                <th class="px-4 py-3">Check-Out</th>
+                <th class="px-4 py-3">Vehicle Plate</th>
+                <th class="px-4 py-3">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="hover:bg-gray-50">
+                <td class="px-4 py-4">Mark Tol</td>
+                <td class="px-4 py-4">Kobe Amaro</td>
+                <td class="px-4 py-4">04/15/2025 - 01:00 PM</td>
+                <td class="px-4 py-4">---</td>
+                <td class="px-4 py-4">ABC 123</td>
+                <td class="px-4 py-4">
+                    <a href="#" class="text-red-400">Log out</a>
+                </td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="px-4 py-4">Mark Tol</td>
+                <td class="px-4 py-4">Kobe Amaro</td>
+                <td class="px-4 py-4">04/15/2025 - 01:00 PM</td>
+                <td class="px-4 py-4">04/15/2025 - 01:00 PM</td>
+                <td class="px-4 py-4">ABC 123</td>
+                <td class="px-4 py-4">
+                    <a href="#" class="text-red-400">Log out</a>
+                </td>
+            </tr>
+    
+        </tbody>
+    </table>
+
+    @await Html.PartialAsync("_pagination")
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const visitorRequestBtn = document.querySelector("#sortV a:first-child");
+            const visitorLogsBtn = document.querySelector("#sortV a:last-child");
+            const visitorTable = document.querySelector("table:first-of-type");
+            const logsTable = document.querySelector("table:last-of-type");
+
+            visitorRequestBtn.addEventListener("click", function() {
+                visitorTable.classList.remove("hidden");
+                logsTable.classList.add("hidden");
+            });
+
+            visitorLogsBtn.addEventListener("click", function() {
+                visitorTable.classList.add("hidden");
+                logsTable.classList.remove("hidden");
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const logsRows = document.querySelectorAll(".hidden tbody tr"); // Select rows from hidden table
+            const logsPopup = document.getElementById("logs-popup");
+            const closeLogsBtn = document.getElementById("closeLogsBtn");
+
+            // Show logs popup when clicking a row in logs table
+            logsRows.forEach(row => {
+                row.addEventListener("click", (e) => {
+                    // Prevent triggering if clicking on the "Log out" link
+                    if (!e.target.closest('a')) {
+                        logsPopup.classList.remove("hidden");
+                    }
+                });
+            });
+
+            // Close logs popup
+            closeLogsBtn.addEventListener("click", () => {
+                logsPopup.classList.add("hidden");
+            });
+
+            // Close on outside click
+            logsPopup.addEventListener("click", (event) => {
+                if (event.target === logsPopup) {
+                    logsPopup.classList.add("hidden");
+                }
+            });
+        });
+    </script>
+    <script>
+        document.getElementById("editIc").addEventListener("click", function() {
+            document.getElementById("editReq-popup").classList.remove("hidden");
+        });
+        document.getElementById("editReq-popup").addEventListener("click", function(event) {
+            if (event.target === this) {
+                this.classList.add("hidden");
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const visitorPopup = document.getElementById("request-popup");
+            const visitorRows = document.querySelectorAll(".visitor-row");
+            const cancelBtn = document.getElementById("cancelbtn");
+            const closeBtn = document.getElementById("closeBtn");
+
+            // Show only visitor modal on visitor row click
+            visitorRows.forEach(row => {    
+                row.addEventListener("click", () => {
+                    visitorPopup.classList.remove("hidden");
+                });
+            });
+
+            // Close modal on cancel or close buttons
+            [cancelBtn, closeBtn].forEach(btn => {
+                if (btn) {
+                    btn.addEventListener("click", () => {
+                        visitorPopup.classList.add("hidden");
+                    });
+                }
+            });
+
+            // Close modal when clicking outside
+            visitorPopup.addEventListener("click", (event) => {
+                if (event.target === visitorPopup) {
+                    visitorPopup.classList.add("hidden");
+                }
+            });
+        });
+    </script>
+
+
+
+    <script>
+        document.querySelectorAll("#sortV a").forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+                e.preventDefault(); // Prevent page reload
+
+                // Reset all buttons
+                document.querySelectorAll("#sortV a").forEach(b => {
+                    b.classList.remove("bg-blue-200", "text-blue-700", "font-semibold");
+                    b.classList.add("bg-gray-100", "hover:bg-gray-200");
+                    b.querySelector("span").classList.remove("text-blue-700");
+                    b.querySelector("span").classList.add("text-black");
+                });
+
+                // Add active state to the clicked button
+                e.currentTarget.classList.add("bg-blue-200", "text-blue-700", "font-semibold");
+                e.currentTarget.classList.remove("bg-gray-100", "hover:bg-gray-200");
+
+                // Change the text inside span to blue
+                e.currentTarget.querySelector("span").classList.remove("text-black");
+                e.currentTarget.querySelector("span").classList.add("text-blue-700");
+            });
+        });
+
+    </script>
+
+</div>

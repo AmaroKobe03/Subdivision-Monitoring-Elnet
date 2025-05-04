@@ -173,6 +173,11 @@ namespace ElnetSubdivi.Controllers
             ViewData["HideSearch"] = true;
             return View();
         }
+        public IActionResult SecurityCalendar()
+        {
+            ViewData["HideSearch"] = true;
+            return View();
+        }
 
         public IActionResult UserVehicle()
         {
@@ -213,7 +218,13 @@ namespace ElnetSubdivi.Controllers
             return View();
 
         }
-        public IActionResult serviceRequest()
+
+        public IActionResult SecurityServiceRequest ()
+        {
+            ViewData["HideSearch"] = true;
+            return View();
+        }
+       public IActionResult serviceRequest()
         {
             ViewData["Title"] = "Service Request";
             ViewData["HideSearch"] = true;
@@ -235,6 +246,16 @@ namespace ElnetSubdivi.Controllers
             return View();
         }
         public IActionResult HouseKeepingCalendar()
+        {
+            ViewData["HideSearch"] = true;
+            return View();
+        }
+        public IActionResult SecurityVehicleManagement()
+        {
+            ViewData["HideSearch"] = true;
+            return View();
+        }
+        public IActionResult VisitorManagement()
         {
             ViewData["HideSearch"] = true;
             return View();
@@ -406,7 +427,7 @@ namespace ElnetSubdivi.Controllers
                         case "housekeeping":
                             return RedirectToAction("UserDash", "Home");
                         case "security":
-                            return RedirectToAction("SecurityDash", "Home");
+                            return RedirectToAction("UserDash", "Home");
                         default:
                             return RedirectToAction("UserDash", "Home"); // Default redirect for unknown subtypes
                     }
