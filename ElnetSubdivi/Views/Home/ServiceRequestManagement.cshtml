@@ -104,7 +104,6 @@
             <label class="mt-4 mb-1 block text-base text-gray-500">Assign Staff</label>
             <select id="assign-staff" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500">
                 <option>Assign Staff</option>
-                <option>Bryl Darel Gorgonio</option>
             </select>
 
             <div class="mt-6 flex gap-4">
@@ -252,6 +251,38 @@
 
             document.getElementById('edit-description').value = request.request_Description || "";
 
+            // Clear and populate the staff dropdown based on request type
+            const staffDropdown = document.getElementById('assign-staff');
+            staffDropdown.innerHTML = '<option value="">Assign Staff</option>';
+
+            let prefix = '';
+            switch(request.request_Type) {
+                case 'Security':
+                    prefix = 'SCT-';
+                    break;
+                case 'Maintenance':
+                    prefix = 'MTN-';
+                    break;
+                case 'Housekeeping':
+                    prefix = 'HSK-';
+                    break;
+            }
+
+            if (prefix) {
+                const qualifiedStaff = filterUsersByPrefix(prefix);
+                qualifiedStaff.forEach(staff => {
+                    const option = document.createElement('option');
+                    option.value = staff.user_id;
+                    option.textContent = `${staff.first_name} ${staff.last_name}`;
+                    staffDropdown.appendChild(option);
+                });
+            }
+
+            // Set current assigned staff if exists
+            if (request.assigned_Staff) {
+                staffDropdown.value = request.assigned_Staff;
+            }
+
             const attachmentContainer = document.getElementById('attachment-container');
             attachmentContainer.innerHTML = "";
 
@@ -286,6 +317,12 @@
         });
     </script>
     <script>
+
+        function filterUsersByPrefix(prefix) {
+            return userModelData.Users.filter(user =>
+                user.user_id && user.user_id.startsWith(prefix)
+            );
+        }
 
         function openAdd() {
           document.getElementById('ReqModal').classList.remove('hidden');
