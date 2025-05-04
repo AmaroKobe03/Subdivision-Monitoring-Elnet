@@ -14,7 +14,13 @@ namespace ElnetSubdivi.Models
         public string Request_Time { get; set; }
         public string Request_Description { get; set; }
         public DateTime Request_Creation { get; set; }
+        public DateTime? Request_Closed { get; set; }
         public string Request_Status { get; set; }
+        public string Assigned_Staff { get; set; }
+
+        [NotMapped]
+        public IFormFile Request_Attachment { get; set; }
+        public string? Attachment_Path { get; set; }
 
         public ServiceRequest()
         {
@@ -26,8 +32,12 @@ namespace ElnetSubdivi.Models
             Request_Time = string.Empty;
             Request_Description = string.Empty;
             Request_Creation = DateTime.MinValue;
+            Request_Closed = null;
             Request_Status = string.Empty;
             Request_Status = string.Empty;
+            Assigned_Staff = string.Empty;
+            Request_Attachment = null;
+            Attachment_Path = string.Empty;
         }
     }
 

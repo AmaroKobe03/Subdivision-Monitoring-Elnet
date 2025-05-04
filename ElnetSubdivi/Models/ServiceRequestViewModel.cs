@@ -11,6 +11,8 @@
         public string Request_Time { get; set; }
         public string Request_Description { get; set; }
 
+        public IFormFile? Request_Attachment { get; set; }
+        public string Attachement_Path { get; set; } = string.Empty;
         public string Request_Status { get; set; } = "Pending";
     }
 
