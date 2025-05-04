@@ -28,12 +28,14 @@ namespace ElnetSubdivi.Controllers
                 FacilityGuidelines = f.Facility_Guidelines,
                 FacilityAminities = f.Facility_Aminities,
                 FacilityStatus = f.Facility_Status,
-                OperatingHours = f.OperatingHours.Select(h => new FacilityViewModel.OperatingHourDto
+                OperatingHours = f.OperatingHours.Select(h => new FacilityViewModel.FacilityOperatingHours
                 {
+                    FacilityId = h.FacilityId,
                     DayOfWeek = h.DayOfWeek,
                     OpeningTime = h.OpeningTime,
-                    ClosingTime = h.ClosingTime
-                }).ToList()
+                    ClosingTime = h.ClosingTime,
+                    Facility = h.Facility
+                }).ToList() // Ensure this is a List<FacilityViewModel.FacilityOperatingHours>
             }).ToList();
 
             return View("FacilityManagement", viewModels); // View name matches your cshtml

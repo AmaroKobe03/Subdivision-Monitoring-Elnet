@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using ElnetSubdivi.Services;
 using ElnetSubdivi.ViewModels;
+using Microsoft.AspNetCore.Hosting;
 
 
 namespace ElnetSubdivi.Controllers
@@ -23,9 +24,10 @@ namespace ElnetSubdivi.Controllers
         private readonly IRequestService _requestService;
         private readonly IReservationService _reservationService;
         private readonly IBillingPaymentService _billingService;
+        private readonly IWebHostEnvironment _webHostEnvironment; // Add this field
 
 
-        public HomeController(ILogger<HomeController> logger, IUserService userService, ApplicationDbContext context, IPostService postService, IFacilityService facilityService, IRequestService requestService, IReservationService reservationService, IBillingPaymentService billingService)
+        public HomeController(ILogger<HomeController> logger, IUserService userService, ApplicationDbContext context, IPostService postService, IFacilityService facilityService, IRequestService requestService, IReservationService reservationService, IBillingPaymentService billingService, IWebHostEnvironment webHostEnvironment)
         {
             _logger = logger;
             _userService = userService;
@@ -35,6 +37,7 @@ namespace ElnetSubdivi.Controllers
             _requestService = requestService;
             _reservationService = reservationService;
             _billingService = billingService;
+            _webHostEnvironment = webHostEnvironment ?? throw new ArgumentNullException(nameof(webHostEnvironment));
         }
 
         public async Task<IActionResult> Index()
@@ -466,9 +469,11 @@ namespace ElnetSubdivi.Controllers
         [HttpPost]
         public async Task<IActionResult> AddFacility(FacilityViewModel model)
         {
-            // Ensure last FacilityId is retrieved from the table and sorted by numeric part
-            var lastFacility = await _facilityService.GetLastFacilityAsync(); // This now pulls from Facility table directly
+            // Define the list of operating days
+            var operatingDays = new List<string> { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
 
+            // Generate Facility ID
+            var lastFacility = await _facilityService.GetLastFacilityAsync();
             int nextIdNumber = 1;
             if (lastFacility != null && !string.IsNullOrEmpty(lastFacility.Facility_Id))
             {
@@ -478,10 +483,56 @@ namespace ElnetSubdivi.Controllers
                     nextIdNumber = numericId + 1;
                 }
             }
-
             string newFacilityId = $"FAC-{nextIdNumber.ToString("D4")}";
             model.FacilityId = newFacilityId;
             ModelState.Remove(nameof(model.FacilityId));
+
+            // Handle image upload
+            if (model.ImageFile != null && model.ImageFile.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                var uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ImageFile.FileName;
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await model.ImageFile.CopyToAsync(fileStream);
+                }
+
+                model.ImagePath = "/uploads/" + uniqueFileName;
+            }
+
+            // Process operating hours from form data
+            model.OperatingHours = new List<FacilityViewModel.FacilityOperatingHours>();
+            foreach (var day in operatingDays) // Use the same list from your view
+            {
+                // Check if this day was selected
+                var isDaySelected = Request.Form["SelectedDays"].Contains(day);
+
+                if (isDaySelected)
+                {
+                    // Get the times for this day
+                    var openingTimeStr = Request.Form[$"OpeningTime_{day}"].ToString();
+                    var closingTimeStr = Request.Form[$"ClosingTime_{day}"].ToString();
+
+                    if (TimeSpan.TryParse(openingTimeStr, out var openingTime) &&
+                        TimeSpan.TryParse(closingTimeStr, out var closingTime))
+                    {
+                        model.OperatingHours.Add(new FacilityViewModel.FacilityOperatingHours
+                        {
+                            DayOfWeek = day,
+                            OpeningTime = openingTime,
+                            ClosingTime = closingTime,
+                            FacilityId = model.FacilityId
+                        });
+                    }
+                }
+            }
 
             if (ModelState.IsValid)
             {
@@ -494,21 +545,26 @@ namespace ElnetSubdivi.Controllers
                     Service_Fee_Per_Hour = model.ServiceFeePerHour,
                     Facility_Guidelines = model.FacilityGuidelines,
                     Facility_Aminities = model.FacilityAminities,
-                    OperatingHours = model.OperatingHours != null
-                    ? model.OperatingHours.Select(oh => new FacilityOperatingHour
-                    {
-                        DayOfWeek = oh.DayOfWeek,
-                        OpeningTime = oh.OpeningTime,
-                        ClosingTime = oh.ClosingTime
-                    }).ToList()
-                    : new List<FacilityOperatingHour>()
+                    Facility_Status = model.FacilityStatus
                 };
 
-                await _facilityService.AddFacilityAsync(facility);
+                // Convert operating hours to the correct type
+                var operatingHours = model.OperatingHours.Select(oh => new FacilityOperatingHour
+                {
+                    FacilityId = oh.FacilityId,
+                    DayOfWeek = oh.DayOfWeek,
+                    OpeningTime = oh.OpeningTime ?? TimeSpan.Zero,
+                    ClosingTime = oh.ClosingTime ?? TimeSpan.Zero
+                }).ToList();
+
+                // Fix: Pass the list of operating hours instead of a single object
+                await _facilityService.AddFacilityAsync(facility, operatingHours);
+
                 return RedirectToAction("FacilityManagement");
             }
 
-            return RedirectToAction("FacilityManagement");
+            // If we got this far, something failed
+            return View(model);
         }
 
         [HttpPost]

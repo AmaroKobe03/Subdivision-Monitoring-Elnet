@@ -17,7 +17,7 @@
         color: gray;
         font-weight: 500; /* Medium */
     }
-
+    
     .fc-prev-button, .fc-next-button {
         background: #002B2D !important;
         color: white !important;
@@ -642,6 +642,27 @@
                 // Change the text inside span to blue
                 e.currentTarget.querySelector("span").classList.remove("text-black");
                 e.currentTarget.querySelector("span").classList.add("text-blue-700");
+            });
+        });
+
+                document.querySelector("form").addEventListener("submit", function(e) {
+            const selectedDays = document.querySelectorAll(".toggleSwitchDay:checked");
+            if (selectedDays.length === 0) {
+                alert("Please select at least one operating day");
+                e.preventDefault();
+                return;
+            }
+
+            selectedDays.forEach(day => {
+                const dayName = day.value;
+                const openingTime = document.querySelector(`input[name="OpeningTime_${dayName}"]`).value;
+                const closingTime = document.querySelector(`input[name="ClosingTime_${dayName}"]`).value;
+
+                if (!openingTime || !closingTime) {
+                    alert(`Please set operating hours for ${dayName}`);
+                    e.preventDefault();
+                    return;
+                }
             });
         });
 

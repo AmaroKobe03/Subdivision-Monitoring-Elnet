@@ -1,4 +1,7 @@
-﻿public class FacilityViewModel
+﻿using ElnetSubdivi.Models;
+using Microsoft.AspNetCore.Http; // Ensure this namespace is included for IFormFile
+
+public class FacilityViewModel
 {
     // UI Properties
     public string ImagePath { get; set; }
@@ -18,9 +21,14 @@
     public string FacilityAminities { get; set; }
     public string FacilityStatus { get; set; } = "Available";
 
-    // Operating hours
-    public List<OperatingHourDto>? OperatingHours { get; set; }
 
+    // For form binding
+    public List<string> SelectedDays { get; set; } = new();
+
+    // Operating hours
+    public List<FacilityOperatingHours> OperatingHours { get; set; }
+
+    public IFormFile ImageFile { get; set; }
 
     // Constructor
     public FacilityViewModel()
@@ -31,14 +39,17 @@
         Type = string.Empty;
         ActionName = string.Empty;
         ButtonText = string.Empty;
-        OperatingHours = new List<OperatingHourDto>();
+        OperatingHours = new List<FacilityOperatingHours>(); // Fixed type mismatch
     }
 
-    public class OperatingHourDto
+    public class FacilityOperatingHours
     {
+        public string FacilityId { get; set; }
         public string DayOfWeek { get; set; }
-        public TimeSpan OpeningTime { get; set; }
-        public TimeSpan ClosingTime { get; set; }
+        public TimeSpan? OpeningTime { get; set; }
+        public TimeSpan? ClosingTime { get; set; }
+
+        public Facility Facility { get; set; }
     }
 }
 

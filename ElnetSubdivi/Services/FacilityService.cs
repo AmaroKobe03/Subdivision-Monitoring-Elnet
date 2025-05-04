@@ -23,23 +23,46 @@ namespace ElnetSubdivi.Services
                 .ToListAsync();
         }
 
-        public async Task AddFacilityAsync(Facility facility)
+
+        public async Task AddFacilityAsync(Facility facility, List<FacilityOperatingHour> operatingHours)
         {
             if (facility == null)
                 throw new ArgumentNullException(nameof(facility));
 
-            // Ensure OperatingHours collection is initialized
+            // 🔐 Generate new Facility_Id
+            var lastId = await _context.Facilities
+                .Where(f => f.Facility_Id.StartsWith("FAC-"))
+                .OrderByDescending(f => f.Facility_Id)
+                .Select(f => f.Facility_Id)
+                .FirstOrDefaultAsync();
+
+            int nextId = 1;
+            if (!string.IsNullOrEmpty(lastId))
+            {
+                var idPart = lastId.Replace("FAC-", "");
+                if (int.TryParse(idPart, out int parsedId))
+                    nextId = parsedId + 1;
+            }
+
+            facility.Facility_Id = $"FAC-{nextId:D4}";
+
+            // 🕐 Link OperatingHours if any
             if (facility.OperatingHours != null && facility.OperatingHours.Any())
             {
                 foreach (var hour in facility.OperatingHours)
                 {
-                    hour.Facility = facility; // Link back if needed
+                    hour.FacilityId = facility.Facility_Id; // Set FK
                 }
+
+                // Fix for CS8604: Ensure OperatingHours is not null before calling AddRangeAsync
+                await _context.FacilityOperatingHours.AddRangeAsync(operatingHours);
             }
 
             await _context.Facilities.AddAsync(facility);
+
             await _context.SaveChangesAsync();
         }
+
 
         public async Task<Facility> GetLastFacilityAsync()
         {
