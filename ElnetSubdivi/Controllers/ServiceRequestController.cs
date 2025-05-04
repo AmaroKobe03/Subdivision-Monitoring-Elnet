@@ -84,5 +84,38 @@ namespace ElnetSubdivi.Controllers
 
             return Ok(new { message = "Request submitted successfully!" });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateRequest([FromBody] UpdateRequestDto dto)
+        {
+            if (dto == null)
+                return BadRequest("Invalid data");
+
+            var request = await _context.Service_Request.FindAsync(dto.RequestId);
+            if (request == null)
+                return NotFound();
+
+            // Update fields
+            request.Request_Type = dto.RequestType;
+            request.Request_Date = DateTime.Parse(dto.RequestDate);
+            request.Request_Time = dto.RequestTime;
+            request.Assigned_Staff = dto.AssignedStaff;
+            request.Request_Status = dto.RequestStatus;
+
+            await _context.SaveChangesAsync();
+            return Json(new { success = true });
+        }
+
+        public class UpdateRequestDto
+        {
+            public string RequestId { get; set; }
+            public string RequestType { get; set; }
+            public string RequestDate { get; set; }
+            public string RequestTime { get; set; }
+            public string AssignedStaff { get; set; }
+            public string RequestStatus { get; set; }
+        }
+
+
     }
 }

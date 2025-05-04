@@ -102,13 +102,15 @@
             <div id="attachment-container" class="mb-2"></div>
 
             <label class="mt-4 mb-1 block text-base text-gray-500">Assign Staff</label>
-            <select class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500">
+            <select id="assign-staff" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500">
                 <option>Assign Staff</option>
+                <option>Bryl Darel Gorgonio</option>
             </select>
 
             <div class="mt-6 flex gap-4">
                 <button class="w-1/2 rounded-full border border-[#B25828] py-2 text-[#B25828]" onclick="closeModal(event)">Decline</button>
-                <button class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Approve</button>
+                <button id="approve-btn" class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Approve</button>
+
             </div>
         </div>
     </div>
@@ -166,8 +168,8 @@
             <!-- Assign Staff -->
             <label class="mt-4 mb-1 block text-base text-gray-500">Assign Staff</label>
             <select class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500">
-                <option>Bryl Gorgonio</option>
-                <option>Other Staff</option>
+                <option>Assign Staff!</option>
+                <option>Bryl Darel Gorgonio</option>
             </select>
 
             <!-- Buttons -->
@@ -194,20 +196,24 @@
                 WriteIndented = true
             };
         }
-            const modelData = {
-            serviceRequests: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ServiceRequests, jsonSerializerOptions))
-            };
+
+        let currentRequestId = null;
+
+        const modelData = {
+        serviceRequests: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ServiceRequests, jsonSerializerOptions))
+        };
         console.log("Model data loaded:", modelData); // Debugging
         console.log("Service Requests:", modelData.serviceRequests); // Debugging
 
-            const userModelData = {
-            Users: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Users, jsonSerializerOptions))
-            };
+        const userModelData = {
+        Users: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Users, jsonSerializerOptions))
+        };
         console.log("Model data loaded:", userModelData); // Debugging
         console.log("Users:", userModelData.Users); // Debugging
 
         // Function to open the Edit-modal
            function openModal(requestId) {
+            currentRequestId = requestId;
             console.log("Attempting to open modal for request ID:", requestId);
 
             const request = modelData.serviceRequests.find(r => r.request_Id === requestId);
@@ -277,7 +283,7 @@
                 };
 
             });
-            });
+        });
     </script>
     <script>
 
@@ -292,4 +298,44 @@
           }
         }
     </script>
+    <script>
+        document.getElementById('approve-btn').addEventListener('click', function () {
+            const request = modelData.serviceRequests.find(r => r.request_Id === currentRequestId);
+            console.log(currentRequestId)
+            // Gather updated fields
+            const updatedRequest = {
+                requestId: request.request_Id,
+                requestType: document.getElementById('edit-type').value,
+                requestDate: document.getElementById('edit-date').value,
+                requestTime: document.getElementById('edit-time').value,
+                assignedStaff: document.getElementById('assign-staff').value,
+
+                requestStatus: "Approved"
+            };
+
+            console.log("Submitting update:", updatedRequest);
+
+            fetch('/ServiceRequest/UpdateRequest', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedRequest)
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error('Network error');
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Server response:", data);
+                    alert("Request updated successfully.");
+                    location.reload(); // Optional: reload to reflect changes
+                })
+                .catch(error => {
+                    console.error("Error updating request:", error);
+                    alert("Failed to update request.");
+                });
+        });
+    </script>
+
 </div>
