@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Facility Management";
 }
-@model List<dynamic>
+@model List<ElnetSubdivi.Models.FacilityViewModel>
 @{
     var reservations = ViewBag.Reservations as List<dynamic>;
 }
@@ -99,57 +99,23 @@
     <div class="mt-6 flex w-[88.5%] grid-cols-3 items-center justify-center gap-6 overflow-y-auto">
         @foreach (var facility in Model)
         {
-            <div class="w-[88.5%] rounded-lg bg-white shadow-lg">
-                <!-- Image Section -->
-                <div class="relative w-full">
-                    <img class="h-[200px] w-full rounded-t-lg object-cover" src="@Url.Content(facility.Image)" alt="@facility.Name">
-                    <span class="absolute top-2 right-2 z-10 rounded-full px-3 py-1 text-sm font-semibold text-white shadow-md @(facility.Available ? "bg-green-500" : "bg-red-500")">
-                        @(facility.Available ? "Available" : "Unavailable")
-                    </span>
-                </div>
+            <div class="facility-card border rounded p-4 shadow mb-4">
+                <img src="@facility.ImagePath" alt="@facility.FacilityName" class="mb-2 w-full max-w-sm object-cover rounded">
+                <h3 class="text-xl font-semibold">@facility.FacilityName</h3>
+                <p class="text-sm text-gray-600">@facility.FacilityCategory</p>
+                <p>@facility.FacilityDescription</p>
+                <p><strong>Rate:</strong> ₱@facility.ServiceFeePerHour/hour</p>
+                <p><strong>Amenities:</strong> @facility.FacilityAminities</p>
+                <p><strong>Guidelines:</strong> @facility.FacilityGuidelines</p>
 
-                <!-- Title and Toggle -->
-                <div class="mt-4 flex items-center justify-between px-4">
-                    <h1 class="text-lg font-semibold">
-                        @facility.Name
-                    </h1>
-                    <label class="relative inline-flex cursor-pointer items-center">
-                        <input type="checkbox" class="toggleSwitch sr-only">
-                        <div class="relative h-6 w-11 rounded-full bg-gray-300 transition-colors duration-300 ease-in-out">
-                            <div class="absolute top-1 left-1 h-4 w-4 rounded-full bg-white transition-all duration-300 ease-in-out"></div>
-                        </div>
-                    </label>
-
-                </div>
-
-                <!-- Type & Rating -->
-                <p class="px-4 text-sm text-gray-500">@facility.Type</p>
-                <div class="flex items-center gap-2 px-4 text-gray-700">
-                    <img src="~/Images/star.svg" class="h-4 w-4" />
-                    <p class="text-sm font-medium">@facility.Rating</p>
-                </div>
-
-                <!-- Time & Price -->
-                <div class="mt-2 flex items-center gap-4 px-4 text-gray-700">
-                    <div class="flex items-center gap-2">
-                        <img src="~/Images/timeic.svg" class="h-4 w-4" />
-                        <p class="text-sm">@facility.Time</p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <img src="~/Images/dollar.svg" class="h-4 w-4" />
-                        <p class="text-sm">@facility.Price</p>
-                    </div>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="mt-4 mb-4 flex items-center justify-between gap-4 px-4">
-                    <button id="" type="button" class="viewbtn w-full rounded-full bg-[#043137] px-3 py-2 font-semibold text-white hover:bg-opacity-75">
-                        View Details
-                    </button>
-                    <div class="flex gap-1">
-                        <img src="~/Images/edit.svg" class="h-8 w-8 cursor-pointer" />
-                        <img src="~/Images/trash.svg" class="h-8 w-8 cursor-pointer" />
-                    </div>
+                <div class="mt-2">
+                    <strong>Operating Hours:</strong>
+                    <ul class="text-sm list-disc pl-4">
+                        @foreach (var hour in facility.OperatingHours)
+                        {
+                            <li>@hour.Day_Of_Week: @hour.Opening_Time?.ToString(@"hh\:mm") - @hour.Closing_Time?.ToString(@"hh\:mm")</li>
+                        }
+                    </ul>
                 </div>
             </div>
         }

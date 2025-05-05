@@ -1,4 +1,5 @@
-﻿using ElnetSubdivi.Services;
+﻿using ElnetSubdivi.Models;
+using ElnetSubdivi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElnetSubdivi.Controllers

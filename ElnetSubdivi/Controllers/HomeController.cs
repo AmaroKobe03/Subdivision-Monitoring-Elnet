@@ -437,19 +437,33 @@ namespace ElnetSubdivi.Controllers
             return Json(events);
         }
 
-        public IActionResult FacilityManagement()
+
+        public async Task<IActionResult> FacilityManagementAsync()
         {
+            var facilities = await _facilityService.GetAllFacilitiesWithHoursAsync();
+
+            var viewModels = facilities.Select(f => new FacilityViewModel
+            {
+                FacilityId = f.Facility_Id,
+                FacilityName = f.Facility_Name,
+                FacilityCategory = f.Facility_Category,
+                FacilityDescription = f.Facility_Description,
+                ImagePath = f.Facility_Img,
+                ServiceFeePerHour = f.Service_Fee_Per_Hour,
+                FacilityGuidelines = f.Facility_Guidelines,
+                FacilityAminities = f.Facility_Aminities,
+                FacilityStatus = f.Facility_Status,
+                OperatingHours = f.OperatingHours.Select(h => new FacilityViewModel.FacilityOperatingHours
+                {
+                    Facility_Id = h.Facility_Id,
+                    Day_Of_Week = h.Day_Of_Week,
+                    Opening_Time = h.Opening_Time,
+                    Closing_Time = h.Closing_Time,
+                    Facility = h.Facility
+                }).ToList() // Ensure this is a List<FacilityViewModel.FacilityOperatingHours>
+            }).ToList();
+
             ViewData["HideSearch"] = true;
-
-            var facilities = new List<dynamic>
-                   {
-                new { Name = "Community Park", Type = "Recreation", Rating = 4.8, Time = "6:00 AM - 10:00 PM", Price = "Free", Available = true, Image = "~/Images/facimg1.png" },
-                new { Name = "Function Hall", Type = "Events", Rating = 4.8, Time = "6:00 AM - 10:00 PM", Price = "₱25/hr", Available = true, Image = "~/Images/facimg2.png" },
-                new { Name = "Tennis Court", Type = "Sports", Rating = 4.8, Time = "6:00 AM - 10:00 PM", Price = "$15/hr", Available = false, Image = "~/Images/tennis.png" }
-            };
-
-            var operatingHours = new List<string> { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
-            ViewBag.OperatingHours = operatingHours;
 
             var reservations = new List<dynamic>
             {
@@ -461,7 +475,7 @@ namespace ElnetSubdivi.Controllers
 
             ViewBag.Reservations = reservations;
 
-            return View(facilities);
+            return View("FacilityManagement", viewModels); // Removed the third argument to fix CS1501
         }
 
 
