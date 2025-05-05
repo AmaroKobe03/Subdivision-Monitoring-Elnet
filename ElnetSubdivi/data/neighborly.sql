@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 04, 2025 at 08:15 PM
+-- Generation Time: May 05, 2025 at 08:49 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -92,7 +92,9 @@ CREATE TABLE `facilities` (
 --
 
 INSERT INTO `facilities` (`facility_id`, `facility_name`, `facility_category`, `facility_description`, `facility_img`, `service_fee_per_hour`, `facility_guidelines`, `facility_aminities`, `facility_status`) VALUES
-('FAC-0001', 'Basketball Court', 'Sports', 'waw', '', 300.00, 'No eating', 'CR', 'Available');
+('FAC-0001', 'Basketball Court', 'Sports', 'Trial', '', 100.00, 'No eating', 'CR', 'Available'),
+('FAC-0002', 'Conference Hall', 'Events', 'Trial2', '/uploads/2877f7dd-a383-498d-a55f-c818a48b8091_2023-07-04_03.15.11.png', 100.00, 'No eating', 'CR', 'Available'),
+('FAC-0003', 'Swimming Pool', 'Recreation', 'Swimming Pool', '/uploads/83777098-1624-457c-b226-bad8f885ff9a_2023-07-10_21.26.18.png', 300.00, 'No eating', 'CR', 'Available');
 
 --
 -- Triggers `facilities`
@@ -127,6 +129,16 @@ CREATE TABLE `facility_operating_hours` (
   `opening_time` time NOT NULL,
   `closing_time` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `facility_operating_hours`
+--
+
+INSERT INTO `facility_operating_hours` (`facility_id`, `day_of_week`, `opening_time`, `closing_time`) VALUES
+('FAC-0001', 'Monday', '01:38:00', '13:38:00'),
+('FAC-0002', 'Monday', '01:46:00', '13:46:00'),
+('FAC-0002', 'Tuesday', '01:46:00', '13:46:00'),
+('FAC-0003', 'Monday', '02:48:00', '14:48:00');
 
 -- --------------------------------------------------------
 
