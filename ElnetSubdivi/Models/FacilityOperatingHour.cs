@@ -5,14 +5,11 @@ namespace ElnetSubdivi.Models
 {
     public class FacilityOperatingHour
     {
-        [Key]
-        public int Id { get; set; }
-
         [ForeignKey("Facility")]
-        public string FacilityId { get; set; }
-        public string DayOfWeek { get; set; }
-        public TimeSpan OpeningTime { get; set; }
-        public TimeSpan ClosingTime { get; set; }
+        public string Facility_Id { get; set; }
+        public string Day_Of_Week { get; set; }
+        public TimeSpan Opening_Time { get; set; }
+        public TimeSpan Closing_Time { get; set; }
 
         public Facility Facility { get; set; }
     }

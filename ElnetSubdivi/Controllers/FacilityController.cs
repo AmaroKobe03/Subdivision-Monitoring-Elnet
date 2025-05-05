@@ -30,10 +30,10 @@ namespace ElnetSubdivi.Controllers
                 FacilityStatus = f.Facility_Status,
                 OperatingHours = f.OperatingHours.Select(h => new FacilityViewModel.FacilityOperatingHours
                 {
-                    FacilityId = h.FacilityId,
-                    DayOfWeek = h.DayOfWeek,
-                    OpeningTime = h.OpeningTime,
-                    ClosingTime = h.ClosingTime,
+                    Facility_Id = h.Facility_Id,
+                    Day_Of_Week = h.Day_Of_Week,
+                    Opening_Time = h.Opening_Time,
+                    Closing_Time = h.Closing_Time,
                     Facility = h.Facility
                 }).ToList() // Ensure this is a List<FacilityViewModel.FacilityOperatingHours>
             }).ToList();

@@ -14,7 +14,7 @@ namespace ElnetSubdivi.data
         public DbSet<Post> Posts { get; set; }
         public DbSet<ServiceRequest> Service_Request { get; set; }
         public DbSet<Facility> Facilities { get; set; }
-        public DbSet<FacilityOperatingHour> FacilityOperatingHours { get; set; }
+        public DbSet<FacilityOperatingHour> Facility_Operating_Hours { get; set; }
         public DbSet<Reservation> Reservation { get; set; }
         public DbSet<BillingPaymentModel> Billing_Statements { get; set; }
 
@@ -23,12 +23,12 @@ namespace ElnetSubdivi.data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<FacilityOperatingHour>()
-                .HasKey(foh => new { foh.FacilityId, foh.DayOfWeek });
+                .HasKey(foh => new { foh.Facility_Id, foh.Day_Of_Week });
 
             modelBuilder.Entity<FacilityOperatingHour>()
                 .HasOne(foh => foh.Facility)
                 .WithMany(f => f.OperatingHours) // Fix: Ensure the type of `OperatingHours` matches `ICollection<FacilityOperatingHour>`
-                .HasForeignKey(foh => foh.FacilityId);
+                .HasForeignKey(foh => foh.Facility_Id);
         }
     }
 

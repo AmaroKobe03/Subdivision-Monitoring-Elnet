@@ -525,10 +525,10 @@ namespace ElnetSubdivi.Controllers
                     {
                         model.OperatingHours.Add(new FacilityViewModel.FacilityOperatingHours
                         {
-                            DayOfWeek = day,
-                            OpeningTime = openingTime,
-                            ClosingTime = closingTime,
-                            FacilityId = model.FacilityId
+                            Day_Of_Week = day,
+                            Opening_Time = openingTime,
+                            Closing_Time = closingTime,
+                            Facility_Id = model.FacilityId
                         });
                     }
                 }
@@ -551,10 +551,10 @@ namespace ElnetSubdivi.Controllers
                 // Convert operating hours to the correct type
                 var operatingHours = model.OperatingHours.Select(oh => new FacilityOperatingHour
                 {
-                    FacilityId = oh.FacilityId,
-                    DayOfWeek = oh.DayOfWeek,
-                    OpeningTime = oh.OpeningTime ?? TimeSpan.Zero,
-                    ClosingTime = oh.ClosingTime ?? TimeSpan.Zero
+                    Facility_Id = oh.Facility_Id,
+                    Day_Of_Week = oh.Day_Of_Week,
+                    Opening_Time = oh.Opening_Time ?? TimeSpan.Zero,
+                    Closing_Time = oh.Closing_Time ?? TimeSpan.Zero
                 }).ToList();
 
                 // Fix: Pass the list of operating hours instead of a single object

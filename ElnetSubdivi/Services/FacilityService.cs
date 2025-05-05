@@ -47,15 +47,13 @@ namespace ElnetSubdivi.Services
             facility.Facility_Id = $"FAC-{nextId:D4}";
 
             // 🕐 Link OperatingHours if any
-            if (facility.OperatingHours != null && facility.OperatingHours.Any())
+            if (operatingHours != null && operatingHours.Any())
             {
-                foreach (var hour in facility.OperatingHours)
+                foreach (var hour in operatingHours)
                 {
-                    hour.FacilityId = facility.Facility_Id; // Set FK
+                    hour.Facility_Id = facility.Facility_Id;
                 }
-
-                // Fix for CS8604: Ensure OperatingHours is not null before calling AddRangeAsync
-                await _context.FacilityOperatingHours.AddRangeAsync(operatingHours);
+                await _context.Facility_Operating_Hours.AddRangeAsync(operatingHours);
             }
 
             await _context.Facilities.AddAsync(facility);
