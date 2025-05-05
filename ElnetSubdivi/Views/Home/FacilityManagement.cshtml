@@ -188,13 +188,21 @@
                 <textarea name="FacilityDescription" class="mb-2 w-full rounded-lg border p-2" required></textarea>
 
                 <label>Facility Images</label>
-                <div class="border-2 mb-2 flex h-[15vh] items-center justify-center border-dashed border-gray-400 p-6">
-                    <label for="ImageFile" class="flex cursor-pointer items-center gap-2 rounded-lg bg-gray-100 px-4 py-2">
+                <div id="imageContainer" class="relative mb-2 w-full overflow-hidden rounded-lg border-2 border-dashed border-gray-400 p-4 flex items-center justify-center">
+                    <!-- Upload Button -->
+                    <label for="ImageFile" id="uploadLabel" class="flex cursor-pointer items-center gap-2 rounded-lg bg-gray-100 px-4 py-2 z-10">
                         <img src="~/Images/upload.svg" alt="Upload" class="h-5 w-5">
                         <span>Upload Images</span>
                     </label>
-                    <input type="file" name="ImageFile" id="ImageFile" class="hidden">
+
+                    <!-- File Input (Hidden) -->
+                    <input type="file" name="ImageFile" id="ImageFile" accept="image/*" class="hidden">
+
+                    <!-- Smaller Image Preview -->
+                    <img id="imagePreview" src="#" alt="Image Preview" class="max-h-xs max-w-xs object-contain z-0 rounded-lg mt-2" style="display: none;" />
                 </div>
+
+
 
                 <label>Rate</label>
                 <input type="number" name="ServiceFeePerHour" class="mb-2 w-full rounded-lg border p-2" value="0" required>
@@ -666,5 +674,29 @@
             });
         });
 
+    </script>
+
+    <script>
+        const imageInput = document.getElementById('ImageFile');
+        const preview = document.getElementById('imagePreview');
+        const uploadLabel = document.getElementById('uploadLabel');
+
+        imageInput.addEventListener('change', function (event) {
+            const file = event.target.files[0];
+
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    uploadLabel.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = '#';
+                preview.style.display = 'none';
+                uploadLabel.style.display = 'flex';
+            }
+        });
     </script>
 </div>

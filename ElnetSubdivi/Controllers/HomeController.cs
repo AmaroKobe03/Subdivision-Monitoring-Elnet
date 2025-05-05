@@ -545,7 +545,8 @@ namespace ElnetSubdivi.Controllers
                     Service_Fee_Per_Hour = model.ServiceFeePerHour,
                     Facility_Guidelines = model.FacilityGuidelines,
                     Facility_Aminities = model.FacilityAminities,
-                    Facility_Status = model.FacilityStatus
+                    Facility_Status = model.FacilityStatus,
+                    Facility_Img = model.ImagePath
                 };
 
                 // Convert operating hours to the correct type
