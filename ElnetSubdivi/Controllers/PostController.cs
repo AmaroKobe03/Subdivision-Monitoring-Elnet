@@ -26,7 +26,6 @@ namespace ElnetSubdivi.Controllers
         }
 
 
-
         [HttpPost]
         public async Task<IActionResult> CreatePost([FromBody] PostViewModel postData)
         {

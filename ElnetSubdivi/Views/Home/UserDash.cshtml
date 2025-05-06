@@ -32,7 +32,7 @@
                 <!-- Profile Picture + Input -->
                 <div id="add" class="flex w-full items-center gap-3 p-2 sm:p-4">
                     <a href="@Url.Action("viewProfile","Home")">
-                        <img src="~/Images/pfp.svg" class="h-8 w-8 rounded-full sm:h-10 sm:w-10" />
+                        <img id="profile-img" src="~/Images/pfp.svg" class="h-8 w-8 rounded-full sm:h-10 sm:w-10" />
                     </a>
                     <input id="post-input1" type="text"
                            class="flex-1 rounded-full border p-2 px-4 text-sm text-gray-600 sm:text-base md:text-lg"
@@ -144,11 +144,13 @@
             <div id="contfeed" class="min-h-[90vh] w-full rounded-lg bg-white p-5">
                 @foreach (var post in Model.Posts)
                 {
+                    var user = Model.Users.FirstOrDefault(u => u.user_id == post.user_id);
+                    var profileImage = $"data:image/jpeg;base64,{Convert.ToBase64String(user.profile_picture)}";
                     <div class="mb-8 border-b pb-6">
                         <!-- Admin Header -->
                         <div class="flex flex-row items-center gap-2 p-5">
                             <div>
-                                <img src="~/Images/admin.svg" alt="User" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14">
+                                <img src="@profileImage" alt="User" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14">
                             </div>
                             <div class="flex flex-col">
                                 <h1 class="m-0 p-0 text-sm font-semibold sm:text-base md:text-lg">@post.user_id</h1>
@@ -225,10 +227,31 @@
                 </div>
             </div>
         </section>
-
     </main>
 
+    @{
+        var userId = User.FindFirst("UserId")?.Value;
+
+        var jsonSerializerOptions = new System.Text.Json.JsonSerializerOptions
+            {
+                PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase,
+                WriteIndented = true
+            };
+
+        var usersJson = System.Text.Json.JsonSerializer.Serialize(Model.Users, jsonSerializerOptions);
+    }
     <script>
+            document.addEventListener('DOMContentLoaded', function () {
+            const userModelData = {
+                Users: @Html.Raw(usersJson)
+            };
+
+            const currentUserId = "@userId"; // Razor injects the userId as a JS string
+            console.log(currentUserId);
+            const user = userModelData.Users.find(u => u.user_id === currentUserId);
+            document.getElementById('profile-img').src = `data:image/jpeg;base64,${user.profile_picture}`;
+        });
+
         document.addEventListener("DOMContentLoaded", function () {
             const calendarContainer = document.getElementById("calendar");
             const currentDate = new Date();

@@ -153,12 +153,12 @@ namespace ElnetSubdivi.Controllers
             var viewModel = new PostAndUserViewModel
             {
                 Posts = posts,
-                User = currentUser
+                User = currentUser,
+                Users = await _userService.GetAllUsers()
             };
 
             return View(viewModel);
         }
-
 
         public IActionResult UserProfile()
         {
