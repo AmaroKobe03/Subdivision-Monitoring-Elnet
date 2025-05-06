@@ -55,10 +55,19 @@
                     </td>
                     <td class="px-4 py-3">@request.Request_Type</td>
                     <td class="px-4 py-3">@request.Request_Date.Date.ToShortDateString()</td>
-                    <td class="px-4 py-3">@request.Request_Creation</td>
-                    <td class="px-4 py-3">@request.Request_Closed</td>
+                    <td class="px-4 py-3">@request.Request_Creation.Date.ToShortDateString()</td>
+                    <td class="px-4 py-3">
+                        @(request.Request_Closed.HasValue ? request.Request_Closed.Value.Date.ToShortDateString() : "N/A")
+                    </td>
                     <td class="px-4 py-3">@request.Assigned_Staff</td>
-                    <td class="px-4 py-3 font-semibold text-yellow-500">@request.Request_Status</td>
+                    <td class="px-4 py-3 font-semibold
+                        @(request.Request_Status == "Pending" ? "text-yellow-500" :
+                          request.Request_Status == "On Going" ? "text-blue-500" :
+                          (request.Request_Status == "Complete" || request.Request_Status == "Approved") ? "text-green-500" :
+                          (request.Request_Status == "Declined" || request.Request_Status == "Cancelled") ? "text-red-500" :
+                          "text-gray-500")">
+                        @request.Request_Status
+                    </td>
                 </tr>
             }
         </tbody>
@@ -187,6 +196,7 @@
         <div id="content" class="flex h-[90vh] w-[90%] rounded-lg bg-white shadow-lg">
         </div>
     </div>
+
     <script>
         @{
             var jsonSerializerOptions = new System.Text.Json.JsonSerializerOptions

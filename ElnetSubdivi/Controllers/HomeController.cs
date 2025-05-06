@@ -94,6 +94,42 @@ namespace ElnetSubdivi.Controllers
             }
         }
 
+        public async Task<IActionResult> serviceRequest(bool showDashboard = false)
+        {
+            if (showDashboard)
+            {
+                ViewData["HideSearch"] = true;
+                ViewData["Hidebtn"] = true;
+
+                var dashboardStats = new List<dynamic>
+        {
+            new { Title = "Total Requests", Count = 123, Icon = "treqs.svg", BorderColor = "border-blue-400 border-b-2" },
+            new { Title = "Pending ", Count = 34, Icon = "pendi.svg", BorderColor = "border-yellow-400 borber-b-2" },
+            new { Title = "Ongoing ", Count = 15, Icon = "ongo.svg", BorderColor = "border-orange-400 borber-b-2" },
+            new { Title = "Completed ", Count = 56, Icon = "apr.svg", BorderColor = "border-green-400 borber-b-2" },
+            new { Title = "Canceled Service ", Count = 10, Icon = "canc.svg", BorderColor = "border-red-400 borber-b-2" }
+        };
+
+                return View("DashboardView", dashboardStats);
+            }
+            else
+            {
+                var userId = User.FindFirst("UserId")?.Value;
+                var requests = await _context.Service_Request
+                    .Where(p => p.User_Id == userId)
+                    .OrderByDescending(p => p.Request_Date)
+                    .ToListAsync();
+
+                var viewModel = new ServiceRequestManagementViewModel
+                {
+                    ServiceRequests = requests
+                };
+
+                return View(viewModel);
+            }
+
+        }
+
         public IActionResult Privacy()
         {
             return View();
@@ -290,12 +326,24 @@ namespace ElnetSubdivi.Controllers
 
         }
 
-        public IActionResult MaintenanceServiceRequest()
+        public async Task<IActionResult> MaintenanceServiceRequestAsync()
         {
             ViewData["HideSearch"] = true;
-            return View();
+            var userId = User.FindFirst("UserId")?.Value;
+            var requests = await _context.Service_Request
+                .Where(p => p.Assigned_Staff == userId)
+                .OrderByDescending(p => p.Request_Date)
+                .ToListAsync();
 
+            var viewModel = new ServiceRequestManagementViewModel
+            {
+                ServiceRequests = requests,
+                 Users = await _userService.GetAllUsers() // Fetch users from DB
+            };
+
+            return View(viewModel);
         }
+
         public IActionResult MaintenanceCalendar()
         {
             ViewData["HideSearch"] = true;
@@ -323,40 +371,6 @@ namespace ElnetSubdivi.Controllers
 
         }
 
-        public async Task<IActionResult> serviceRequest(bool showDashboard = false)
-        {
-            if (showDashboard)
-            {
-                ViewData["HideSearch"] = true;
-                ViewData["Hidebtn"] = true;
-
-                var dashboardStats = new List<dynamic>
-        {
-            new { Title = "Total Requests", Count = 123, Icon = "treqs.svg", BorderColor = "border-blue-400 border-b-2" },
-            new { Title = "Pending ", Count = 34, Icon = "pendi.svg", BorderColor = "border-yellow-400 borber-b-2" },
-            new { Title = "Ongoing ", Count = 15, Icon = "ongo.svg", BorderColor = "border-orange-400 borber-b-2" },
-            new { Title = "Completed ", Count = 56, Icon = "apr.svg", BorderColor = "border-green-400 borber-b-2" },
-            new { Title = "Canceled Service ", Count = 10, Icon = "canc.svg", BorderColor = "border-red-400 borber-b-2" }
-        };
-
-                return View("DashboardView", dashboardStats);
-            }
-            else
-            {
-                // Get posts from your database/service
-                var requests = await _context.Service_Request
-                    .OrderByDescending(p => p.Request_Date)
-                    .ToListAsync();
-
-                // Create the view model
-                var viewModel = new ServiceRequestManagementViewModel
-                {
-                    ServiceRequests = requests
-                };
-
-                return View(viewModel);
-            }
-        }
 
         public IActionResult Calendar()
         {
@@ -368,10 +382,21 @@ namespace ElnetSubdivi.Controllers
             ViewData["Title"] = "Reports";
             return View();
         }
-        public IActionResult HousekeepingServiceRequest()
+        public async Task<IActionResult> HousekeepingServiceRequestAsync()
         {
+            var userId = User.FindFirst("UserId")?.Value;
+            var requests = await _context.Service_Request
+                .Where(p => p.Assigned_Staff == userId)
+                .OrderByDescending(p => p.Request_Date)
+                .ToListAsync();
+
+            var viewModel = new ServiceRequestManagementViewModel
+            {
+                ServiceRequests = requests
+            };
             ViewData["HideSearch"] = true;
-            return View();
+
+            return View(viewModel);
         }
         public IActionResult HouseKeepingCalendar()
         {

@@ -90,7 +90,9 @@
                     <td class="px-4 py-3">@request.Request_Id</td>
                     <td class="px-4 py-3">@request.Request_Type</td>
                     <td class="px-4 py-3">@request.Request_Date.Date.ToShortDateString()</td>
-                    <td class="px-4 py-3">@request.Request_Closed</td>
+                    <td class="px-4 py-3">
+                        @(request.Request_Closed.HasValue ? request.Request_Closed.Value.Date.ToShortDateString() : "N/A")
+                    </td>
                     <td class="px-4 py-3">@request.Assigned_Staff</td>
                     <td class="px-4 py-3 font-semibold text-yellow-500">@request.Request_Status</td>
                 </tr>
