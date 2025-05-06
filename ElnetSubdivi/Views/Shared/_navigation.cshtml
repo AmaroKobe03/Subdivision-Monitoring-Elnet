@@ -1,4 +1,4 @@
-﻿@model ElnetSubdivi.Models.PostAndUserViewModel
+﻿
 
 <header id="navigation" class="sticky top-0 z-50 flex h-[5vh] w-full items-center justify-center bg-[#043137] shadow-md">
     <div class="flex w-11/12 items-center gap-5 pl-5 text-[#1E2E33]">
@@ -323,30 +323,8 @@
                 </div>
             }
         </div>
-        @{
-            var userId = User.FindFirst("UserId")?.Value;
-
-            var jsonSerializerOptions = new System.Text.Json.JsonSerializerOptions
-            {
-                PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase,
-                WriteIndented = true
-            };
-
-            var usersJson = System.Text.Json.JsonSerializer.Serialize(Model.Users, jsonSerializerOptions);
-        }
 
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const userModelData = {
-                    Users: @Html.Raw(usersJson)
-                };
-
-                const currentUserId = "@userId"; // Razor injects the userId as a JS string
-                console.log(currentUserId);
-                const user = userModelData.Users.find(u => u.user_id === currentUserId);
-                document.getElementById('profile-pic').src = `data:image/jpeg;base64,${user.profile_picture}`;
-            });
-
             document.addEventListener("DOMContentLoaded", function () {
                 const menuBtn = document.getElementById("menu-btn");
                 const mobileMenu = document.getElementById("mobile-menu");

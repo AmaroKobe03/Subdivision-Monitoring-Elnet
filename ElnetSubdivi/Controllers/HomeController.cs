@@ -719,7 +719,7 @@ namespace ElnetSubdivi.Controllers
                             5 => "security",
                             _ => "user"
                         };
-                        return await SignInUser(userDetails.first_name, userDetails.last_name, GetRedirectAction(role), role, userDetails.user_id);
+                        return await SignInUser(userDetails.first_name, userDetails.last_name, GetRedirectAction(role), role, userDetails.user_id, userDetails.profile_picture);
                     }
                 }
             }
@@ -728,7 +728,16 @@ namespace ElnetSubdivi.Controllers
             return RedirectToAction("Landing");
         }
 
-        private async Task<IActionResult> SignInUser(string first_name, string last_name, string redirectAction, string role = "", string additionalClaim = "")
+        // Fix for CS1001 and CS1737: Correcting the method signature by adding a parameter name for the byte[] parameter
+        // and ensuring optional parameters appear after all required parameters.
+
+        private async Task<IActionResult> SignInUser(
+     string first_name,
+     string last_name,
+     string redirectAction,
+     string role = "",
+     string additionalClaim = "",
+     byte[] profilePicture = null)
         {
             var username = first_name + " " + last_name;
 
@@ -747,6 +756,12 @@ namespace ElnetSubdivi.Controllers
                 claims.Add(new Claim("UserId", additionalClaim));
             }
 
+            if (profilePicture != null && profilePicture.Length > 0)
+            {
+                string base64ProfilePic = Convert.ToBase64String(profilePicture);
+                claims.Add(new Claim("ProfilePicture", base64ProfilePic));
+            }
+
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var authProperties = new AuthenticationProperties();
 
@@ -758,6 +773,7 @@ namespace ElnetSubdivi.Controllers
 
             return RedirectToAction(redirectAction, "Home");
         }
+
 
         private string GetRedirectAction(string role)
         {
