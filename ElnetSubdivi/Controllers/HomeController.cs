@@ -213,12 +213,12 @@ namespace ElnetSubdivi.Controllers
 
             return View(reservations);
         }
-        public IActionResult PaymentHistory()
+        public async Task<IActionResult> PaymentHistoryAsync(string userId)
         {
             ViewData["HideSearch"] = true;
             ViewData["Hidebtn"] = true;
 
-            var billing = new List<dynamic>
+            var billing1 = new List<dynamic>
             {
                 new { Title = "Total Amount Due", Count = 123, Icon = "treqs.svg", BorderColor = "border-blue-400 border-b-2" },
                 new { Title = "Pending Payments", Count = 34, Icon = "pendi.svg", BorderColor = "border-yellow-400 borber-b-2" },
@@ -226,7 +226,12 @@ namespace ElnetSubdivi.Controllers
                 new { Title = "Total Amount Paid (2025) ", Count = 56, Icon = "apr.svg", BorderColor = "border-green-400 borber-b-2" },
 
             };
-
+            var billing = new BillingPaymentViewModel
+            {
+                BillStatements = await _billingService.GetPaymentHistoryByUserId(userId),// Await the Task to resolve the issue
+                Users = await _userService.GetAllUsers() // Fetch users from DB
+            };
+            ViewBag.UserId = userId;
             return View(billing);
         }
 
@@ -239,7 +244,8 @@ namespace ElnetSubdivi.Controllers
 
             var billing = new BillingPaymentViewModel
             {
-                BillStatements = await _billingService.GetAll()// Await the Task to resolve the issue
+                BillStatements = await _billingService.GetAll(),// Await the Task to resolve the issue
+                Users = await _userService.GetAllUsers() // Fetch users from DB
             };
 
             return View(billing);

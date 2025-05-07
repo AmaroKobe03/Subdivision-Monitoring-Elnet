@@ -56,6 +56,31 @@ namespace ElnetSubdivi.Services
             return bills;
         }
 
+        public async Task<List<BillingPaymentModel>> GetPaymentHistoryByUserId(string userId)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return new List<BillingPaymentModel>();
+                }
+
+                var payments = await _context.Billing_Statements
+                    .Where(b => b.user_id == userId)
+                    .OrderByDescending(b => b.billing_period)
+                    .ToListAsync();
+
+                return payments;
+            }
+            catch (Exception ex)
+            {
+                // Log error (optional)
+                Console.WriteLine($"Error fetching payment history for UserId {userId}: {ex.Message}");
+                return new List<BillingPaymentModel>();
+            }
+        }
+
+
         public async Task<BillingPaymentModel> Add(BillingPaymentModel model)
         {
             try

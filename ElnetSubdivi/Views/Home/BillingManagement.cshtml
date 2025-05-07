@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Billing and Payment";
     var bills = Model.BillStatements;  // Directly access ViewModel property
+    var users = Model.Users;
 }
 
 
@@ -60,11 +61,16 @@
         <tbody>
             @foreach (var bill in bills)
             {
+                var user = Model.Users.FirstOrDefault(u => u.user_id == bill.user_id);
+                var profileImage = $"data:image/jpeg;base64,{Convert.ToBase64String(user.profile_picture)}";
+
                 <tr>
                     <td class="px-4 py-3">
                         <div class="flex items-center gap-2">
-                            <img src="~/Images/pfp.svg" class="h-8 w-8 rounded-full" alt="">
-                            <a href="@Url.Action("PaymentHistory", "Home")" class="cursor-pointer font-medium">@bill.user_name</a>
+                            <img src="@profileImage" class="h-8 w-8 rounded-full" alt="">
+                            <a href="@Url.Action("PaymentHistory", "Home", new { userId = bill.user_id })" class="cursor-pointer font-medium">
+                                @bill.user_name
+                            </a>
                         </div>
                     </td>
                     <td class="flex items-center gap-2 px-4 py-3">
