@@ -300,6 +300,28 @@ namespace ElnetSubdivi.Controllers
             return RedirectToAction("BillingManagement");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> MarkAsPaid(string bill_no)
+        {
+            if (string.IsNullOrEmpty(bill_no))
+            {
+                return BadRequest();
+            }
+
+            var bill = await _context.Billing_Statements.FirstOrDefaultAsync(b => b.bill_no == bill_no);
+            if (bill == null)
+            {
+                return NotFound();
+            }
+
+            bill.bill_status = "Paid";
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("BillingManagement"); // Adjust action name as needed
+        }
+
+
 
         public IActionResult AdminDash()
         {

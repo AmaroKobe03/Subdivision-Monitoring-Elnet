@@ -100,8 +100,26 @@
                                     Edit Invoice
                                 </li>
 
-                                <li class="cursor-pointer px-4 py-2 hover:bg-gray-100">Mark as Paid</li>
-                                <li class="cursor-not-allowed px-4 py-2 text-gray-400">Generate Receipt</li>
+                                <li class="cursor-pointer px-4 py-2 hover:bg-gray-100">
+                                    <form asp-action="MarkAsPaid" method="post" class="inline">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="bill_no" value="@bill.bill_no" />
+                                        <button type="submit" class="w-full text-left">Mark as Paid</button>
+                                    </form>
+                                </li>
+                                @if (bill.bill_status == "Paid")
+                                {
+                                    <li class="cursor-pointer px-4 py-2 hover:bg-gray-100">
+                                        <a href="@Url.Action("GenerateReceipt", "Billing", new { billNo = bill.bill_no })">
+                                            Generate Receipt
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="cursor-not-allowed px-4 py-2 text-gray-400">Generate Receipt</li>
+                                }
+
                             </ul>
                         </div>
                     </td>
