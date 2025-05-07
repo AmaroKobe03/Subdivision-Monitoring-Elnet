@@ -62,7 +62,7 @@
                     <div id="activity" class="mt-5 flex min-h-[25vh] w-full flex-col gap-4 rounded-lg bg-white">
                         <div id="add" class="flex h-full w-full flex-col gap-3">
                             <div class="flex flex-row items-center gap-4">
-                                <img class="flex self-start" src="~/Images/pfp.svg" />
+                                <img id="profile-img-popup" class="flex self-start h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14" src="~/Images/pfp.svg" />
                                 <div class="flex flex-col">
                                     <h2 class="font-semibold text-[16px]">
                                         @User.Identity.Name
@@ -250,6 +250,7 @@
             console.log(currentUserId);
             const user = userModelData.Users.find(u => u.user_id === currentUserId);
             document.getElementById('profile-img').src = `data:image/jpeg;base64,${user.profile_picture}`;
+            document.getElementById('profile-img-popup').src = `data:image/jpeg;base64,${user.profile_picture}`;
         });
 
         document.addEventListener("DOMContentLoaded", function () {

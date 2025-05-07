@@ -732,12 +732,12 @@ namespace ElnetSubdivi.Controllers
         // and ensuring optional parameters appear after all required parameters.
 
         private async Task<IActionResult> SignInUser(
-     string first_name,
-     string last_name,
-     string redirectAction,
-     string role = "",
-     string additionalClaim = "",
-     byte[] profilePicture = null)
+    string first_name,
+    string last_name,
+    string redirectAction,
+    string role = "",
+    string additionalClaim = "",
+    byte[] profilePicture = null)
         {
             var username = first_name + " " + last_name;
 
@@ -756,10 +756,21 @@ namespace ElnetSubdivi.Controllers
                 claims.Add(new Claim("UserId", additionalClaim));
             }
 
+            // ✅ Save profile picture and add URL as a claim
             if (profilePicture != null && profilePicture.Length > 0)
             {
-                string base64ProfilePic = Convert.ToBase64String(profilePicture);
-                claims.Add(new Claim("ProfilePicture", base64ProfilePic));
+                // Generate unique filename
+                var fileName = Guid.NewGuid().ToString() + ".jpg";
+                var filePath = Path.Combine("wwwroot/uploads", fileName);
+
+                // Save image to wwwroot/uploads/
+                await System.IO.File.WriteAllBytesAsync(filePath, profilePicture);
+
+                // Generate accessible URL (adjust based on your hosting)
+                var profilePictureUrl = "/uploads/" + fileName;
+
+                // Add URL as a claim
+                claims.Add(new Claim("ProfilePictureUrl", profilePictureUrl));
             }
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -773,6 +784,7 @@ namespace ElnetSubdivi.Controllers
 
             return RedirectToAction(redirectAction, "Home");
         }
+
 
 
         private string GetRedirectAction(string role)
