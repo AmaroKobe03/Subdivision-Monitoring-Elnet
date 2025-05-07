@@ -33,15 +33,16 @@ namespace ElnetSubdivi.Services
             try
             {
                 var reservations = await _context.Reservation
-                    .Select(u => new Reservation
+                    .Select(r => new Reservation
                     {
-                        reservation_id = u.reservation_id ?? "",
-                        facility_id = u.facility_id ?? "",
-                        user_id = u.user_id ?? "",
-                        reservation_date = u.reservation_date,
-                        time_in = u.time_in,
-                        time_out = u.time_out,
-                        reservation_purpose = u.reservation_purpose,
+                        reservation_id = r.reservation_id ?? "",
+                        facility_id = r.facility_id ?? "",
+                        user_id = r.user_id ?? "",
+                        reservation_date = r.reservation_date,
+                        time_in = r.time_in,
+                        time_out = r.time_out,
+                        reservation_purpose = r.reservation_purpose,
+                        reservation_status = r.reservation_status ?? ""
                     })
                     .ToListAsync();
 
@@ -68,7 +69,8 @@ namespace ElnetSubdivi.Services
                         reservation_date = r.reservation_date,
                         time_in = r.time_in,
                         time_out = r.time_out,
-                        reservation_purpose = r.reservation_purpose ?? string.Empty
+                        reservation_purpose = r.reservation_purpose ?? string.Empty,
+                        reservation_status = r.reservation_status ?? ""
                     })
                     .ToListAsync();
 

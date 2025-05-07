@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ElnetSubdivi.ViewModels;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Numerics;
 using System.Reflection;
@@ -14,10 +15,11 @@ namespace ElnetSubdivi.Models
         public string user_id { get; set; }
         public DateTime reservation_date { get; set; }
 
-        public DateTime time_in { get; set; }
+        public TimeSpan time_in { get; set; }
 
-        public DateTime time_out { get; set; }
+        public TimeSpan time_out { get; set; }
         public string reservation_purpose { get; set; }
+        public string reservation_status { get; set; }
 
 
         public Reservation()
@@ -26,9 +28,10 @@ namespace ElnetSubdivi.Models
             facility_id = string.Empty;
             user_id = string.Empty;
             reservation_date = DateTime.MinValue;
-            time_in = DateTime.MinValue;
-            time_out = DateTime.MinValue;
+            time_in = TimeSpan.MinValue;
+            time_out = TimeSpan.MinValue;
             reservation_purpose = string.Empty;
+            reservation_status = "Pending";
         }
     }
 }

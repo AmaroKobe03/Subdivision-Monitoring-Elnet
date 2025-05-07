@@ -680,7 +680,8 @@ namespace ElnetSubdivi.Controllers
                     reservation_date = model.ReservationDate,
                     time_in = model.TimeIn,
                     time_out = model.TimeOut,
-                    reservation_purpose = model.ReservationPurpose ?? string.Empty
+                    reservation_purpose = model.ReservationPurpose ?? string.Empty,
+                    reservation_status = "Pending"
                 };
 
                 await _reservationService.AddReservationAsync(reservation);
@@ -693,7 +694,7 @@ namespace ElnetSubdivi.Controllers
 
 
 
-        public IActionResult ReservationsManagement()
+        public async Task<IActionResult> ReservationsManagement()
         {
             ViewData["HideSearch"] = true;
             ViewData["Hidebtn"] = true;
@@ -706,8 +707,16 @@ namespace ElnetSubdivi.Controllers
                 new { Title = "Approved Reservations", Count = 23, Icon = "apr.svg", BorderColor = "border-green-400 borber-b-2" }
             };
 
-            return View(reservations);
+            var reservationsList = new ReservationViewModel
+            {
+                Reservations = (await _reservationService.GetAllReservationAsync())
+                    .Select(r => ReservationViewModel.FromModel(r))
+                    .ToList(),
 
+                Users = await _userService.GetAllUsers(), // Fetch users from DB
+            };
+
+            return View(reservationsList);
         }
         public async Task<IActionResult> Logout()
         {

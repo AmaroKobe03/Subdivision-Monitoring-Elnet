@@ -59,7 +59,8 @@ namespace ElnetSubdivi.Controllers
                     reservation_date = model.ReservationDate,
                     time_in = model.TimeIn,
                     time_out = model.TimeOut,
-                    reservation_purpose = model.ReservationPurpose ?? string.Empty
+                    reservation_purpose = model.ReservationPurpose ?? string.Empty,
+                    reservation_status = "Pending"
                 };
 
                 await _reservationService.AddReservationAsync(reservation);
