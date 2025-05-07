@@ -72,15 +72,23 @@
                                     </p>
                                 </div>
                             </div>
-                            <textarea id="post-input" placeholder="What's on your mind?" class="h-[200px] w-full resize-none rounded-lg border-none bg-[#F0F2F6] p-4 text-start outline-none"></textarea>
+                            <form id="postForm" enctype="multipart/form-data">
+                                <!-- Hidden inputs -->
+                                <input type="file" id="photoInput" accept="image/*" class="hidden" />
+                                <input type="file" id="videoInput" accept="video/*" class="hidden" />
+
+                                <textarea id="post-input" placeholder="What's on your mind?" class="h-[200px] w-full resize-none rounded-lg border-none bg-[#F0F2F6] p-4 text-start outline-none"></textarea>
+
+                                <div id="preview-container" class="relative w-full overflow-hidden rounded-lg"></div>
+                            </form>
                         </div>
 
                         <div class="flex h-[40%] w-full flex-row items-center justify-center gap-10">
-                            <a href="#" class="flex items-center gap-2 text-sm">
+                            <a id="vid" href="#" class="flex items-center gap-2 text-sm">
                                 <img class="w-[20px]" src="~/Images/strokevid.svg" />
                                 Video
                             </a>
-                            <a href="#" class="flex items-center gap-2 text-sm">
+                            <a id="pho" href="#" class="flex items-center gap-2 text-sm">
                                 <img class="w-[15px]" src="~/Images/strokepho.svg" />
                                 Photo
                             </a>
@@ -102,45 +110,90 @@
 
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
-
                     const vidBtn = document.getElementById("vid");
                     const phoBtn = document.getElementById("pho");
                     const feelBtn = document.getElementById("feel");
-                    const buttonPost = document.getElementById("anotherPost")
+                    const buttonPost = document.getElementById("anotherPost");
                     const postInput = document.getElementById("post-input1");
                     const popup = document.getElementById("post-popup");
                     const closeBtn = document.querySelector(".close");
 
+                    const photoInput = document.getElementById("photoInput");
+                    const videoInput = document.getElementById("videoInput");
+                    const previewContainer = document.getElementById("preview-container");
 
-                    feelBtn.addEventListener("click", function () {
-                        popup.classList.remove("hidden");
-                    });
-                    phoBtn.addEventListener("click", function () {
-                        popup.classList.remove("hidden");
-                    });
-
-                    vidBtn.addEventListener("click", function () {
-                        popup.classList.remove("hidden");
-                    });
-                    buttonPost.addEventListener("click", function () {
-                        popup.classList.remove("hidden");
+                    phoBtn.addEventListener("click", function (e) {
+                        e.preventDefault();
+                        photoInput.click();
                     });
 
-                    postInput.addEventListener("click", function () {
+                    vidBtn.addEventListener("click", function (e) {
+                        e.preventDefault();
+                        videoInput.click();
+                    });
+
+                    feelBtn?.addEventListener("click", function () {
+                        popup.classList.remove("hidden");
+                    });
+
+                    buttonPost?.addEventListener("click", function () {
+                        popup.classList.remove("hidden");
+                    });
+
+                    postInput?.addEventListener("click", function () {
                         popup.classList.remove("hidden");
                     });
 
                     closeBtn.addEventListener("click", function () {
                         popup.classList.add("hidden");
+                        clearPreview();
                     });
 
                     window.addEventListener("click", function (e) {
                         if (e.target === popup) {
                             popup.classList.add("hidden");
+                            clearPreview();
                         }
                     });
+
+                    // Photo preview + show modal
+                    photoInput.addEventListener("change", function () {
+                        if (photoInput.files && photoInput.files[0]) {
+                            const reader = new FileReader();
+                            reader.onload = function (e) {
+                                previewContainer.innerHTML = `
+                                        <img src="${e.target.result}" class="max-h-[200px] w-full rounded-lg object-cover" />
+                                    `;
+                                popup.classList.remove("hidden"); // Open modal
+                            };
+                            reader.readAsDataURL(photoInput.files[0]);
+                        }
+                    });
+
+                    // Video preview + show modal
+                    videoInput.addEventListener("change", function () {
+                        if (videoInput.files && videoInput.files[0]) {
+                            const url = URL.createObjectURL(videoInput.files[0]);
+                            previewContainer.innerHTML = `
+                                    <video controls class="max-h-[250px] w-full rounded-lg">
+                                        <source src="${url}" type="${videoInput.files[0].type}" />
+                                        Your browser does not support the video tag.
+                                    </video>
+                                `;
+                            popup.classList.remove("hidden"); // Open modal
+                        }
+                    });
+
+                    function clearPreview() {
+                        previewContainer.innerHTML = "";
+                        photoInput.value = "";
+                        videoInput.value = "";
+                    }
                 });
             </script>
+
+
+
             <div id="contfeed" class="min-h-[90vh] w-full rounded-lg bg-white p-5">
                 @foreach (var post in Model.Posts)
                 {
@@ -153,8 +206,12 @@
                                 <img src="@profileImage" alt="User" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14">
                             </div>
                             <div class="flex flex-col">
-                                <h1 class="m-0 p-0 text-sm font-semibold sm:text-base md:text-lg">@post.user_id</h1>
-                                <p class="m-0 p-0 text-xs text-gray-600 sm:text-sm md:text-base">Posted @post.post_date.ToString("MMM dd, yyyy hh:mm tt")</p>
+                                <h1 class="m-0 p-0 text-sm font-semibold sm:text-base md:text-lg">
+                                    @($"{user.first_name} {user.last_name}")
+                                </h1>
+                                <p class="m-0 p-0 text-xs text-gray-600 sm:text-sm md:text-base">
+                                    Posted @post.post_date.ToString("MMM dd, yyyy hh:mm tt")
+                                </p>
                             </div>
                         </div>
 
@@ -182,6 +239,7 @@
                         </div>
                     </div>
                 }
+
             </div>
 
 
@@ -344,29 +402,45 @@
             checkWindowSize();
         });
 
-                            document.addEventListener("DOMContentLoaded", function () {
-             const submitPostBtn = document.getElementById("submitPost");
+        document.addEventListener("DOMContentLoaded", function () {
+            const submitPostBtn = document.getElementById("submitPost");
 
-             submitPostBtn.addEventListener("click", async function () {
-                 const postText = document.getElementById("post-input").value;
-                 console.log(postText);
+            submitPostBtn.addEventListener("click", async function () {
+                const formData = new FormData();
 
-                 const response = await fetch('/Post/CreatePost', {
-                     method: 'POST',
-                     headers: {
-                         'Content-Type': 'application/json',
-                     },
-                     body: JSON.stringify({ postText: postText })
-                 });
+                // Add text
+                const postText = document.getElementById("post-input").value;
+                formData.append("postText", postText);
 
-                 if (response.ok) {
-                     alert("Post created!");
-                     location.reload(); // or better: fetch and append the new post
-                 } else {
-                     alert("Error creating post");
-                 }
-             });
-         });
+                // Add media (only one at a time)
+                const imageFile = document.getElementById("photoInput").files[0];
+                const videoFile = document.getElementById("videoInput").files[0];
+
+                if (imageFile) {
+                    formData.append("mediaFile", imageFile);
+                } else if (videoFile) {
+                    formData.append("mediaFile", videoFile);
+                }
+
+                try {
+                    const response = await fetch('/Post/CreatePost', {
+                        method: 'POST',
+                        body: formData // no need to set Content-Type; browser handles it
+                    });
+
+                    if (response.ok) {
+                        alert("Post created!");
+                        location.reload(); // You can also close the modal and refresh posts dynamically
+                    } else {
+                        alert("Error creating post");
+                    }
+                } catch (error) {
+                    console.error("Upload failed:", error);
+                    alert("Upload failed");
+                }
+            });
+        });
+
 
     </script>
 </body>

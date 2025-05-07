@@ -27,23 +27,43 @@ namespace ElnetSubdivi.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CreatePost([FromBody] PostViewModel postData)
+        [RequestSizeLimit(10_000_000)] // optional: limit upload size (10MB here)
+        public async Task<IActionResult> CreatePost([FromForm] string postText, [FromForm] IFormFile? mediaFile)
         {
-
             if (!User.Identity.IsAuthenticated)
             {
                 return Unauthorized();
             }
 
-            var userId = _userService.GetCurrentUserId(User); // however you fetch current user ID
+            var userId = _userService.GetCurrentUserId(User);
+            string mediaPath = "";
+
+            if (mediaFile != null && mediaFile.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(mediaFile.FileName);
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await mediaFile.CopyToAsync(stream);
+                }
+
+                mediaPath = $"/uploads/{fileName}"; // relative path to serve in <img> or <video>
+            }
 
             var newPost = new Post
             {
                 post_id = Guid.NewGuid().ToString(),
                 user_id = userId,
                 post_date = DateTime.Now,
-                post_text = postData.PostText,
-                post_media = "", // implement if you support media
+                post_text = postText,
+                post_media = mediaPath,
                 likes = 0,
                 comments = 0
             };
@@ -51,8 +71,9 @@ namespace ElnetSubdivi.Controllers
             _context.Posts.Add(newPost);
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Post created successfully." });
+            return Ok(new { message = "Post created successfully.", media = mediaPath });
         }
+
 
         // In PostController.cs (or relevant controller)
         public async Task<IActionResult> UserDash()
