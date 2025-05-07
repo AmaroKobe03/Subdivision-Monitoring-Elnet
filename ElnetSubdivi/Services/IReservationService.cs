@@ -9,5 +9,8 @@ namespace ElnetSubdivi.Services
         Task<Reservation> GetLastReservationAsync();
         Task<List<Reservation>> GetReservationByUserAsync(string userId);
         Task AddReservationAsync(Reservation reserevation);
+        Task<Reservation?> GetReservationByIdAsync(string reservationId);
+        Task UpdateReservationAsync(Reservation reservation);
+
     }
 }

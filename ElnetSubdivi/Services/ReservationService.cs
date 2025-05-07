@@ -121,5 +121,17 @@ namespace ElnetSubdivi.Services
             await _context.Reservation.AddAsync(reservation);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<Reservation?> GetReservationByIdAsync(string reservationId)
+        {
+            return await _context.Reservation.FirstOrDefaultAsync(r => r.reservation_id == reservationId);
+        }
+
+        public async Task UpdateReservationAsync(Reservation reservation)
+        {
+            _context.Reservation.Update(reservation);
+            await _context.SaveChangesAsync();
+        }
+
     }
 }

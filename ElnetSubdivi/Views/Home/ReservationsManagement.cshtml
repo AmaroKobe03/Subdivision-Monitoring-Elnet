@@ -8,7 +8,6 @@
 
 <div class="flex h-[100vh] w-[90%] flex-col items-center overflow-auto overflow-y-hidden bg-[#f2f2f2] font-semibold">
     @await Html.PartialAsync("_sharedSearch")
-
     <div class="flex h-[15vh] w-[92%] items-center justify-center">
         <div class="flex h-[15vh] w-full items-center justify-center gap-6">
             @* @foreach (var item in Model)
@@ -23,6 +22,10 @@
             } *@
         </div>
     </div>
+    <form id="csrf-token-form" style="display: none;">
+        @Html.AntiForgeryToken()
+    </form>
+
     <div class="mt-10 mr-2 mb-6 flex w-[88%] items-center gap-4">
         <div class="relative w-[40%]">
             <input type="text" placeholder="Search"
@@ -54,28 +57,30 @@
         <tbody>
             @foreach (var reservation in reservations)
             {
-                var user = Model.Users.FirstOrDefault(u =>(u.first_name + " " + u.last_name) == reservation.UserId);
+                var user = Model.Users.FirstOrDefault(u => (u.first_name + " " + u.last_name) == reservation.UserId);
                 var profileImage = $"data:image/jpeg;base64,{Convert.ToBase64String(user.profile_picture)}";
                 <tr class="cursor-pointer border-b hover:bg-gray-100"
                     onclick="openModal(this)"
+                    data-id="@reservation.ReservationId"
                     data-user="@($"{user.first_name} {user.last_name}")"
                     data-profile="@profileImage"
                     data-facility="@reservation.FacilityId"
                     data-date="@reservation.ReservationDate.ToString("MMMM dd, yyyy")"
                     data-timein="@reservation.TimeIn.ToString(@"hh\:mm")"
                     data-timeout="@reservation.TimeOut.ToString(@"hh\:mm")"
-                >
+                    data-purpose="@reservation.ReservationPurpose">
+                    <td class="px-4 py-3">@reservation.ReservationId</td>
                     <td class="flex items-center gap-3 px-4 py-3">
                         <img src="@profileImage" class="h-8 w-8 rounded-full" />
                         <span>@reservation.UserId</span>
                     </td>
-                    <td class="px-4 py-3">@reservation.ReservationId</td>
                     <td class="px-4 py-3">@reservation.FacilityId</td>
-                    <td class="px-4 py-3">@reservation.ReservationDate</td>
-                    <td class="px-4 py-3">@reservation.TimeIn</td>
+                    <td class="px-4 py-3">@reservation.ReservationDate.ToString("MMMM dd, yyyy")</td>
+                    <td class="px-4 py-3">@DateTime.Today.Add(reservation.TimeIn).ToString("h:mm tt")</td>
                     <td class="px-4 py-3 font-semibold text-yellow-500">@reservation.ReservationStatus</td>
                 </tr>
             }
+
         </tbody>
     </table>
     <!-- Modal (Hidden by default) -->
@@ -90,43 +95,40 @@
             </div>
 
             <!-- Facility -->
-            <input type="text" value="Swimming Pool" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" readonly />
+            <input id="modal-facility" type="text" value="Swimming Pool" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" readonly />
 
             <!-- Date and Duration -->
             <div class="mt-4 mb-6 flex justify-between gap-4">
                 <div class="w-1/2">
                     <label class="mb-1 block text-base text-gray-500">Date</label>
-                    <input type="text" value="March 15, 2024" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" readonly />
+                    <input id="modal-date" type="text" value="March 15, 2024" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" readonly />
                 </div>
                 <div class="w-1/2">
                     <label class="mb-1 block text-base text-gray-500">Duration</label>
-                    <input type="text" value="7:00 AM - 7:00 PM" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" readonly />
+                    <input id="modal-duration" type="text" value="7:00 AM - 7:00 PM" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" readonly />
                 </div>
             </div>
 
             <!-- Purpose -->
             <div class="mb-6">
                 <label class="mb-1 block text-base text-gray-500">Purpose</label>
-                <textarea class="border-2 h-[15vh] w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" readonly>
-The interface is intuitive and easy to navigate. I particularly enjoyed the smooth transitions and responsive.
-      </textarea>
+                <textarea id="modal-purpose" class="border-2 h-[15vh] w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" readonly></textarea>
             </div>
 
             <!-- Total Hours and Payment -->
             <div class="mb-6 flex flex-col justify-between text-base text-gray-600">
-                <p class="flex justify-between">Total Hours <span class="font-medium">2 hrs 30 mins</span></p>
+                <p class="flex justify-between">Total Hours <span id="modal-hours" class="font-medium">2 hrs 30 mins</span></p>
                 <p class="mb-2 flex justify-between border-b-2">Per Hour <span class="font-medium">₱0.00</span></p>
                 <p class="mb-2 flex justify-between" >Total <span class="font-medium">₱0.00</span></p>
             </div>
 
             <!-- Buttons -->
             <div class="flex gap-4">
-                <button class="w-1/2 rounded-full border border-[#B25828] py-2 text-[#B25828]" onclick="closeModal()">Decline</button>
-                <button class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Approve</button>
+                <button id="decline-button" class="w-1/2 rounded-full border border-[#B25828] py-2 text-[#B25828]">Decline</button>
+                <button id="approve-button" class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Approve</button>
             </div>
         </div>
     </div>
-
 
     @await Html.PartialAsync("_pagination")
     
@@ -136,10 +138,81 @@ The interface is intuitive and easy to navigate. I particularly enjoyed the smoo
 
         </div>
     </div>
+
 <script>
-    function openModal() {
-      document.getElementById('modal').classList.remove('hidden');
-    }
+        let selectedRow = null; // ⬅️ global variable to track the current row
+
+        function openModal(row) {
+            // Track the selected row
+            selectedRow = row;
+
+            // Show the modal
+            document.getElementById('modal').classList.remove('hidden');
+            const reservationId = row.getAttribute('data-id');
+            document.getElementById('approve-button').setAttribute('onclick', `updateReservationStatus('Approved', '${reservationId}')`);
+            document.getElementById('decline-button').setAttribute('onclick', `updateReservationStatus('Declined', '${reservationId}')`);
+
+
+            // Get data from the row
+            const user = row.getAttribute('data-user');
+            const profile = row.getAttribute('data-profile');
+            const facility = row.getAttribute('data-facility');
+            const date = row.getAttribute('data-date');
+            const timeIn = row.getAttribute('data-timein');
+            const timeOut = row.getAttribute('data-timeout');
+            const purpose = row.getAttribute('data-purpose');
+
+            // Set modal fields
+            document.getElementById('modal-username').textContent = user;
+            document.getElementById('modal-profile').src = profile;
+            document.getElementById('modal-facility').value = facility;
+            document.getElementById('modal-date').value = date;
+            document.getElementById('modal-duration').value = `${timeIn} - ${timeOut}`;
+            document.getElementById('modal-purpose').value = purpose;
+
+            // Calculate duration in AM/PM format
+            const duration = calculateDuration(timeIn, timeOut);
+            document.getElementById('modal-hours').textContent = duration;
+        }
+
+
+
+        function calculateDuration(startTime, endTime) {
+            // Parse time strings (e.g., "7:00 AM")
+            const start = parseTime(startTime);
+            const end = parseTime(endTime);
+
+            // Calculate duration in milliseconds
+            let diff = end - start;
+
+            // If end is before start (e.g., overnight), add 24 hours
+            if (diff < 0) {
+                diff += 24 * 60 * 60 * 1000;
+            }
+
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+            return `${hours} hr${hours !== 1 ? 's' : ''} ${minutes > 0 ? `${minutes} min${minutes !== 1 ? 's' : ''}` : ''}`;
+        }
+
+        // Helper: convert "7:00 AM" to a Date object today
+        function parseTime(timeStr) {
+            const [time, modifier] = timeStr.split(' ');
+            let [hours, minutes] = time.split(':').map(Number);
+
+            if (modifier === 'PM' && hours !== 12) {
+                hours += 12;
+            }
+            if (modifier === 'AM' && hours === 12) {
+                hours = 0;
+            }
+
+            const now = new Date();
+            now.setHours(hours, minutes, 0, 0);
+            return now;
+        }
+
 
     function closeModal(event) {
       const modal = document.getElementById('modal');
@@ -148,4 +221,50 @@ The interface is intuitive and easy to navigate. I particularly enjoyed the smoo
       }
     }
 </script>
+
+    <script>
+        async function updateReservationStatus(status, reservationId) {
+            if (!selectedRow) return;
+            console.log(status);
+            console.log(reservationId);
+
+            try {
+                const response = await fetch('/Home/UpdateReservationStatus', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    },
+                    body: JSON.stringify({
+                        reservationId: reservationId,
+                        newStatus: status
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    // Update UI
+                    const statusCell = selectedRow.querySelectorAll('td')[5];
+                    statusCell.textContent = status;
+                    statusCell.className = 'px-4 py-3 font-semibold';
+                    if (status === 'Approved') {
+                        statusCell.classList.add('text-green-500');
+                    } else if (status === 'Declined') {
+                        statusCell.classList.add('text-red-500');
+                    } else {
+                        statusCell.classList.add('text-yellow-500');
+                    }
+
+                    closeModal({ target: document.getElementById('modal') });
+                } else {
+                    alert(result.message || 'Failed to update status.');
+                }
+            } catch (error) {
+                console.error('Error updating reservation status:', error);
+                alert('An unexpected error occurred.');
+            }
+        }
+    </script>
+
 </div>

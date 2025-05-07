@@ -718,6 +718,37 @@ namespace ElnetSubdivi.Controllers
 
             return View(reservationsList);
         }
+
+        public class ReservationStatusUpdateDto
+        {
+            public string ReservationId { get; set; }
+            public string NewStatus { get; set; }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateReservationStatus([FromBody] ReservationStatusUpdateDto data)
+
+        {
+            var reservation = await _reservationService.GetReservationByIdAsync(data.ReservationId);
+            if (reservation == null)
+            {
+                return NotFound(new { success = false, message = "Reservation not found." });
+            }
+
+            reservation.reservation_status = data.NewStatus;
+
+            try
+            {
+                await _reservationService.UpdateReservationAsync(reservation);
+                return Ok(new { success = true, message = $"Reservation status updated to {reservation.reservation_status}." });
+            }
+            catch (Exception ex)
+            {
+                // Optional: Log the exception
+                return StatusCode(500, new { success = false, message = "An error occurred while updating the reservation status.", error = ex.Message });
+            }
+        }
+
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

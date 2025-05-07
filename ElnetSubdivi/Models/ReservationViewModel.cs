@@ -90,5 +90,7 @@ namespace ElnetSubdivi.ViewModels
 
         public List<Users> Users { get; set; }
         public List<ReservationViewModel> Reservations { get; set; } = new();
+
+
     }
 }
