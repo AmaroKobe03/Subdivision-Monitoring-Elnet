@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2025 at 10:37 PM
+-- Generation Time: May 07, 2025 at 05:02 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -211,7 +211,9 @@ CREATE TABLE `posts` (
 INSERT INTO `posts` (`post_id`, `user_id`, `post_date`, `post_text`, `post_media`, `likes`, `comments`) VALUES
 ('1182cd7f-14ee-48bf-9652-dab6889ff4ea', 'ADM-0001', '2025-04-14', 'waw', '', 0, 0),
 ('2611947b-0068-4a91-a240-cecf8eabb49c', 'ADM-0001', '2025-04-07', 'Gusto ko nlng maging hotdog!', '', 0, 0),
-('93682160-1009-48ba-8006-b8409d77339b', 'ADM-0001', '2025-04-07', 'wowow!', '', 0, 0);
+('93682160-1009-48ba-8006-b8409d77339b', 'ADM-0001', '2025-04-07', 'wowow!', '', 0, 0),
+('90226b3c-fe97-4e7b-a8ef-4afb98bed489', 'ADM-0001', '2025-05-07', 'wowowow', '/uploads/5820803d-b44a-4fbf-afe1-f40bf2605cff.jpg', 0, 0),
+('30780e94-1ef2-47a0-a171-10c8189e04a1', 'ADM-0001', '2025-05-07', 'Naai bata nahabilin ari, please nya ko contact if kaila mo sa ginikanan ani. Luoy tawn kaau, ganiha rani siya ari kadlawn.\r\n\r\nPlease contact: 09454280932 Bryl Gorgonio.', '/uploads/c84e6194-82bd-4ef3-a221-080e83334cce.jpg', 0, 0);
 
 -- --------------------------------------------------------
 
