@@ -10,5 +10,8 @@ namespace ElnetSubdivi.Services
         Task<List<BillingPaymentModel>> GetAll();
         Task<BillingPaymentModel> Add(BillingPaymentModel model);
         Task<List<UserBasicInfoDto>> GetAllUsersBasicInfo();
+        Task Update(BillingPaymentModel model);
+
     }
 }
+

@@ -283,7 +283,22 @@ namespace ElnetSubdivi.Controllers
             return View("BillingManagement", billingViewModel);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditInvoice(BillingPaymentModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _billingService.Update(model);  // Make sure your service has an Update method.
+                TempData["Success"] = "Invoice updated successfully!";
+            }
+            else
+            {
+                TempData["Error"] = "Failed to update invoice. Please check the data.";
+            }
 
+            return RedirectToAction("BillingManagement");
+        }
 
 
         public IActionResult AdminDash()

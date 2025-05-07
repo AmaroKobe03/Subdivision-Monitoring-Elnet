@@ -1,6 +1,7 @@
 ﻿// Services/BillingPaymentService.cs
 using ElnetSubdivi.data;
 using ElnetSubdivi.Models;
+using ElnetSubdivi.Views.Shared;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -81,5 +82,22 @@ namespace ElnetSubdivi.Services
             var random = new Random();
             return $"BILL-{random.Next(100000, 1000000)}";
         }
+
+        public async Task Update(BillingPaymentModel model)
+        {
+            var existing = await _context.Billing_Statements.FindAsync(model.bill_no);
+            if (existing != null)
+            {
+                existing.user_id = model.user_id;
+                existing.bill_type = model.bill_type;
+                existing.billing_period = model.billing_period;
+                existing.due_date = model.due_date;
+                existing.amount_due = model.amount_due;
+                existing.description = model.description;
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
     }
 }

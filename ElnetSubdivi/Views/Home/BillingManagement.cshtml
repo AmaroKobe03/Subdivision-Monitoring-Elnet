@@ -79,8 +79,27 @@
                         <button class="actions-btn">⋮</button>
                         <div class="actions-menu absolute right-40 hidden w-40 bg-white shadow-md">
                             <ul>
-                                <li class="cursor-pointer px-4 py-2 hover:bg-gray-100 viewdetsbtn">View Details</li>
-                                <li class="cursor-pointer px-4 py-2 hover:bg-gray-100">Edit Invoice</li>
+                                <li class="cursor-pointer px-4 py-2 hover:bg-gray-100 viewdetsbtn"
+                                    data-username="@bill.user_name"
+                                    data-billtype="@bill.bill_type"
+                                    data-billingperiod="@bill.billing_period.ToString("yyyy-MM")"
+                                    data-duedate="@bill.due_date.ToString("yyyy-MM-dd")"
+                                    data-amount="@bill.amount_due"
+                                    data-description="@bill.description">
+                                    View Details
+                                </li>
+                                <li class="cursor-pointer px-4 py-2 hover:bg-gray-100 editinvoicebtn"
+                                    data-billno="@bill.bill_no"
+                                    data-username="@bill.user_name"
+                                    data-userid="@bill.user_id"
+                                    data-billtype="@bill.bill_type"
+                                    data-billingperiod="@bill.billing_period.ToString("yyyy-MM")"
+                                    data-duedate="@bill.due_date.ToString("yyyy-MM-dd")"
+                                    data-amount="@bill.amount_due"
+                                    data-description="@bill.description">
+                                    Edit Invoice
+                                </li>
+
                                 <li class="cursor-pointer px-4 py-2 hover:bg-gray-100">Mark as Paid</li>
                                 <li class="cursor-not-allowed px-4 py-2 text-gray-400">Generate Receipt</li>
                             </ul>
@@ -107,7 +126,10 @@
                     <option value="">Select Homeowner</option>
                     @foreach (var user in ViewData["Homeowners"] as List<ElnetSubdivi.Services.BillingPaymentService.UserBasicInfoDto>)
                     {
-                        <option value="@user.UserId">@user.FullName</option>
+                        if (user.UserId.StartsWith("RES"))
+                        {
+                            <option value="@user.UserId">@user.FullName</option>
+                        }
                     }
                 </select>
 
@@ -148,52 +170,52 @@
 
     <!-- details Modal -->
     <div id="detailsModal" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50">
-        <button id="closeModal" class="hidden text-2xl text-gray-500">&times;</button>
+        <form asp-action="EditInvoice" method="post" asp-antiforgery="true">
+            <div class="w-[500px] rounded-2xl bg-white p-8" id="modalContent">
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="details-billno" name="bill_no" />
 
-        <div class="w-[500px] rounded-2xl bg-white p-8" id="modalContent">
-            <div class="mb-4 text-center">
-                <h2 class="text-center text-2xl font-extrabold text-gray-800">Invoice Details</h2>
+                <!-- Homeowner -->
+                <label class="mb-1 block text-base text-gray-500">Homeowner</label>
+                <select id="details-username" name="user_id" class="details-input border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500">
+                    <option></option>
+                </select>
+
+                <!-- Bill Type -->
+                <label class="mt-4 mb-1 block text-base text-gray-500">Bill Type</label>
+                <select id="details-billtype" name="bill_type" class="details-input border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500">
+                    <option></option>
+                </select>
+
+                <!-- Billing Period -->
+                <label class="mt-4 mb-1 block text-base text-gray-500">Billing Period</label>
+                <div class="relative">
+                    <input id="details-billingperiod" name="billing_period" type="month" class="details-input border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" />
+                </div>
+
+                <!-- Due Date -->
+                <label class="mt-4 mb-1 block text-base text-gray-500">Due Date</label>
+                <div class="relative">
+                    <input id="details-duedate" name="due_date" type="date" class="details-input border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" />
+                </div>
+
+                <!-- Amount Due -->
+                <label class="mt-4 mb-1 block text-base text-gray-500">Amount Due (₱)</label>
+                <input id="details-amount" name="amount_due" type="number" step="0.01" class="details-input border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" />
+
+                <!-- Notes -->
+                <label class="mt-4 mb-1 block text-base text-gray-500">Notes (Optional)</label>
+                <textarea id="details-description" name="description" class="details-input border-2 h-[10vh] w-full rounded-md border-gray-300 bg-white p-2 text-gray-500"></textarea>
+
+                <!-- Buttons -->
+                <div class="mt-6 flex gap-4">
+                    <button type="button" id="cancelButton" class="w-1/2 rounded-full border border-gray-500 py-2 text-gray-500">Cancel</button>
+                    <button type="submit" id="updateButton" class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Update</button>
+                </div>
             </div>
-
-            <!-- Homeowner -->
-            <label class="mb-1 block text-base text-gray-500">Homeowner</label>
-            <select class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500">
-                <option>Kobe Amaro</option>
-            </select>
-
-            <!-- Bill Type -->
-            <label class="mt-4 mb-1 block text-base text-gray-500">Bill Type</label>
-            <select class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500">
-                <option>Electricity</option>
-            </select>
-
-            <!-- Billing Period -->
-            <label class="mt-4 mb-1 block text-base text-gray-500">Billing Period</label>
-            <div class="relative">
-                <input type="month" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" value="2025-03" />
-            </div>
-
-            <!-- Due Date -->
-            <label class="mt-4 mb-1 block text-base text-gray-500">Due Date</label>
-            <div class="relative">
-                <input type="date" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" value="2025-03-15" />
-            </div>
-
-            <!-- Amount Due -->
-            <label class="mt-4 mb-1 block text-base text-gray-500">Amount Due (₱)</label>
-            <input type="text" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" value="5000" />
-
-            <!-- Notes -->
-            <label class="mt-4 mb-1 block text-base text-gray-500">Notes (Optional)</label>
-            <textarea class="border-2 h-[10vh] w-full rounded-md border-gray-300 bg-white p-2 text-gray-500">Pay immediately</textarea>
-
-            <!-- Buttons -->
-            <div class="mt-6 flex gap-4">
-                <button id="closeModal" class="w-1/2 rounded-full border border-gray-500 py-2 text-gray-500">Cancel</button>
-                <button class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Update</button>
-            </div>
-        </div>
+        </form>
     </div>
+
 
     <!-- JavaScript -->
     <script>
@@ -220,22 +242,45 @@
     </script>
 
     <script>
-         document.addEventListener("DOMContentLoaded", () => {
-            document.querySelectorAll("#viewdetsbtn").forEach(button => {
+        document.addEventListener("DOMContentLoaded", () => {
+            const cancelButton = document.getElementById("cancelButton");
+            const updateButton = document.getElementById("updateButton");
+
+            document.querySelectorAll(".viewdetsbtn").forEach(button => {
                 button.addEventListener("click", (event) => {
                     event.stopPropagation();
-                    document.getElementById("detailsModal").classList.remove("hidden");
+                    const modal = document.getElementById("detailsModal");
+
+                    // Fill modal with data
+                    document.getElementById("details-username").innerHTML = `<option>${button.dataset.username}</option>`;
+                    document.getElementById("details-billtype").innerHTML = `<option>${button.dataset.billtype}</option>`;
+                    document.getElementById("details-billingperiod").value = button.dataset.billingperiod;
+                    document.getElementById("details-duedate").value = button.dataset.duedate;
+                    document.getElementById("details-amount").value = button.dataset.amount;
+                    document.getElementById("details-description").value = button.dataset.description;
+
+                    // Set fields to read-only/disabled
+                    document.querySelectorAll('.details-input').forEach(input => {
+                        input.setAttribute("disabled", "disabled");
+                    });
+
+                    // Hide the Cancel and Update buttons
+                    if (cancelButton) cancelButton.classList.add("hidden");
+                    if (updateButton) updateButton.classList.add("hidden");
+
+                    modal.classList.remove("hidden");
                 });
             });
 
+            // Close modal by clicking outside
             document.getElementById("detailsModal").addEventListener("click", (event) => {
                 if (event.target === event.currentTarget) {
                     event.target.classList.add("hidden");
                 }
             });
         });
-
     </script>
+
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -257,6 +302,61 @@
                 if (!modalContent.contains(event.target)) {
                     modal.classList.add("hidden");
                 }
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const cancelButton = document.getElementById("cancelButton");
+            const updateButton = document.getElementById("updateButton");
+
+            document.querySelectorAll(".editinvoicebtn").forEach(button => {
+                button.addEventListener("click", (event) => {
+                    event.stopPropagation();
+                    const modal = document.getElementById("detailsModal");
+
+                    // Set current data
+                    const usernameOption = `<option>${button.dataset.username}</option>`;
+                    const currentBillType = button.dataset.billtype;
+
+                    // Get the bill type dropdown
+                    const billTypeSelect = document.getElementById("details-billtype");
+
+                    // Clear existing options
+                    billTypeSelect.innerHTML = '';
+
+                    // Add the current bill type as first option
+                    billTypeSelect.innerHTML += `<option>${currentBillType}</option>`;
+
+                    // Define the list of default bill types
+                    const defaultBillTypes = ["Water", "Electric", "Garbage"];
+
+                    // Add options if they are NOT the current bill type (avoid duplicates)
+                    defaultBillTypes.forEach(type => {
+                        if (type.toLowerCase() !== currentBillType.toLowerCase()) {
+                            billTypeSelect.innerHTML += `<option>${type}</option>`;
+                        }
+                    });
+
+                    // Fill other data
+                    document.getElementById("details-billno").value = button.dataset.billno;
+                    document.getElementById("details-username").innerHTML = usernameOption;
+                    document.getElementById("details-billingperiod").value = button.dataset.billingperiod;
+                    document.getElementById("details-duedate").value = button.dataset.duedate;
+                    document.getElementById("details-amount").value = button.dataset.amount;
+                    document.getElementById("details-description").value = button.dataset.description;
+
+                    // Show Cancel and Update buttons
+                    if (cancelButton) cancelButton.classList.remove("hidden");
+                    if (updateButton) updateButton.classList.remove("hidden");
+
+                    // Enable fields
+                    document.querySelectorAll('.details-input').forEach(input => {
+                        input.removeAttribute("disabled");
+                    });
+
+                    modal.classList.remove("hidden");
+                });
             });
         });
     </script>

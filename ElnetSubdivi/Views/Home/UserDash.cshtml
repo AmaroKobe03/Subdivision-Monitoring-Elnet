@@ -194,14 +194,16 @@
 
 
 
-            <div id="contfeed" class="min-h-[90vh] w-full rounded-lg bg-white p-5">
+            <div id="contfeed" class="min-h-[90vh] w-full">
                 @foreach (var post in Model.Posts)
                 {
                     var user = Model.Users.FirstOrDefault(u => u.user_id == post.user_id);
                     var profileImage = $"data:image/jpeg;base64,{Convert.ToBase64String(user.profile_picture)}";
-                    <div class="mb-8 border-b pb-6">
+
+                    <!-- Each post is now its own card -->
+                    <div class="mb-8 w-full rounded-lg bg-white p-5 shadow-md">
                         <!-- Admin Header -->
-                        <div class="flex flex-row items-center gap-2 p-5">
+                        <div class="flex flex-row items-center gap-2">
                             <div>
                                 <img src="@profileImage" alt="User" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14">
                             </div>
@@ -216,19 +218,19 @@
                         </div>
 
                         <!-- Post Content -->
-                        <div>
-                            <p class="px-5 text-sm sm:text-base md:text-lg">@post.post_text</p>
+                        <div class="mt-4">
+                            <p class="text-sm sm:text-base md:text-lg">@post.post_text</p>
                         </div>
 
                         <!-- Image and Actions -->
-                        <div class="flex flex-col">
+                        <div class="mt-4 flex flex-col">
                             @if (!string.IsNullOrEmpty(post.post_media))
                             {
                                 <img class="max-h-[300px] w-full rounded-lg object-cover sm:max-h-[350px] md:max-h-[400px]"
                                      src="@Url.Content(post.post_media)" alt="Post Media" />
                             }
 
-                            <div class="m-10 flex flex-row gap-6 sm:justify-start">
+                            <div class="mt-4 flex flex-row gap-6 sm:justify-start">
                                 <a class="flex cursor-pointer items-center gap-2 text-sm text-gray-700 transition hover:text-blue-600 sm:text-base md:text-lg">
                                     <i class="fa-regular fa-thumbs-up"></i> Like
                                 </a>
@@ -239,7 +241,6 @@
                         </div>
                     </div>
                 }
-
             </div>
 
 
