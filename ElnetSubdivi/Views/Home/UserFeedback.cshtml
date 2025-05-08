@@ -76,7 +76,7 @@
     }
     
     <div id="userFeedback" class="flex h-[50vh] w-[88%] gap-4">
-        @foreach (var feedback in feedbacks)
+        @foreach (var feedback in feedbacks.Where(f => f.Type == "Feedback"))
         {
             <div class="feedback-card flex h-[24vh] w-[30%] flex-col gap-3 rounded-lg bg-white p-4 shadow-lg">
                 <img class="w-50" src="~/Images/ratings.svg" />
@@ -96,19 +96,18 @@
     </div>
 
     <div id="userComplaints" class="flex hidden h-[50vh] w-[88%] gap-4">
-        @foreach (var item in ViewBag.Complaints)
+        @foreach (var complaint in feedbacks.Where(f => f.Type == "Complaint"))
         {
             <div class="complaint-card flex h-[24vh] w-[30%] flex-col gap-3 rounded-lg bg-white p-4 shadow-lg">
-                <button class="flex w-[110px] items-center gap-2 rounded-full px-6 py-2 font-bold text-white @(item.Status == "Pending" ? "bg-[#FBBF24]" : "bg-green-500")">
-                    <span class="cursor-pointer font-semibold">@item.Status</span>
+                <button class="flex w-[110px] items-center gap-2 rounded-full px-6 py-2 font-bold text-white @(complaint.Status == "Pending" ? "bg-[#FBBF24]" : "bg-green-500")">
+                    <span class="cursor-pointer font-semibold">@complaint.Status</span>
                 </button>
-                <h2 class="text-bold text-xl">@item.Title</h2>
-                <p class="text-gray-400">@item.Type</p>
-                <p class="text-sm font-semibold">@item.Description</p>
+                <h2 class="text-bold text-xl">@complaint.Title</h2>
+                <p class="text-gray-400">@complaint.Type</p>
+                <p class="text-sm font-semibold">@complaint.Description</p>
                 <div class="flex items-center justify-between">
                     <span class="flex items-center gap-2 text-[14px] text-gray-400">
-                        <img src="~/Images/@item.Clock" /> @item.Duration
-                    </span>
+                        <img src="~/Images/clock.svg" /> @complaint.SubmittedAt
 
                     <a id="complaint-viewdets-@indexComplaint" href="#" class="view-details text-blue-400 underline" data-index="@indexComplaint" data-type="complaint">View Details</a>
                 </div>
@@ -233,31 +232,36 @@
 
 
 
-    <div id="addComplaint" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50">
-        <div class="flex w-[500px] flex-col gap-4 rounded-2xl bg-white p-8 shadow-lg">
-            <!-- Modal Header -->
-            <h2 class="text-center text-2xl font-bold text-[#003D38]">Submit Complaint</h2>
-            <div class="flex flex-col gap-2">
-                <h2>Rating</h2>
-                <img class="m-0 w-40 p-0" src="~/Images/ratings.svg" />
-            </div>
-            <div class="flex flex-col gap-2">
-                <h2>Title</h2>
-                <input type="text" name="" placeholder="Grear User Experience" class="border-2 rounded-lg border-gray-300 px-4 py-2" value="" />
-            </div>
-            <div class="flex flex-col gap-2">
-                <h2>Description</h2>
-                <textarea class="border-2 h-[15vh] w-full resize-none rounded-lg border-gray-300 px-4 py-2 text-gray-400" readonly>The interface is intuitive and easy to navigate. I particularly enjoyed the smooth transitions and responsive
-                </textarea>
+    <form asp-action="SubmitComplaint" asp-controller="Home" method="post">
+        <div id="addComplaint" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50">
+            <div class="flex w-[500px] flex-col gap-4 rounded-2xl bg-white p-8 shadow-lg">
+                <!-- Modal Header -->
+                <h2 class="text-center text-2xl font-bold text-[#003D38]">Submit Complaint</h2>
 
-            </div>
-            <div class="mt-6 flex gap-4">
-                <button class="cancel-btn w-1/2 rounded-full border border-[#003D38] py-2 text-[#003D38]">Cancel</button>
-                <button class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Submit </button>
+                <!-- Title -->
+                <div class="flex flex-col gap-2">
+                    <label>Title</label>
+                    <input type="text" name="Title" required placeholder="Ex. Facility Issue" class="border-2 rounded-lg border-gray-300 px-4 py-2" />
+                </div>
+
+                <!-- Rating -->
+                <input type="radio" name="Rating" value="1" class="hidden" />
+
+                <!-- Description -->
+                <div class="flex flex-col gap-2">
+                    <label>Description</label>
+                    <textarea name="Description" required class="border-2 h-[15vh] w-full resize-none rounded-lg border-gray-300 px-4 py-2"></textarea>
+                </div>
+
+                <!-- Buttons -->
+                <div class="mt-6 flex gap-4">
+                    <button type="button" class="cancel-btn w-1/2 rounded-full border border-[#003D38] py-2 text-[#003D38]">Cancel</button>
+                    <button type="submit" class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Submit</button>
+                </div>
             </div>
         </div>
+    </form>
 
-    </div>
     <div id="submitType" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50">
         <div class="flex w-[500px] flex-col items-center gap-4 rounded-2xl bg-white p-8 shadow-lg">
             <h1 class="text-center text-2xl font-bold text-[#003D38]">Choose Submission Type</h1>

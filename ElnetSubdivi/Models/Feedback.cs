@@ -12,7 +12,6 @@ namespace ElnetSubdivi.Models
         public string UserID { get; set; }
 
         [Range(1, 5)]
-        [Required]
         public int Rating { get; set; }
 
         [StringLength(255)]
@@ -27,15 +26,19 @@ namespace ElnetSubdivi.Models
         [StringLength(255)]
         public string Type { get; set; }
 
+        [StringLength(255)]
+        public string Status { get; set; }
+
         public Feedback()
         {
             FeedbackID = 0; // Default value for FeedbackID
             UserID = string.Empty;
-            Rating = 0; // Default value for Rating
+            Rating = 1; // Default value for Rating
             Title = string.Empty;
             Description = string.Empty;
             SubmittedAt = DateTime.Now; // Default value for SubmittedAt
             Type = string.Empty;
+            Status = string.Empty;
         }
     }
 }

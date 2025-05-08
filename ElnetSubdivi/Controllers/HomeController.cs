@@ -754,11 +754,31 @@ namespace ElnetSubdivi.Controllers
             {
                 feedback.SubmittedAt = DateTime.Now;
                 feedback.Type = "Feedback";
+                feedback.Status = "N/A";
                 _context.Feedback.Add(feedback);
                 _context.SaveChanges();
                 return RedirectToAction("UserFeedback");
             }
             return View("UserFeedback");
+        }
+
+
+        [HttpPost]
+        public IActionResult SubmitComplaint(Feedback feedback)
+        {
+            if (ModelState.IsValid)
+            {
+                feedback.SubmittedAt = DateTime.Now;
+                feedback.Type = "Complaint";
+                feedback.Status = "Pending";
+                _context.Feedback.Add(feedback);
+                _context.SaveChanges();
+
+                return RedirectToAction("UserFeedback");
+            }
+
+            TempData["Error"] = "Failed to submit complaint. Please try again.";
+            return RedirectToAction("UserFeedback");
         }
 
 
