@@ -173,9 +173,55 @@ namespace ElnetSubdivi.Controllers
             return View();
         }
 
-        public IActionResult FacilityReservation()
+
+        /////////////////////////////////// FACILITY SCRIPTS /////////////////////////////////////////////////////////
+
+
+        public async Task<IActionResult> FacilityReservationAsync()
         {
-            return View();
+            var reservationList = await _reservationService.GetAllReservation() ?? new List<Reservation>(); // Ensures it's not null
+            var userId = User.FindFirst("UserId")?.Value;
+            var currentuser = await _context.Users.FirstOrDefaultAsync(u => u.user_id == userId);
+            var facilities = await _facilityService.GetAllFacilitiesWithHoursAsync() ?? new List<Facility>();
+
+            var reservations = new ReservationViewModel
+            {
+                Reservations = reservationList.Select(r => new ReservationViewModel
+                {
+                    ReservationId = r.reservation_id,
+                    FacilityId = r.facility_id,
+                    UserId = r.user_id,
+                    ReservationDate = r.reservation_date,
+                    TimeIn = r.time_in,
+                    TimeOut = r.time_out,
+                    ReservationPurpose = r.reservation_purpose,
+                    ReservationStatus = r.reservation_status
+                }).ToList(),
+
+                Facilities = facilities.Select(f => new FacilityViewModel
+                {
+                    FacilityId = f.Facility_Id,
+                    FacilityName = f.Facility_Name,
+                    FacilityCategory = f.Facility_Category,
+                    FacilityDescription = f.Facility_Description,
+                    ImagePath = f.Facility_Img,
+                    ServiceFeePerHour = f.Service_Fee_Per_Hour,
+                    FacilityGuidelines = f.Facility_Guidelines,
+                    FacilityAminities = f.Facility_Aminities,
+                    FacilityStatus = f.Facility_Status,
+                    OperatingHours = f.OperatingHours.Select(h => new FacilityViewModel.FacilityOperatingHours
+                    {
+                        Facility_Id = h.Facility_Id,
+                        Day_Of_Week = h.Day_Of_Week,
+                        Opening_Time = h.Opening_Time,
+                        Closing_Time = h.Closing_Time
+                    }).ToList()
+                }).ToList(),
+
+                User = currentuser,
+            };
+
+            return View(reservations);
         }
 
         public IActionResult MyReservation()
@@ -830,7 +876,7 @@ namespace ElnetSubdivi.Controllers
                     Opening_Time = h.Opening_Time,
                     Closing_Time = h.Closing_Time,
                     Facility = h.Facility
-                }).ToList() // Ensure this is a List<FacilityViewModel.FacilityOperatingHours>
+                }).ToList(), // Ensure this is a List<FacilityViewModel.FacilityOperatingHours>
             }).ToList();
 
             ViewData["HideSearch"] = true;
@@ -998,13 +1044,14 @@ namespace ElnetSubdivi.Controllers
             {
                 var idPart = lastReservation.reservation_id.Replace("RES-", "");
                 if (int.TryParse(idPart, out int numericId))
-                {
+                { 
                     nextIdNumber = numericId + 1;
                 }
             }
 
             string newReservationId = $"RES-{nextIdNumber.ToString("D4")}";
             model.ReservationId = newReservationId;
+
             ModelState.Remove(nameof(model.ReservationId));
 
             if (ModelState.IsValid)

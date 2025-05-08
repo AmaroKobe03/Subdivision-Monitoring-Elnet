@@ -1,4 +1,5 @@
 ﻿using ElnetSubdivi.Models;
+using ElnetSubdivi.ViewModels;
 using Microsoft.AspNetCore.Http; // Ensure this namespace is included for IFormFile
 
 namespace ElnetSubdivi.Models
@@ -42,6 +43,8 @@ namespace ElnetSubdivi.Models
             ActionName = string.Empty;
             ButtonText = string.Empty;
             OperatingHours = new List<FacilityOperatingHours>(); // Fixed type mismatch
+            Reservations = new List<ReservationViewModel>();
+            Users = new List<Users>();
         }
 
         public class FacilityOperatingHours
@@ -53,6 +56,9 @@ namespace ElnetSubdivi.Models
 
             public Facility Facility { get; set; }
         }
+
+        public List<ReservationViewModel> Reservations { get; set; }
+        public List<Users> Users { get; set; }
     }
 }
 

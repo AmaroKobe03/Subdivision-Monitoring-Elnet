@@ -88,9 +88,9 @@ namespace ElnetSubdivi.ViewModels
             };
         }
 
-        public List<Users> Users { get; set; }
+        public List<Users> Users { get; set; } = new();
+        public ElnetSubdivi.Models.Users User { get; set; }
         public List<ReservationViewModel> Reservations { get; set; } = new();
-
-
+        public List<FacilityViewModel> Facilities { get; set; } = new();
     }
 }
