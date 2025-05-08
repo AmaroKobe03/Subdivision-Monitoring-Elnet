@@ -102,12 +102,22 @@
                                View Details
                             </a>
                             <a href="#">Edit</a>
-                            <a href="#" class="text-red-400">Cancel</a>
+                            @if (visitor.visit_status?.ToLower() == "cancelled")
+                            {
+                                <button class="text-red-300 bg-transparent cursor-not-allowed opacity-25" disabled>Cancel</button>
+                            }
+                            else
+                            {
+                                <form asp-action="CancelVisitor" asp-controller="Home" method="post" style="display:inline;">
+                                    <input type="hidden" name="visitor_id" value="@visitor.visitor_id" />
+                                    <button type="submit" class="text-red-400 bg-transparent border-none">Cancel</button>
+                                </form>
+                            }
+
                         </div>
                     </div>
                 </div>
             }
-
 
         </div>
 

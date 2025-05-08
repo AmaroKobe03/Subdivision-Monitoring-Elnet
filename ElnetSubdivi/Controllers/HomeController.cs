@@ -420,6 +420,17 @@ namespace ElnetSubdivi.Controllers
             return RedirectToAction("UserVisitors", visitor); // or wherever the view is rendered
         }
 
+        [HttpPost]
+        public IActionResult CancelVisitor(int visitor_id)
+        {
+            var visitor = _context.Visitor_List.FirstOrDefault(v => v.visitor_id == visitor_id);
+            if (visitor != null)
+            {
+                visitor.visit_status = "Cancelled";
+                _context.SaveChanges();
+            }
+            return RedirectToAction("UserVisitors"); // Or "Visitors", depending on your route
+        }
 
         public IActionResult UserCalendar()
         {
