@@ -59,7 +59,9 @@
                     <td class="px-4 py-3">@v.vehicle_brand</td>
                     <td class="px-4 py-3">@v.vehicle_model</td>
                     <td class="px-4 py-3">@v.vehicel_color</td>
-                    <td class="px-4 py-3 text-orange-400">@v.vehicle_status</td>
+                    <td class="px-4 py-3 @(v.vehicle_status == "Approved" ? "text-green-500" : v.vehicle_status == "Declined" ? "text-red-500" : "")">
+                        @v.vehicle_status
+                    </td>
                     <td class="cursor-pointer px-4 py-3 font-semibold text-teal-700 relative">
                         <button class="Vactions-btn">⋮</button>
                         <div class="Vactions-menu absolute right-0 mt-1 hidden w-40 bg-white shadow-md z-50">
@@ -73,7 +75,7 @@
                                     data-document="@dataUrl">
                                     View Details
                                 </li>
-                                <li class="viewVehiclebtn cursor-pointer px-4 py-2 hover:bg-gray-100"
+                                <li class="editVehiclebtn cursor-pointer px-4 py-2 hover:bg-gray-100"
                                     data-plate="@v.plate_number"
                                     data-type="@v.vehicle_type"
                                     data-brand="@v.vehicle_brand"
@@ -209,43 +211,8 @@
     </div>
 
 </div>
-    <script>
-        document.querySelectorAll(".viewVehiclebtn").forEach(btn => {
-            btn.addEventListener("click", function () {
-                const isEdit = this.textContent.trim() === "Edit";
-                const modal = document.getElementById("Vehiclemodal");
-                modal.classList.remove("hidden");
+ 
 
-                document.getElementById("modalPlate").value = this.dataset.plate;
-                document.getElementById("modalType").value = this.dataset.type;
-                document.getElementById("modalBrand").value = this.dataset.brand;
-                document.getElementById("modalModel").value = this.dataset.model;
-                document.getElementById("modalColor").value = this.dataset.color;
-
-                const documentPreview = document.getElementById("documentPreview");
-                const documentData = this.dataset.document;
-                documentPreview.innerHTML = documentData.includes("image/")
-                    ? `<img src="${documentData}" alt="Vehicle Document" class="max-w-full h-auto rounded-md border" />`
-                    : `<p class="text-red-500">Unsupported or missing file format.</p>`;
-
-                document.getElementById("modalDocFileInput").value = "";
-
-                // Set input readonly only if viewing
-                ["modalType", "modalBrand", "modalModel", "modalColor"].forEach(id => {
-                    document.getElementById(id).readOnly = !isEdit;
-                });
-
-                document.getElementById("modalDocFileInput").disabled = !isEdit;
-                document.getElementById("cancelEditBtn").style.display = isEdit ? "inline-block" : "none";
-                document.querySelector("#editVehicleForm button[type=submit]").style.display = isEdit ? "inline-block" : "none";
-            });
-        });
-
-        document.getElementById("cancelEditBtn").addEventListener("click", function () {
-            document.getElementById("Vehiclemodal").classList.add("hidden");
-        });
-
-    </script>
 
 <script>
     function closeModal(event) {

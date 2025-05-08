@@ -85,7 +85,9 @@
                         <td class="px-4 py-3">@v.vehicel_color</td>
                         <td class="px-4 py-3">@v.plate_number</td>
                         <td class="px-4 py-3">@owner.first_name @owner.last_name</td>
-                        <td class="px-4 py-3 text-orange-400">@v.vehicle_status</td>
+                        <td class="px-4 py-3 @(v.vehicle_status == "Approved" ? "text-green-500" : v.vehicle_status == "Declined" ? "text-red-500" : "")">
+                            @v.vehicle_status
+                        </td>
                         <td class="cursor-pointer px-4 py-3 font-semibold text-teal-700 relative">
                             <button class="Vactions-btn">⋮</button>
                             <div class="Vactions-menu absolute right-0 mt-1 hidden w-40 bg-white shadow-md z-50">
@@ -96,18 +98,12 @@
                                         data-brand="@v.vehicle_brand"
                                         data-model="@v.vehicle_model"
                                         data-color="@v.vehicel_color"
+                                        data-owner="@owner.first_name @owner.last_name"
                                         data-document="@dataUrl">
                                         View Details
                                     </li>
-                                    <li class="viewVehiclebtn cursor-pointer px-4 py-2 hover:bg-gray-100"
-                                        data-plate="@v.plate_number"
-                                        data-type="@v.vehicle_type"
-                                        data-brand="@v.vehicle_brand"
-                                        data-model="@v.vehicle_model"
-                                        data-color="@v.vehicel_color"
-                                        data-document="@dataUrl">
-                                        Edit
-                                    </li>
+                                    <li id="approve-btn" class="cursor-pointer px-4 py-2 hover:bg-gray-100">Approve</li>
+                                    <li id="decline-btn" class="cursor-not-allowed px-4 py-2 text-red-400">Decline</li>
                                 </ul>
                             </div>
                         </td>
@@ -115,9 +111,10 @@
                 }
         </tbody>
     </table>
+
     <!-- Modal (Hidden by default) -->
     <div id="Vmodal" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50" onclick="closeModal(event)">
-        <div class="w-[500px] rounded-2xl bg-white p-8 shadow-lg" onclick="event.stopPropagation()">
+        <div id="VmodalContent" class="w-[500px] rounded-2xl bg-white p-8 shadow-lg" onclick="event.stopPropagation()">
             <!-- Modal Header -->
             <h2 class="text-center text-2xl font-bold text-[#003D38]">Vehicle Details</h2>
 
@@ -125,19 +122,19 @@
             <div class="mt-4 grid grid-cols-2 gap-4">
                 <div>
                     <label class="text-gray-600">Type</label>
-                    <input type="text" value="Car" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+                    <input id="modalType" name="vehicle_type" type="text" value="Car" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
                 </div>
                 <div>
                     <label class="text-gray-600">Model</label>
-                    <input type="text" value="RAV4" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+                    <input id="modalModel" name="vehicle_model" type="text" value="RAV4" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
                 </div>
                 <div>
                     <label class="text-gray-600">Brand</label>
-                    <input type="text" value="Toyota" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+                    <input id="modalBrand" name="vehicle_brand" type="text" value="Toyota" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
                 </div>
                 <div>
                     <label class="text-gray-600">Color</label>
-                    <input type="text" value="Black" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+                    <input id="modalColor" name="vehicel_color" type="text" value="Black" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
                 </div>
             </div>
 
@@ -145,34 +142,18 @@
             <div class="mt-4 flex gap-4">
                 <div class="w-1/2">
                     <label class="text-gray-600">Plate Number</label>
-                    <input type="text" value="2025-03-15" class="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-400" readonly />
-                </div>
-                <div class="w-1/2">
-                    <label class="text-gray-600">Color</label>
-                    <input type="text" value="Black" class="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-400" readonly />
-                </div>
-            </div>
-
-            <!-- Name Fields -->
-            <div class="mt-4 grid grid-cols-2 gap-4">
-                <div>
-                    <label class="text-gray-600">First Name</label>
-                    <input type="text" value="Casy" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+                    <input id="modalPlate" name="plate_number" type="text" value="2025-03-15" class="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-400" readonly />
                 </div>
                 <div>
-                    <label class="text-gray-600">Last Name</label>
-                    <input type="text" value="Chan" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+                    <label class="text-gray-600">Owner</label>
+                    <input id="modalOwner" name="vehicle_owner" type="text" value="Casy" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
                 </div>
             </div>
-
-            <!-- Relationship -->
-            <label class="mt-4 block text-gray-600">Relationship</label>
-            <input type="text" value="Self" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
 
             <!-- OR CR -->
             <div class="mt-4">
-                <label class="text-gray-600">OR CR</label>
-                <a href="#" class="block text-[#003D38] underline">myorcr.pdf</a>
+                <label class="text-gray-600">Document</label>
+                <div id="documentPreview" class="mt-2"></div>
             </div>
 
             <!-- Buttons -->
@@ -194,14 +175,37 @@
     </div>
 
     <script>
-        document.getElementById("viewVisitbtn").addEventListener("click", function () {
-            document.getElementById("Vmodal").classList.remove("hidden");
-        });
+        // View Details: Read-only modal
+        document.querySelectorAll(".viewVehiclebtn").forEach(btn => {
+            btn.addEventListener("click", function () {
+                const modal = document.getElementById("Vmodal");
+                modal.classList.remove("hidden");
 
-        document.getElementById("Vmodal").addEventListener("click", function (event) {
-            if (!event.target.closest(".modal-content")) {
-                this.classList.add("hidden");
-            }zx
+                document.getElementById("modalPlate").value = this.dataset.plate;
+                document.getElementById("modalType").value = this.dataset.type;
+                document.getElementById("modalBrand").value = this.dataset.brand;
+                document.getElementById("modalModel").value = this.dataset.model;
+                document.getElementById("modalColor").value = this.dataset.color;
+                document.getElementById("modalOwner").value = this.dataset.owner;
+
+                const documentPreview = document.getElementById("documentPreview");
+                const documentData = this.dataset.document;
+                documentPreview.innerHTML = documentData.includes("image/")
+                    ? `<img src="${documentData}" alt="Vehicle Document" class="max-w-full h-auto rounded-md border" />`
+                    : `<p class="text-red-500">Unsupported or missing file format.</p>`;
+
+                document.getElementById("modalDocFileInput").disabled = true;
+                document.getElementById("modalDocFileInput").value = "";
+
+                // Make all inputs read-only
+                ["modalType", "modalBrand", "modalModel", "modalColor"].forEach(id => {
+                    document.getElementById(id).readOnly = true;
+                });
+
+                // Hide buttons
+                document.getElementById("cancelEditBtn").style.display = "none";
+                document.querySelector("#editVehicleForm button[type=submit]").style.display = "none";
+            });
         });
     </script>
 
@@ -274,6 +278,96 @@
                 e.currentTarget.querySelector("span").classList.add("text-blue-700");
             });
         });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const modal = document.getElementById("Vmodal");
+            const modalContent = document.getElementById("VmodalContent");
+
+            modal.addEventListener("click", function (event) {
+                // If the clicked target is the modal backdrop (not the content), close the modal
+                if (!modalContent.contains(event.target)) {
+                    modal.classList.add("hidden");
+                }
+            });
+        });
+    </script>
+    <script>
+                document.querySelectorAll("#Vmodal button").forEach(btn => {
+            btn.addEventListener("click", function () {
+                const status = this.textContent.trim(); // "Approve" or "Decline"
+                const plateNumber = document.getElementById("modalPlate").value;
+
+                fetch('/Home/UpdateStatusByPlate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ plateNumber: plateNumber, status: status })
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error("Failed to update.");
+                    return response.json();
+                })
+                .then(data => {
+                    alert(`Vehicle status updated to ${data.newStatus}`);
+                    location.reload();
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("An error occurred while updating status.");
+                });
+            });
+        });
 
     </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".Vactions-menu").forEach(menu => {
+                const approveBtn = menu.querySelector("#approve-btn");
+                const declineBtn = menu.querySelector("#decline-btn");
+
+                const updateStatus = (status, menuElement) => {
+                    const row = menuElement.closest("tr");
+                    const plateNumber = row.querySelector("td:nth-child(5)").textContent.trim(); // 5th column = plate number
+
+                    fetch('/Home/UpdateStatusByPlate', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ plateNumber, status })
+                    })
+                    .then(response => {
+                        if (!response.ok) throw new Error("Failed to update status.");
+                        return response.json();
+                    })
+                    .then(data => {
+                        alert(`Vehicle status updated to ${data.newStatus}`);
+                        location.reload();
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        alert("An error occurred while updating status.");
+                    });
+                };
+
+                if (approveBtn) {
+                    approveBtn.addEventListener("click", function (e) {
+                        e.stopPropagation();
+                        updateStatus("Approved", this);
+                    });
+                }
+
+                if (declineBtn) {
+                    declineBtn.addEventListener("click", function (e) {
+                        e.stopPropagation();
+                        updateStatus("Declined", this);
+                    });
+                }
+            });
+        });
+    </script>
+
 </div>

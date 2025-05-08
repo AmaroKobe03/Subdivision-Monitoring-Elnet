@@ -574,6 +574,29 @@ namespace ElnetSubdivi.Controllers
             return RedirectToAction("UserVehicle");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> UpdateStatusByPlate([FromBody] VehicleStatusUpdateRequest request)
+        {
+            var vehicle = await _context.Vehicle.FirstOrDefaultAsync(v => v.plate_number == request.PlateNumber);
+            if (vehicle == null)
+            {
+                return NotFound();
+            }
+
+            vehicle.vehicle_status = request.Status;
+            _context.Update(vehicle);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { success = true, newStatus = request.Status });
+        }
+
+        public class VehicleStatusUpdateRequest
+        {
+            public string PlateNumber { get; set; }
+            public string Status { get; set; }
+        }
+
+
 
         public async Task<IActionResult> MaintenanceServiceRequestAsync()
         {
