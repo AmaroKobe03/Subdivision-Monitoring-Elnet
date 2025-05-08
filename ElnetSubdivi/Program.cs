@@ -22,6 +22,8 @@ builder.Services.AddScoped<IFacilityService, FacilityService>();
 builder.Services.AddScoped<IRequestService, RequestService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IBillingPaymentService, BillingPaymentService>();
+builder.Services.AddScoped<IVisitorListService, VisitorListService>();
+
 
 
 

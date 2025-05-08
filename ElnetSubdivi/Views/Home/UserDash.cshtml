@@ -1,6 +1,5 @@
 ﻿@model ElnetSubdivi.Models.PostAndUserViewModel
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,14 +19,27 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+
+        #profile-section {
+            text-decoration: none;
+        }
+
+            #profile-section:hover {
+                background-color: transparent !important;
+                color: inherit !important;
+                cursor: default;
+            }
+
+        .no-highlight * {
+            pointer-events: none;
+        }
     </style>
 </head>
 <body class="flex w-[100vw] items-center">
 
     <main id="UserFeed" class="flex h-[100vh] w-[100vw] flex-col items-center justify-center gap-10 bg-[#F0F2F6] md:flex-row md:gap-20">
 
-        <section id="feed"
-                 class="mt-10 flex h-[100vh] w-full flex-col items-center gap-4 overflow-y-auto bg-[#F0F2F6] px-4 sm:w-full md:w-[50%]">
+        <section id="feed" class="mt-10 flex h-[100vh] w-full flex-col items-center gap-4 overflow-y-auto bg-[#F0F2F6] px-4 sm:w-full md:w-[50%]">
             <div id="activity" class="mt-5 w-full rounded-lg bg-white p-4 shadow-md">
                 <!-- Profile Picture + Input -->
                 <div id="add" class="flex w-full items-center gap-3 p-2 sm:p-4">
@@ -203,19 +215,23 @@
                     <!-- Each post is now its own card -->
                     <div class="mb-8 w-full rounded-lg bg-white p-5 shadow-md">
                         <!-- Admin Header -->
-                        <div class="flex flex-row items-center gap-2">
-                            <div>
-                                <img src="@profileImage" alt="User" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14">
+                        <!-- Admin Header -->
+                        <a href="@Url.Action("viewProfile", "Home")" id="profile-section" class="flex flex-row items-center gap-2 no-highlight">
+                            <div id="profile-section" class="flex flex-row items-center gap-2 cursor-pointer hover:bg-gray-100 p-2 rounded-md transition">
+                                <div>
+                                    <img src="@profileImage" alt="User" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14">
+                                </div>
+                                <div class="flex flex-col">
+                                    <h1 class="m-0 p-0 text-sm font-semibold sm:text-base md:text-lg">
+                                        @($"{user.first_name} {user.last_name}")
+                                    </h1>
+                                    <p class="m-0 p-0 text-xs text-gray-600 sm:text-sm md:text-base">
+                                        Posted @post.post_date.ToString("MMM dd, yyyy hh:mm tt")
+                                    </p>
+                                </div>
                             </div>
-                            <div class="flex flex-col">
-                                <h1 class="m-0 p-0 text-sm font-semibold sm:text-base md:text-lg">
-                                    @($"{user.first_name} {user.last_name}")
-                                </h1>
-                                <p class="m-0 p-0 text-xs text-gray-600 sm:text-sm md:text-base">
-                                    Posted @post.post_date.ToString("MMM dd, yyyy hh:mm tt")
-                                </p>
-                            </div>
-                        </div>
+                        </a>
+
 
                         <!-- Post Content -->
                         <div class="mt-4">

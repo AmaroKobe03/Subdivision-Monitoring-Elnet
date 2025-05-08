@@ -25,9 +25,10 @@ namespace ElnetSubdivi.Controllers
         private readonly IReservationService _reservationService;
         private readonly IBillingPaymentService _billingService;
         private readonly IWebHostEnvironment _webHostEnvironment; // Add this field
+        private readonly IVisitorListService _VisitorListService;
 
 
-        public HomeController(ILogger<HomeController> logger, IUserService userService, ApplicationDbContext context, IPostService postService, IFacilityService facilityService, IRequestService requestService, IReservationService reservationService, IBillingPaymentService billingService, IWebHostEnvironment webHostEnvironment)
+        public HomeController(ILogger<HomeController> logger, IUserService userService, ApplicationDbContext context, IPostService postService, IFacilityService facilityService, IRequestService requestService, IReservationService reservationService, IBillingPaymentService billingService, IWebHostEnvironment webHostEnvironment, IVisitorListService visitorListService)
         {
             _logger = logger;
             _userService = userService;
@@ -38,6 +39,7 @@ namespace ElnetSubdivi.Controllers
             _reservationService = reservationService;
             _billingService = billingService;
             _webHostEnvironment = webHostEnvironment ?? throw new ArgumentNullException(nameof(webHostEnvironment));
+            _VisitorListService = visitorListService;
         }
 
         public async Task<IActionResult> Index()
@@ -177,9 +179,23 @@ namespace ElnetSubdivi.Controllers
             return View();
         }
 
-        public IActionResult viewProfile()
+        public async Task<IActionResult> viewProfileAsync()
         {
-            return View();
+            // Get posts from your database/service
+            var posts = _context.Posts.OrderByDescending(p => p.post_date).ToList();
+
+            // Get current user (example - adjust based on your auth system)
+            var currentUser = _context.Users.FirstOrDefault(u => u.user_id == User.Identity.Name);
+
+            // Create the view model
+            var viewModel = new PostAndUserViewModel
+            {
+                Posts = posts,
+                User = currentUser,
+                Users = await _userService.GetAllUsers()
+            };
+
+            return View(viewModel);
         }
         public IActionResult VehicleManagement()
         {
@@ -350,12 +366,40 @@ namespace ElnetSubdivi.Controllers
             return View(users);
         }
 
-        public IActionResult UserVisitors()
+        public async Task<IActionResult> UserVisitorsAsync()
         {
-            ViewData["HideSearch"] = true;
-            return View();
+            // Get posts from your database/service
+            var visitorlist = _context.Visitor_List.OrderByDescending(p => p.visitor_id).ToList();
 
+            // Get current user (example - adjust based on your auth system)
+            var currentuser = _context.Users.FirstOrDefault(u => u.user_id == User.Identity.Name);
+
+
+            // Create the view model
+            var visitors = new VIsitorListViewModel
+            {
+                VisitorList = visitorlist,
+                Users = await _userService.GetAllUsers(),
+                User = currentuser
+            };
+
+            return View(visitors);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddVisitor(VisitorList visitor)
+        {
+            if (ModelState.IsValid)
+            {
+                await _VisitorListService.AddVisitorAsync(visitor);
+                _context.SaveChanges();
+                return RedirectToAction("UserVisitors"); // or wherever your list is
+            }
+
+            return View("UserVisitors", visitor); // return with errors
+        }
+
+
         public IActionResult UserCalendar()
         {
             ViewData["HideSearch"] = true;

@@ -17,6 +17,7 @@ namespace ElnetSubdivi.data
         public DbSet<FacilityOperatingHour> Facility_Operating_Hours { get; set; }
         public DbSet<Reservation> Reservation { get; set; }
         public DbSet<BillingPaymentModel> Billing_Statements { get; set; }
+        public DbSet<VisitorList> Visitor_List { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
