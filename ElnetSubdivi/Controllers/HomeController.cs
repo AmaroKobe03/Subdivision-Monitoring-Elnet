@@ -26,9 +26,10 @@ namespace ElnetSubdivi.Controllers
         private readonly IBillingPaymentService _billingService;
         private readonly IWebHostEnvironment _webHostEnvironment; // Add this field
         private readonly IVisitorListService _VisitorListService;
+        private readonly IVehicleService _vehicleService;
 
 
-        public HomeController(ILogger<HomeController> logger, IUserService userService, ApplicationDbContext context, IPostService postService, IFacilityService facilityService, IRequestService requestService, IReservationService reservationService, IBillingPaymentService billingService, IWebHostEnvironment webHostEnvironment, IVisitorListService visitorListService)
+        public HomeController(ILogger<HomeController> logger, IUserService userService, ApplicationDbContext context, IPostService postService, IFacilityService facilityService, IRequestService requestService, IReservationService reservationService, IBillingPaymentService billingService, IWebHostEnvironment webHostEnvironment, IVisitorListService visitorListService, IVehicleService vehicleService)
         {
             _logger = logger;
             _userService = userService;
@@ -40,6 +41,7 @@ namespace ElnetSubdivi.Controllers
             _billingService = billingService;
             _webHostEnvironment = webHostEnvironment ?? throw new ArgumentNullException(nameof(webHostEnvironment));
             _VisitorListService = visitorListService;
+            _vehicleService = vehicleService;
         }
 
         public async Task<IActionResult> Index()
@@ -471,12 +473,85 @@ namespace ElnetSubdivi.Controllers
             return View();
         }
 
-        public IActionResult UserVehicle()
+        public async Task<IActionResult> UserVehicleAsync()
         {
             ViewData["HideSearch"] = true;
-            return View();
+            // Get posts from your database/service
+            var vehiclelist = _context.Vehicle.OrderByDescending(p => p.plate_number).ToList();
+
+            // Get current user (example - adjust based on your auth system)
+            var currentuser = _context.Users.FirstOrDefault(u => u.user_id == User.Identity.Name);
+
+
+            // Create the view model
+            var vehicles = new VehicleViewModel
+            {
+                Vehicle = vehiclelist,
+                Users = await _userService.GetAllUsers(),
+                User = currentuser
+            };
+
+            return View(vehicles);
 
         }
+        [HttpPost]
+        public async Task<IActionResult> AddVehicle(Vehicle model, IFormFile vehicle_document)
+        {
+            if (vehicle_document != null && vehicle_document.Length > 0)
+            {
+                // Example: Save to wwwroot/uploads
+                var uploadsFolder = Path.Combine("wwwroot/uploads");
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                var uniqueFileName = Guid.NewGuid().ToString() + "_" + vehicle_document.FileName;
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await vehicle_document.CopyToAsync(stream);
+                }
+
+                // Save the file path or filename to the database
+                model.vehicle_document = System.IO.File.ReadAllBytes(filePath);
+            }
+            model.vehicle_status = "Pending"; // or whatever default status
+            // Save the vehicle model to the DB using your service or context
+            _context.Vehicle.Add(model);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("UserVehicle");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateVehicle(Vehicle vehicle)
+        {
+            var existingVehicle = await _context.Vehicle.FirstOrDefaultAsync(v => v.plate_number == vehicle.plate_number);
+            if (existingVehicle == null)
+            {
+                return NotFound();
+            }
+
+            existingVehicle.vehicle_type = vehicle.vehicle_type;
+            existingVehicle.vehicle_model = vehicle.vehicle_model;
+            existingVehicle.vehicle_brand = vehicle.vehicle_brand;
+            existingVehicle.vehicel_color = vehicle.vehicel_color;
+
+            if (Request.Form.Files.Count > 0)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    await Request.Form.Files[0].CopyToAsync(ms);
+                    existingVehicle.vehicle_document = ms.ToArray();
+                }
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("UserVehicle");
+        }
+
 
         public async Task<IActionResult> MaintenanceServiceRequestAsync()
         {
