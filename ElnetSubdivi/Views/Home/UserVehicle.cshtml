@@ -34,8 +34,8 @@
     <table class="w-[88%] border-collapse bg-white text-left">
         <thead>
             <tr class="text-gray-500">
-                <th class="px-4 py-3">Plate Number </th>
                 <th class="px-4 py-3">Type</th>
+                <th class="px-4 py-3">Plate Number </th>
                 <th class="px-4 py-3">Brand</th>
                 <th class="px-4 py-3">Model</th>
                 <th class="px-4 py-3">Color</th>
@@ -52,10 +52,10 @@
                 string dataUrl = $"data:{mimeType};base64,{base64Doc}";
 
                 <tr>
-                    <td class="px-4 py-3">@v.plate_number</td>
                     <td class="px-4 py-3">
                         <img src="~/Images/@(v.vehicle_type.ToLower().Contains("motor") ? "motor.svg" : "car.svg")" alt="Vehicle" />
                     </td>
+                    <td class="px-4 py-3">@v.plate_number</td>
                     <td class="px-4 py-3">@v.vehicle_brand</td>
                     <td class="px-4 py-3">@v.vehicle_model</td>
                     <td class="px-4 py-3">@v.vehicel_color</td>
@@ -100,6 +100,7 @@
 
                 <!-- Vehicle Details -->
                 <div class="mt-4 grid grid-cols-2 gap-4">
+                    <input name="user_id" value="@user.user_id" type="hidden"/>
                     <div>
                         <label class="text-gray-600">Type</label>
                         <select name="vehicle_type" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-600">

@@ -199,22 +199,7 @@ namespace ElnetSubdivi.Controllers
 
             return View(viewModel);
         }
-        public IActionResult VehicleManagement()
-        {
-            ViewData["HideSearch"] = true;
-            ViewData["Hidebtn"] = true;
-
-            var manageVehicle = new List<dynamic>
-            {
-                new { Title = "Total Vehicles", Count = 123, Icon = "vehicle.svg", BorderColor = "border-blue-400 border-b-2" },
-                new { Title = "Pending Approval", Count = 34, Icon = "pendi.svg", BorderColor = "border-yellow-400 borber-b-2" },
-                new { Title = "Approved Today", Count = 56, Icon = "activev.svg", BorderColor = "border-green-400 borber-b-2" },
-                new { Title = "Declined", Count = 10, Icon = "outv.svg", BorderColor = "border-red-400 borber-b-2" }
-
-            };
-
-            return View(manageVehicle);
-        }
+       
         public async Task<IActionResult> VisitorsPassManagementAsync()
         {
             ViewData["HideSearch"] = true;
@@ -473,14 +458,51 @@ namespace ElnetSubdivi.Controllers
             return View();
         }
 
+
+        ///////////////////////////////////////////////// VEHICLE SCRIPTS //////////////////////////////////////////////////////
+
+        public async Task<IActionResult> VehicleManagementAsync()
+        {
+            ViewData["HideSearch"] = true;
+            ViewData["Hidebtn"] = true;
+
+            var manageVehicle = new List<dynamic>
+            {
+                new { Title = "Total Vehicles", Count = 123, Icon = "vehicle.svg", BorderColor = "border-blue-400 border-b-2" },
+                new { Title = "Pending Approval", Count = 34, Icon = "pendi.svg", BorderColor = "border-yellow-400 borber-b-2" },
+                new { Title = "Approved Today", Count = 56, Icon = "activev.svg", BorderColor = "border-green-400 borber-b-2" },
+                new { Title = "Declined", Count = 10, Icon = "outv.svg", BorderColor = "border-red-400 borber-b-2" }
+
+            };
+
+            // Get posts from your database/service
+            var vehiclelist = _context.Vehicle.OrderByDescending(p => p.plate_number).ToList();
+            var userId = User.FindFirst("UserId")?.Value;
+
+            // Get current user (example - adjust based on your auth system)
+            var currentuser = await _context.Users.FirstOrDefaultAsync(u => u.user_id == userId);
+
+            // Create the view model
+            var vehicles = new VehicleViewModel
+            {
+                Vehicle = vehiclelist,
+                Users = await _userService.GetAllUsers(),
+                User = currentuser
+            };
+
+            return View(vehicles);
+        }
+
+
         public async Task<IActionResult> UserVehicleAsync()
         {
             ViewData["HideSearch"] = true;
             // Get posts from your database/service
             var vehiclelist = _context.Vehicle.OrderByDescending(p => p.plate_number).ToList();
+            var userId = User.FindFirst("UserId")?.Value;
 
             // Get current user (example - adjust based on your auth system)
-            var currentuser = _context.Users.FirstOrDefault(u => u.user_id == User.Identity.Name);
+            var currentuser = await _context.Users.FirstOrDefaultAsync(u => u.user_id == userId);
 
 
             // Create the view model
@@ -492,8 +514,8 @@ namespace ElnetSubdivi.Controllers
             };
 
             return View(vehicles);
-
         }
+
         [HttpPost]
         public async Task<IActionResult> AddVehicle(Vehicle model, IFormFile vehicle_document)
         {
