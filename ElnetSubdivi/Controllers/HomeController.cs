@@ -27,9 +27,10 @@ namespace ElnetSubdivi.Controllers
         private readonly IWebHostEnvironment _webHostEnvironment; // Add this field
         private readonly IVisitorListService _VisitorListService;
         private readonly IVehicleService _vehicleService;
+        private readonly IFeedbackService _feedbackService;
 
 
-        public HomeController(ILogger<HomeController> logger, IUserService userService, ApplicationDbContext context, IPostService postService, IFacilityService facilityService, IRequestService requestService, IReservationService reservationService, IBillingPaymentService billingService, IWebHostEnvironment webHostEnvironment, IVisitorListService visitorListService, IVehicleService vehicleService)
+        public HomeController(ILogger<HomeController> logger, IUserService userService, ApplicationDbContext context, IPostService postService, IFacilityService facilityService, IRequestService requestService, IReservationService reservationService, IBillingPaymentService billingService, IWebHostEnvironment webHostEnvironment, IVisitorListService visitorListService, IVehicleService vehicleService, IFeedbackService feedbackService)
         {
             _logger = logger;
             _userService = userService;
@@ -42,6 +43,7 @@ namespace ElnetSubdivi.Controllers
             _webHostEnvironment = webHostEnvironment ?? throw new ArgumentNullException(nameof(webHostEnvironment));
             _VisitorListService = visitorListService;
             _vehicleService = vehicleService;
+            _feedbackService = feedbackService;
         }
 
         public async Task<IActionResult> Index()
@@ -199,7 +201,27 @@ namespace ElnetSubdivi.Controllers
 
             return View(viewModel);
         }
-       
+
+        public async Task<IActionResult> viewSpecificProfileAsync(string user_id)
+        {
+            // Get posts from your database/service
+            var posts = _context.Posts.OrderByDescending(p => p.post_date).ToList();
+
+            // Get user by the provided user_id parameter
+            var currentUser = _context.Users.FirstOrDefault(u => u.user_id == user_id);
+
+            // Create the view model
+            var viewModel = new PostAndUserViewModel
+            {
+                Posts = posts,
+                User = currentUser,
+                Users = await _userService.GetAllUsers()
+            };
+
+            return View(viewModel);
+        }
+
+
         public async Task<IActionResult> VisitorsPassManagementAsync()
         {
             ViewData["HideSearch"] = true;
@@ -675,11 +697,14 @@ namespace ElnetSubdivi.Controllers
             ViewData["HideSearch"] = true;
             return View();
         }
-        public IActionResult UserFeedback()
+
+        /// //////////////////////////////////// FEEDBACK SCRIPTS ////////////////////////////////////////////////
+
+        public async Task<IActionResult> UserFeedbackAsync()
         {
             ViewData["HideSearch"] = true;
 
-            var feedback = new List<dynamic>
+            var feedback1 = new List<dynamic>
             {
                 new {Icon = "ratings.svg", Title = "Great User Experience", Type = "Feedback", Description = "The Interface is intuitive and easy to navigate. I particularly enjoyedthe smooth transitions and..", Clock = "clock.svg", Duration = "2 Days ago"},
                 new {Icon = "ratings.svg", Title = "Great User Exponent", Type = "Feedback", Description = "The Interface is intuitive and easy to navigate. I particularly enjoyedthe smooth transitions and..", Clock = "clock.svg", Duration = "2 Days ago" },
@@ -691,7 +716,17 @@ namespace ElnetSubdivi.Controllers
                 new {Status = "Pending", Title = "Noise Complaint in Block A", Type = "Complaint", Description = "Continuous loud music from unit 302 during quiet hours...", Clock = "clock.svg", Duration = "2 Days ago"},
                 new {Status = "Resolved", Title = "Noise Complaint in Block B", Type = "Complaint", Description = "Continuous loud music from unit 302 during quiet hours...", Clock = "clock.svg", Duration = "2 Days ago" },
             };
+
             ViewBag.Complaints = complaint;
+            var userId = User.FindFirst("UserId")?.Value;
+
+            var feedback = new FeedbackViewModel
+            {
+                Feedback = await _feedbackService.GetAllFeedback(), // Await the Task to resolve the issue
+                Users = await _userService.GetAllUsers(), // Fetch users from DB
+                User = await _context.Users.FirstOrDefaultAsync(u => u.user_id == userId)
+            };
+
             return View(feedback);
 
         }
@@ -711,6 +746,24 @@ namespace ElnetSubdivi.Controllers
 
             return View(manageReports);
         }
+
+        [HttpPost]
+        public IActionResult SubmitFeedback(Feedback feedback)
+        {
+            if (ModelState.IsValid)
+            {
+                feedback.SubmittedAt = DateTime.Now;
+                feedback.Type = "Feedback";
+                _context.Feedback.Add(feedback);
+                _context.SaveChanges();
+                return RedirectToAction("UserFeedback");
+            }
+            return View("UserFeedback");
+        }
+
+
+
+
         public IActionResult ContactDirectory()
         {
             var emergencies = new List<dynamic>

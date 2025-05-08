@@ -1,5 +1,4 @@
 ﻿@model ElnetSubdivi.Models.PostAndUserViewModel
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,7 +48,6 @@
                     <input id="post-input1" type="text"
                            class="flex-1 rounded-full border p-2 px-4 text-sm text-gray-600 sm:text-base md:text-lg"
                            placeholder="Share Something..." autocomplete="off" />
-
                 </div>
 
                 <!-- Post Options + Button (Aligned in One Row) -->
@@ -215,8 +213,7 @@
                     <!-- Each post is now its own card -->
                     <div class="mb-8 w-full rounded-lg bg-white p-5 shadow-md">
                         <!-- Admin Header -->
-                        <!-- Admin Header -->
-                        <a href="@Url.Action("viewProfile", "Home")" id="profile-section" class="flex flex-row items-center gap-2 no-highlight">
+                        <a href="@Url.Action("viewSpecificProfile", "Home", new { user_id = user.user_id })" id="profile-section" class="flex flex-row items-center gap-2 no-highlight">
                             <div id="profile-section" class="flex flex-row items-center gap-2 cursor-pointer hover:bg-gray-100 p-2 rounded-md transition">
                                 <div>
                                     <img src="@profileImage" alt="User" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14">

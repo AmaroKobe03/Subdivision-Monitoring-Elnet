@@ -1,0 +1,415 @@
+﻿@model ElnetSubdivi.Models.PostAndUserViewModel
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+@{
+    var userId = User.FindFirst("UserId")?.Value;
+    var currentUser = Model.User;
+
+    var jsonSerializerOptions = new System.Text.Json.JsonSerializerOptions
+            {
+                PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase,
+                WriteIndented = true
+            };
+
+    var usersJson = System.Text.Json.JsonSerializer.Serialize(Model.Users, jsonSerializerOptions);
+}
+
+
+<div class="flex h-[100vh] w-[90%] flex-col items-center overflow-y-hidden bg-[#f2f2f2]">
+    <main class="relative flex h-full w-full flex-col items-center overflow-y-auto px-4 sm:px-6 md:w-[70%]">
+        <!-- Cover Section -->
+        <section id="cover-section" class="relative mt-20 mb-10 h-[250px] w-full">
+                <img class="h-full w-full object-cover" src="~/Images/cover.png" alt="Cover Photo" />
+                <label class="absolute right-6 bottom-3 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white shadow">
+                    <input type="file" class="hidden" />
+                    <img class="h-8 w-8" src="~/Images/camera-icon.svg" alt="Edit Profile" />
+                </label>
+
+            <div class="border-4 absolute top-40 left-1/2 flex h-[150px] w-[150px] -translate-x-1/2 overflow-hidden rounded-full border-white md:left-10 md:translate-x-0 md:h-[200px] md:w-[200px]">
+                <img id="profile-photo" class="h-full w-full object-cover" src="~/Images/pfp.svg" alt="Profile Picture" />
+            </div>
+
+            <div class="ml-65 flex flex-col text-center md:flex-row md:items-center md:justify-between md:text-left">
+                <div >
+                    <h1 id="profile-name" class="text-2xl font-bold md:text-3xl">Kobe Amaro</h1>
+                    <div class="flex items-center gap-2">
+                        <img class="w-[20px]" src="~/Images/home2.svg" alt="Alternate Text" />
+                        <p id="profile-add" class="text-gray-600">Block A House No. 3</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <img class="ml-1 w-[15px]" src="~/Images/mail.svg" alt="Alternate Text" />
+                        <p id="profile-email" class="text-gray-600">kobeamaro@gmail.com</p>
+                    </div>  
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Details Section -->
+        <section class="mt-20 flex w-full flex-col rounded-b-3xl px-4 pt-12 sm:px-8">
+
+
+            <!-- Share Post Section -->
+            <div id="activity" class="mt-5 w-full rounded-lg bg-white p-4 shadow-md mb-5">
+                <!-- Profile Picture + Input -->
+                <div id="add" class="flex w-full items-center gap-3 p-2 sm:p-4">
+                    <a href="@Url.Action("viewProfile","Home")">
+                        <img id="profile-img" src="~/Images/pfp.svg" class="h-8 w-8 rounded-full sm:h-10 sm:w-10" />
+                    </a>
+                    <input id="post-input1" type="text"
+                           class="flex-1 rounded-full border p-2 px-4 text-sm text-gray-600 sm:text-base md:text-lg"
+                           placeholder="Share Something..." autocomplete="off" />
+
+                </div>
+
+                <!-- Post Options + Button (Aligned in One Row) -->
+                <div class="mt-2 flex w-full items-center justify-between px-2 sm:px-4">
+                    @await Html.PartialAsync("_sharedPost")
+
+
+                    <button id="anotherPost"
+                            class="cursor-pointer rounded-full bg-[#043137] px-4 py-1.5 text-xs text-white transition hover:bg-[#065a5e] sm:text-sm">
+                        Post
+                    </button>
+
+                </div>
+            </div>
+
+            <!-- Post Section -->
+            <div id="contfeed" class="min-h-[90vh] w-full">
+                @foreach (var post in Model.Posts.Where(p => p.user_id == currentUser.user_id))
+                {
+                    var user = Model.Users.FirstOrDefault(u => u.user_id == post.user_id);
+                    var profileImage = $"data:image/jpeg;base64,{Convert.ToBase64String(user.profile_picture)}";
+
+                    <!-- Each post is now its own card -->
+                    <div class="mb-8 w-full rounded-lg bg-white p-5 shadow-md">
+                        <!-- Admin Header -->
+                        <div class="flex flex-row items-center gap-2">
+                            <div>
+                                <img src="@profileImage" alt="User" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14">
+                            </div>
+                            <div class="flex flex-col">
+                                <h1 class="m-0 p-0 text-sm font-semibold sm:text-base md:text-lg">
+                                    @($"{user.first_name} {user.last_name}")
+                                </h1>
+                                <p class="m-0 p-0 text-xs text-gray-600 sm:text-sm md:text-base">
+                                    Posted @post.post_date.ToString("MMM dd, yyyy hh:mm tt")
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Post Content -->
+                        <div class="mt-4">
+                            <p class="text-sm sm:text-base md:text-lg">@post.post_text</p>
+                        </div>
+
+                        <!-- Image and Actions -->
+                        <div class="mt-4 flex flex-col">
+                            @if (!string.IsNullOrEmpty(post.post_media))
+                            {
+                                <img class="max-h-[300px] w-full rounded-lg object-cover sm:max-h-[350px] md:max-h-[400px]"
+                                     src="@Url.Content(post.post_media)" alt="Post Media" />
+                            }
+
+                            <div class="mt-4 flex flex-row gap-6 sm:justify-start">
+                                <a class="flex cursor-pointer items-center gap-2 text-sm text-gray-700 transition hover:text-blue-600 sm:text-base md:text-lg">
+                                    <i class="fa-regular fa-thumbs-up"></i> Like
+                                </a>
+                                <a class="flex cursor-pointer items-center gap-2 text-sm text-gray-700 transition hover:text-blue-600 sm:text-base md:text-lg">
+                                    <i class="fa-regular fa-comment"></i> Comment
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </section>
+    </main>
+</div>
+
+@* post pop up *@
+
+<div id="post-popup" class="fixed inset-0 z-50 flex hidden items-center justify-center bg-black/50 p-4">
+    <div class="relative w-full max-w-xl rounded-lg bg-white p-6 shadow-lg sm:p-8">
+        <button class="close absolute top-3 right-3 hidden text-xl text-gray-500 hover:text-gray-700">&times;</button>
+        <div id="activity" class="mt-5 flex min-h-[25vh] w-full flex-col gap-4 rounded-lg bg-white">
+            <div id="add" class="flex h-full w-full flex-col gap-3">
+                <div class="flex flex-row items-center gap-4">
+                    <img id="profile-img-popup" class="flex self-start h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14" src="~/Images/pfp.svg" />
+                    <div class="flex flex-col">
+                        <h2 class="font-semibold text-[16px]">
+                            @User.Identity.Name
+                        </h2>
+                        <p class="text-[12px] text-gray-500">
+
+                        </p>
+                    </div>
+                </div>
+                <form id="postForm" enctype="multipart/form-data">
+                    <!-- Hidden inputs -->
+                    <input type="file" id="photoInput" accept="image/*" class="hidden" />
+                    <input type="file" id="videoInput" accept="video/*" class="hidden" />
+
+                    <textarea id="post-input" placeholder="What's on your mind?" class="h-[200px] w-full resize-none rounded-lg border-none bg-[#F0F2F6] p-4 text-start outline-none"></textarea>
+
+                    <div id="preview-container" class="relative w-full overflow-hidden rounded-lg"></div>
+                </form>
+            </div>
+
+            <div class="flex h-[40%] w-full flex-row items-center justify-center gap-10">
+                <a id="vid" href="#" class="flex items-center gap-2 text-sm">
+                    <img class="w-[20px]" src="~/Images/strokevid.svg" />
+                    Video
+                </a>
+                <a id="pho" href="#" class="flex items-center gap-2 text-sm">
+                    <img class="w-[15px]" src="~/Images/strokepho.svg" />
+                    Photo
+                </a>
+                <a href="#" class="flex items-center gap-2 text-sm">
+                    <img class="w-[20px]" src="~/Images/strokefeel.svg" />
+                    Feeling/Activity
+                </a>
+                <a href="#" class="flex items-center gap-2 text-sm">
+                    <img class="w-[15px]" src="~/Images/strokepool.svg" />
+                    Poll/Survey
+                </a>
+            </div>
+        </div>
+        <button id="submitPost" type="submit" class="mt-5 w-full rounded-lg bg-[#043137] py-2 text-lg text-white">
+            POST
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const vidBtn = document.getElementById("vid");
+            const phoBtn = document.getElementById("pho");
+            const feelBtn = document.getElementById("feel");
+            const buttonPost = document.getElementById("anotherPost");
+            const postInput = document.getElementById("post-input1");
+            const popup = document.getElementById("post-popup");
+            const closeBtn = document.querySelector(".close");
+
+            const photoInput = document.getElementById("photoInput");
+            const videoInput = document.getElementById("videoInput");
+            const previewContainer = document.getElementById("preview-container");
+
+            phoBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                photoInput.click();
+            });
+
+            vidBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                videoInput.click();
+            });
+
+            feelBtn?.addEventListener("click", function () {
+                popup.classList.remove("hidden");
+            });
+
+            buttonPost?.addEventListener("click", function () {
+                popup.classList.remove("hidden");
+            });
+
+            postInput?.addEventListener("click", function () {
+                popup.classList.remove("hidden");
+            });
+
+            closeBtn.addEventListener("click", function () {
+                popup.classList.add("hidden");
+                clearPreview();
+            });
+
+            window.addEventListener("click", function (e) {
+                if (e.target === popup) {
+                    popup.classList.add("hidden");
+                    clearPreview();
+                }
+            });
+
+            // Photo preview + show modal
+            photoInput.addEventListener("change", function () {
+                if (photoInput.files && photoInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        previewContainer.innerHTML = `
+                                <img src="${e.target.result}" class="max-h-[200px] w-full rounded-lg object-cover" />
+                            `;
+                        popup.classList.remove("hidden"); // Open modal
+                    };
+                    reader.readAsDataURL(photoInput.files[0]);
+                }
+            });
+
+            // Video preview + show modal
+            videoInput.addEventListener("change", function () {
+                if (videoInput.files && videoInput.files[0]) {
+                    const url = URL.createObjectURL(videoInput.files[0]);
+                    previewContainer.innerHTML = `
+                            <video controls class="max-h-[250px] w-full rounded-lg">
+                                <source src="${url}" type="${videoInput.files[0].type}" />
+                                Your browser does not support the video tag.
+                            </video>
+                        `;
+                    popup.classList.remove("hidden"); // Open modal
+                }
+            });
+
+            function clearPreview() {
+                previewContainer.innerHTML = "";
+                photoInput.value = "";
+                videoInput.value = "";
+            }
+        });
+    </script>
+    <script>
+            document.addEventListener('DOMContentLoaded', function () {
+            const userModelData = {
+                Users: @Html.Raw(usersJson)
+            };
+            const currentUserId = "@currentUser.user_id";
+            console.log(currentUserId);
+            const user = userModelData.Users.find(u => u.user_id === currentUserId);
+            document.getElementById('profile-img').src = `data:image/jpeg;base64,${user.profile_picture}`;
+            document.getElementById('profile-img-popup').src = `data:image/jpeg;base64,${user.profile_picture}`;
+            document.getElementById('profile-photo').src = `data:image/jpeg;base64,${user.profile_picture}`;
+            document.getElementById('profile-name').textContent = `${user.first_name} ${user.middle_name} ${user.last_name}`;
+            document.getElementById('profile-add').textContent = user.address ?? "No Address Provided";
+            document.getElementById('profile-email').textContent = user.email ?? "No Email Provided";
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const calendarContainer = document.getElementById("calendar");
+            const currentDate = new Date();
+            let selectedDate = null;
+
+            function generateCalendar(year, month) {
+                calendarContainer.innerHTML = "";
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                const firstDay = new Date(year, month, 1).getDay();
+
+                const header = document.createElement("div");
+                header.classList.add("flex", "justify-between", "items-center", "p-2", "bg-[#ffff]");
+
+                const prevBtn = document.createElement("button");
+                prevBtn.innerText = "<";
+                prevBtn.classList.add("px-2", "py-1", "bg-[#ffff]", "rounded");
+                prevBtn.onclick = () => generateCalendar(year, month - 1);
+
+                const nextBtn = document.createElement("button");
+                nextBtn.innerText = ">";
+                nextBtn.classList.add("px-2", "py-1", "bg-[#ffff]", "rounded");
+                nextBtn.onclick = () => generateCalendar(year, month + 1);
+
+                const title = document.createElement("h3");
+                title.innerText = `${new Date(year, month).toLocaleString('default', { month: 'long' })} ${year}`;
+                title.classList.add("text-lg", "font-bold");
+
+                header.appendChild(prevBtn);
+                header.appendChild(title);
+                header.appendChild(nextBtn);
+                calendarContainer.appendChild(header);
+
+                const daysRow = document.createElement("div");
+                daysRow.classList.add("grid", "grid-cols-7", "text-center", "font-bold", "mt-2");
+                ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].forEach(day => {
+                    const dayElement = document.createElement("div");
+                    dayElement.innerText = day;
+                    daysRow.appendChild(dayElement);
+                });
+                calendarContainer.appendChild(daysRow);
+
+                const datesGrid = document.createElement("div");
+                datesGrid.classList.add("grid", "grid-cols-7", "gap-1", "mt-2");
+
+                for (let i = 0; i < firstDay; i++) {
+                    const emptyCell = document.createElement("div");
+                    datesGrid.appendChild(emptyCell);
+                }
+
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dateElement = document.createElement("div");
+                    dateElement.innerText = day;
+                    dateElement.classList.add("p-2", "text-center", "cursor-pointer", "rounded", "hover:bg-[#F7EFEA]");
+
+                    dateElement.addEventListener("click", function () {
+                        if (selectedDate) {
+                            selectedDate.classList.remove("bg-blue-500", "text-white");
+                        }
+                        dateElement.classList.add("bg-[#AC602A]", "text-white");
+                        selectedDate = dateElement;
+                    });
+
+                    datesGrid.appendChild(dateElement);
+                }
+
+                calendarContainer.appendChild(datesGrid);
+            }
+
+            generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const mobileMenuToggle = document.getElementById("mobile-menu-toggle");
+            const sidenav = document.getElementById("sidenav");
+
+            function checkWindowSize() {
+                if (window.innerWidth <= 768) {
+                    sidenav.classList.add("hidden");
+                } else {
+                    sidenav.classList.remove("hidden");
+                }
+            }
+
+            mobileMenuToggle.addEventListener("click", function () {
+                sidenav.classList.toggle("hidden");
+            });
+
+            window.addEventListener("resize", checkWindowSize);
+            checkWindowSize();
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const submitPostBtn = document.getElementById("submitPost");
+
+            submitPostBtn.addEventListener("click", async function () {
+                const formData = new FormData();
+
+                // Add text
+                const postText = document.getElementById("post-input").value;
+                formData.append("postText", postText);
+
+                // Add media (only one at a time)
+                const imageFile = document.getElementById("photoInput").files[0];
+                const videoFile = document.getElementById("videoInput").files[0];
+
+                if (imageFile) {
+                    formData.append("mediaFile", imageFile);
+                } else if (videoFile) {
+                    formData.append("mediaFile", videoFile);
+                }
+
+                try {
+                    const response = await fetch('/Post/CreatePost', {
+                        method: 'POST',
+                        body: formData // no need to set Content-Type; browser handles it
+                    });
+
+                    if (response.ok) {
+                        alert("Post created!");
+                        location.reload(); // You can also close the modal and refresh posts dynamically
+                    } else {
+                        alert("Error creating post");
+                    }
+                } catch (error) {
+                    console.error("Upload failed:", error);
+                    alert("Upload failed");
+                }
+            });
+        });
+
+
+    </script>
+</div>
+

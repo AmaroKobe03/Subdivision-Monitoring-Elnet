@@ -19,6 +19,7 @@ namespace ElnetSubdivi.data
         public DbSet<BillingPaymentModel> Billing_Statements { get; set; }
         public DbSet<VisitorList> Visitor_List { get; set; }
         public DbSet<Vehicle> Vehicle { get; set; }
+        public DbSet<Feedback> Feedback { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
