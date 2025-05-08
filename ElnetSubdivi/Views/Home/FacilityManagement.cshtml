@@ -96,6 +96,7 @@
         </a>
     </div>
 
+    @*
     <div class="mt-6 flex w-[88.5%] grid-cols-3 items-center justify-center gap-6 overflow-y-auto">
         @foreach (var facility in Model)
         {
@@ -116,6 +117,95 @@
                             <li>@hour.Day_Of_Week: @hour.Opening_Time?.ToString(@"hh\:mm") - @hour.Closing_Time?.ToString(@"hh\:mm")</li>
                         }
                     </ul>
+                </div>
+            </div>
+        }
+    </div>
+    *@
+
+    <div class="mt-6 flex w-[88.5%] grid-cols-3 items-center justify-center gap-6 overflow-y-auto">
+        @foreach (var facility in Model)
+        {
+            <div class="w-[88.5%] rounded-lg bg-white shadow-lg">
+                <!-- Image Section -->
+                <div class="relative w-full">
+                    <img class="h-[200px] w-full rounded-t-lg object-cover" src="@facility.ImagePath" alt="@facility.FacilityName">
+                    <span class="absolute top-2 right-2 z-10 rounded-full px-3 py-1 text-sm font-semibold text-white shadow-md @(facility.FacilityStatus.ToLower() == "available" ? "bg-green-500" : "bg-red-500")">
+                        @facility.FacilityStatus
+                    </span>
+                </div>
+
+                <!-- Title and Toggle -->
+                <div class="mt-4 flex items-center justify-between px-4">
+                    <h1 class="text-lg font-semibold">
+                        @facility.FacilityName
+                    </h1>
+                    <label class="relative inline-flex cursor-pointer items-center">
+                        <input type="checkbox" class="toggleSwitch peer sr-only"
+                        @(facility.FacilityStatus == "Available" ? "checked" : "")
+                               data-facility-id="@facility.FacilityId">
+                        <div class="peer relative h-6 w-11 rounded-full bg-gray-300 transition-colors duration-300 ease-in-out peer-checked:bg-green-500">
+                            <div class="absolute top-1 left-1 h-4 w-4 rounded-full bg-white transition-all duration-300 ease-in-out peer-checked:translate-x-5"></div>
+                        </div>
+                    </label>
+                </div>
+
+                @*
+                <!-- Type & Rating -->
+                <p class="px-4 text-sm text-gray-500">@facility.Type</p>
+                <div class="flex items-center gap-2 px-4 text-gray-700">
+                    <img src="~/Images/star.svg" class="h-4 w-4" />
+                    <p class="text-sm font-medium">@facility.FacilityRating</p>
+                </div>
+                *@
+
+                <!-- Time & Price -->
+                <div class="mt-2 flex items-center gap-4 px-4 text-gray-700">
+                    @*
+                    <div class="flex items-center gap-2">
+                        <img src="~/Images/timeic.svg" class="h-4 w-4" />
+                        <ul class="text-sm list-disc pl-4">
+                            @foreach (var hour in facility.OperatingHours)
+                            {
+                                <li>@hour.Day_Of_Week: @hour.Opening_Time?.ToString(@"hh\:mm") - @hour.Closing_Time?.ToString(@"hh\:mm")</li>
+                            }
+                        </ul>
+                    </div>
+                    *@
+                    <div class="flex items-center gap-2">
+                        <p class="text-sm">@facility.FacilityCategory</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <img src="~/Images/dollar.svg" class="h-4 w-4" />
+                        <p class="text-sm">@facility.ServiceFeePerHour</p>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="mt-4 mb-4 flex items-center justify-between gap-4 px-4">
+                    <!-- In your facility card loop, update the view button -->
+                    <button type="button" class="viewbtn w-full rounded-full bg-[#043137] px-3 py-2 font-semibold text-white hover:bg-opacity-75"
+                            data-facility-id="@facility.FacilityId"
+                            data-facility-name="@facility.FacilityName"
+                            data-facility-image="@Url.Content(facility.ImagePath)"
+                            data-facility-category="@facility.FacilityCategory"
+                            data-facility-rate="@facility.ServiceFeePerHour"
+                            data-facility-description="@facility.FacilityDescription"
+                            data-facility-amenities="@facility.FacilityAminities"
+                            data-facility-guidelines="@facility.FacilityGuidelines"
+                            data-facility-status="@facility.FacilityStatus"
+                            data-operating-hours="@Json.Serialize(facility.OperatingHours.Select(oh => new
+                        {
+                            DayOfWeek = oh.Day_Of_Week,
+                            OpeningTime = oh.Opening_Time,
+                            ClosingTime = oh.Closing_Time
+                        }))">
+                        View Details
+                    </button>
+                    <div class="flex gap-1">
+                        <img src="~/Images/edit.svg" class="h-8 w-8 cursor-pointer" />
+                        <img src="~/Images/trash.svg" class="h-8 w-8 cursor-pointer" />
+                    </div>
                 </div>
             </div>
         }
@@ -209,115 +299,65 @@
     </form>
 
 
-<!-- -->
-
-
+    <!-- View Details Popup -->
     <div id="viewdetailspop" class="fixed inset-0 z-20 mt-20 flex hidden items-center justify-center bg-gray-100">
         <div id="detailscontent" class="flex h-[90vh] w-[90%] rounded-lg bg-white shadow-lg">
             <!-- Left Section -->
             <div class="mt-4 flex h-auto w-[70%] flex-col items-center gap-4 overflow-auto p-2">
                 <div class="flex w-full items-center justify-between">
                     <div class="flex w-[20%] items-center gap-2">
-                        <a href="@Url.Action("FacilityManagement","Home")"><img src="~/Images/back.svg" alt="Alternate Text" /></a>
-                        <p>Facility Details</p>
+                        <a href="@Url.Action("FacilityManagement","Home")" id="backButton"><img src="~/Images/back.svg" alt="Back" /></a>
+                        <p id="detailsTitle">Facility Details</p>
                     </div>
                     <div>
                         <label class="relative inline-flex cursor-pointer items-center">
-                            <input type="checkbox" class="toggleSwitch sr-only">
+                            <input type="checkbox" id="statusToggle" class="toggleSwitch sr-only">
                             <div class="relative h-6 w-11 rounded-full bg-gray-300 transition-colors duration-300 ease-in-out">
                                 <div class="absolute top-1 left-1 h-4 w-4 rounded-full bg-white transition-all duration-300 ease-in-out"></div>
                             </div>
-                            <span class="ml-2 text-green-500">Available</span>
+                            <span id="statusText" class="ml-2 text-green-500">Available</span>
                         </label>
                     </div>
                 </div>
-                <img class="h-[60vh] w-full" src="~/Images/facimg1.png" alt="Community Park">
+                <img id="facilityImage" class="h-[60vh] w-full object-cover" src="" alt="Facility Image">
                 <div class="mt-10 flex w-[90%] flex-row items-center justify-between">
-                    <h1 class="text-center text-4xl font-semibold text-[#043137]">Community Park</h1>
+                    <h1 id="facilityName" class="text-center text-4xl font-semibold text-[#043137]"></h1>
                     <div class="flex flex-row items-center gap-2">
-                        <img src="~/Images/dollar.svg" alt="Alternate Text" />
-                        <p>25/hr</p>
+                        <img src="~/Images/dollar.svg" alt="Price" />
+                        <p id="facilityRate" class="text-sm"></p>
                     </div>
                 </div>
 
                 <div class="ml-[4em] flex flex-col gap-3 self-start">
-                    <p class="text-[#787676] text-[20px]">Multi-Purpose Recreation Space</p>
+                    <p id="facilityCategory" class="text-[#787676] text-[20px]"></p>
                     <div class="flex flex-row items-center gap-1">
-                        <img src="~/Images/star.svg" alt="Alternate Text" />
-                        <p>4.8</p>
+                        <img src="~/Images/star.svg" alt="Rating" />
+                        <p id="facilityRating">4.8</p>
                         <span>•</span>
-                        <p><span>128 reviews</span></p>
+                        <p><span id="reviewCount">128 reviews</span></p>
                     </div>
 
-                    <div id="description" class="mt-2 w-[95%] font-medium text-[#787676] text-[18px]">
-                        Our community park provides a peaceful and scenic environment, perfect for relaxation and outdoor
-                        activities. It features walking trails, playgrounds, and picnic areas where families can enjoy quality
-                        time together. The park offers reservations for community parties, celebrations, and special events.
-                        Whether you're taking a morning stroll, playing with your children, or hosting a gathering, our park
-                        is a welcoming space to connect with nature and the community.
+                    <div id="facilityDescription" class="mt-2 w-[95%] font-medium text-[#787676] text-[18px]">
+                        <!-- Facility description will be inserted here -->
                     </div>
 
                     <div class="text-[#787676]">
                         <h2 class="font-bold">Guidelines:</h2>
-                        <ul class="ml-6 list-disc font-medium">
-                            <li>Keep the park clean; dispose of trash properly.</li>
-                            <li>Respect park facilities and equipment.</li>
-                            <li>Pets must be on a leash at all times.</li>
-                            <li>No smoking, alcohol, or illegal substances.</li>
-                            <li>Loud music and disruptive behavior are not allowed.</li>
-                            <li>Follow all posted signs and guidelines.</li>
-                            <li>When Park closes —please leave on time.</li>
+                        <ul id="facilityGuidelines" class="ml-6 list-disc font-medium">
+                            <!-- Guidelines will be inserted here -->
                         </ul>
                     </div>
 
                     <div class="w-[95%] border-b-2 border-gray-400 text-[#787676]">
-                        <h2 class="font-bold">Included Amneties:</h2>
-                        <ul class="ml-6 list-disc font-medium">
-                            <li>Parking Available.</li>
-                            <li>Free Wifi.</li>
-                            <li>Rest Rooms.</li>
+                        <h2 class="font-bold">Included Amenities:</h2>
+                        <ul id="facilityAmenities" class="ml-6 list-disc font-medium">
+                            <!-- Amenities will be inserted here -->
                         </ul>
                     </div>
                 </div>
 
                 <div id="comment-section" class="mt-10 flex h-auto w-[90%] flex-col">
-                    <div class="flex items-center justify-between">
-                        <h1 class="text-center text-2xl font-semibold text-[#043137]"> Reviews</h1>
-                    </div>
-
-                    <div class="mt-5 flex flex-row items-center gap-2">
-                        <div>
-                            <img src="~/Images/sarah.svg" alt="Alternate Text" />
-                        </div>
-                        <div class="flex flex-col gap-1">
-                            <p class="font-bold">Sarah Johnson</p>
-                            <div class="flex flex-row items-center">
-                                <img class="mb-1" src="~/Images/5star.svg" />
-                                <p class="m-0 p-0">2 days ago</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-4 mb-10 w-[90%] font-medium">
-                        <p>Great park for families! The playground is well-maintained and my kids love it. The walking trails are perfect for morning exercises.</p>
-                    </div>
-
-                    <div class="mt-5 flex flex-row items-center gap-3">
-                        <div>
-                            <img src="~/Images/micheal.svg" alt="Alternate Text" />
-                        </div>
-                        <div class="flex flex-col gap-1">
-                            <p class="font-bold">Micheal Chen</p>
-                            <div class="flex flex-row items-center">
-                                <img class="mb-1" src="~/Images/4star.svg" />
-                                <p class="m-0 p-0">1 days ago</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-4 mb-10 w-[90%] font-medium">
-                        <p>Clean and well-maintained facility. The basketball court could use some renovation, but overall a great community space.</p>
-                    </div>
+                    <!-- Reviews content remains the same -->
                 </div>
             </div>
 
@@ -357,9 +397,8 @@
                 <!-- Operating Hours -->
                 <div class="w-full rounded-lg bg-white p-6 shadow-md">
                     <h2 class="text-center text-lg font-bold">Operating Hours</h2>
-                    <div class="mt-3 text-gray-700">
-                        <p class="flex justify-between"><span>Sunday</span> <span>7:00 AM - 12:00 AM</span></p>
-                        <p class="flex justify-between"><span>Mon-Sat</span> <span>7:00 AM - 6:00 PM</span></p>
+                    <div id="operatingHoursList" class="mt-3 text-gray-700">
+                        <!-- Operating hours will be inserted here dynamically -->
                     </div>
                 </div>
             </div>
@@ -378,12 +417,10 @@
                 <button id="review-btn" type="button" class="w-[90%] cursor-pointer rounded-full bg-[#043137] px-6 py-3 font-bold text-white transition hover:bg-opacity-75">
                     Submit Review
                 </button>
-
             </div>
         </div>
-
         <script>
-                document.addEventListener("DOMContentLoaded", function () {
+            document.addEventListener("DOMContentLoaded", function () {
                 const calendarContainer = document.getElementById("calendar");
                 const currentDate = new Date();
                 let selectedDate = null;
@@ -450,7 +487,6 @@
 
                     calendarContainer.appendChild(datesGrid);
                 }
-
                 generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
             });
 
@@ -473,92 +509,304 @@
                 window.addEventListener("resize", checkWindowSize);
                 checkWindowSize();
             });
-
         </script>
-
-        <script>
-             document.addEventListener("DOMContentLoaded", function () {
-              const popup = document.getElementById("viewdetailspop");
-              const content = document.getElementById("detailscontent");
-              const bookNowBtns = document.querySelectorAll(".viewbtn");
-
-              bookNowBtns.forEach(btn => {
-                btn.addEventListener("click", function () {
-                  popup.classList.remove("hidden");
-                });
-              });
-
-              popup.addEventListener("click", function (event) {
-                if (event.target === popup && !popup.classList.contains("review-popup")) {
-                  popup.classList.add("hidden");
-                }
-              });
-
-              const reviewBtn = document.getElementById("review-btn");
-              const mbsigninBtn = document.getElementById("review-fac-btn");
-              const reviewPopup = document.getElementById("review-popup");
-              const closeBtn = document.getElementById("close-btn");
-
-              function openPopup() {
-                reviewPopup.classList.remove("hidden");
-              }
-
-              function closePopup() {
-                reviewPopup.classList.add("hidden");
-              }
-
-              if (reviewBtn) reviewBtn.addEventListener("click", openPopup);
-              if (mbsigninBtn) mbsigninBtn.addEventListener("click", openPopup);
-              if (closeBtn) closeBtn.addEventListener("click", closePopup);
-
-              window.addEventListener("click", function (e) {
-                if (e.target === reviewPopup) {
-                  closePopup();
-                }
-              });
-            });
-
-        </script>
-
     </div>
+
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            document.querySelectorAll(".toggleSwitchDay").forEach(function (toggle) {
-                toggle.addEventListener("change", function () {
-                    let slider = this.nextElementSibling; // The outer toggle background
-                    let circle = slider.querySelector("div"); // The moving circle
-                    let day = this.id.replace("toggle_", "");
-                    let fromTime = document.getElementById("from_" + day);
-                    let toTime = document.getElementById("to_" + day);
+            const popup = document.getElementById("viewdetailspop");
+            const viewButtons = document.querySelectorAll(".viewbtn");
 
-                    if (this.checked) {
-                        // Toggle appearance
-                        slider.classList.remove("bg-gray-300");
-                        slider.classList.add("bg-blue-500");
-                        circle.classList.add("translate-x-5");
+            viewButtons.forEach(btn => {
+                btn.addEventListener("click", function () {
+                    // Get all data attributes
+                    const facilityId = this.getAttribute('data-facility-id');
+                    const facilityName = this.getAttribute('data-facility-name');
+                    const facilityImage = this.getAttribute('data-facility-image');
+                    const facilityCategory = this.getAttribute('data-facility-category');
+                    const facilityRate = this.getAttribute('data-facility-rate');
+                    const facilityDescription = this.getAttribute('data-facility-description');
+                    const facilityAmenities = this.getAttribute('data-facility-amenities');
+                    const facilityGuidelines = this.getAttribute('data-facility-guidelines');
+                    const facilityStatus = this.getAttribute('data-facility-status');
+                    const operatingHoursJson = this.getAttribute('data-operating-hours');
 
-                        // Enable and set time
-                        fromTime.disabled = false;
-                        toTime.disabled = false;
-                        fromTime.value = "07:00 AM";
-                        toTime.value = "07:00 AM";
-                    } else {
-                        // Reset toggle appearance
-                        slider.classList.remove("bg-blue-500");
-                        slider.classList.add("bg-gray-300");
-                        circle.classList.remove("translate-x-5");
-
-                        // Disable and clear time
-                        fromTime.disabled = true;
-                        toTime.disabled = true;
-                        fromTime.value = "";
-                        toTime.value = "";
+                    // Parse operating hours
+                    let operatingHours = [];
+                    try {
+                        operatingHours = operatingHoursJson ? JSON.parse(operatingHoursJson) : [];
+                    } catch (e) {
+                        console.error("Error parsing operating hours:", e);
                     }
+
+                    // Update the popup content using IDs
+                    document.getElementById('facilityImage').src = facilityImage;
+                    document.getElementById('facilityImage').alt = facilityName;
+                    document.getElementById('facilityName').textContent = facilityName;
+                    document.getElementById('facilityCategory').textContent = facilityCategory;
+                    document.getElementById('facilityRate').textContent = facilityRate + '/hr';
+                    document.getElementById('facilityDescription').textContent = facilityDescription;
+
+                    // Update guidelines
+                    const guidelinesList = document.getElementById('facilityGuidelines');
+                    guidelinesList.innerHTML = '';
+                    if (facilityGuidelines) {
+                        facilityGuidelines.split(';').forEach(guideline => {
+                            if (guideline.trim()) {
+                                const li = document.createElement('li');
+                                li.textContent = guideline.trim();
+                                guidelinesList.appendChild(li);
+                            }
+                        });
+                    }
+
+                    // Update amenities
+                    const amenitiesList = document.getElementById('facilityAmenities');
+                    amenitiesList.innerHTML = '';
+                    if (facilityAmenities) {
+                        facilityAmenities.split(';').forEach(amenity => {
+                            if (amenity.trim()) {
+                                const li = document.createElement('li');
+                                li.textContent = amenity.trim();
+                                amenitiesList.appendChild(li);
+                            }
+                        });
+                    }
+
+                    // Update status toggle
+                    const toggle = document.getElementById('statusToggle');
+                    toggle.checked = facilityStatus === 'Available';
+                    const slider = toggle.nextElementSibling;
+                    const circle = slider.querySelector('div');
+                    const statusText = document.getElementById('statusText');
+
+                    if (toggle.checked) {
+                        slider.classList.add('bg-green-500');
+                        slider.classList.remove('bg-gray-300');
+                        circle.classList.add('translate-x-5');
+                        statusText.textContent = 'Available';
+                        statusText.classList.remove('text-red-500');
+                        statusText.classList.add('text-green-500');
+                    } else {
+                        slider.classList.remove('bg-green-500');
+                        slider.classList.add('bg-gray-300');
+                        circle.classList.remove('translate-x-5');
+                        statusText.textContent = 'Unavailable';
+                        statusText.classList.remove('text-green-500');
+                        statusText.classList.add('text-red-500');
+                    }
+
+                    // Set facility ID as data attribute for the toggle
+                    toggle.setAttribute('data-facility-id', facilityId);
+
+                    // Update operating hours
+                    const operatingHoursContainer = document.getElementById('operatingHoursList');
+                    operatingHoursContainer.innerHTML = '';
+
+                    if (operatingHours && operatingHours.length > 0) {
+                        operatingHours.forEach(hour => {
+                            const hourElement = document.createElement('p');
+                            hourElement.className = 'flex justify-between';
+
+                            const daySpan = document.createElement('span');
+                            daySpan.textContent = hour.DayOfWeek;
+
+                            const timeSpan = document.createElement('span');
+                            const openingTime = hour.OpeningTime ? formatTime(hour.OpeningTime) : 'Closed';
+                            const closingTime = hour.ClosingTime ? formatTime(hour.ClosingTime) : '';
+                            timeSpan.textContent = openingTime + (closingTime ? ` - ${closingTime}` : '');
+
+                            hourElement.appendChild(daySpan);
+                            hourElement.appendChild(timeSpan);
+                            operatingHoursContainer.appendChild(hourElement);
+                        });
+                    } else {
+                        const noHoursElement = document.createElement('p');
+                        noHoursElement.textContent = 'No operating hours available';
+                        operatingHoursContainer.appendChild(noHoursElement);
+                    }
+
+                    // Show the popup
+                    popup.classList.remove("hidden");
                 });
             });
+
+            // Helper function to format time (handles both string and TimeSpan formats)
+            function formatTime(time) {
+                if (!time) return '';
+
+                // If time is already in HH:MM format (string)
+                if (typeof time === 'string') {
+                    const [hours, minutes] = time.split(':');
+                    return formatHoursMinutes(parseInt(hours), parseInt(minutes));
+                }
+                // If time is a TimeSpan object
+                else if (time.hours !== undefined && time.minutes !== undefined) {
+                    return formatHoursMinutes(time.hours, time.minutes);
+                }
+
+                return '';
+            }
+
+            function formatHoursMinutes(hours, minutes) {
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                const hours12 = hours % 12 || 12;
+                return `${hours12}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+            }
+
+            // Close popup when clicking outside
+            popup.addEventListener("click", function (event) {
+                if (event.target === popup) {
+                    popup.classList.add("hidden");
+                }
+            });
+
+            // Handle status toggle change
+            document.getElementById('statusToggle').addEventListener('change', function() {
+                const facilityId = this.getAttribute('data-facility-id');
+                const newStatus = this.checked ? 'Available' : 'Unavailable';
+                const statusText = document.getElementById('statusText');
+
+                // Update UI
+                const slider = this.nextElementSibling;
+                const circle = slider.querySelector('div');
+
+                if (this.checked) {
+                    slider.classList.add('bg-green-500');
+                    slider.classList.remove('bg-gray-300');
+                    circle.classList.add('translate-x-5');
+                    statusText.textContent = 'Available';
+                    statusText.classList.remove('text-red-500');
+                    statusText.classList.add('text-green-500');
+                } else {
+                    slider.classList.remove('bg-green-500');
+                    slider.classList.add('bg-gray-300');
+                    circle.classList.remove('translate-x-5');
+                    statusText.textContent = 'Unavailable';
+                    statusText.classList.remove('text-green-500');
+                    statusText.classList.add('text-red-500');
+                }
+
+                // Send AJAX request to update database
+                updateFacilityStatus(facilityId, newStatus);
+            });
+
+            async function updateFacilityStatus(facilityId, newStatus) {
+                try {
+                    const formData = new URLSearchParams();
+                    formData.append("facilityId", facilityId);
+                    formData.append("status", newStatus);
+
+                    const response = await fetch('/Home/UpdateFacilityStatus', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: formData.toString()
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    const data = await response.json();
+                    if (data.success) {
+                        // ✅ Reload the page after success
+                        location.reload();
+                    } else {
+                        console.error('Failed to update status:', data.message);
+                    }
+                } catch (error) {
+                    console.error('Error updating facility status:', error);
+                }
+            }
         });
     </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // Initialize all toggle switches
+                document.querySelectorAll('.toggleSwitch').forEach(function(toggle) {
+                    const isChecked = toggle.checked;
+                    const slider = toggle.nextElementSibling;
+                    const circle = slider.querySelector('div');
+
+                    if (isChecked) {
+                        slider.classList.add('bg-green-500');
+                        slider.classList.remove('bg-gray-300');
+                        circle.classList.add('translate-x-5');
+                    } else {
+                        slider.classList.remove('bg-green-500');
+                        slider.classList.add('bg-gray-300');
+                        circle.classList.remove('translate-x-5');
+                    }
+
+                    // Add change event listener
+                    toggle.addEventListener('change', function() {
+                        console.log("wow");
+                        const facilityId = this.getAttribute('data-facility-id');
+                        const newStatus = this.checked ? 'Available' : 'Unavailable';
+                                                console.log("wow");
+
+                        // Update UI immediately
+                        if (this.checked) {
+                            slider.classList.add('bg-green-500');
+                            slider.classList.remove('bg-gray-300');
+                            circle.classList.add('translate-x-5');
+                        } else {
+                            slider.classList.remove('bg-green-500');
+                            slider.classList.add('bg-gray-300');
+                            circle.classList.remove('translate-x-5');
+                        }
+
+                        // Update the status badge
+                        const statusBadge = this.closest('.relative').querySelector('span');
+                        if (statusBadge) {
+                            statusBadge.textContent = newStatus;
+                            statusBadge.classList.toggle('bg-green-500', this.checked);
+                            statusBadge.classList.toggle('bg-red-500', !this.checked);
+                        }
+                        console.log(newStatus);
+                        console.log(facilityId);
+                        // Send AJAX request to update database
+                        updateFacilityStatus(facilityId, newStatus);
+                    });
+                });
+
+                async function updateFacilityStatus(facilityId, newStatus) {
+                    try {
+                        const formData = new URLSearchParams();
+                        formData.append("facilityId", facilityId);
+                        formData.append("status", newStatus);
+
+                        const response = await fetch('/Home/UpdateFacilityStatus', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: formData.toString()
+                        });
+
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+
+                        const data = await response.json();
+                        if (data.success) {
+                            // ✅ Reload the page after success
+                            location.reload();
+                        } else {
+                            console.error('Failed to update status:', data.message);
+                        }
+                    } catch (error) {
+                        console.error('Error updating facility status:', error);
+                    }
+                }
+            });
+        </script>
+
+
 
     <script>
         document.getElementById("addfac").addEventListener("click", function() {
@@ -576,22 +824,22 @@
 
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            document.querySelectorAll(".toggleSwitch").forEach(function (toggle) {
-                toggle.addEventListener("change", function () {
-                    let slider = this.nextElementSibling; // The outer toggle background
-                    let circle = slider.querySelector("div"); // The moving circle
+        document.addEventListener("DOMContentLoaded", function() {
+            // Initialize all toggle switches based on their checked state
+            document.querySelectorAll('.toggleSwitch').forEach(function(toggle) {
+                const isChecked = toggle.checked;
+                const slider = toggle.nextElementSibling;
+                const circle = slider.querySelector('div');
 
-                    if (this.checked) {
-                        slider.classList.remove("bg-gray-300");
-                        slider.classList.add("bg-green-500");
-                        circle.classList.add("translate-x-5");
-                    } else {
-                        slider.classList.remove("bg-green-500");
-                        slider.classList.add("bg-gray-300");
-                        circle.classList.remove("translate-x-5");
-                    }
-                });
+                if (isChecked) {
+                    slider.classList.add('bg-green-500');
+                    slider.classList.remove('bg-gray-300');
+                    circle.classList.add('translate-x-5');
+                } else {
+                    slider.classList.remove('bg-green-500');
+                    slider.classList.add('bg-gray-300');
+                    circle.classList.remove('translate-x-5');
+                }
             });
         });
     </script>

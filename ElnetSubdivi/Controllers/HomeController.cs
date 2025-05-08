@@ -952,6 +952,41 @@ namespace ElnetSubdivi.Controllers
             return View(model);
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateFacilityStatus(string facilityId, string status)
+        {
+            try
+            {
+                // Validate status
+                if (status != "Available" && status != "Unavailable")
+                {
+                    return Json(new { success = false, message = "Invalid status" });
+                }
+
+                // Update the facility status in your database
+                var facility = await _context.Facilities.FindAsync(facilityId);
+                if (facility == null)
+                {
+                    return Json(new { success = false, message = "Facility not found" });
+                }
+
+                facility.Facility_Status = status;
+                await _context.SaveChangesAsync();
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+
+
+
+
+
         [HttpPost]
         public async Task<IActionResult> CreateReservation(ReservationViewModel model)
         {
