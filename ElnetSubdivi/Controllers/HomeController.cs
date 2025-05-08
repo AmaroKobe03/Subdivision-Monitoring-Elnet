@@ -399,6 +399,27 @@ namespace ElnetSubdivi.Controllers
             return View("UserVisitors", visitor); // return with errors
         }
 
+        [HttpPost]
+        public IActionResult UpdateVisitor(VisitorList visitor)
+        {
+            if (ModelState.IsValid)
+            {
+                var existing = _context.Visitor_List.FirstOrDefault(v => v.visitor_id == visitor.visitor_id);
+                if (existing != null)
+                {
+                    existing.first_name = visitor.first_name;
+                    existing.last_name = visitor.last_name;
+                    existing.phone_number = visitor.phone_number;
+                    existing.visit_date = visitor.visit_date;
+                    existing.visit_time = visitor.visit_time;
+                    existing.vehicle_plate = visitor.vehicle_plate;
+                    existing.visit_reason = visitor.visit_reason;
+                    _context.SaveChanges();
+                }
+            }
+            return RedirectToAction("UserVisitors", visitor); // or wherever the view is rendered
+        }
+
 
         public IActionResult UserCalendar()
         {

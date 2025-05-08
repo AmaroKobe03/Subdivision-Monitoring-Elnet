@@ -90,7 +90,17 @@
                         }
 
                         <div class="flex gap-4">
-                            <a class="text-blue-400" href="#">View Details</a>
+                            <a href="#" class="text-blue-400 view-details-btn"
+                               data-id="@visitor.visitor_id"
+                               data-first-name="@visitor.first_name"
+                               data-last-name="@visitor.last_name"
+                               data-phone="@visitor.phone_number"
+                               data-date="@visitor.visit_date.ToString("yyyy-MM-dd")"
+                               data-time="@visitor.visit_time.ToString(@"hh\:mm")"
+                               data-plate="@visitor.vehicle_plate"
+                               data-reason="@visitor.visit_reason">
+                               View Details
+                            </a>
                             <a href="#">Edit</a>
                             <a href="#" class="text-red-400">Cancel</a>
                         </div>
@@ -151,79 +161,70 @@
             <h2 class="w-full text-center text-lg font-bold text-[#003C3D]">View Details</h2>
             <button id="closeModal" class="text-xl font-bold text-[#003C3D]">&times;</button>
         </div>
-
         <div class="mt-4 space-y-4">
-            <div class="flex gap-2">
-                <div class="w-1/2">
-                    <label class="text-sm font-semibold text-[#003C3D]">First Name</label>
-                    <input type="text" class="w-full rounded-md border border-[#003C3D] p-2" value="Katy" readonly>
-                </div>
-                <div class="w-1/2">
-                    <label class="text-sm font-semibold text-[#003C3D]">Last Name</label>
-                    <input type="text" class="w-full rounded-md border border-[#003C3D] p-2" value="Perry" readonly>
-                </div>
-            </div>
-
-            <div>
-                <label class="text-sm font-semibold text-[#003C3D]">Homeowner</label>
-                <input type="text" class="w-full rounded-md border border-[#003C3D] p-2" value="Kobe Amaro" readonly>
-            </div>
-
-            <div>
-                <label class="text-sm font-semibold text-[#003C3D]">Phone Number</label>
-                <input type="text" class="w-full rounded-md border border-[#003C3D] p-2" value="0123456789" readonly>
-            </div>
-
-            <div class="flex gap-2">
-                <div class="w-1/2">
-                    <label class="text-sm font-semibold text-[#003C3D]">Visit Date</label>
-                    <div class="relative">
-                        <input id="visitDate" type="date" class="w-full rounded-md border border-[#003C3D] p-2">
+            <form id="updateVisitorForm" method="post" asp-action="UpdateVisitor" asp-controller="Home">
+                <input id="modalVisitorId" name="visitor_id" type="hidden">
+                <div class="flex gap-2">
+                    <div class="w-1/2">
+                        <label class="text-sm font-semibold text-[#003C3D]">First Name</label>
+                        <input id="modalFirstName" name="first_name" type="text" class="w-full rounded-md border border-[#003C3D] p-2">
+                    </div>
+                    <div class="w-1/2">
+                        <label class="text-sm font-semibold text-[#003C3D]">Last Name</label>
+                        <input id="modalLastName" name="last_name" type="text" class="w-full rounded-md border border-[#003C3D] p-2">
                     </div>
                 </div>
-                <div class="w-1/2">
-                    <label class="text-sm font-semibold text-[#003C3D]">Visit Time</label>
-                    <div class="relative">
-                        <input id="visitTime" type="time" class="w-full rounded-md border border-[#003C3D] p-2">
+
+                <div>
+                    <label class="text-sm font-semibold text-[#003C3D]">Homeowner</label>
+                    <input id="modalHomeowner" type="text" class="w-full rounded-md border border-[#003C3D] p-2" value="Kobe Amaro">
+                </div>
+
+                <div>
+                    <label class="text-sm font-semibold text-[#003C3D]">Phone Number</label>
+                    <input id="modalPhone" name="phone_number" type="text" class="w-full rounded-md border border-[#003C3D] p-2" value="">
+                </div>
+            
+                <div class="flex gap-2">
+                    <div class="w-1/2">
+                        <label class="text-sm font-semibold text-[#003C3D]">Visit Date</label>
+                        <div class="relative">
+                            <input name="visit_date" id="visit_date" type="date" class="w-full rounded-md border border-[#003C3D] p-2">
+                        </div>
+                    </div>
+                    <div class="w-1/2">
+                        <label class="text-sm font-semibold text-[#003C3D]">Visit Time</label>
+                        <div class="relative">
+                            <input name ="visit_time" id="visit_time" type="time" class="w-full rounded-md border border-[#003C3D] p-2">
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div>
-                <label class="text-sm font-semibold text-[#003C3D]">Vehicle Plate (Optional)</label>
-                <input type="text" class="w-full rounded-md border border-[#003C3D] p-2" value="ABC 123" readonly>
-            </div>
+                <div>
+                    <label class="text-sm font-semibold text-[#003C3D]">Vehicle Plate (Optional)</label>
+                    <input name="vehicle_plate" id="modalPlate" type="text" class="w-full rounded-md border border-[#003C3D] p-2" value="">
+                </div>
 
-            <div>
-                <label class="text-sm font-semibold text-[#003C3D]">Reason for Visit</label>
-                <input type="text" class="bo rder-[#003C3D] w-full rounded-md border p-2" value="Visiting a friend" readonly>
-            </div>
+                <div>
+                    <label class="text-sm font-semibold text-[#003C3D]">Reason for Visit</label>
+                    <input name="visit_reason" id="modalReason" type="text" class="bo rder-[#003C3D] w-full rounded-md border p-2" value="">
+                </div>
+            </form>
         </div>
 
-        <div class="mt-6 flex w-full justify-between gap-2">
-            <button class="w-1/2 rounded-full border border-[#003C3D] px-6 py-2 text-[#003C3D]">Decline</button>
-            <button class="w-1/2 rounded-full bg-[#003C3D] px-6 py-2 text-white">Confirm</button>
+        <div id="actionButtons" class="mt-6 flex w-full justify-between gap-2">
+            <button class="w-1/2 rounded-full border border-[#003C3D] px-6 py-2 text-[#003C3D]">Cancel</button>
+            <button id="updateBtn" type="button" class="w-1/2 rounded-full bg-[#003C3D] px-6 py-2 text-white">Update</button>
         </div>
+
     </div>
 </div>
-
 <script>
-    document.getElementById("viewVehicleDets").addEventListener("click", function (event) {
-        event.preventDefault();
-        document.getElementById("viewDetailsModal").classList.remove("hidden");
+        document.getElementById("updateBtn").addEventListener("click", function () {
+        console.log(document.getElementById("modalVisitorId").value);
+        document.getElementById("updateVisitorForm").submit();
     });
 
-    document.getElementById("closeModal").addEventListener("click", function () {
-        document.getElementById("viewDetailsModal").classList.add("hidden");
-    });
-
-    document.addEventListener("click", function (event) {
-        if (event.target.id === "viewDetailsModal") {
-            document.getElementById("viewDetailsModal").classList.add("hidden");
-        }
-    });
-</script>
-<script>
     document.querySelectorAll("#sortVisiors a").forEach((btn) => {
         btn.addEventListener("click", (e) => {
             e.preventDefault(); // Prevent page reload
@@ -245,5 +246,65 @@
             e.currentTarget.querySelector("span").classList.add("text-blue-700");
         });
     });
-
 </script>
+<script>
+    function toggleModal(mode, dataset) {
+        const isViewMode = mode === 'view';
+
+        // Populate fields
+        document.getElementById("modalVisitorId").value = dataset.id || '';
+        document.getElementById("modalFirstName").value = dataset.firstName || '';
+        document.getElementById("modalLastName").value = dataset.lastName || '';
+        document.getElementById("modalPhone").value = dataset.phone || '';
+        document.getElementById("visit_date").value = dataset.date || '';
+        document.getElementById("visit_time").value = dataset.time || '';
+        document.getElementById("modalPlate").value = dataset.plate || '';
+        document.getElementById("modalReason").value = dataset.reason || '';
+
+        // Set fields to readonly if view mode
+        const fields = ["modalFirstName", "modalLastName", "modalPhone", "modalHomeowner", "visit_date", "visit_time", "modalPlate", "modalReason"];
+        fields.forEach(id => {
+            const input = document.getElementById(id);
+            if (isViewMode) {
+                input.setAttribute("readonly", true);
+            } else {
+                input.removeAttribute("readonly");
+            }
+        });
+
+        // Show/hide Confirm & Decline buttons
+        document.getElementById("actionButtons").classList.toggle("hidden", isViewMode);
+
+        // Show modal
+        document.getElementById("viewDetailsModal").classList.remove("hidden");
+    }
+
+    // View Details handler
+    document.querySelectorAll(".view-details-btn").forEach(button => {
+        button.addEventListener("click", function (e) {
+            e.preventDefault();
+            toggleModal('view', this.dataset);
+        });
+    });
+
+    // Edit button handler
+    document.querySelectorAll(".view-details-btn + a[href='#']:nth-child(2)").forEach(button => {
+        button.addEventListener("click", function (e) {
+            e.preventDefault();
+            const viewButton = this.parentElement.querySelector(".view-details-btn");
+            toggleModal('edit', viewButton.dataset);
+        });
+    });
+
+    // Close modal
+    document.getElementById("closeModal").addEventListener("click", function () {
+        document.getElementById("viewDetailsModal").classList.add("hidden");
+    });
+
+    document.addEventListener("click", function (event) {
+        if (event.target.id === "viewDetailsModal") {
+            document.getElementById("viewDetailsModal").classList.add("hidden");
+        }
+    });
+</script>
+
