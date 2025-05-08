@@ -213,12 +213,12 @@ namespace ElnetSubdivi.Controllers
 
             return View(manageVehicle);
         }
-        public IActionResult VisitorsPassManagement()
+        public async Task<IActionResult> VisitorsPassManagementAsync()
         {
             ViewData["HideSearch"] = true;
             ViewData["Hidebtn"] = true;
 
-            var reservations = new List<dynamic>
+            var reservations1 = new List<dynamic>
             {
                 new { Title = "Total Visitor Requests", Count = 123, Icon = "totalv.svg", BorderColor = "border-blue-400 border-b-2" },
                 new { Title = "Pending Approval", Count = 34, Icon = "pendi.svg", BorderColor = "border-yellow-400 borber-b-2" },
@@ -227,8 +227,41 @@ namespace ElnetSubdivi.Controllers
 
             };
 
-            return View(reservations);
+            // Get posts from your database/service
+            var visitorlist = _context.Visitor_List.OrderByDescending(p => p.visitor_id).ToList();
+
+            // Get current user (example - adjust based on your auth system)
+            var currentuser = _context.Users.FirstOrDefault(u => u.user_id == User.Identity.Name);
+
+
+            // Create the view model
+            var visitors = new VIsitorListViewModel
+            {
+                VisitorList = visitorlist,
+                Users = await _userService.GetAllUsers(),
+            };
+
+            return View(visitors);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateStatus([FromBody] VisitorStatusUpdateModel model)
+        {
+            var visitor = await _context.Visitor_List.FindAsync(model.VisitorId);
+            if (visitor == null)
+                return NotFound();
+
+            visitor.visit_status = model.Status;
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
+        public class VisitorStatusUpdateModel
+        {
+            public int VisitorId { get; set; }
+            public string Status { get; set; }
+        }
+
         public async Task<IActionResult> PaymentHistoryAsync(string userId)
         {
             ViewData["HideSearch"] = true;
