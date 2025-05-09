@@ -738,6 +738,11 @@ namespace ElnetSubdivi.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("UserVehicle");
         }
+        public IActionResult SecurityCalendar()
+        {
+            ViewData["HideSearch"] = true;
+            return View();
+        }
 
         [HttpPost]
         public async Task<IActionResult> UpdateStatusByPlate([FromBody] VehicleStatusUpdateRequest request)
@@ -842,6 +847,18 @@ namespace ElnetSubdivi.Controllers
             return RedirectToAction("IncidentReport");
         }
 
+        public IActionResult SecurityServiceRequest ()
+        {
+            ViewData["HideSearch"] = true;
+            return View();
+        }
+       public IActionResult serviceRequest()
+        {
+            ViewData["Title"] = "Service Request";
+            ViewData["HideSearch"] = true;
+            return View();
+        }
+
 
 
         public IActionResult Calendar()
@@ -875,10 +892,17 @@ namespace ElnetSubdivi.Controllers
             ViewData["HideSearch"] = true;
             return View();
         }
-
-        /// //////////////////////////////////// FEEDBACK SCRIPTS ////////////////////////////////////////////////
-
-        public async Task<IActionResult> UserFeedbackAsync()
+        public IActionResult SecurityVehicleManagement()
+        {
+            ViewData["HideSearch"] = true;
+            return View();
+        }
+        public IActionResult VisitorManagement()
+        {
+            ViewData["HideSearch"] = true;
+            return View();
+        }
+        public IActionResult UserFeedback()
         {
             ViewData["HideSearch"] = true;
 
