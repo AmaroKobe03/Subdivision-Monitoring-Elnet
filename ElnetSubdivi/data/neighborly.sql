@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2025 at 05:02 AM
+-- Generation Time: May 09, 2025 at 12:03 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -45,7 +45,7 @@ CREATE TABLE `billing_statements` (
 --
 
 INSERT INTO `billing_statements` (`bill_no`, `user_id`, `user_name`, `bill_type`, `billing_period`, `amount_due`, `due_date`, `bill_status`) VALUES
-('BILL-981123', 'RES-0001', 'Angela Lopez Gonzalez', 'Water', '2025-04-01', 3000, '2025-04-30', 'Pending'),
+('BILL-981123', 'RES-0001', 'Angela Lopez Gonzalez', 'Water', '2025-04-01', 3000, '2025-04-30', 'Paid'),
 ('BILL-198591', 'ADM-0001', 'Bryl Brown Gorgonio', 'Electric', '2025-04-01', 3000, '2025-04-30', 'Pending'),
 ('BILL-243394', 'MTN-0001', 'Kobe A Amaro', 'Electric', '2025-06-01', 5000, '2025-05-05', 'Pending');
 
@@ -143,6 +143,31 @@ INSERT INTO `facility_operating_hours` (`facility_id`, `day_of_week`, `opening_t
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `feedback`
+--
+
+CREATE TABLE `feedback` (
+  `FeedbackID` int(11) NOT NULL,
+  `UserID` varchar(50) NOT NULL,
+  `Rating` int(11) DEFAULT NULL CHECK (`Rating` between 1 and 5),
+  `Title` varchar(255) NOT NULL,
+  `Description` text DEFAULT NULL,
+  `SubmittedAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `Type` varchar(50) NOT NULL,
+  `Status` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `feedback`
+--
+
+INSERT INTO `feedback` (`FeedbackID`, `UserID`, `Rating`, `Title`, `Description`, `SubmittedAt`, `Type`, `Status`) VALUES
+(1, '', 5, 'Great', 'Great', '2025-05-08 10:59:02', 'Feedback', ''),
+(2, '', 1, 'Trial Complaint', 'Trial Complaint', '2025-05-08 11:18:55', 'Complaint', 'Pending');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `id_generator`
 --
 
@@ -187,6 +212,47 @@ INSERT INTO `job_titles` (`job_title_id`, `service_id`, `job_title_name`) VALUES
 ('JOB103', 3, 'Electrician'),
 ('JOB104', 4, 'Contractor'),
 ('JOB105', 5, 'Exterminator ');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payments`
+--
+
+CREATE TABLE `payments` (
+  `payment_id` int(11) NOT NULL,
+  `user_id` varchar(50) NOT NULL,
+  `bill_no` varchar(50) NOT NULL,
+  `bill_type` varchar(100) NOT NULL,
+  `bill_period` date NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `payment_method` varchar(50) NOT NULL,
+  `payment_date` datetime NOT NULL DEFAULT current_timestamp(),
+  `card_number` varchar(20) DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `expiry_date` varchar(10) DEFAULT NULL,
+  `cvv` varchar(5) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `payments`
+--
+
+INSERT INTO `payments` (`payment_id`, `user_id`, `bill_no`, `bill_type`, `bill_period`, `amount`, `payment_method`, `payment_date`, `card_number`, `name`, `expiry_date`, `cvv`) VALUES
+(286849, 'RES-0002', 'BILL-981123', 'Water', '2025-03-31', 3000.00, 'Credit/Debit Card', '2025-05-09 17:42:15', '123456789012', 'Angela Postrero', '04/26', '123');
+
+--
+-- Triggers `payments`
+--
+DELIMITER $$
+CREATE TRIGGER `UpdateBillStatusAfterPayment` AFTER INSERT ON `payments` FOR EACH ROW BEGIN
+    -- Update the bill_status to 'Paid' in bill_statements table
+    UPDATE billing_statements
+    SET bill_status = 'Paid'
+    WHERE bill_no = NEW.bill_no;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -293,15 +359,16 @@ CREATE TABLE `reservation` (
   `reservation_date` date NOT NULL,
   `time_in` time NOT NULL,
   `time_out` time DEFAULT NULL,
-  `reservation_purpose` varchar(500) NOT NULL
+  `reservation_purpose` varchar(500) NOT NULL,
+  `reservation_status` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `reservation`
 --
 
-INSERT INTO `reservation` (`reservation_id`, `facility_id`, `user_id`, `reservation_date`, `time_in`, `time_out`, `reservation_purpose`) VALUES
-('RES-0001', 'FAC-0001', 'Angela Postrero', '2025-05-10', '02:53:00', '14:54:00', 'Secret');
+INSERT INTO `reservation` (`reservation_id`, `facility_id`, `user_id`, `reservation_date`, `time_in`, `time_out`, `reservation_purpose`, `reservation_status`) VALUES
+('RES-0001', 'FAC-0002', 'Angela Postrero', '2025-05-10', '03:00:00', '15:00:00', 'secret', 'Pending');
 
 -- --------------------------------------------------------
 
@@ -529,6 +596,26 @@ INSERT INTO `user_accounts` (`id`, `user_id`, `username`, `password`) VALUES
 CREATE TABLE `_admin` (
   `admin_id` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `feedback`
+--
+ALTER TABLE `feedback`
+  ADD PRIMARY KEY (`FeedbackID`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `feedback`
+--
+ALTER TABLE `feedback`
+  MODIFY `FeedbackID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
