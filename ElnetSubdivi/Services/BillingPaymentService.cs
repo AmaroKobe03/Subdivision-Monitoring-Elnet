@@ -124,5 +124,23 @@ namespace ElnetSubdivi.Services
             }
         }
 
+        public async Task<List<Payments>> GetAllPayments()
+        {
+            try
+            {
+                var payments = await _context.Payments
+                    .OrderByDescending(p => p.payment_date)
+                    .ToListAsync();
+
+                return payments;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching payments: {ex.Message}");
+                return new List<Payments>();
+            }
+        }
+
+
     }
 }

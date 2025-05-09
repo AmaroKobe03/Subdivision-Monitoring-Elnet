@@ -1,5 +1,8 @@
-﻿@{
+﻿@model ElnetSubdivi.Models.BillingPaymentViewModel
+@{
     ViewData["Title"] = "Billing and Payment";
+    var bills = Model.BillStatements;  // Directly access ViewModel property
+    var users = Model.Users;
 }
 
 <!-- Model Initialization -->
@@ -64,52 +67,95 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Sample Row 1 - Overdue -->
-            <tr>
-                <td class="px-4 py-3"><input type="checkbox"></td>
-                <td class="flex items-center gap-2 px-4 py-3">
-                    <img src="~/Images/electric.svg" class="w-5" alt="">
-                    <span>Electricity Bill</span>
-                </td>
-                <td class="px-4 py-3">March 2025</td>
-                <td class="px-4 py-3">₱5,250.00</td>
-                <td class="px-4 py-3">March 15, 2025</td>
-                <td class="px-4 py-3 font-semibold text-red-500">Overdue</td>
-                <td class="cursor-pointer px-4 py-3 font-semibold text-teal-700">Pay Now</td>
-            </tr>
+            @foreach (var bill in bills)
+            {
+                var user = Model.Users.FirstOrDefault(u => u.user_id == bill.user_id);
+                <tr>
+                    <td class="px-4 py-3"><input type="checkbox"></td>
+                    <td class="flex items-center gap-2 px-4 py-3">
+                        <img src="~/Images/@(bill.bill_type.ToLower()).svg" class="w-5" alt="">
+                        <span>@bill.bill_type</span>
+                    </td>
+                    <td class="px-4 py-3">@bill.billing_period.ToString("MMMM yyyy")</td>
+                    <td class="px-4 py-3">₱@bill.amount_due.ToString("N2")</td>
+                    <td class="px-4 py-3">@bill.due_date.ToString("MMMM dd, yyyy")</td>
+                    <td class="px-4 py-3 font-semibold @(bill.bill_status == "Paid" ? "text-green-500" : bill.bill_status == "Pending" ? "text-yellow-500" : "text-red-500")">@bill.bill_status</td>
+                    <td class="cursor-pointer px-4 py-3 font-semibold text-teal-700">
+                        <button class="actions-btn">⋮</button>
+                        <div class="actions-menu absolute right-40 hidden w-40 bg-white shadow-md">
+                            <ul>
+                                <li class="cursor-pointer px-4 py-2 hover:bg-gray-100 open-payment"
+                                    data-billno="@bill.bill_no"
+                                    data-billtype="@bill.bill_type"
+                                    data-billperiod="@bill.billing_period.ToString("yyyy-MM-dd")"
+                                    data-amount="@bill.amount_due.ToString("N2")"
+                                    data-duedate="@bill.due_date.ToString("MMMM dd, yyyy")">
+                                    Pay Now
+                                </li>
 
-            <!-- Sample Row 2 - Pending -->
-            <tr>
-                <td class="px-4 py-3"><input type="checkbox"></td>
-                <td class="flex items-center gap-2 px-4 py-3">
-                    <img src="~/Images/mechanic.svg" class="w-5" alt="">
-                    <span>Maintenance Fee</span>
-                </td>
-                <td class="px-4 py-3">April 2025</td>
-                <td class="px-4 py-3">₱2,250.00</td>
-                <td class="px-4 py-3">April 30, 2025</td>
-                <td class="px-4 py-3 font-semibold text-yellow-500">Pending</td>
-                <td class="cursor-pointer px-4 py-3 font-semibold text-teal-700">Pay Now</td>
-            </tr>
+                                @if (bill.bill_status == "Paid")
+                                {
+                                    <li class="cursor-pointer px-4 py-2 hover:bg-gray-100 view-receipt"
+                                        data-billtype="@bill.bill_type"
+                                        data-billperiod="@bill.billing_period.ToString("yyyy-MM-dd")"
+                                        data-amount="@bill.amount_due.ToString("N2")"
+                                        data-method="Credit/Debit Card"
+                                        data-paymentdate="@DateTime.Now.ToString("yyyy-MM-dd")">
+                                        View Receipt
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="cursor-not-allowed px-4 py-2 text-gray-400">Generate Receipt</li>
+                                }
 
-            <!-- Sample Row 3 - Paid -->
-            <tr>
-                <td class="px-4 py-3"><input type="checkbox"></td>
-                <td class="flex items-center gap-2 px-4 py-3">
-                    <img src="~/Images/water.svg" class="w-5" alt="">
-                    <span>Water Bill</span>
-                </td>
-                <td class="px-4 py-3">February 2025</td>
-                <td class="px-4 py-3">₱1,850.00</td>
-                <td class="px-4 py-3">February 28, 2025</td>
-                <td class="px-4 py-3 font-semibold text-green-500">Paid</td>
-                <td class="cursor-pointer px-4 py-3 font-semibold text-teal-700">View Receipt</td>
-            </tr>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 
     <!-- Pagination Partial View -->
     @await Html.PartialAsync("_pagination")
+</div>
+
+<!-- Receipt Modal -->
+<div id="receipt-popup" class="fixed inset-0 z-100 flex hidden items-center justify-center bg-black/50 p-4">
+    <div class="w-[650px] rounded-lg bg-white p-6 shadow-lg">
+        <!-- Receipt Title -->
+        <h1 class="text-xl font-semibold text-black">Receipt</h1>
+
+        <!-- Receipt Details Section -->
+        <div class="mt-4 space-y-2 border-b pb-4">
+            <div class="flex justify-between">
+                <span class="text-s text-gray-500">Bill Type</span>
+                <span id="receipt-billtype"></span>
+            </div>
+            <div class="flex justify-between">
+                <span class="text-s text-gray-500">Bill Type Period</span>
+                <span id="receipt-billperiod"></span>
+            </div>
+            <div class="flex justify-between">
+                <span class="text-s text-gray-500">Amount Paid</span>
+                <span id="receipt-amount" class="text-xl text-[#043137]"></span>
+            </div>
+            <div class="flex justify-between">
+                <span class="text-s text-gray-500">Payment Method</span>
+                <span id="receipt-paymentmethod"></span>
+            </div>
+            <div class="flex justify-between">
+                <span class="text-s text-gray-500">Payment Date</span>
+                <span id="receipt-paymentdate"></span>
+            </div>
+        </div>
+
+        <!-- Close Button -->
+        <div class="mt-6 flex justify-between">
+            <button id="close-receipt-btn" class="w-[45%] rounded-full border px-4 py-2 text-black">Close</button>
+        </div>
+    </div>
 </div>
 
 <!-- Payment Popup Modal -->
@@ -121,53 +167,57 @@
         <div class="mt-4 space-y-2 border-b pb-4">
             <div class="flex justify-between">
                 <span class="text-s text-gray-500">Bill Type</span>
-                <span class="">Association Dues</span>
+                <span id="popup-billtype"></span>
             </div>
             <div class="flex justify-between">
                 <span class="text-s text-gray-500">Bill Type Period</span>
-                <span class="">March 1 - March 15, 2025</span>
+                <span id="popup-billperiod"></span>
             </div>
             <div class="flex justify-between">
                 <span class="text-s text-gray-500">Amount Due</span>
-                <span class="text-xl text-[#043137]">₱5,250.00</span>
+                <span id="popup-amount" class="text-xl text-[#043137]"></span>
             </div>
         </div>
 
         <!-- Payment Method Selection -->
         <h2 class="mt-4 text-lg font-semibold text-black">Select Payment Method</h2>
-        <div class="mt-2 flex gap-3">
-            <button class="flex w-1/3 items-center justify-center gap-2 rounded-lg border px-4 py-2">
+        <div id="payment-method-buttons" class="mt-2 flex gap-3">
+            <button type="button" class="payment-method-btn flex w-1/3 items-center justify-center gap-2 rounded-lg border px-4 py-2"
+                    data-method="Credit/Debit Card">
                 <img src="~/Images/credit.svg" alt="Credit/Debit Card" class="h-5 w-5" /> Credit/Debit Card
             </button>
-            <button class="flex w-1/3 items-center justify-center gap-2 rounded-lg border px-4 py-2">
+            <button type="button" class="payment-method-btn flex w-1/3 items-center justify-center gap-2 rounded-lg border px-4 py-2"
+                    data-method="Online Banking">
                 <img src="~/Images/online.svg" alt="Online Banking" class="h-5 w-5" /> Online Banking
             </button>
-            <button class="flex w-1/3 items-center justify-center gap-2 rounded-lg border px-4 py-2">
+            <button type="button" class="payment-method-btn flex w-1/3 items-center justify-center gap-2 rounded-lg border px-4 py-2"
+                    data-method="E-Wallet">
                 <img src="~/Images/wallet.svg" alt="E-Wallet" class="h-5 w-5" /> E-Wallet
             </button>
         </div>
+
 
         <!-- Payment Form -->
         <div class="mt-4 space-y-3">
             <div class="flex gap-4">
                 <div class="w-1/2">
                     <label class="block text-sm font-medium">Card Number</label>
-                    <input type="text" class="w-full rounded border px-3 py-2 text-gray-400" placeholder="1234 5678 9012 3456" />
+                    <input id="card-number" type="text" class="w-full rounded border px-3 py-2 text-gray-400" placeholder="1234 5678 9012 3456" />
                 </div>
                 <div class="w-1/2">
                     <label class="block text-sm font-medium">Name on Card</label>
-                    <input type="text" class="w-full rounded border px-3 py-2 text-gray-400" placeholder="John Doe" />
+                    <input id="card-name" type="text" class="w-full rounded border px-3 py-2 text-gray-400" placeholder="John Doe" />
                 </div>
             </div>
 
             <div class="flex gap-4">
                 <div class="w-1/2">
                     <label class="block text-sm font-medium">Expiry Date</label>
-                    <input type="text" class="w-full rounded border px-3 py-2 text-gray-400" placeholder="MM/YY" />
+                    <input id="card-expiry" type="text" class="w-full rounded border px-3 py-2 text-gray-400" placeholder="MM/YY" />
                 </div>
                 <div class="w-1/2">
                     <label class="block text-sm font-medium">CVV</label>
-                    <input type="text" class="w-full rounded border px-3 py-2 text-gray-400" placeholder="123" />
+                    <input id="card-cvv" type="text" class="w-full rounded border px-3 py-2 text-gray-400" placeholder="123" />
                 </div>
             </div>
         </div>
@@ -175,9 +225,174 @@
         <!-- Action Buttons -->
         <div class="mt-6 flex justify-between">
             <button id="cancelbtn" class="w-[45%] rounded-full border px-4 py-2 text-black">Cancel</button>
-            <button class="flex w-[45%] items-center justify-center gap-2 rounded-full bg-[#043137] px-4 py-2 text-white">
+            <button id="popup-payment" class="flex w-[45%] items-center justify-center gap-2 rounded-full bg-[#043137] px-4 py-2 text-white">
                 Pay ₱5,250.00 <i class="fas fa-arrow-right"></i>
             </button>
         </div>
     </div>
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Toggle individual action menu
+            document.querySelectorAll(".actions-btn").forEach(button => {
+                button.addEventListener("click", (event) => {
+                    event.stopPropagation(); // Prevent document click from closing menu
+                    const menu = button.nextElementSibling;
+
+                    // Hide other menus
+                    document.querySelectorAll(".actions-menu").forEach(m => {
+                        if (m !== menu) m.classList.add("hidden");
+                    });
+
+                    // Toggle this one
+                    menu.classList.toggle("hidden");
+                });
+            });
+
+            // Hide all dropdowns if clicking outside
+            document.addEventListener("click", (event) => {
+                const isMenuClick = event.target.closest(".actions-menu");
+                const isButtonClick = event.target.closest(".actions-btn");
+                if (!isMenuClick && !isButtonClick) {
+                    document.querySelectorAll(".actions-menu").forEach(menu => {
+                        menu.classList.add("hidden");
+                    });
+                }
+            });
+
+            // Handle 'Pay Now' modal open and populate
+            document.querySelectorAll(".open-payment").forEach(button => {
+                button.addEventListener("click", (event) => {
+                    event.stopPropagation(); // Prevent menu auto-close
+
+                    const billType = button.getAttribute("data-billtype");
+                    const billPeriodRaw = button.getAttribute("data-billperiod");
+                    const billPeriod = new Date(billPeriodRaw); // Keep as Date object
+                    const amount = button.getAttribute("data-amount");
+                    const billNo = button.getAttribute("data-billno");  // Retrieve bill_no from data attributes
+
+                    // Populate modal with the bill data
+                    document.getElementById("popup-billtype").textContent = billType;
+                    document.getElementById("popup-billperiod").textContent = billPeriod.toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long"
+                    });
+                    document.getElementById("popup-amount").textContent = `₱${amount}`;
+                    document.getElementById("popup-payment").textContent = `Pay ₱${amount}`;
+
+                    // Store bill_no in a hidden input or in a global variable to use later
+                    document.getElementById("popup-payment").setAttribute("data-billno", billNo);  // Set bill_no in button attribute
+
+                    document.getElementById("billing-popup").classList.remove("hidden");
+                });
+            });
+
+
+
+            // Cancel modal
+            document.getElementById("cancelbtn").addEventListener("click", () => {
+                document.getElementById("billing-popup").classList.add("hidden");
+            });
+
+
+            let selectedPaymentMethod = "";
+
+            document.querySelectorAll(".payment-method-btn").forEach(button => {
+                button.addEventListener("click", () => {
+                    // Remove highlight from all buttons
+                    document.querySelectorAll(".payment-method-btn").forEach(btn => {
+                        btn.classList.remove("border-blue-500", "ring-2", "ring-blue-300");
+                    });
+
+                    // Highlight selected button
+                    button.classList.add("border-blue-500", "ring-2", "ring-blue-300");
+
+                    // Save selected payment method
+                    selectedPaymentMethod = button.getAttribute("data-method");
+                });
+            });
+
+            // Handle payment form submission
+            document.getElementById("popup-payment").addEventListener("click", async () => {
+                const billType = document.getElementById("popup-billtype").textContent;
+                const billPeriod = document.getElementById("popup-billperiod").textContent;
+                const amount = document.getElementById("popup-amount").textContent.replace(/[₱,]/g, '').trim();
+
+                const cardNumber = document.getElementById("card-number").value.trim();
+                const name = document.getElementById("card-name").value.trim();
+                const expiry = document.getElementById("card-expiry").value.trim();
+                const cvv = document.getElementById("card-cvv").value.trim();
+
+                // Retrieve the bill_no from the button
+                const billNo = document.getElementById("popup-payment").getAttribute("data-billno");
+
+                // Example: 'April 2025' --> first day of the month
+                const billPeriodDate = new Date(`${billPeriod} 01`);
+
+                const payload = {
+                    bill_no: billNo,  // Include bill_no in the payload
+                    bill_type: billType,
+                    bill_period: billPeriodDate.toISOString(),
+                    amount: parseFloat(amount),
+                    payment_method: selectedPaymentMethod,
+                    card_number: cardNumber,
+                    name: name,
+                    expiry_date: expiry,
+                    cvv: cvv
+                };
+
+                try {
+                    const response = await fetch('/Home/SubmitPayment', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (response.ok) {
+                        alert("Payment successful!");
+                        location.reload();
+                    } else {
+                        const error = await response.text();
+                        alert("Payment failed: " + error);
+                    }
+                } catch (error) {
+                    alert("An error occurred: " + error.message);
+                }
+            });
+
+            // Handle 'View Receipt' modal open and populate
+            document.querySelectorAll(".view-receipt").forEach(button => {
+                button.addEventListener("click", (event) => {
+                    event.stopPropagation(); // Prevent menu auto-close
+
+                    const billType = button.getAttribute("data-billtype");
+                    const billPeriodRaw = button.getAttribute("data-billperiod");
+                    const billPeriod = new Date(billPeriodRaw); // Keep as Date object
+                    const amountPaid = button.getAttribute("data-amount");
+                    const paymentMethod = button.getAttribute("data-method");
+                    const paymentDate = button.getAttribute("data-paymentdate");
+
+                    // Populate receipt modal with the bill data
+                    document.getElementById("receipt-billtype").textContent = billType;
+                    document.getElementById("receipt-billperiod").textContent = billPeriod.toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long"
+                    });
+                    document.getElementById("receipt-amount").textContent = `₱${amountPaid}`;
+                    document.getElementById("receipt-paymentmethod").textContent = paymentMethod;
+                    document.getElementById("receipt-paymentdate").textContent = new Date(paymentDate).toLocaleDateString("en-US");
+
+                    // Show the receipt modal
+                    document.getElementById("receipt-popup").classList.remove("hidden");
+                });
+            });
+
+            // Close the receipt modal
+            document.getElementById("close-receipt-btn").addEventListener("click", () => {
+                document.getElementById("receipt-popup").classList.add("hidden");
+            });
+        });
+    </script>
 </div>

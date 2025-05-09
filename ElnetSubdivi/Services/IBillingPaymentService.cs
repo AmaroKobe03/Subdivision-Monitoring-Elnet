@@ -12,8 +12,7 @@ namespace ElnetSubdivi.Services
         Task<List<UserBasicInfoDto>> GetAllUsersBasicInfo();
         Task Update(BillingPaymentModel model);
         Task<List<BillingPaymentModel>> GetPaymentHistoryByUserId(string userId);
-
-
+        Task<List<Payments>> GetAllPayments();
     }
 }
 

@@ -397,6 +397,22 @@ namespace ElnetSubdivi.Controllers
             return View(billing);
         }
 
+        public async Task<IActionResult> Billing()
+        {
+            ViewData["HideSearch"] = true;
+            ViewData["Hidebtn"] = true;
+            ViewData["Bills"] = await _billingService.GetAll();
+            ViewData["Homeowners"] = await _billingService.GetAllUsersBasicInfo(); // Add this
+
+            var billing = new BillingPaymentViewModel
+            {
+                BillStatements = await _billingService.GetAll(),// Await the Task to resolve the issue
+                Users = await _userService.GetAllUsers() // Fetch users from DB
+            };
+
+            return View(billing);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateInvoice(BillingPaymentModel model)
@@ -472,6 +488,45 @@ namespace ElnetSubdivi.Controllers
 
             return RedirectToAction("BillingManagement"); // Adjust action name as needed
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> SubmitPayment([FromBody] Payments model)
+        {
+            model.payment_date = DateTime.Now;
+
+            var userId = User.FindFirst("UserId")?.Value;
+            var currentuser = await _context.Users.FirstOrDefaultAsync(u => u.user_id == userId);
+            model.user_id = currentuser.user_id;
+
+            // Generate 6 random numbers for payment_id (e.g., 482195)
+            var random = new Random();
+            model.payment_id = random.Next(100000, 999999); // ensures 6 digits, from 100000 to 999999
+
+            // Optional: remove payment_id and user_id from model state if it's bound from the client
+            ModelState.Remove(nameof(model.user_id));
+            ModelState.Remove(nameof(model.payment_id));
+
+                if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Payments.Add(model);
+                    await _context.SaveChangesAsync();
+
+                    return Ok(new { message = "Payment successful", paymentId = model.payment_id });
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest("Error: " + ex.Message);
+                }
+            }
+
+            return BadRequest("Invalid payment data.");
+        }
+
+
+
 
 
 
@@ -741,16 +796,6 @@ namespace ElnetSubdivi.Controllers
                 new {Status = "Resolved", Title = "Street Hole", Type = "Incident Report", Description = "In the street xxx, there’s a massive hole filled with water, the vehicles...", Icon = "incident_icon.svg", Clock = "clock.svg", Duration = "3 Days ago" }
             };
             return View(reports);
-        }
-
-
-
-        public IActionResult Billing()
-        {
-            ViewData["Title"] = "Service Request";
-            ViewData["HideSearch"] = true;
-            return View();
-
         }
 
 
