@@ -1,7 +1,10 @@
-﻿@model IEnumerable<dynamic>
+﻿@model ElnetSubdivi.Models.IncidentReportsViewModel
 
 @{
     ViewData["Title"] = "Incident Report";
+    var reports = Model.IncidentReports;
+    var users = Model.Users;
+    var user = Model.User;
 }
 
 <div class="flex h-[100vh] w-[90%] flex-col items-center overflow-auto overflow-y-hidden bg-[#f2f2f2] font-semibold">
@@ -29,56 +32,68 @@
         </button>
     </div>
 
-    <div id="IncidentReports" class="flex h-[50vh] w-[88%] gap-4">
-        @foreach (var item in Model)
+    <div id="IncidentReports" class="flex h-[50vh] w-[88%] gap-4 flex-wrap overflow-y-auto">
+        @foreach (var item in reports)
         {
             <div class="incident-card flex h-[24vh] w-[30%] flex-col gap-3 rounded-lg bg-white p-4 shadow-lg">
-                <button class="flex w-[110px] items-center gap-2 rounded-full px-6 py-2 font-bold text-white @(item.Status == "Pending" ? "bg-[#FBBF24]" : "bg-green-500")">
-                    <span class="cursor-pointer font-semibold">@item.Status</span>
+                <button class="flex w-[110px] items-center gap-2 rounded-full px-6 py-2 font-bold text-white @(item.report_status == "Pending" ? "bg-[#FBBF24]" : "bg-green-500")">
+                    <span class="cursor-pointer font-semibold">@item.report_status</span>
                 </button>
-                <h2 class="text-bold text-xl">@item.Title</h2>
-                <p class="text-gray-400">@item.Type</p>
-                <p class="text-sm font-semibold">@item.Description</p>
+                <h2 class="text-bold text-xl">@item.report_title</h2>
+                @{
+                    var reportUser = users.FirstOrDefault(u => u.user_id == item.user_id);
+                }
+                <p class="text-sm font-semibold">@item.report_description</p>
+                <p class="text-gray-400">Submitted by: @(reportUser != null ? $"{reportUser.first_name} {reportUser.last_name}" : "Unknown")</p>
                 <div class="flex items-center justify-between">
                     <span class="flex items-center gap-2 text-[14px] text-gray-400">
-                        <img src="~/Images/@item.Clock" cl ass="h-4 w-4" /> @item.Duration
+                        <img src="~/Images/clock.svg" class="h-4 w-4" /> @item.creation_date.ToString("MMM dd, yyyy")
                     </span>
-                    <a href="#" class="view-details text-blue-400 underline" data-type="incident">View Details</a>
+                    <a href="#"
+                       class="view-details text-blue-400 underline"
+                       data-title="@item.report_title"
+                       data-description="@item.report_description"
+                       data-image="@(item.report_image != null ? $"data:image/png;base64,{Convert.ToBase64String(item.report_image)}" : "")">
+                        View Details
+                    </a>
                 </div>
             </div>
         }
     </div>
 
     <div id="addReport" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50">
-        <div class="flex w-[500px] flex-col gap-4 rounded-2xl bg-white p-8 shadow-lg">
+        <form asp-action="SubmitIncidentReport" method="post" enctype="multipart/form-data"
+              class="flex w-[500px] flex-col gap-4 rounded-2xl bg-white p-8 shadow-lg">
             <h2 class="text-center text-2xl font-bold text-[#003D38]">Submit Report</h2>
 
             <div class="flex flex-col gap-2">
                 <label class="font-semibold">Subject</label>
-                <input type="text" placeholder="Broken Light Post" class="border-2 rounded-lg border-gray-300 px-4 py-2" />
+                <input type="text" name="report_title" placeholder="Broken Light Post" class="border-2 rounded-lg border-gray-300 px-4 py-2" required />
             </div>
 
             <div class="flex flex-col gap-2">
                 <label class="font-semibold">Description</label>
-                <textarea class="border-2 h-[15vh] w-full resize-none rounded-lg border-gray-300 px-4 py-2">
-There's a broken light post in street XXX, it's very hard to see in the evening because of this.
-            </textarea>
+                <textarea name="report_description" class="border-2 h-[15vh] w-full resize-none rounded-lg border-gray-300 px-4 py-2" required></textarea>
             </div>
 
-            <div class="border-2 mb-2 flex h-[15vh] items-center justify-center border-dashed border-gray-400 p-6">
+            <div class="border-2 mb-2 flex h-auto flex-col items-center justify-center gap-4 border-dashed border-gray-400 p-6">
                 <label for="fileUpload" class="flex cursor-pointer items-center gap-2 rounded-lg bg-gray-100 px-4 py-2">
                     <img src="~/Images/upload.svg" alt="Upload" class="h-5 w-5">
-                    <span>Upload Images</span>
+                    <span>Upload Image</span>
                 </label>
-                <input type="file" id="fileUpload" class="hidden">
+                <input name="report_image" type="file" id="fileUpload" accept="image/*" class="hidden">
+
+                <img id="imagePreview" src="#" alt="Preview" class="hidden max-h-40 w-auto rounded-lg" />
             </div>
 
+
             <div class="mt-6 flex gap-4">
-                <button class="cancel-btn w-1/2 rounded-full border border-[#003D38] py-2 text-[#003D38]">Cancel</button>
-                <button class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Submit Report</button>
+                <button type="button" class="cancel-btn w-1/2 rounded-full border border-[#003D38] py-2 text-[#003D38]">Cancel</button>
+                <button type="submit" class="w-1/2 rounded-full bg-[#003D38] py-2 text-white">Submit Report</button>
             </div>
-        </div>
+        </form>
     </div>
+
 
     <div id="viewReport" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50">
         <div class="flex w-[500px] flex-col gap-4 rounded-2xl bg-white p-8 shadow-lg">
@@ -86,19 +101,19 @@ There's a broken light post in street XXX, it's very hard to see in the evening 
 
             <div class="flex flex-col gap-2">
                 <label class="font-semibold">Subject</label>
-                <input type="text" value="Broken Light Post" class="border-2 rounded-lg border-gray-300 px-4 py-2" />
+                <input id="viewTitle" type="text" value="Broken Light Post" class="border-2 rounded-lg border-gray-300 px-4 py-2" />
             </div>
 
             <div class="flex flex-col gap-2">
                 <label class="font-semibold">Description</label>
-                <textarea class="border-2 h-[15vh] w-full resize-none rounded-lg border-gray-300 px-4 py-2">
-There's a broken light post in street XXX, it's very hard to see in the evening because of this.
-            </textarea>
+                <textarea id="viewDescription" class="border-2 h-[15vh] w-full resize-none rounded-lg border-gray-300 px-4 py-2">
+                    There's a broken light post in street XXX, it's very hard to see in the evening because of this.
+                </textarea>
             </div>
 
             <div class="flex flex-col gap-2">
                 <label class="font-semibold">Attach Image</label>
-                <img src="~/Images/broken_light_post.jpg" alt="Broken Light Post" class="w-full rounded-lg" />
+                <img id="viewImage" src="~/Images/broken_light_post.jpg" alt="Broken Light Post" class="w-full rounded-lg" />
             </div>
 
             <div class="mt-6 flex gap-4">
@@ -139,4 +154,52 @@ There's a broken light post in street XXX, it's very hard to see in the evening 
             this.classList.add("hidden");
         }
     });
+
+
+    //Image Preview
+    document.getElementById("fileUpload").addEventListener("change", function (event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById("imagePreview");
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.classList.remove("hidden");
+            };
+
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = "#";
+            preview.classList.add("hidden");
+        }
+    });
+
+
+    //View Details
+    document.querySelectorAll(".view-details").forEach((btn) => {
+        btn.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            const title = this.getAttribute("data-title");
+            const desc = this.getAttribute("data-description");
+            const image = this.getAttribute("data-image");
+
+            document.getElementById("viewTitle").value = title;
+            document.getElementById("viewDescription").value = desc;
+
+            const imageElement = document.getElementById("viewImage");
+            if (image) {
+                imageElement.src = image;
+                imageElement.classList.remove("hidden");
+            } else {
+                imageElement.src = "#";
+                imageElement.classList.add("hidden");
+            }
+
+            document.getElementById("viewReport").classList.remove("hidden");
+        });
+    });
+
 </script>

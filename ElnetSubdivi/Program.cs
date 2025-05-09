@@ -25,6 +25,7 @@ builder.Services.AddScoped<IBillingPaymentService, BillingPaymentService>();
 builder.Services.AddScoped<IVisitorListService, VisitorListService>();
 builder.Services.AddScoped<IVehicleService, VehicelService>();
 builder.Services.AddScoped<IFeedbackService, FeedbackService>();
+builder.Services.AddScoped<IIncidentReportsService, IncidentReportsService>();
 
 
 

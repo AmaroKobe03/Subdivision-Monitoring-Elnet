@@ -21,6 +21,7 @@ namespace ElnetSubdivi.data
         public DbSet<Vehicle> Vehicle { get; set; }
         public DbSet<Feedback> Feedback { get; set; }
         public DbSet<Payments> Payments { get; set; }
+        public DbSet<IncidentReports> Incident_Reports { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

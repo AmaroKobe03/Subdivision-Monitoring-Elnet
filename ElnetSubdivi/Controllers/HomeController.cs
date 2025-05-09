@@ -787,7 +787,7 @@ namespace ElnetSubdivi.Controllers
             return View();
 
         }
-        public IActionResult IncidentReport()
+        public async Task<IActionResult> IncidentReportAsync()
         {
             ViewData["HideSearch"] = true;
             var reports = new List<dynamic>
@@ -795,8 +795,53 @@ namespace ElnetSubdivi.Controllers
                 new {Status = "Pending", Title = "Broken Light Post", Type = "Incident Report", Description = "There’s a broken light post in street xxxx, it’s very hard to see...", Icon = "incident_icon.svg", Clock = "clock.svg", Duration = "2 Days ago"},
                 new {Status = "Resolved", Title = "Street Hole", Type = "Incident Report", Description = "In the street xxx, there’s a massive hole filled with water, the vehicles...", Icon = "incident_icon.svg", Clock = "clock.svg", Duration = "3 Days ago" }
             };
-            return View(reports);
+            var userId = User.FindFirst("UserId")?.Value;
+            var incidentreports = new IncidentReportsViewModel
+            {
+                IncidentReports = await _context.Incident_Reports
+                    .Where(p => p.user_id == userId)
+                    .OrderByDescending(p => p.creation_date)
+                    .ToListAsync(),
+                Users = await _userService.GetAllUsers(), // Fetch users from DB
+                User = await _context.Users.FirstOrDefaultAsync(u => u.user_id == userId)
+            };
+            return View(incidentreports);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> SubmitIncidentReport(IFormCollection form, IFormFile report_image)
+        {
+            var title = form["report_title"];
+            var description = form["report_description"];
+            var userId = User.FindFirst("UserId")?.Value;
+
+            byte[] imageBytes = null;
+
+            if (report_image != null && report_image.Length > 0)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    await report_image.CopyToAsync(ms);
+                    imageBytes = ms.ToArray();
+                }
+            }
+
+            var newReport = new IncidentReports
+            {
+                user_id = userId,
+                report_title = title,
+                report_description = description,
+                report_status = "Pending",
+                creation_date = DateTime.Now,
+                report_image = imageBytes
+            };
+
+            _context.Incident_Reports.Add(newReport);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("IncidentReport");
+        }
+
 
 
         public IActionResult Calendar()
@@ -861,8 +906,8 @@ namespace ElnetSubdivi.Controllers
             };
 
             return View(feedback);
-
         }
+
         public IActionResult feedback()
         {
             ViewData["HideSearch"] = true;
