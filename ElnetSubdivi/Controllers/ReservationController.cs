@@ -48,6 +48,9 @@ namespace ElnetSubdivi.Controllers
             string newReservationId = $"RES-{nextIdNumber.ToString("D4")}";
             model.ReservationId = newReservationId;
             ModelState.Remove(nameof(model.ReservationId));
+            var userId = User.FindFirst("UserId")?.Value;
+            var currentuser = await _context.Users.FirstOrDefaultAsync(u => u.user_id == userId);
+            model.User = currentuser;
 
             if (ModelState.IsValid)
             {

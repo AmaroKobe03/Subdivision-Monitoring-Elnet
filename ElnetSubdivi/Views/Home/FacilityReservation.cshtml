@@ -175,7 +175,7 @@
             <form asp-action="CreateReservation" method="post" enctype="multipart/form-data">
                 <div class="w-full rounded-lg bg-white p-6 shadow-md">
                     <h2 class="text-center text-lg font-bold">Create a Reservation</h2>
-
+                    <input id="facility-id" name="FacilityId" type="hidden"></input>
                     <div class="mt-4">
                         <label class="text-sm font-semibold">Date</label>
                         <input name="ReservationDate" type="date" class="border-1 w-full rounded-md border-[#AC602A] px-4 py-2 outline-none">
@@ -295,8 +295,8 @@
                 document.getElementById("popup-guidelines").textContent = btn.dataset.guidelines;
                 document.getElementById("popup-aminities").textContent = btn.dataset.aminities;
                 document.getElementById("popup-rating").textContent = btn.dataset.rate;
-                 document.getElementById("facility-id").value = btn.dataset.facilityId;
-
+                document.getElementById("facility-id").value = btn.dataset.id;
+                console.log(btn.dataset.id);
                 popup.classList.remove("hidden");
             });
         });

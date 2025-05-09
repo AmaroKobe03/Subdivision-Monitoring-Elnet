@@ -789,7 +789,6 @@ namespace ElnetSubdivi.Controllers
                 new { Title = "Average Satisfaction", Count = 10, Icon = "satisfaction.svg", BorderColor = "border-yellow-400 borber-b-2" }
 
             };
-
             return View(manageReports);
         }
 
@@ -1049,9 +1048,12 @@ namespace ElnetSubdivi.Controllers
                 }
             }
 
+            var userId = User.FindFirst("UserId")?.Value;
+            var currentuser = await _context.Users.FirstOrDefaultAsync(u => u.user_id == userId);
+            model.User = currentuser;
             string newReservationId = $"RES-{nextIdNumber.ToString("D4")}";
             model.ReservationId = newReservationId;
-
+            ModelState.Remove(nameof(model.User));
             ModelState.Remove(nameof(model.ReservationId));
 
             if (ModelState.IsValid)
@@ -1073,7 +1075,7 @@ namespace ElnetSubdivi.Controllers
             }
 
             // If we got this far, something failed
-            return View("FacilityReservation", model);
+            return RedirectToAction("FacilityReservation");
         }
 
 
