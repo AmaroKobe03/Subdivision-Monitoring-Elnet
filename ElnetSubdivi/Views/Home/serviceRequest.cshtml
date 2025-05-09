@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Service Request";
 }
+@model ElnetSubdivi.Models.ServiceRequestManagementViewModel
 <style>
     th{
         align-self: center;
@@ -26,37 +27,41 @@
             <div class="w-[600px] rounded-lg bg-white p-6 shadow-lg">
                 <h1 class="text-center text-xl font-semibold text-[#043137]">Submit New Request</h1>
 
-                <div class="mt-4 space-y-3">
-                    <label class="block font-medium">Request Type</label>
-                    <select class="w-full rounded border px-3 py-2">
-                        <option>Maintenance Request</option>
-                    </select>
+                 <form id="requestForm" enctype="multipart/form-data" class="mt-4 space-y-3">
+                    <div class="mt-4 space-y-3">
+                        <label class="block font-medium">Request Type</label>
+                        <select id="request_type" class="w-full rounded border px-3 py-2">
+                            <option>Maintenance</option>
+                            <option>Housekeeping</option>
+                            <option>Security</option>
+                        </select>
 
-                    <label class="block font-medium">Subject</label>
-                    <input type="text" class="w-full rounded border px-3 py-2" value="Maintenance Request" />
+                        <label class="block font-medium">Subject</label>
+                        <input id="request_subject" type="text" class="w-full rounded border px-3 py-2"/>
 
-                    <div class="flex gap-4">
-                        <div class="w-1/2">
-                            <label class="block font-medium">Date</label>
-                            <input type="date" class="w-full rounded border px-3 py-2" placeholder="mm/dd/yyyy" />
+                        <div class="flex gap-4">
+                            <div class="w-1/2">
+                                <label class="block font-medium">Date</label>
+                                <input id="request_date" type="date" class="w-full rounded border px-3 py-2" placeholder="mm/dd/yyyy" />
+                            </div>
+                            <div class="w-1/2">
+                                <label class="block font-medium">Time</label>
+                                <input id="request_time" type="time" class="w-full rounded border px-3 py-2" placeholder="--:-- --" />
+                            </div>
                         </div>
-                        <div class="w-1/2">
-                            <label class="block font-medium">Time</label>
-                            <input type="time" class="w-full rounded border px-3 py-2" placeholder="--:-- --" />
+
+                        <label class="block font-medium">Description</label>
+                        <textarea id="request_description" class="h-24 w-full rounded border px-3 py-2"></textarea>
+
+                        <label class="block text-sm font-medium">Attachments</label>
+                        <input id="attachment" name="Request_Attachment" type="file" accept="image/*" … />
+
+                        <div class="mt-4 flex justify-between">
+                            <button id="cancelbtn" class="w-[45%] rounded-full border px-4 py-2">Cancel</button>
+                            <button id="requestbtn" class="w-[45%] rounded-full bg-[#043137] px-4 py-2 text-white">Request</button>
                         </div>
                     </div>
-
-                    <label class="block font-medium">Description</label>
-                    <textarea class="h-24 w-full rounded border px-3 py-2">Lights are not working.</textarea>
-
-                    <label class="block text-sm font-medium">Attachments</label>
-                    <button class="w-[20%] rounded-full bg-[#043137] py-2 text-white">Upload</button>
-
-                    <div class="mt-4 flex justify-between">
-                        <button id="cancelbtn" class="w-[45%] rounded-full border px-4 py-2">Cancel</button>
-                        <button class="w-[45%] rounded-full bg-[#043137] px-4 py-2 text-white">Request</button>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
 
@@ -69,168 +74,27 @@
         <thead>
             <tr class="text-left text-[#787676]">
                 <th class="px-4 py-3">ID</th>
-                <th class="px-4 py-3">Request</th>
-                <th class="px-4 py-3">Status</th>
+                <th class="px-4 py-3">Type</th>
                 <th class="px-4 py-3">Submitted</th>
                 <th class="px-4 py-3">Closed</th>
-                <th class="px-4 py-3">Action</th>
+                <th class="px-4 py-3">Assigned</th>
+                <th class="px-4 py-3">Status</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="px-4 py-4">SR0001</td>
-                <td class="px-4 py-4">House Keeping</td>
-                <td class="px-4 py-4 text-yellow-500">Pending</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img id="editIc" src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4 text-blue-500">Ongoing</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4 text-green-500">Completed</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4 text-red-500">Canceled</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4 text-red-500">Canceled</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4 text-red-500">Canceled</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4 text-red-500">Canceled</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4 text-red-500">Canceled</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4 text-red-500">Canceled</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
-                        <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4 text-red-500">Canceled</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4 text-red-500">Canceled</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4 text-red-500">Canceled</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4 text-red-500">Canceled</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4 text-red-500">Canceled</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">---</td>
-                <td class="flex gap-3 px-4 py-4">
-                    <img src="~/Images/editic.svg" alt="Edit" class="w-5 cursor-pointer">
-                    <img src="~/Images/deleteic.svg" alt="Delete" class="w-5 cursor-pointer text-red-500">
-                </td>
-            </tr>
+            @foreach (var request in Model.ServiceRequests)
+            {
+                <tr class="cursor-pointer border-b hover:bg-gray-100" data-request-id="@request.Request_Id">
+                    <td class="px-4 py-3">@request.Request_Id</td>
+                    <td class="px-4 py-3">@request.Request_Type</td>
+                    <td class="px-4 py-3">@request.Request_Date.Date.ToShortDateString()</td>
+                    <td class="px-4 py-3">
+                        @(request.Request_Closed.HasValue ? request.Request_Closed.Value.Date.ToShortDateString() : "N/A")
+                    </td>
+                    <td class="px-4 py-3">@request.Assigned_Staff</td>
+                    <td class="px-4 py-3 font-semibold text-yellow-500">@request.Request_Status</td>
+                </tr>
+            }
         </tbody>
     </table>
 
@@ -243,46 +107,182 @@
     <div class="w-[600px] rounded-lg bg-white p-6 shadow-lg">
         <h1 class="text-center text-xl font-semibold text-[#043137]">Edit Request</h1>
 
-        <div class="mt-4 space-y-3">
-            <label class="block font-medium">Request Type</label>
-            <select class="w-full rounded border px-3 py-2">
-                <option>Maintenance Request</option>
-            </select>
+        <form id="editRequestForm" enctype="multipart/form-data" class="mt-4 space-y-3">
+            <div class="mt-4 space-y-3">
+                <label class="block font-medium">Request Type</label>
+                <select class="w-full rounded border px-3 py-2">
+                    <option>Maintenance</option>
+                    <option>Housekeeping</option>
+                    <option>Security</option>
+                </select>
 
-            <label class="block font-medium">Subject</label>
-            <input type="text" class="w-full rounded border px-3 py-2" value="Maintenance Request" />
+                <label class="block font-medium">Subject</label>
+                <input type="text" class="w-full rounded border px-3 py-2" />
 
-            <div class="flex gap-4">
-                <div class="w-1/2">
-                    <label class="block font-medium">Date</label>
-                    <input type="date" class="w-full rounded border px-3 py-2" placeholder="mm/dd/yyyy" />
+                <div class="flex gap-4">
+                    <div class="w-1/2">
+                        <label class="block font-medium">Date</label>
+                        <input type="date" class="w-full rounded border px-3 py-2" />
+                    </div>
+                    <div class="w-1/2">
+                        <label class="block font-medium">Time</label>
+                        <input type="time" class="w-full rounded border px-3 py-2" />
+                    </div>
                 </div>
-                <div class="w-1/2">
-                    <label class="block font-medium">Time</label>
-                    <input type="time" class="w-full rounded border px-3 py-2" placeholder="--:-- --" />
+
+                <label class="block font-medium">Description</label>
+                <textarea class="h-24 w-full rounded border px-3 py-2"></textarea>
+
+                <label class="block text-sm font-medium">Current Attachment</label>
+                <div id="attachment-container" class="mb-2"></div>
+
+                <label class="block text-sm font-medium">Update Attachment</label>
+                <input type="file" name="Request_Attachment" class="w-full" accept="image/*" />
+
+                <div class="mt-4 flex justify-between">
+                    <button type="button" id="cancelEditBtn" class="w-[45%] rounded-full border px-4 py-2">Cancel</button>
+                    <button type="submit" class="w-[45%] rounded-full bg-[#043137] px-4 py-2 text-white">Save Changes</button>
                 </div>
             </div>
-
-            <label class="block font-medium">Description</label>
-            <textarea class="h-24 w-full rounded border px-3 py-2">Lights are not working.</textarea>
-
-            <label class="block text-sm font-medium">Attachments</label>
-            <button class="w-[20%] rounded-full bg-[#043137] py-2 text-white">Upload</button>
-
-            <div class="mt-4 flex justify-between">
-                <button id="cancelbtn" class="w-[45%] rounded-full border px-4 py-2">Cancel</button>
-                <button class="w-[45%] rounded-full bg-[#043137] px-4 py-2 text-white">Request</button>
-            </div>
-        </div>
+        </form>
     </div>
+</div>
     <script>
-        document.getElementById("editIc").addEventListener("click", function() {
+
+        @{
+            var jsonSerializerOptions = new System.Text.Json.JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase,
+                    WriteIndented = true
+                };
+        }
+            const modelData = {
+            serviceRequests: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ServiceRequests, jsonSerializerOptions))
+            };
+        console.log("Model data loaded:", modelData); // Debugging
+
+        document.getElementById("requestbtn").addEventListener("click", async function (e) {
+            e.preventDefault(); // Prevent default form submission
+
+            // Create FormData object instead of plain JSON
+            const formData = new FormData();
+            formData.append("Request_Type", document.getElementById("request_type").value);
+            formData.append("Request_Subject", document.getElementById("request_subject").value);
+            formData.append("Request_Date", document.getElementById("request_date").value);
+            formData.append("Request_Time", document.getElementById("request_time").value);
+            formData.append("Request_Description", document.getElementById("request_description").value);
+
+            // Get the file input
+            const fileInput = document.getElementById("attachment");
+            if (fileInput.files.length > 0) {
+                formData.append("Request_Attachment", fileInput.files[0]);
+            }
+
+            // Debug: Log FormData contents
+            for (let [key, value] of formData.entries()) {
+                console.log(key, value);
+            }
+
+            try {
+                const response = await fetch("/ServiceRequest/CreateRequest", {
+                    method: "POST",
+                    body: formData // Don't set Content-Type header manually for FormData
+                });
+
+                if (response.ok) {
+                    document.getElementById("request-popup").classList.add("hidden");
+                    // Clear form fields
+                    document.getElementById("requestForm").reset();
+                    // Refresh the page
+                    location.reload();
+                } else {
+                    const error = await response.text();
+                    alert(`Failed to submit request: ${error}`);
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("An error occurred while submitting the request.");
+            }
+        });
+
+        /*
+                    document.getElementById("editIc").addEventListener("click", function() {
             document.getElementById("editReq-popup").classList.remove("hidden");
         });
         document.getElementById("editReq-popup").addEventListener("click", function(event) {
             if (event.target === this) {
                 this.classList.add("hidden");
             }
+        });
+        */
+
+        // Function to open edit modal with request details
+        function openModal(requestId) {
+            console.log("Attempting to open modal for request ID:", requestId);
+
+            // Find the request in your model data
+            const request = modelData.serviceRequests.find(r => r.request_Id === requestId);
+
+            if (!request) {
+                console.error("Request not found for ID:", requestId);
+                console.log("Available requests:", modelData.serviceRequests);
+                return;
+            }
+
+            console.log("Found request:", request);
+
+            // Populate the edit form
+            document.querySelector('#editReq-popup select').value = request.request_Type;
+            document.querySelector('#editReq-popup input[type="text"]').value = request.request_Subject;
+
+            // Format date properly (handle both string and Date objects)
+            document.querySelector('#editReq-popup select').value = request.request_Type;
+            document.querySelector('#editReq-popup input[type="text"]').value = request.request_Subject;
+            const requestDate = new Date(request.request_Date);
+            document.querySelector('#editReq-popup input[type="date"]').value = requestDate.toISOString().split('T')[0];
+            document.querySelector('#editReq-popup input[type="time"]').value = request.request_Time;
+            document.querySelector('#editReq-popup textarea').value = request.request_Description;
+
+            // Display attached photo if exists
+            const attachmentContainer = document.getElementById('attachment-container');
+            attachmentContainer.innerHTML = '';
+
+            if (request.attachment_Path) {
+                const img = document.createElement('img');
+                img.src = `${request.attachment_Path}`;
+                img.className = 'max-w-full h-auto mt-2';
+                img.alt = 'Request attachment';
+                attachmentContainer.appendChild(img);
+            }
+            console.log(request.attachement_Path)
+
+            // Show the modal
+            document.getElementById("editReq-popup").classList.remove("hidden");
+        }
+
+        // Attach click handlers after DOM is loaded
+        document.addEventListener('DOMContentLoaded', function () {
+            // Modify your table rows to include onclick with request ID
+            document.querySelectorAll('tbody tr').forEach(row => {
+                const requestId = row.cells[0].textContent.trim();
+                row.onclick = function (e) {
+                    // Prevent clicking on nested elements from triggering
+                    if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON') return;
+                    openModal(requestId);
+                };
+            });
+
+            // Cancel Edit Button Script
+            document.getElementById("cancelEditBtn").addEventListener("click", function () {
+                document.getElementById("editReq-popup").classList.add("hidden");
+            });
+
+            // Close modal when clicking outside
+            document.getElementById("editReq-popup").addEventListener("click", function (event) {
+                if (event.target === this) {
+                    this.classList.add("hidden");
+                }
+            });
         });
     </script>
 

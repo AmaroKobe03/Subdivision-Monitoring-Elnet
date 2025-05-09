@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@model ElnetSubdivi.Models.PostAndUserViewModel
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -17,24 +18,36 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+
+        #profile-section {
+            text-decoration: none;
+        }
+
+            #profile-section:hover {
+                background-color: transparent !important;
+                color: inherit !important;
+                cursor: default;
+            }
+
+        .no-highlight * {
+            pointer-events: none;
+        }
     </style>
 </head>
-<body class="flex w-[100vw] items-center" >
+<body class="flex w-[100vw] items-center">
 
     <main id="UserFeed" class="flex h-[100vh] w-[100vw] flex-col items-center justify-center gap-10 bg-[#F0F2F6] md:flex-row md:gap-20">
 
-        <section id="feed"
-                 class="mt-10 flex h-[100vh] w-full flex-col items-center gap-4 overflow-y-auto bg-[#F0F2F6] px-4 sm:w-full md:w-[50%]">
+        <section id="feed" class="mt-10 flex h-[100vh] w-full flex-col items-center gap-4 overflow-y-auto bg-[#F0F2F6] px-4 sm:w-full md:w-[50%]">
             <div id="activity" class="mt-5 w-full rounded-lg bg-white p-4 shadow-md">
                 <!-- Profile Picture + Input -->
                 <div id="add" class="flex w-full items-center gap-3 p-2 sm:p-4">
                     <a href="@Url.Action("viewProfile","Home")">
-                        <img src="~/Images/pfp.svg" class="h-8 w-8 rounded-full sm:h-10 sm:w-10" />
+                        <img id="profile-img" src="~/Images/pfp.svg" class="h-8 w-8 rounded-full sm:h-10 sm:w-10" />
                     </a>
-                    <input id="post-input" type="text"
+                    <input id="post-input1" type="text"
                            class="flex-1 rounded-full border p-2 px-4 text-sm text-gray-600 sm:text-base md:text-lg"
                            placeholder="Share Something..." autocomplete="off" />
-
                 </div>
 
                 <!-- Post Options + Button (Aligned in One Row) -->
@@ -46,7 +59,7 @@
                             class="cursor-pointer rounded-full bg-[#043137] px-4 py-1.5 text-xs text-white transition hover:bg-[#065a5e] sm:text-sm">
                         Post
                     </button>
-            
+
                 </div>
             </div>
 
@@ -55,29 +68,51 @@
 
             <div id="post-popup" class="fixed inset-0 z-50 flex hidden items-center justify-center bg-black/50 p-4">
                 <div class="relative w-full max-w-xl rounded-lg bg-white p-6 shadow-lg sm:p-8">
-                   <button class="close absolute top-3 right-3 hidden text-xl text-gray-500 hover:text-gray-700">&times;</button>
+                    <button class="close absolute top-3 right-3 hidden text-xl text-gray-500 hover:text-gray-700">&times;</button>
                     <div id="activity" class="mt-5 flex min-h-[25vh] w-full flex-col gap-4 rounded-lg bg-white">
                         <div id="add" class="flex h-full w-full flex-col gap-3">
                             <div class="flex flex-row items-center gap-4">
-                                <img class="flex self-start" src="~/Images/pfp.svg" />
-                                    <div class="flex flex-col">
-                                        <h2 class="font-semibold text-[16px]">
-                                            Kobe Amaro
-                                        </h2>
-                                        <p class="text-[12px] text-gray-500">
-                                            House No.4
-                                        </p>
-                                    </div>
+                                <img id="profile-img-popup" class="flex self-start h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14" src="~/Images/pfp.svg" />
+                                <div class="flex flex-col">
+                                    <h2 class="font-semibold text-[16px]">
+                                        @User.Identity.Name
+                                    </h2>
+                                    <p class="text-[12px] text-gray-500">
+
+                                    </p>
+                                </div>
                             </div>
-                            <textarea id="post-input" placeholder="What's on your mind?" class="h-[200px] w-full resize-none rounded-lg border-none bg-[#F0F2F6] p-4 text-start outline-none"></textarea>
+                            <form id="postForm" enctype="multipart/form-data">
+                                <!-- Hidden inputs -->
+                                <input type="file" id="photoInput" accept="image/*" class="hidden" />
+                                <input type="file" id="videoInput" accept="video/*" class="hidden" />
+
+                                <textarea id="post-input" placeholder="What's on your mind?" class="h-[200px] w-full resize-none rounded-lg border-none bg-[#F0F2F6] p-4 text-start outline-none"></textarea>
+
+                                <div id="preview-container" class="relative w-full overflow-hidden rounded-lg"></div>
+                            </form>
                         </div>
 
                         <div class="flex h-[40%] w-full flex-row items-center justify-center gap-10">
-                            @await Html.PartialAsync("_sharedPost")
-
+                            <a id="vid" href="#" class="flex items-center gap-2 text-sm">
+                                <img class="w-[20px]" src="~/Images/strokevid.svg" />
+                                Video
+                            </a>
+                            <a id="pho" href="#" class="flex items-center gap-2 text-sm">
+                                <img class="w-[15px]" src="~/Images/strokepho.svg" />
+                                Photo
+                            </a>
+                            <a href="#" class="flex items-center gap-2 text-sm">
+                                <img class="w-[20px]" src="~/Images/strokefeel.svg" />
+                                Feeling/Activity
+                            </a>
+                            <a href="#" class="flex items-center gap-2 text-sm">
+                                <img class="w-[15px]" src="~/Images/strokepool.svg" />
+                                Poll/Survey
+                            </a>
                         </div>
                     </div>
-                    <button class="mt-5 w-full rounded-lg bg-[#043137] py-2 text-lg text-white">
+                    <button id="submitPost" type="submit"class="mt-5 w-full rounded-lg bg-[#043137] py-2 text-lg text-white">
                         POST
                     </button>
                 </div>
@@ -85,75 +120,142 @@
 
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
-
                     const vidBtn = document.getElementById("vid");
                     const phoBtn = document.getElementById("pho");
                     const feelBtn = document.getElementById("feel");
-                    const buttonPost = document.getElementById("anotherPost")
-                    const postInput = document.getElementById("post-input");
+                    const buttonPost = document.getElementById("anotherPost");
+                    const postInput = document.getElementById("post-input1");
                     const popup = document.getElementById("post-popup");
                     const closeBtn = document.querySelector(".close");
 
-        
-                    feelBtn.addEventListener("click", function () {
-                        popup.classList.remove("hidden");
+                    const photoInput = document.getElementById("photoInput");
+                    const videoInput = document.getElementById("videoInput");
+                    const previewContainer = document.getElementById("preview-container");
+
+                    phoBtn.addEventListener("click", function (e) {
+                        e.preventDefault();
+                        photoInput.click();
                     });
-                    phoBtn.addEventListener("click", function () {
+
+                    vidBtn.addEventListener("click", function (e) {
+                        e.preventDefault();
+                        videoInput.click();
+                    });
+
+                    feelBtn?.addEventListener("click", function () {
                         popup.classList.remove("hidden");
                     });
 
-                    vidBtn.addEventListener("click", function () {
-                        popup.classList.remove("hidden");
-                    }); 
-                    buttonPost.addEventListener("click", function () {
+                    buttonPost?.addEventListener("click", function () {
                         popup.classList.remove("hidden");
                     });
 
-                    postInput.addEventListener("click", function () {
+                    postInput?.addEventListener("click", function () {
                         popup.classList.remove("hidden");
                     });
 
                     closeBtn.addEventListener("click", function () {
                         popup.classList.add("hidden");
+                        clearPreview();
                     });
 
                     window.addEventListener("click", function (e) {
                         if (e.target === popup) {
                             popup.classList.add("hidden");
+                            clearPreview();
                         }
                     });
+
+                    // Photo preview + show modal
+                    photoInput.addEventListener("change", function () {
+                        if (photoInput.files && photoInput.files[0]) {
+                            const reader = new FileReader();
+                            reader.onload = function (e) {
+                                previewContainer.innerHTML = `
+                                        <img src="${e.target.result}" class="max-h-[200px] w-full rounded-lg object-cover" />
+                                    `;
+                                popup.classList.remove("hidden"); // Open modal
+                            };
+                            reader.readAsDataURL(photoInput.files[0]);
+                        }
+                    });
+
+                    // Video preview + show modal
+                    videoInput.addEventListener("change", function () {
+                        if (videoInput.files && videoInput.files[0]) {
+                            const url = URL.createObjectURL(videoInput.files[0]);
+                            previewContainer.innerHTML = `
+                                    <video controls class="max-h-[250px] w-full rounded-lg">
+                                        <source src="${url}" type="${videoInput.files[0].type}" />
+                                        Your browser does not support the video tag.
+                                    </video>
+                                `;
+                            popup.classList.remove("hidden"); // Open modal
+                        }
+                    });
+
+                    function clearPreview() {
+                        previewContainer.innerHTML = "";
+                        photoInput.value = "";
+                        videoInput.value = "";
+                    }
                 });
             </script>
-            <div id="contfeed" class="min-h-[90vh] w-full rounded-lg bg-white p-5">
-                <!-- Admin Header -->
-                <div id="fyp" class="flex flex-row items-center gap-2 p-5 sm:w-full md:w-[50%] lg:w-[30%]">
-                    <div>
-                        <img src="~/Images/admin.svg" alt="Admin" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14">
-                    </div>
-                    <div class="flex flex-col">
-                        <h1 class="m-0 p-0 text-sm font-semibold sm:text-base md:text-lg">Admin</h1>
-                        <p class="m-0 p-0 text-xs text-gray-600 sm:text-sm md:text-base">Posted 2 hours ago</p>
-                    </div>
-                </div>
 
-                <!-- Post Content -->
-                <div>
-                    <p class="p-5 text-sm sm:text-base md:text-lg">Tree planting werty uiopa szbn rtyua dfghlz bnm...</p>
-                </div>
 
-                <!-- Image and Actions -->
-                <div class="flex flex-col">
-                    <img class="max-h-[300px] w-full rounded-lg object-cover sm:max-h-[350px] md:max-h-[400px]" src="~/Images/tree.png" alt="Tree Planting">
-                    <div class="m-10 flex flex-row gap-6 sm:justify-start">
-                        <a class="flex cursor-pointer items-center gap-2 text-sm text-gray-700 transition hover:text-blue-600 sm:text-base md:text-lg">
-                            <i class="fa-regular fa-thumbs-up"></i> Like
+
+            <div id="contfeed" class="min-h-[90vh] w-full">
+                @foreach (var post in Model.Posts)
+                {
+                    var user = Model.Users.FirstOrDefault(u => u.user_id == post.user_id);
+                    var profileImage = $"data:image/jpeg;base64,{Convert.ToBase64String(user.profile_picture)}";
+
+                    <!-- Each post is now its own card -->
+                    <div class="mb-8 w-full rounded-lg bg-white p-5 shadow-md">
+                        <!-- Admin Header -->
+                        <a href="@Url.Action("viewSpecificProfile", "Home", new { user_id = user.user_id })" id="profile-section" class="flex flex-row items-center gap-2 no-highlight">
+                            <div id="profile-section" class="flex flex-row items-center gap-2 cursor-pointer hover:bg-gray-100 p-2 rounded-md transition">
+                                <div>
+                                    <img src="@profileImage" alt="User" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14">
+                                </div>
+                                <div class="flex flex-col">
+                                    <h1 class="m-0 p-0 text-sm font-semibold sm:text-base md:text-lg">
+                                        @($"{user.first_name} {user.last_name}")
+                                    </h1>
+                                    <p class="m-0 p-0 text-xs text-gray-600 sm:text-sm md:text-base">
+                                        Posted @post.post_date.ToString("MMM dd, yyyy hh:mm tt")
+                                    </p>
+                                </div>
+                            </div>
                         </a>
-                        <a class="flex cursor-pointer items-center gap-2 text-sm text-gray-700 transition hover:text-blue-600 sm:text-base md:text-lg">
-                            <i class="fa-regular fa-comment"></i> Comment
-                        </a>
+
+
+                        <!-- Post Content -->
+                        <div class="mt-4">
+                            <p class="text-sm sm:text-base md:text-lg">@post.post_text</p>
+                        </div>
+
+                        <!-- Image and Actions -->
+                        <div class="mt-4 flex flex-col">
+                            @if (!string.IsNullOrEmpty(post.post_media))
+                            {
+                                <img class="max-h-[300px] w-full rounded-lg object-cover sm:max-h-[350px] md:max-h-[400px]"
+                                     src="@Url.Content(post.post_media)" alt="Post Media" />
+                            }
+
+                            <div class="mt-4 flex flex-row gap-6 sm:justify-start">
+                                <a class="flex cursor-pointer items-center gap-2 text-sm text-gray-700 transition hover:text-blue-600 sm:text-base md:text-lg">
+                                    <i class="fa-regular fa-thumbs-up"></i> Like
+                                </a>
+                                <a class="flex cursor-pointer items-center gap-2 text-sm text-gray-700 transition hover:text-blue-600 sm:text-base md:text-lg">
+                                    <i class="fa-regular fa-comment"></i> Comment
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                }
             </div>
+
 
         </section>
 
@@ -197,10 +299,32 @@
                 </div>
             </div>
         </section>
-
     </main>
 
+    @{
+        var userId = User.FindFirst("UserId")?.Value;
+
+        var jsonSerializerOptions = new System.Text.Json.JsonSerializerOptions
+            {
+                PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase,
+                WriteIndented = true
+            };
+
+        var usersJson = System.Text.Json.JsonSerializer.Serialize(Model.Users, jsonSerializerOptions);
+    }
     <script>
+            document.addEventListener('DOMContentLoaded', function () {
+            const userModelData = {
+                Users: @Html.Raw(usersJson)
+            };
+
+            const currentUserId = "@userId"; // Razor injects the userId as a JS string
+            console.log(currentUserId);
+            const user = userModelData.Users.find(u => u.user_id === currentUserId);
+            document.getElementById('profile-img').src = `data:image/jpeg;base64,${user.profile_picture}`;
+            document.getElementById('profile-img-popup').src = `data:image/jpeg;base64,${user.profile_picture}`;
+        });
+
         document.addEventListener("DOMContentLoaded", function () {
             const calendarContainer = document.getElementById("calendar");
             const currentDate = new Date();
@@ -291,6 +415,46 @@
             window.addEventListener("resize", checkWindowSize);
             checkWindowSize();
         });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const submitPostBtn = document.getElementById("submitPost");
+
+            submitPostBtn.addEventListener("click", async function () {
+                const formData = new FormData();
+
+                // Add text
+                const postText = document.getElementById("post-input").value;
+                formData.append("postText", postText);
+
+                // Add media (only one at a time)
+                const imageFile = document.getElementById("photoInput").files[0];
+                const videoFile = document.getElementById("videoInput").files[0];
+
+                if (imageFile) {
+                    formData.append("mediaFile", imageFile);
+                } else if (videoFile) {
+                    formData.append("mediaFile", videoFile);
+                }
+
+                try {
+                    const response = await fetch('/Post/CreatePost', {
+                        method: 'POST',
+                        body: formData // no need to set Content-Type; browser handles it
+                    });
+
+                    if (response.ok) {
+                        alert("Post created!");
+                        location.reload(); // You can also close the modal and refresh posts dynamically
+                    } else {
+                        alert("Error creating post");
+                    }
+                } catch (error) {
+                    console.error("Upload failed:", error);
+                    alert("Upload failed");
+                }
+            });
+        });
+
 
     </script>
 </body>

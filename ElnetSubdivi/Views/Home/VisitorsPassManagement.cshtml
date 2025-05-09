@@ -1,13 +1,16 @@
-﻿@{
+﻿@model ElnetSubdivi.Models.VIsitorListViewModel
+@{
     ViewData["Title"] = "Visitors Pass Management";
+    var visitors = Model.VisitorList;
+    var users = Model.Users;
 }
-@model IEnumerable<dynamic>
 
 <div class="flex h-[100vh] w-[90%] flex-col items-center overflow-auto overflow-y-hidden bg-[#f2f2f2] font-semibold">
     @await Html.PartialAsync("_sharedSearch")
 
     <div class="flex h-[15vh] w-[88%] items-center justify-center">
         <div class="flex h-[15vh] w-full items-center justify-center gap-6">
+            @*
             @foreach (var item in Model)
             {
                 <div class="flex h-[15vh] w-[25%] items-center justify-around rounded-lg border-b-[3px] bg-white @item.BorderColor shadow-lg">
@@ -18,6 +21,7 @@
                     <img class="w-[30px]" src="~/Images/@item.Icon" alt="status-icon" />
                 </div>
             }
+            *@
         </div>
     </div>
 
@@ -73,26 +77,39 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="">
-                <td class="px-4 py-3">Mark Tol</td>
-                <td class="px-4 py-3">Kobe Amaro</td>
-                <td class="px-4 py-3">March 2025</td>
-                <td class="px-4 py-3">7:00 AM</td>
-                <td class="px-4 py-3">ABCD</td>
-                <td class="px-4 py-3 font-semibold text-green-500">....</td>
-                <td class="cursor-pointer px-4 py-3 font-semibold text-teal-700">
-                    <button class="Vactions-btn">⋮</button>
-
-                    <div class="Vactions-menu absolute right-40 hidden w-40 bg-white shadow-md">
-                        <ul>
-                            <li id="viewVisitbtn" class="cursor-pointer px-4 py-2 hover:bg-gray-100">View Details</li>
-                            <li class="cursor-pointer px-4 py-2 hover:bg-gray-100">Approve</li>
-                            <li class="cursor-not-allowed px-4 py-2 text-red-400">Decline</li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
+            @foreach (var visitor in visitors)
+            {
+                <tr>
+                    <td class="px-4 py-3">@visitor.first_name @visitor.last_name</td>
+                    <td class="px-4 py-3">Kobe Amaro</td>
+                    <td class="px-4 py-3">@visitor.visit_date.ToString("MMMM dd, yyyy")</td>
+                    <td class="px-4 py-3">@visitor.visit_time.ToString(@"hh\:mm")</td>
+                    <td class="px-4 py-3">@visitor.vehicle_plate</td>
+                    <td class="px-4 py-3 font-semibold @(visitor.visit_status == "Approved" ? "text-green-500" : visitor.visit_status == "Pending" ? "text-yellow-500" : "text-red-500")">@visitor.visit_status</td>
+                    <td class="cursor-pointer px-4 py-3 font-semibold text-teal-700 relative">
+                        <button class="Vactions-btn">⋮</button>
+                        <div class="Vactions-menu absolute right-0 z-10 hidden w-40 bg-white shadow-md">
+                            <ul>
+                                <li class="cursor-pointer px-4 py-2 hover:bg-gray-100 viewVisitbtn"
+                                    data-id="@visitor.visitor_id"
+                                    data-firstname="@visitor.first_name"
+                                    data-lastname="@visitor.last_name"
+                                    data-homeowner="Kobe Amaro"
+                                    data-phone="@visitor.phone_number"
+                                    data-date="@visitor.visit_date.ToString("yyyy-MM-dd")"
+                                    data-time="@visitor.visit_time.ToString(@"hh\:mm")"
+                                    data-plate="@visitor.vehicle_plate"
+                                    data-reason="@visitor.visit_reason">View Details
+                                </li>
+                                <li class="approve-btn dropdown-item cursor-pointer px-4 py-2 hover:bg-gray-100" data-id="@visitor.visitor_id">Approve</li>
+                                <li class="decline-btn dropdown-item cursor-pointer px-4 py-2 text-red-500 hover:bg-gray-100" data-id="@visitor.visitor_id">Decline</li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            }
         </tbody>
+
     </table>
     <!-- Modal (Hidden by default) -->
     <div id="Vmodal" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50" onclick="closeModal(event)">
@@ -106,50 +123,51 @@
             <div class="mt-4 flex gap-4">
                 <div class="w-1/2">
                     <label class="text-gray-600">First Name</label>
-                    <input type="text" value="Mark" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+                    <input id="modalFirstName" type="text" value="Mark" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
                 </div>
                 <div class="w-1/2">
                     <label class="text-gray-600">Last Name</label>
-                    <input type="text" value="Tol" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+                    <input id="modalLastName" type="text" value="Tol" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
                 </div>
             </div>
 
             <!-- Homeowner -->
             <label class="mt-4 block text-gray-600">Homeowner</label>
-            <input type="text" value="Kobe Amaro" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+            <input id="modalHomeowner" type="text" value="Kobe Amaro" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
 
             <!-- Phone Number -->
             <label class="mt-4 block text-gray-600">Phone Number</label>
-            <input type="text" value="0123456789" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+            <input id="modalPhone" type="text" value="0123456789" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
 
             <!-- Date and Time -->
             <div class="mt-4 flex gap-4">
                 <div class="relative w-1/2">
                     <label class="text-gray-600">Visit Date</label>
                     <div class="relative">
-                        <input type="date" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" value="2025-03-15" />
+                        <input id="modalDate" type="date" class="border-2 w-full rounded-md border-gray-300 bg-white p-2 text-gray-500" value="2025-03-15" />
                     </div>
                 </div>
                 <div class="relative w-1/2">
                     <label class="text-gray-600">Visit Time</label>
                     <div class="relative">
-                        <input type="time" id="visitTime" class="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-400" />
+                        <input id="modalTime" type="time" id="visitTime" class="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-400" />
                     </div>
                 </div>
             </div>
 
             <!-- Vehicle Plate -->
             <label class="mt-4 block text-gray-600">Vehicle Plate (Optional)</label>
-            <input type="text" value="ABC 123" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+            <input id="modalPlate" type="text" value="ABC 123" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
 
             <!-- Reason for Visit -->
             <label class="mt-4 block text-gray-600">Reason for Visit</label>
-            <input type="text" value="Visiting a friend" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+            <input id="modalReason" type="text" value="Visiting a friend" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
 
             <!-- Buttons -->
+            <!-- Buttons -->
             <div class="mt-6 flex gap-4">
-                <button class="w-1/2 rounded-full border border-[#B25828] py-2 font-bold text-[#B25828] transition hover:bg-[#B25828] hover:text-white">Decline</button>
-                <button class="w-1/2 rounded-full bg-[#003D38] py-2 font-bold text-white transition hover:bg-[#002C2A]">Approve</button>
+                <button id="modalDeclineBtn" data-id="" class="w-1/2 rounded-full border border-[#B25828] py-2 font-bold text-[#B25828] transition hover:bg-[#B25828] hover:text-white">Decline</button>
+                <button id="modalApproveBtn" data-id="" class="w-1/2 rounded-full bg-[#003D38] py-2 font-bold text-white transition hover:bg-[#002C2A]">Approve</button>
             </div>
         </div>
     </div>
@@ -163,16 +181,35 @@
     </div>
 
     <script>
-            document.getElementById("viewVisitbtn").addEventListener("click", function () {
-                document.getElementById("Vmodal").classList.remove("hidden");
-            });
+                document.querySelectorAll(".viewVisitbtn").forEach(btn => {
+            btn.addEventListener("click", function () {
+                console.log("clicked");
 
-            document.getElementById("Vmodal").addEventListener("click", function (event) {
-                if (!event.target.closest(".modal-content")) {
-                    this.classList.add("hidden");
-                }zx
+                // Show modal
+                document.getElementById("Vmodal").classList.remove("hidden");
+
+                // Fill modal fields
+                document.getElementById("modalFirstName").value = this.dataset.firstname;
+                document.getElementById("modalLastName").value = this.dataset.lastname;
+                document.getElementById("modalHomeowner").value = this.dataset.homeowner;
+                document.getElementById("modalPhone").value = this.dataset.phone || '';
+                document.getElementById("modalDate").value = this.dataset.date;
+                document.getElementById("modalTime").value = this.dataset.time;
+                document.getElementById("modalPlate").value = this.dataset.plate;
+                document.getElementById("modalReason").value = this.dataset.reason;
+                document.getElementById("modalApproveBtn").setAttribute("data-id", this.dataset.id);
+                document.getElementById("modalDeclineBtn").setAttribute("data-id", this.dataset.id);
             });
+        });
+
+
+        function closeModal(event) {
+            if (event.target.id === "Vmodal" || event.target.closest("#Vmodal") === null) {
+                document.getElementById("Vmodal").classList.add("hidden");
+            }
+        }
     </script>
+
 
 
     <script>
@@ -195,31 +232,6 @@
             });
         });
     </script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const openModal = document.getElementById("openModal");
-            const closeModal = document.getElementById("closeModal");
-            const modal = document.getElementById("invoiceModal");
-            const modalContent = document.getElementById("modalContent");
-
-            openModal.addEventListener("click", function () {
-                modal.classList.remove("hidden");
-            });
-
-            closeModal.addEventListener("click", function () {
-                modal.classList.add("hidden");
-            });
-
-            // Close modal when clicking outside modal content
-            modal.addEventListener("click", function (event) {
-                if (!modalContent.contains(event.target)) {
-                    modal.classList.add("hidden");
-                }
-            });
-        });
-    </script>
-
 
     <script>
         document.querySelectorAll("#sortV a").forEach((btn) => {
@@ -245,4 +257,84 @@
         });
 
     </script>
+
+    <script>
+        document.getElementById("modalApproveBtn").addEventListener("click", function () {
+            const id = this.getAttribute("data-id");
+            updateVisitorStatus(id, "Approved");
+        });
+
+        document.getElementById("modalDeclineBtn").addEventListener("click", function () {
+            const id = this.getAttribute("data-id");
+            updateVisitorStatus(id, "Declined");
+        });
+
+        function updateVisitorStatus(visitorId, status) {
+            fetch(`/Home/UpdateStatus`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    visitorId: visitorId,
+                    status: status
+                })
+            })
+            .then(res => {
+                if (res.ok) {
+                    location.reload(); // or update the DOM directly
+                } else {
+                    alert("Failed to update status.");
+                }
+            });
+        }
+    </script>
+
+        <script>
+            // When DOM is ready, attach handlers to each Approve/Decline button
+            document.addEventListener('DOMContentLoaded', function() {
+              // Helper to send status update
+              function sendStatusUpdate(button, newStatus) {
+                const li = button.closest('li');
+                const visitorId = li.dataset.id;  // get data-id from parent <li>
+                fetch('/Home/UpdateStatus', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    // ASP.NET Core anti-forgery token, if your action requires it
+                  },
+                  body: JSON.stringify({ id: visitorId, newStatus: newStatus })
+                })
+                .then(response => {
+                  if (response.ok) {
+                    // Mark button as done
+                    button.disabled = true;
+                    button.textContent = (newStatus === 'Approved' ? 'Approved' : 'Declined');
+                  } else {
+                    console.error('Update failed for visitor', visitorId);
+                  }
+                })
+                .catch(error => console.error('Error:', error));
+              }
+
+                      document.querySelectorAll('.approve-btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                const visitorId = this.getAttribute('data-id');
+                updateVisitorStatus(visitorId, 'Approved');
+            });
+        });
+        document.querySelectorAll('.decline-btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                const visitorId = this.getAttribute('data-id');
+                updateVisitorStatus(visitorId, 'Declined');
+            });
+        });
+
+            });
+        </script>
+
+
 </div>

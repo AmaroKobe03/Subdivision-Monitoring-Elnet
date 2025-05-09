@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Maintenance Service Request";
 }
+@model ElnetSubdivi.Models.ServiceRequestManagementViewModel
 <style>
     th {
         align-self: center;
@@ -47,51 +48,49 @@
                         <div class="w-1/2">
                             <label class="block font-medium">Homeowner</label>
                             <div class="relative">
-                                <input type="text" class="w-full rounded border py-2 pl-12" value="Kobe Amaro" />
-                                <img src="~/Images/pfp.svg" alt="Kobe Amaro" class="absolute top-1/2 left-2 h-8 w-8 -translate-y-1/2 transform rounded-full" />
+                                <input id="user-name" type="text" class="w-full rounded border py-2 pl-12" value="Kobe Amaro" />
+                                <img id="user-img" src="~/Images/pfp.svg" alt="Kobe Amaro" class="absolute top-1/2 left-2 h-8 w-8 -translate-y-1/2 transform rounded-full" />
                             </div>
                         </div>
                         <div class="w-1/2">
                             <label class="block font-medium">House number</label>
-                            <input type="text" class="w-full rounded border px-3 py-2" value="House Number 4 Block C" />
+                            <input id="user-add" type="text" class="w-full rounded border px-3 py-2" value="House Number 4 Block C" />
                         </div>
                     </div>
 
                     <label class="block font-medium">Request Type</label>
-                    <select class="w-full rounded border px-3 py-2">
-                        <option>Repair</option>
-                    </select>
+                    <input type="text" id="edit-type" class="w-full rounded border px-3 py-2" value="Repair">
 
                     <label class="block font-medium">Subject</label>
-                    <input type="text" class="w-full rounded border px-3 py-2" value="Flickering Lights" />
+                    <input id="edit-subject" type="text" class="w-full rounded border px-3 py-2" value="Flickering Lights" />
 
                     <div class="flex gap-4">
                         <div class="w-1/2">
                             <label class="block font-medium">Date</label>
-                            <input type="date" class="w-full rounded border px-3 py-2" value="2024-03-15" />
+                            <input id="edit-date" type="date" class="w-full rounded border px-3 py-2" value="2024-03-15" />
                         </div>
                         <div class="w-1/2">
                             <label class="block font-medium">Time</label>
-                            <input type="time" class="w-full rounded border px-3 py-2" value="7:00 AM - 7:00 PM" />
+                            <input id="edit-time" type="time" class="w-full rounded border px-3 py-2" value="7:00 AM - 7:00 PM" />
                         </div>
                     </div>
 
                     <label class="block font-medium">Description</label>
-                    <textarea class="h-24 w-full rounded border px-3 py-2">Lights are not working.</textarea>
+                    <textarea id="edit-description" class="h-24 w-full rounded border px-3 py-2">Lights are not working.</textarea>
 
                     <label class="block text-sm font-medium">Attachments</label>
                     <div class="flex">
-                        <img src="path/to/attachment_image.jpg" alt="Attachment" class="h-24 w-24 rounded border">
+                        <img id="attachment-container" src="path/to/attachment_image.jpg" alt="Attachment"
+                             class="max-h-64 max-w-full rounded border object-contain" />
                     </div>
 
                     <div class="mt-4 flex justify-between">
                         <button id="cancelbtn" class="w-[45%] rounded-full border px-4 py-2">Back</button>
-                        <button class="w-[45%] rounded-full bg-[#043137] px-4 py-2 text-white">Start</button>
+                        <button id="start-btn" class="w-[45%] rounded-full bg-[#043137] px-4 py-2 text-white">Start</button>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 
 
@@ -101,103 +100,196 @@
             <tr class="text-left text-[#787676]">
                 <th class="px-4 py-3">ID</th>
                 <th class="px-4 py-3">User</th>
-                <th class="px-4 py-3">Request</th>
-                <th class="px-4 py-3">Preferred Date</th>
+                <th class="px-4 py-3">Type</th>
+                <th class="px-4 py-3">Date</th>
                 <th class="px-4 py-3">Request Submitted</th>
                 <th class="px-4 py-3">Request Closed</th>
                 <th class="px-4 py-3">Status</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="flex items-center gap-2 px-4 py-4">
-                    <img src="~/Images/pfp.svg" alt="User Avatar" class="h-8 w-8 rounded-full">
-                    <span>Kobe Amaro</span>
-                </td>
-                <td class="px-4 py-4">Plumbing</td>
-                <td class="px-4 py-4">March 05, 2025</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">March 05, 2025</td>
-                <td class="px-4 py-4 text-yellow-500">Pending</td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="flex items-center gap-2 px-4 py-4">
-                    <img src="~/Images/pfp.svg" alt="User Avatar" class="h-8 w-8 rounded-full">
-                    <span>Kobe Amaro</span>
-                </td>
-                <td class="px-4 py-4">Electrical</td>
-                <td class="px-4 py-4">March 05, 2025</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">March 05, 2025</td>
-                <td class="px-4 py-4 text-blue-500">Ongoing</td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="flex items-center gap-2 px-4 py-4">
-                    <img src="~/Images/pfp.svg" alt="User Avatar" class="h-8 w-8 rounded-full">
-                    <span>Kobe Amaro</span>
-                </td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4">March 05, 2025</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">March 05, 2025</td>
-                <td class="px-4 py-4 text-green-500">Completed</td>
-            </tr>
-            <tr>
-                <td class="px-4 py-4">SR0002</td>
-                <td class="flex items-center gap-2 px-4 py-4">
-                    <img src="~/Images/pfp.svg" alt="User Avatar" class="h-8 w-8 rounded-full">
-                    <span>Kobe Amaro</span>
-                </td>
-                <td class="px-4 py-4">Pest Control</td>
-                <td class="px-4 py-4">March 05, 2025</td>
-                <td class="px-4 py-4">March 03, 2025</td>
-                <td class="px-4 py-4">March 05, 2025</td>
-                <td class="px-4 py-4 text-red-500">Cancelled</td>
-            </tr>
+            @foreach (var request in Model.ServiceRequests)
+            {
+                var user = Model.Users.FirstOrDefault(u => u.user_id == request.User_Id);
+                var fullName = user != null ? $"{user.first_name} {user.last_name}" : "Unknown";
+                var profileImage = $"data:image/jpeg;base64,{Convert.ToBase64String(user.profile_picture)}";
+
+                <tr class="cursor-pointer border-b hover:bg-gray-100" data-request-id="@request.Request_Id">
+                    <td>@request.Request_Id</td>
+                    <td class="flex items-center gap-3 px-4 py-3">
+                        <img id="user-img-@request.Request_Id" src="@profileImage" class="h-8 w-8 rounded-full" />
+                        <span id="user-name-@request.Request_Id">@fullName</span>
+                    </td>
+                    <td class="px-4 py-3">@request.Request_Type</td>
+                    <td class="px-4 py-3">@request.Request_Date.Date.ToShortDateString()</td>
+                    <td class="px-4 py-3">@request.Request_Creation.Date.ToShortDateString()</td>
+                    <td class="px-4 py-3">
+                        @(request.Request_Closed.HasValue ? request.Request_Closed.Value.Date.ToShortDateString() : "N/A")
+                    </td>
+                    <td class="px-4 py-3 font-semibold
+                        @(request.Request_Status == "Pending" ? "text-yellow-500" :
+                          request.Request_Status == "On Going" ? "text-blue-500" :
+                          (request.Request_Status == "Complete" || request.Request_Status == "Approved") ? "text-green-500" :
+                          (request.Request_Status == "Declined" || request.Request_Status == "Cancelled") ? "text-red-500" :
+                          "text-gray-500")">
+                        @request.Request_Status
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 
     @await Html.PartialAsync("_pagination")
 
-    
+
     <script>
-        document.getElementById("editIc").addEventListener("click", function() {
-            document.getElementById("editReq-popup").classList.remove("hidden");
+        @{
+            var jsonSerializerOptions = new System.Text.Json.JsonSerializerOptions
+            {
+                PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase,
+                WriteIndented = true
+            };
+        }
+
+        let currentRequestId = null;
+
+        const modelData = {
+        serviceRequests: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ServiceRequests, jsonSerializerOptions))
+        };
+        console.log("Model data loaded:", modelData); // Debugging
+        console.log("Service Requests:", modelData.serviceRequests); // Debugging
+
+        const userModelData = {
+        Users: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Users, jsonSerializerOptions))
+        };
+        console.log("Model data loaded:", userModelData); // Debugging
+        console.log("Users:", userModelData.Users); // Debugging
+
+        // Function to open the Edit-modal
+        function openModal(requestId) {
+            currentRequestId = requestId;
+            const request = modelData.serviceRequests.find(r => r.request_Id === requestId);
+            const user = userModelData.Users.find(u => u.user_id === request.user_Id);
+
+            if (!request || !user) {
+                console.error("Request or user not found");
+                return;
+            }
+
+            document.getElementById('user-name').value = `${user.first_name} ${user.last_name}`;
+            console.log(user.address);
+            document.getElementById('user-add').value = user.address;
+            document.getElementById('user-img').src = user.profile_picture
+                ? `data:image/jpeg;base64,${user.profile_picture}`
+                : "/Images/pfp.svg";
+
+            document.getElementById('edit-type').value = request.request_Type;
+            document.getElementById('edit-subject').value = request.request_Subject;
+            document.getElementById('edit-date').value = new Date(request.request_Date).toISOString().split('T')[0];
+
+            // Fix for valid <input type="time">
+            if (request.request_Time && /^\d{2}:\d{2}$/.test(request.request_Time)) {
+                document.getElementById('edit-time').value = request.request_Time;
+            } else {
+                document.getElementById('edit-time').value = "07:00";
+            }
+
+            document.getElementById('edit-description').value = request.request_Description || "";
+
+            const imgEl = document.getElementById("attachment-container");
+            imgEl.src = request.attachment_Path || "/Images/default-attachment.png";  // Add fallback if needed
+
+            console.log(request.request_Status);
+                    const startButton = document.getElementById('start-btn');
+
+            if (request.request_Status === "On Going") {
+                startButton.textContent = "Complete";
+                startButton.dataset.action = "complete";
+            } else if (request.request_Status === "Complete") {
+                startButton.textContent = "Done";
+                startButton.dataset.action = "done"; // or disable the button
+            } else {
+                startButton.textContent = "Start";
+                startButton.dataset.action = "start";
+            }
+
+
+            document.getElementById('request-popup').classList.remove('hidden');
+        }
+
+        document.getElementById('cancelbtn').addEventListener('click', () => {
+            document.getElementById('request-popup').classList.add('hidden');
         });
-        document.getElementById("editReq-popup").addEventListener("click", function(event) {
-            if (event.target === this) {
-                this.classList.add("hidden");
+
+        document.getElementById('request-popup').addEventListener('click', (event) => {
+            if (event.target.id === "request-popup") {
+                event.target.classList.add('hidden');
             }
         });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const rows = document.querySelectorAll("tbody tr"); // Select all table rows
-            const popup = document.getElementById("request-popup");
-            const cancelBtn = document.getElementById("cancelbtn");
 
-            // Show pop-up when a row is clicked
-            rows.forEach(row => {
-                row.addEventListener("click", () => {
-                    popup.classList.remove("hidden"); // Show the pop-up
-                });
-            });
 
-            // Hide pop-up when cancel button is clicked
-            cancelBtn.addEventListener("click", () => {
-                popup.classList.add("hidden"); // Hide the pop-up
-            });
+        function closeModal(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal || event.type === 'click') {
+                modal.classList.add('hidden');
+            }
+        }
 
-            // Close popup when clicking outside the modal content
-            popup.addEventListener("click", (event) => {
-                if (event.target === popup) {
-                    popup.classList.add("hidden");
-                }
+        document.addEventListener('DOMContentLoaded', function () {
+            // Modify your table rows to include onclick with request ID
+            document.querySelectorAll('tbody tr').forEach(row => {
+                const requestId = row.cells[0].textContent.trim();
+                row.onclick = function (e) {
+                    // Prevent clicking on nested elements from triggering
+                    if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON') return;
+                    openModal(requestId);
+                };
             });
         });
     </script>
+   <script>
+        document.getElementById('start-btn').addEventListener('click', function () {
+            const request = modelData.serviceRequests.find(r => r.request_Id === currentRequestId);
+            const action = this.dataset.action;
+
+            let newStatus = "On Going";
+            if (action === "complete") {
+                newStatus = "Complete";
+            } else if (action === "done") {
+                location.reload();
+            }
+
+            const updatedRequest = {
+                requestId: request.request_Id,
+                requestType: request.request_Type,
+                requestDate: request.request_Date,
+                requestTime: request.request_Time,
+                assignedStaff: request.assigned_Staff,
+                requestStatus: newStatus
+            };
+
+            fetch('/ServiceRequest/UpdateRequest', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedRequest)
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Network error');
+                return response.json();
+            })
+            .then(data => {
+                alert("Request status updated successfully.");
+                location.reload();
+            })
+            .catch(error => {
+                console.error("Error updating request status:", error);
+                alert("Failed to update request status.");
+            });
+        });
+
+    
+   </script>
 
 </div>

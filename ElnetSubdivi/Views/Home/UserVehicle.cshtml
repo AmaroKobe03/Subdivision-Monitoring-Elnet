@@ -1,5 +1,9 @@
-﻿@{
+﻿@model ElnetSubdivi.Models.VehicleViewModel
+@{
     ViewData["Title"] = "Vehicle Management";
+    var vehicles = Model.Vehicle;
+    var user = Model.User;
+    var users = Model.Users;
 }
 
 <div class="flex h-[100vh] w-[90%] flex-col items-center overflow-auto overflow-y-hidden bg-[#f2f2f2] font-semibold">
@@ -30,240 +34,294 @@
     <table class="w-[88%] border-collapse bg-white text-left">
         <thead>
             <tr class="text-gray-500">
-                <th class="px-4 py-3">Visitor </th>
+                <th class="px-4 py-3">Type</th>
+                <th class="px-4 py-3">Plate Number </th>
                 <th class="px-4 py-3">Brand</th>
                 <th class="px-4 py-3">Model</th>
                 <th class="px-4 py-3">Color</th>
-                <th class="px-4 py-3">Plate Number</th>
-                <th class="px-4 py-3">Owner</th>
-                <th class="px-4 py-3">Relationship</th>
                 <th class="px-4 py-3">Status</th>
                 <th class="px-4 py-3">Actions</th>
             </tr>
         </thead>
         <tbody>
-            <tr class="">
-                <td class="px-4 py-3"><img src="~/Images/car.svg" alt="Car" /></td>
-                <td class="px-4 py-3">Toyota</td>
-                <td class="px-4 py-3">Camry</td>
-                <td class="px-4 py-3">Black</td>
-                <td class="px-4 py-3">ABC 123</td>
-                <td class="px-4 py-3">John Dwayne</td>
-                <td class="px-4 py-3">Self</td>
-                <td class="px-4 py-3 text-orange-400">Pending</td>
-                <td class="cursor-pointer px-4 py-3 font-semibold text-teal-700">
-                    <button class="Vactions-btn">⋮</button>
-                    <div class="Vactions-menu absolute right-40 hidden w-40 bg-white shadow-md">
-                        <ul>
-                            <li id="viewVehiclebtn" class="cursor-pointer px-4 py-2 hover:bg-gray-100">View Details</li>
-                            <li class="cursor-pointer px-4 py-2 hover:bg-gray-100">Approve</li>
-                            <li class="cursor-not-allowed px-4 py-2 text-red-400">Decline</li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-            <tr class="">
-                <td class="px-4 py-3"><img src="~/Images/motor.svg" alt="Motor" /></td>
-                <td class="px-4 py-3">Toyota</td>
-                <td class="px-4 py-3">Camry</td>
-                <td class="px-4 py-3">Black</td>
-                <td class="px-4 py-3">ABC 123</td>
-                <td class="px-4 py-3">John Dwayne</td>
-                <td class="px-4 py-3">Self</td>
-                <td class="px-4 py-3 text-orange-400">Pending</td>
-                <td class="cursor-pointer px-4 py-3 font-semibold text-teal-700">
-                    <button class="Vactions-btn">⋮</button>
-                    <div class="Vactions-menu absolute right-40 hidden w-40 bg-white shadow-md">
-                        <ul>
-                            <li id="viewVehiclebtn" class="cursor-pointer px-4 py-2 hover:bg-gray-100">View Details</li>
-                            <li class="cursor-pointer px-4 py-2 hover:bg-gray-100">Approve</li>
-                            <li class="cursor-not-allowed px-4 py-2 text-red-400">Decline</li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
+            @foreach (var v in Model.Vehicle)
+            {
+                var owner = Model.Users.FirstOrDefault(u => u.user_id == v.user_id);
+                string base64Doc = v.vehicle_document != null ? Convert.ToBase64String(v.vehicle_document) : "";
+                string mimeType = "image/jpeg"; // You can set this to a default, or infer from elsewhere if available
+                string dataUrl = $"data:{mimeType};base64,{base64Doc}";
+
+                <tr>
+                    <td class="px-4 py-3">
+                        <img src="~/Images/@(v.vehicle_type.ToLower().Contains("motor") ? "motor.svg" : "car.svg")" alt="Vehicle" />
+                    </td>
+                    <td class="px-4 py-3">@v.plate_number</td>
+                    <td class="px-4 py-3">@v.vehicle_brand</td>
+                    <td class="px-4 py-3">@v.vehicle_model</td>
+                    <td class="px-4 py-3">@v.vehicel_color</td>
+                    <td class="px-4 py-3 @(v.vehicle_status == "Approved" ? "text-green-500" : v.vehicle_status == "Declined" ? "text-red-500" : "")">
+                        @v.vehicle_status
+                    </td>
+                    <td class="cursor-pointer px-4 py-3 font-semibold text-teal-700 relative">
+                        <button class="Vactions-btn">⋮</button>
+                        <div class="Vactions-menu absolute right-0 mt-1 hidden w-40 bg-white shadow-md z-50">
+                            <ul>
+                                <li class="viewVehiclebtn cursor-pointer px-4 py-2 hover:bg-gray-100"
+                                    data-plate="@v.plate_number"
+                                    data-type="@v.vehicle_type"
+                                    data-brand="@v.vehicle_brand"
+                                    data-model="@v.vehicle_model"
+                                    data-color="@v.vehicel_color"
+                                    data-document="@dataUrl">
+                                    View Details
+                                </li>
+                                <li class="editVehiclebtn cursor-pointer px-4 py-2 hover:bg-gray-100"
+                                    data-plate="@v.plate_number"
+                                    data-type="@v.vehicle_type"
+                                    data-brand="@v.vehicle_brand"
+                                    data-model="@v.vehicle_model"
+                                    data-color="@v.vehicel_color"
+                                    data-document="@dataUrl">
+                                    Edit
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 
     @await Html.PartialAsync("_pagination")
-        <!-- Add EventsaModal (Hidden by default) -->
+    <!-- Add EventsaModal (Hidden by default) -->
     <div id="addVehiclemodal" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50" onclick="closeModal(event)">
-        <div class="w-[500px] rounded-2xl bg-white p-8 shadow-lg" onclick="event.stopPropagation()">
-            <!-- Modal Header -->
-            <h2 class="text-center text-2xl font-bold text-[#003D38]">Add Vehicle</h2>
+        <form method="post" asp-controller="Home" asp-action="AddVehicle" enctype="multipart/form-data">
+            <div class="w-[500px] rounded-2xl bg-white p-8 shadow-lg" onclick="event.stopPropagation()">
+                <!-- Modal Header -->
+                <h2 class="text-center text-2xl font-bold text-[#003D38]">Add Vehicle</h2>
 
-            <!-- Vehicle Details -->
-            <div class="mt-4 grid grid-cols-2 gap-4">
-                <div>
-                    <label class="text-gray-600">Type</label>
-                    <input type="text" value="Car" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-600" />
+                <!-- Vehicle Details -->
+                <div class="mt-4 grid grid-cols-2 gap-4">
+                    <input name="user_id" value="@user.user_id" type="hidden"/>
+                    <div>
+                        <label class="text-gray-600">Type</label>
+                        <select name="vehicle_type" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-600">
+                            <option value="Car">Car</option>
+                            <option value="Motor">Motor</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-gray-600">Model</label>
+                        <input name="vehicle_model" type="text" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-600" />
+                    </div>
+                    <div>
+                        <label class="text-gray-600">Brand</label>
+                        <input name="vehicle_brand" type="text" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-600" />
+                    </div>
+                    <div>
+                        <label class="text-gray-600">Color</label>
+                        <input name="vehicel_color" type="text" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-600" />
+                    </div>
                 </div>
-                <div>
-                    <label class="text-gray-600">Model</label>
-                    <input type="text" value="RAV4" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-600" />
+
+                <!-- Plate Number -->
+                <div class="mt-4 flex gap-4">
+                    <div class="w-1/2">
+                        <label class="text-gray-600">Plate Number</label>
+                        <input name="plate_number" type="text" class="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-600" />
+                    </div>
                 </div>
-                <div>
-                    <label class="text-gray-600">Brand</label>
-                    <input type="text" value="Toyota" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-600" />
+
+                <!-- Name Fields
+
+                <div class="mt-4 grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-gray-600">First Name</label>
+                        <input type="text" value="Casy" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-600" />
+                    </div>
+                    <div>
+                        <label class="text-gray-600">Last Name</label>
+                        <input type="text" value="Chan" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-600" />
+                    </div>
                 </div>
-                <div>
-                    <label class="text-gray-600">Color</label>
-                    <input type="text" value="Black" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-600" />
+
+                 -->
+
+                <!-- OR CR (Image Upload with Preview) -->
+                <div class="mt-4">
+                    <label class="text-gray-600">Upload OR/CR Document</label>
+                    <input id="OrCrFileInput" name="vehicle_document" type="file" accept="image/*"
+                           class="mt-2 block w-full text-gray-600 border border-gray-300 rounded-md p-2" />
+                    <div id="filePreview" class="mt-2"></div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="mt-6 flex gap-4">
+                    <button type="button" id="cancel-btn" class="w-1/2 rounded-full border border-[#003D38] py-2 font-bold hover:text-white">Cancel</button>
+                    <button type="submit" id="add-btn" class="w-1/2 rounded-full bg-[#003D38] py-2 font-bold text-white transition hover:bg-[#002C2A]">Add</button>
                 </div>
             </div>
-
-            <!-- Plate Number -->
-            <div class="mt-4 flex gap-4">
-                <div class="w-1/2">
-                    <label class="text-gray-600">Plate Number</label>
-                    <input type="text" value="2025-03-15" class="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-600" />
-                </div>
-                <div class="w-1/2">
-                    <label class="text-gray-600">Color</label>
-                    <input type="text" value="Black" class="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-600" />
-                </div>
-            </div>
-
-            <!-- Name Fields -->
-            <div class="mt-4 grid grid-cols-2 gap-4">
-                <div>
-                    <label class="text-gray-600">First Name</label>
-                    <input type="text" value="Casy" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-600" />
-                </div>
-                <div>
-                    <label class="text-gray-600">Last Name</label>
-                    <input type="text" value="Chan" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-600" />
-                </div>
-            </div>
-
-            <!-- Relationship -->
-            <label class="mt-4 block text-gray-600">Relationship</label>
-            <input type="text" value="Self" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-600" />
-
-            <!-- OR CR -->
-            <div class="mt-4">
-                <label class="text-gray-600">OR CR</label>
-                <a href="#" class="block text-[#003D38] underline">myorcr.pdf</a>
-            </div>
-
-            <!-- Buttons -->
-            <div class="mt-6 flex gap-4">
-                <button class="w-1/2 rounded-full border border-[#003D38] py-2 font-bold hover:text-white">Decline</button>
-                <button class="w-1/2 rounded-full bg-[#003D38] py-2 font-bold text-white transition hover:bg-[#002C2A]">Approve</button>
-            </div>
-        </div>
+        </form>
     </div>
 
     <!-- Modal (Hidden by default) -->
     <div id="Vehiclemodal" class="fixed inset-0 z-20 flex hidden items-center justify-center bg-black/50" onclick="closeModal(event)">
-        <div class="w-[500px] rounded-2xl bg-white p-8 shadow-lg" onclick="event.stopPropagation()">
-            <!-- Modal Header -->
-            <h2 class="text-center text-2xl font-bold text-[#003D38]">Vehicle Details</h2>
+        <form id="editVehicleForm" method="post" asp-controller="Home" asp-action="UpdateVehicle" enctype="multipart/form-data">
+            <div class="modal-content w-[500px] rounded-2xl bg-white p-8 shadow-lg" onclick="event.stopPropagation()">
+                <h2 class="text-center text-2xl font-bold text-[#003D38]">Vehicle Details</h2>
 
-            <!-- Vehicle Details -->
-            <div class="mt-4 grid grid-cols-2 gap-4">
-                <div>
-                    <label class="text-gray-600">Type</label>
-                    <input type="text" value="Car" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+                <div class="mt-4 grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-gray-600">Type</label>
+                        <input id="modalType" name="vehicle_type" type="text" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-600" />
+                    </div>
+                    <div>
+                        <label class="text-gray-600">Model</label>
+                        <input id="modalModel" name="vehicle_model" type="text" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-600" />
+                    </div>
+                    <div>
+                        <label class="text-gray-600">Brand</label>
+                        <input id="modalBrand" name="vehicle_brand" type="text" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-600" />
+                    </div>
+                    <div>
+                        <label class="text-gray-600">Color</label>
+                        <input id="modalColor" name="vehicel_color" type="text" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-600" />
+                    </div>
                 </div>
-                <div>
-                    <label class="text-gray-600">Model</label>
-                    <input type="text" value="RAV4" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+
+                <div class="mt-4 flex gap-4">
+                    <div class="w-full">
+                        <label class="text-gray-600">Plate Number</label>
+                        <input id="modalPlate" name="plate_number" type="text" class="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-600" readonly />
+                    </div>
                 </div>
-                <div>
-                    <label class="text-gray-600">Brand</label>
-                    <input type="text" value="Toyota" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+
+                <div class="mt-4">
+                    <label class="text-gray-600">Document</label>
+                    <input id="modalDocFileInput" name="vehicle_document" type="file" accept="image/*" class="mt-2 block w-full text-gray-600 border border-gray-300 rounded-md p-2" />
+                    <div id="documentPreview" class="mt-2"></div>
                 </div>
-                <div>
-                    <label class="text-gray-600">Color</label>
-                    <input type="text" value="Black" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
+
+                <div class="mt-6 flex gap-4">
+                    <button type="button" id="cancelEditBtn" class="w-1/2 rounded-full border border-[#003D38] py-2 font-bold hover:text-white">Cancel</button>
+                    <button type="submit" class="w-1/2 rounded-full bg-[#003D38] py-2 font-bold text-white hover:bg-[#002C2A]">Update</button>
                 </div>
             </div>
-
-            <!-- Plate Number & Color in One Row -->
-            <div class="mt-4 flex gap-4">
-                <div class="w-1/2">
-                    <label class="text-gray-600">Plate Number</label>
-                    <input type="text" value="2025-03-15" class="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-400" readonly />
-                </div>
-                <div class="w-1/2">
-                    <label class="text-gray-600">Color</label>
-                    <input type="text" value="Black" class="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-400" readonly />
-                </div>
-            </div>
-
-            <!-- Name Fields -->
-            <div class="mt-4 grid grid-cols-2 gap-4">
-                <div>
-                    <label class="text-gray-600">First Name</label>
-                    <input type="text" value="Casy" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
-                </div>
-                <div>
-                    <label class="text-gray-600">Last Name</label>
-                    <input type="text" value="Chan" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
-                </div>
-            </div>
-
-            <!-- Relationship -->
-            <label class="mt-4 block text-gray-600">Relationship</label>
-            <input type="text" value="Self" class="w-full rounded-md border border-gray-300 px-3 py-2 font-semibold text-gray-400" readonly />
-
-            <!-- OR CR -->
-            <div class="mt-4">
-                <label class="text-gray-600">OR CR</label>
-                <a href="#" class="block text-[#003D38] underline">myorcr.pdf</a>
-            </div>
-
-            <!-- Buttons -->
-            <div class="mt-6 flex gap-4">
-                <button class="w-1/2 rounded-full border border-[#003D38] py-2 font-bold hover:text-white">Decline</button>
-                <button class="w-1/2 rounded-full bg-[#003D38] py-2 font-bold text-white transition hover:bg-[#002C2A]">Approve</button>
-            </div>
-        </div>
+        </form>
     </div>
+
 </div>
-<script>
-    document.getElementById("viewVehiclebtn").addEventListener("click", function () {
-        document.getElementById("Vehiclemodal").classList.remove("hidden");
-    });
+ 
 
-    document.getElementById("Vehiclemodal").addEventListener("click", function (event) {
-        if (!event.target.closest(".modal-content")) {
-            this.classList.add("hidden");
-        }zx
-    });
-</script>
-<script>
-    document.getElementById("addVehiclebtn").addEventListener("click", function () {
-        document.getElementById("addVehiclemodal").classList.remove("hidden");
-    });
 
-    document.getElementById("addVehiclemodal").addEventListener("click", function (event) {
-        if (!event.target.closest(".modal-content")) {
-            this.classList.add("hidden");
-        }zx
+<script>
+    function closeModal(event) {
+        const modal = document.getElementById("Vehiclemodal");
+        const modalContent = modal.querySelector(".modal-content");
+
+        if (!modalContent.contains(event.target)) {
+            modal.classList.add("hidden");
+        }
+    }
+
+    // Optionally, close on ESC key
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+            document.getElementById("Vehiclemodal").classList.add("hidden");
+        }
     });
 </script>
 
 
+    <script>
+        document.getElementById("addVehiclebtn").addEventListener("click", function () {
+            document.getElementById("addVehiclemodal").classList.remove("hidden");
+        });
 
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        document.querySelectorAll(".Vactions-btn").forEach(button => {
-            button.addEventListener("click", (event) => {
-                event.stopPropagation();
-                let menu = button.nextElementSibling;
-                document.querySelectorAll(".Vactions-menu").forEach(m => {
-                    if (m !== menu) m.classList.add("hidden");
+        document.getElementById("addVehiclemodal").addEventListener("click", function (event) {
+            if (!event.target.closest(".modal-content")) {
+                this.classList.add("hidden");
+            }
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".Vactions-btn").forEach(button => {
+                button.addEventListener("click", (event) => {
+                    event.stopPropagation();
+                    let menu = button.nextElementSibling;
+                    document.querySelectorAll(".Vactions-menu").forEach(m => {
+                        if (m !== menu) m.classList.add("hidden");
+                    });
+                    menu.classList.toggle("hidden");
                 });
-                menu.classList.toggle("hidden");
+            });
+
+            document.addEventListener("click", () => {
+                document.querySelectorAll(".Vactions-menu").forEach(menu => {
+                    menu.classList.add("hidden");
+                });
             });
         });
+    </script>
 
-        document.addEventListener("click", () => {
-            document.querySelectorAll(".Vactions-menu").forEach(menu => {
-                menu.classList.add("hidden");
-            });
+    <script>
+        const fileInput = document.getElementById('OrCrFileInput');
+        const filePreview = document.getElementById('filePreview');
+
+                fileInput.addEventListener('change', function () {
+            const file = this.files[0];
+            filePreview.innerHTML = '';
+
+            if (!file) return;
+
+            const ext = file.name.split('.').pop().toLowerCase();
+            const validImageTypes = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+
+            if (validImageTypes.includes(ext)) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    filePreview.innerHTML = `<img src="${e.target.result}" alt="Preview" class="max-w-full h-auto rounded-md border" />`;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                filePreview.innerHTML = `<p class="text-red-500">Only image files are allowed.</p>`;
+                this.value = ""; // Clear invalid file
+            }
+        });
+    </script>
+
+<script>
+    document.getElementById("editUpdateBtn").addEventListener("click", function () {
+        const vehicleData = {
+            vehicle_id: document.getElementById("vehicleId").value,
+            plate_number: document.getElementById("modalPlate").value,
+            vehicle_type: document.getElementById("modalType").value,
+            vehicle_brand: document.getElementById("modalBrand").value,
+            vehicle_model: document.getElementById("modalModel").value,
+            vehicel_color: document.getElementById("modalColor").value
+        };
+
+        fetch("/Home/UpdateVehicle", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value // if you're using AntiForgeryToken
+            },
+            body: JSON.stringify(vehicleData)
+        })
+        .then(response => {
+            if (response.ok) {
+                location.reload(); // Reload to reflect changes
+            } else {
+                alert("Failed to update vehicle.");
+            }
         });
     });
+
+    document.getElementById("editCancelBtn").addEventListener("click", function () {
+        document.getElementById("Vehiclemodal").classList.add("hidden");
+    });
 </script>
+

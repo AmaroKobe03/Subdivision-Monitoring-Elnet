@@ -5,46 +5,38 @@
     string overlayClass = isDisabled ? "opacity-50" : ""; // Dim card when Unavailable
     string buttonColorClass = Model.ButtonText == "Unavailable" ? "bg-gray-400 text-white font-bold cursor-not-allowed"
                              : "bg-[#043137] text-white font-bold";
-    string badgeColorClass =  Model.ButtonText == "Unavailable" ? "bg-gray-400 text-white font-bold cursor-not-allowed"
-                             : Model.ButtonText == "Completed" ? "bg-gray-400"
-                             : Model.ButtonText == "Cancelled" ? "bg-red-500"
-                             : Model.ButtonText == "Approved" ? "bg-[#10B981]"
-                             : Model.ButtonText == "Pending" ? "bg-yellow-500"  
+    string badgeColorClass =  Model.FacilityStatus == "Unavailable" ? "bg-gray-400 text-white font-bold cursor-not-allowed"
+                             : Model.FacilityStatus == "Completed" ? "bg-gray-400"
+                             : Model.FacilityStatus == "Cancelled" ? "bg-red-500"
+                             : Model.FacilityStatus == "Approved" ? "bg-[#10B981]"
+                             : Model.FacilityStatus == "Pending" ? "bg-yellow-500"
                              : "bg-[#10B981]";
 }
 
 <div class="flex h-auto w-[90%] max-w-[500px] flex-col flex-wrap items-center gap-4 rounded-lg bg-white @overlayClass shadow-lg sm:w-[70%] md:w-[50%] lg:w-[30%]">
     <div class="relative w-full">
-        <img class="h-[200px] w-full rounded-t-lg object-cover" src="~/Images/@Model.ImagePath" alt="@Model.FacilityName">
+        <img class="h-[200px] w-full rounded-t-lg object-cover" src="@Model.ImagePath" alt="@Model.FacilityName">
         <span class="absolute top-2 right-2 z-10 rounded-full px-4 py-2 font-bold text-white shadow-lg @badgeColorClass">
-            @Model.ButtonText
+            @Model.FacilityStatus
         </span>
     </div>
 
     <div class="flex w-[90%] flex-row items-center justify-between">
         <h1 class="font-semibold text-[20px] sm:text-3xl md:text-[24px] lg:text-[20px]">
             @Model.FacilityName
-          
         </h1>
         <div class="flex flex-row items-center gap-2">
             <img src="~/Images/star.svg" class="mb-1" />
             <p>4.8</p>
         </div>
     </div>
-
-    <label class="relative bottom-3 left-6 self-start text-[#787676]">
-        @Model.Type
-        @Model.DTime
-    </label>
-
     <div class="mt-2 ml-6 flex items-center gap-4 self-start">
         <div class="flex items-center gap-2">
-            <img src="~/Images/timeic.svg" class="mb-1" />
-            <p>6:00 AM - 10:00 PM</p>
+            <p>@Model.FacilityCategory</p>
         </div>
         <div class="flex items-center gap-2">
             <img class="mb-1" src="~/Images/dollar.svg" />
-            <p>Free</p>
+            <p>@Model.ServiceFeePerHour</p>
         </div>
     </div>
 
@@ -83,9 +75,16 @@
         }
         else
         {
-            <button  type="button" class="book-now-btn mb-4 w-[90%] cursor-pointer rounded-full px-6 py-3 transition hover:bg-opacity-75 @buttonColorClass" @(isDisabled ? "disabled" : "")>
-                    View Details
-            </button>
+        <button type="button" class="book-now-btn mb-4 w-[90%] cursor-pointer rounded-full px-6 py-3 transition hover:bg-opacity-75 @buttonColorClass" @(isDisabled ? "disabled" : "") data-facility-name="@Model.FacilityName"
+        data-image="@Model.ImagePath"
+        data-description="@Model.FacilityDescription"
+        data-rate="@Model.ServiceFeePerHour"
+        data-type="@Model.Type"
+        data-guidelines="@Model.FacilityGuidelines"
+        data-aminities="@Model.FacilityAminities"
+        data-id="@Model.FacilityId">
+        View Details
+        </button>
         }
 </div>
 
