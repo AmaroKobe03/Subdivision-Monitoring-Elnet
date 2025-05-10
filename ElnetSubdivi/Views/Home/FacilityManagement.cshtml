@@ -17,7 +17,7 @@
         color: gray;
         font-weight: 500; /* Medium */
     }
-    
+
     .fc-prev-button, .fc-next-button {
         background: #002B2D !important;
         color: white !important;
@@ -98,28 +98,28 @@
 
     @*
     <div class="mt-6 flex w-[88.5%] grid-cols-3 items-center justify-center gap-6 overflow-y-auto">
-        @foreach (var facility in Model)
-        {
-            <div class="facility-card border rounded p-4 shadow mb-4">
-                <img src="@facility.ImagePath" alt="@facility.FacilityName" class="mb-2 w-full max-w-sm object-cover rounded">
-                <h3 class="text-xl font-semibold">@facility.FacilityName</h3>
-                <p class="text-sm text-gray-600">@facility.FacilityCategory</p>
-                <p>@facility.FacilityDescription</p>
-                <p><strong>Rate:</strong> ₱@facility.ServiceFeePerHour/hour</p>
-                <p><strong>Amenities:</strong> @facility.FacilityAminities</p>
-                <p><strong>Guidelines:</strong> @facility.FacilityGuidelines</p>
+    @foreach (var facility in Model)
+    {
+    <div class="facility-card border rounded p-4 shadow mb-4">
+    <img src="@facility.ImagePath" alt="@facility.FacilityName" class="mb-2 w-full max-w-sm object-cover rounded">
+    <h3 class="text-xl font-semibold">@facility.FacilityName</h3>
+    <p class="text-sm text-gray-600">@facility.FacilityCategory</p>
+    <p>@facility.FacilityDescription</p>
+    <p><strong>Rate:</strong> ₱@facility.ServiceFeePerHour/hour</p>
+    <p><strong>Amenities:</strong> @facility.FacilityAminities</p>
+    <p><strong>Guidelines:</strong> @facility.FacilityGuidelines</p>
 
-                <div class="mt-2">
-                    <strong>Operating Hours:</strong>
-                    <ul class="text-sm list-disc pl-4">
-                        @foreach (var hour in facility.OperatingHours)
-                        {
-                            <li>@hour.Day_Of_Week: @hour.Opening_Time?.ToString(@"hh\:mm") - @hour.Closing_Time?.ToString(@"hh\:mm")</li>
-                        }
-                    </ul>
-                </div>
-            </div>
-        }
+    <div class="mt-2">
+    <strong>Operating Hours:</strong>
+    <ul class="text-sm list-disc pl-4">
+    @foreach (var hour in facility.OperatingHours)
+    {
+    <li>@hour.Day_Of_Week: @hour.Opening_Time?.ToString(@"hh\:mm") - @hour.Closing_Time?.ToString(@"hh\:mm")</li>
+    }
+    </ul>
+    </div>
+    </div>
+    }
     </div>
     *@
 
@@ -151,27 +151,27 @@
                 </div>
 
                 @*
-                <!-- Type & Rating -->
-                <p class="px-4 text-sm text-gray-500">@facility.Type</p>
-                <div class="flex items-center gap-2 px-4 text-gray-700">
-                    <img src="~/Images/star.svg" class="h-4 w-4" />
-                    <p class="text-sm font-medium">@facility.FacilityRating</p>
-                </div>
-                *@
+            <!-- Type & Rating -->
+            <p class="px-4 text-sm text-gray-500">@facility.Type</p>
+            <div class="flex items-center gap-2 px-4 text-gray-700">
+            <img src="~/Images/star.svg" class="h-4 w-4" />
+            <p class="text-sm font-medium">@facility.FacilityRating</p>
+            </div>
+            *@
 
                 <!-- Time & Price -->
                 <div class="mt-2 flex items-center gap-4 px-4 text-gray-700">
                     @*
-                    <div class="flex items-center gap-2">
-                        <img src="~/Images/timeic.svg" class="h-4 w-4" />
-                        <ul class="text-sm list-disc pl-4">
-                            @foreach (var hour in facility.OperatingHours)
-                            {
-                                <li>@hour.Day_Of_Week: @hour.Opening_Time?.ToString(@"hh\:mm") - @hour.Closing_Time?.ToString(@"hh\:mm")</li>
-                            }
-                        </ul>
-                    </div>
-                    *@
+                <div class="flex items-center gap-2">
+                <img src="~/Images/timeic.svg" class="h-4 w-4" />
+                <ul class="text-sm list-disc pl-4">
+                @foreach (var hour in facility.OperatingHours)
+                {
+                <li>@hour.Day_Of_Week: @hour.Opening_Time?.ToString(@"hh\:mm") - @hour.Closing_Time?.ToString(@"hh\:mm")</li>
+                }
+                </ul>
+                </div>
+                *@
                     <div class="flex items-center gap-2">
                         <p class="text-sm">@facility.FacilityCategory</p>
                     </div>
@@ -444,7 +444,7 @@
                     nextBtn.onclick = () => generateCalendar(year, month + 1);
 
                     const title = document.createElement("h3");
-                    title.innerText = ${new Date(year, month).toLocaleString('default', { month: 'long' })} ${year};
+                    title.innerText = `${ new Date(year, month).toLocaleString('default', { month: 'long' }) } ${ year }`;
                     title.classList.add("text-lg", "font-bold");
 
                     header.appendChild(prevBtn);
@@ -509,79 +509,166 @@
                 window.addEventListener("resize", checkWindowSize);
                 checkWindowSize();
             });
-        </script>
-    </div>
 
+            document.addEventListener("DOMContentLoaded", function () {
+                const popup = document.getElementById("viewdetailspop");
+                const viewButtons = document.querySelectorAll(".viewbtn");
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const popup = document.getElementById("viewdetailspop");
-            const viewButtons = document.querySelectorAll(".viewbtn");
+                viewButtons.forEach(btn => {
+                    btn.addEventListener("click", function () {
+                        // Get all data attributes
+                        const facilityId = this.getAttribute('data-facility-id');
+                        const facilityName = this.getAttribute('data-facility-name');
+                        const facilityImage = this.getAttribute('data-facility-image');
+                        const facilityCategory = this.getAttribute('data-facility-category');
+                        const facilityRate = this.getAttribute('data-facility-rate');
+                        const facilityDescription = this.getAttribute('data-facility-description');
+                        const facilityAmenities = this.getAttribute('data-facility-amenities');
+                        const facilityGuidelines = this.getAttribute('data-facility-guidelines');
+                        const facilityStatus = this.getAttribute('data-facility-status');
+                        const operatingHoursJson = this.getAttribute('data-operating-hours');
 
-            viewButtons.forEach(btn => {
-                btn.addEventListener("click", function () {
-                    // Get all data attributes
+                        // Parse operating hours
+                        let operatingHours = [];
+                        try {
+                            operatingHours = operatingHoursJson ? JSON.parse(operatingHoursJson) : [];
+                        } catch (e) {
+                            console.error("Error parsing operating hours:", e);
+                        }
+
+                        // Update the popup content using IDs
+                        document.getElementById('facilityImage').src = facilityImage;
+                        document.getElementById('facilityImage').alt = facilityName;
+                        document.getElementById('facilityName').textContent = facilityName;
+                        document.getElementById('facilityCategory').textContent = facilityCategory;
+                        document.getElementById('facilityRate').textContent = facilityRate + '/hr';
+                        document.getElementById('facilityDescription').textContent = facilityDescription;
+
+                        // Update guidelines
+                        const guidelinesList = document.getElementById('facilityGuidelines');
+                        guidelinesList.innerHTML = '';
+                        if (facilityGuidelines) {
+                            facilityGuidelines.split(';').forEach(guideline => {
+                                if (guideline.trim()) {
+                                    const li = document.createElement('li');
+                                    li.textContent = guideline.trim();
+                                    guidelinesList.appendChild(li);
+                                }
+                            });
+                        }
+
+                        // Update amenities
+                        const amenitiesList = document.getElementById('facilityAmenities');
+                        amenitiesList.innerHTML = '';
+                        if (facilityAmenities) {
+                            facilityAmenities.split(';').forEach(amenity => {
+                                if (amenity.trim()) {
+                                    const li = document.createElement('li');
+                                    li.textContent = amenity.trim();
+                                    amenitiesList.appendChild(li);
+                                }
+                            });
+                        }
+
+                        // Update status toggle
+                        const toggle = document.getElementById('statusToggle');
+                        toggle.checked = facilityStatus === 'Available';
+                        const slider = toggle.nextElementSibling;
+                        const circle = slider.querySelector('div');
+                        const statusText = document.getElementById('statusText');
+
+                        if (toggle.checked) {
+                            slider.classList.add('bg-green-500');
+                            slider.classList.remove('bg-gray-300');
+                            circle.classList.add('translate-x-5');
+                            statusText.textContent = 'Available';
+                            statusText.classList.remove('text-red-500');
+                            statusText.classList.add('text-green-500');
+                        } else {
+                            slider.classList.remove('bg-green-500');
+                            slider.classList.add('bg-gray-300');
+                            circle.classList.remove('translate-x-5');
+                            statusText.textContent = 'Unavailable';
+                            statusText.classList.remove('text-green-500');
+                            statusText.classList.add('text-red-500');
+                        }
+
+                        // Set facility ID as data attribute for the toggle
+                        toggle.setAttribute('data-facility-id', facilityId);
+
+                        // Update operating hours
+                        const operatingHoursContainer = document.getElementById('operatingHoursList');
+                        operatingHoursContainer.innerHTML = '';
+
+                        if (operatingHours && operatingHours.length > 0) {
+                            operatingHours.forEach(hour => {
+                                const hourElement = document.createElement('p');
+                                hourElement.className = 'flex justify-between';
+
+                                const daySpan = document.createElement('span');
+                                daySpan.textContent = hour.DayOfWeek;
+
+                                const timeSpan = document.createElement('span');
+                                const openingTime = hour.OpeningTime ? formatTime(hour.OpeningTime) : 'Closed';
+                                const closingTime = hour.ClosingTime ? formatTime(hour.ClosingTime) : '';
+                                timeSpan.textContent = openingTime + (closingTime ? ` - ${closingTime}` : '');
+
+                                hourElement.appendChild(daySpan);
+                                hourElement.appendChild(timeSpan);
+                                operatingHoursContainer.appendChild(hourElement);
+                            });
+                        } else {
+                            const noHoursElement = document.createElement('p');
+                            noHoursElement.textContent = 'No operating hours available';
+                            operatingHoursContainer.appendChild(noHoursElement);
+                        }
+
+                        // Show the popup
+                        popup.classList.remove("hidden");
+                    });
+                });
+
+                // Helper function to format time (handles both string and TimeSpan formats)
+                function formatTime(time) {
+                    if (!time) return '';
+
+                    // If time is already in HH:MM format (string)
+                    if (typeof time === 'string') {
+                        const [hours, minutes] = time.split(':');
+                        return formatHoursMinutes(parseInt(hours), parseInt(minutes));
+                    }
+                    // If time is a TimeSpan object
+                    else if (time.hours !== undefined && time.minutes !== undefined) {
+                        return formatHoursMinutes(time.hours, time.minutes);
+                    }
+
+                    return '';
+                }
+
+                function formatHoursMinutes(hours, minutes) {
+                    const ampm = hours >= 12 ? 'PM' : 'AM';
+                    const hours12 = hours % 12 || 12;
+                    return `${hours12}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+                }
+
+                // Close popup when clicking outside
+                popup.addEventListener("click", function (event) {
+                    if (event.target === popup) {
+                        popup.classList.add("hidden");
+                    }
+                });
+
+                // Handle status toggle change
+                document.getElementById('statusToggle').addEventListener('change', function () {
                     const facilityId = this.getAttribute('data-facility-id');
-                    const facilityName = this.getAttribute('data-facility-name');
-                    const facilityImage = this.getAttribute('data-facility-image');
-                    const facilityCategory = this.getAttribute('data-facility-category');
-                    const facilityRate = this.getAttribute('data-facility-rate');
-                    const facilityDescription = this.getAttribute('data-facility-description');
-                    const facilityAmenities = this.getAttribute('data-facility-amenities');
-                    const facilityGuidelines = this.getAttribute('data-facility-guidelines');
-                    const facilityStatus = this.getAttribute('data-facility-status');
-                    const operatingHoursJson = this.getAttribute('data-operating-hours');
-
-                    // Parse operating hours
-                    let operatingHours = [];
-                    try {
-                        operatingHours = operatingHoursJson ? JSON.parse(operatingHoursJson) : [];
-                    } catch (e) {
-                        console.error("Error parsing operating hours:", e);
-                    }
-
-                    // Update the popup content using IDs
-                    document.getElementById('facilityImage').src = facilityImage;
-                    document.getElementById('facilityImage').alt = facilityName;
-                    document.getElementById('facilityName').textContent = facilityName;
-                    document.getElementById('facilityCategory').textContent = facilityCategory;
-                    document.getElementById('facilityRate').textContent = facilityRate + '/hr';
-                    document.getElementById('facilityDescription').textContent = facilityDescription;
-
-                    // Update guidelines
-                    const guidelinesList = document.getElementById('facilityGuidelines');
-                    guidelinesList.innerHTML = '';
-                    if (facilityGuidelines) {
-                        facilityGuidelines.split(';').forEach(guideline => {
-                            if (guideline.trim()) {
-                                const li = document.createElement('li');
-                                li.textContent = guideline.trim();
-                                guidelinesList.appendChild(li);
-                            }
-                        });
-                    }
-
-                    // Update amenities
-                    const amenitiesList = document.getElementById('facilityAmenities');
-                    amenitiesList.innerHTML = '';
-                    if (facilityAmenities) {
-                        facilityAmenities.split(';').forEach(amenity => {
-                            if (amenity.trim()) {
-                                const li = document.createElement('li');
-                                li.textContent = amenity.trim();
-                                amenitiesList.appendChild(li);
-                            }
-                        });
-                    }
-
-                    // Update status toggle
-                    const toggle = document.getElementById('statusToggle');
-                    toggle.checked = facilityStatus === 'Available';
-                    const slider = toggle.nextElementSibling;
-                    const circle = slider.querySelector('div');
+                    const newStatus = this.checked ? 'Available' : 'Unavailable';
                     const statusText = document.getElementById('statusText');
 
-                    if (toggle.checked) {
+                    // Update UI
+                    const slider = this.nextElementSibling;
+                    const circle = slider.querySelector('div');
+
+                    if (this.checked) {
                         slider.classList.add('bg-green-500');
                         slider.classList.remove('bg-gray-300');
                         circle.classList.add('translate-x-5');
@@ -597,137 +684,116 @@
                         statusText.classList.add('text-red-500');
                     }
 
-                    // Set facility ID as data attribute for the toggle
-                    toggle.setAttribute('data-facility-id', facilityId);
+                    // Send AJAX request to update database
+                    updateFacilityStatus(facilityId, newStatus);
+                });
 
-                    // Update operating hours
-                    const operatingHoursContainer = document.getElementById('operatingHoursList');
-                    operatingHoursContainer.innerHTML = '';
+                async function updateFacilityStatus(facilityId, newStatus) {
+                    try {
+                        const formData = new URLSearchParams();
+                        formData.append("facilityId", facilityId);
+                        formData.append("status", newStatus);
 
-                    if (operatingHours && operatingHours.length > 0) {
-                        operatingHours.forEach(hour => {
-                            const hourElement = document.createElement('p');
-                            hourElement.className = 'flex justify-between';
-
-                            const daySpan = document.createElement('span');
-                            daySpan.textContent = hour.DayOfWeek;
-
-                            const timeSpan = document.createElement('span');
-                            const openingTime = hour.OpeningTime ? formatTime(hour.OpeningTime) : 'Closed';
-                            const closingTime = hour.ClosingTime ? formatTime(hour.ClosingTime) : '';
-                            timeSpan.textContent = openingTime + (closingTime ? ` - ${closingTime}` : '');
-
-                            hourElement.appendChild(daySpan);
-                            hourElement.appendChild(timeSpan);
-                            operatingHoursContainer.appendChild(hourElement);
+                        const response = await fetch('/Home/UpdateFacilityStatus', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: formData.toString()
                         });
-                    } else {
-                        const noHoursElement = document.createElement('p');
-                        noHoursElement.textContent = 'No operating hours available';
-                        operatingHoursContainer.appendChild(noHoursElement);
-                    }
 
-                    // Show the popup
-                    popup.classList.remove("hidden");
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+
+                        const data = await response.json();
+                        if (data.success) {
+                            // ✅ Reload the page after success
+                            location.reload();
+                        } else {
+                            console.error('Failed to update status:', data.message);
+                        }
+                    } catch (error) {
+                        console.error('Error updating facility status:', error);
+                    }
+                }
+
+                document.getElementById("addfac").addEventListener("click", function () {
+                    document.getElementById("addfacpopup").classList.remove("hidden");
+                });
+                document.getElementById("closePopup").addEventListener("click", function () {
+                    document.getElementById("addfacpopup").classList.add("hidden");
+                });
+                document.getElementById("addfacpopup").addEventListener("click", function (event) {
+                    if (event.target === this) {
+                        this.classList.add("hidden");
+                    }
                 });
             });
+            document.addEventListener("DOMContentLoaded", function () {
+                // Initialize all toggle switches based on their checked state
+                document.querySelectorAll('.toggleSwitch').forEach(function (toggle) {
+                    const isChecked = toggle.checked;
+                    const slider = toggle.nextElementSibling;
+                    const circle = slider.querySelector('div');
 
-            // Helper function to format time (handles both string and TimeSpan formats)
-            function formatTime(time) {
-                if (!time) return '';
-
-                // If time is already in HH:MM format (string)
-                if (typeof time === 'string') {
-                    const [hours, minutes] = time.split(':');
-                    return formatHoursMinutes(parseInt(hours), parseInt(minutes));
-                }
-                // If time is a TimeSpan object
-                else if (time.hours !== undefined && time.minutes !== undefined) {
-                    return formatHoursMinutes(time.hours, time.minutes);
-                }
-
-                return '';
-            }
-
-            function formatHoursMinutes(hours, minutes) {
-                const ampm = hours >= 12 ? 'PM' : 'AM';
-                const hours12 = hours % 12 || 12;
-                return `${hours12}:${minutes.toString().padStart(2, '0')} ${ampm}`;
-            }
-
-            // Close popup when clicking outside
-            popup.addEventListener("click", function (event) {
-                if (event.target === popup) {
-                    popup.classList.add("hidden");
-                }
-            });
-
-            // Handle status toggle change
-            document.getElementById('statusToggle').addEventListener('change', function() {
-                const facilityId = this.getAttribute('data-facility-id');
-                const newStatus = this.checked ? 'Available' : 'Unavailable';
-                const statusText = document.getElementById('statusText');
-
-                // Update UI
-                const slider = this.nextElementSibling;
-                const circle = slider.querySelector('div');
-
-                if (this.checked) {
-                    slider.classList.add('bg-green-500');
-                    slider.classList.remove('bg-gray-300');
-                    circle.classList.add('translate-x-5');
-                    statusText.textContent = 'Available';
-                    statusText.classList.remove('text-red-500');
-                    statusText.classList.add('text-green-500');
-                } else {
-                    slider.classList.remove('bg-green-500');
-                    slider.classList.add('bg-gray-300');
-                    circle.classList.remove('translate-x-5');
-                    statusText.textContent = 'Unavailable';
-                    statusText.classList.remove('text-green-500');
-                    statusText.classList.add('text-red-500');
-                }
-
-                // Send AJAX request to update database
-                updateFacilityStatus(facilityId, newStatus);
-            });
-
-            async function updateFacilityStatus(facilityId, newStatus) {
-                try {
-                    const formData = new URLSearchParams();
-                    formData.append("facilityId", facilityId);
-                    formData.append("status", newStatus);
-
-                    const response = await fetch('/Home/UpdateFacilityStatus', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: formData.toString()
-                    });
-
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-
-                    const data = await response.json();
-                    if (data.success) {
-                        // ✅ Reload the page after success
-                        location.reload();
+                    if (isChecked) {
+                        slider.classList.add('bg-green-500');
+                        slider.classList.remove('bg-gray-300');
+                        circle.classList.add('translate-x-5');
                     } else {
-                        console.error('Failed to update status:', data.message);
+                        slider.classList.remove('bg-green-500');
+                        slider.classList.add('bg-gray-300');
+                        circle.classList.remove('translate-x-5');
                     }
-                } catch (error) {
-                    console.error('Error updating facility status:', error);
-                }
-            }
-        });
-    </script>
+                });
 
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
+                document.querySelectorAll("#sort a").forEach((btn) => {
+                    btn.addEventListener("click", (e) => {
+                        e.preventDefault(); // Prevent page reload
+
+                        // Reset all buttons
+                        document.querySelectorAll("#sort a").forEach(b => {
+                            b.classList.remove("bg-blue-200", "text-blue-700", "font-semibold");
+                            b.classList.add("bg-gray-100", "hover:bg-gray-200");
+                            b.querySelector("span").classList.remove("text-blue-700");
+                            b.querySelector("span").classList.add("text-black");
+                        });
+
+                        // Add active state to the clicked button
+                        e.currentTarget.classList.add("bg-blue-200", "text-blue-700", "font-semibold");
+                        e.currentTarget.classList.remove("bg-gray-100", "hover:bg-gray-200");
+
+                        // Change the text inside span to blue
+                        e.currentTarget.querySelector("span").classList.remove("text-black");
+                        e.currentTarget.querySelector("span").classList.add("text-blue-700");
+                    });
+                });
+
+                document.querySelector("form").addEventListener("submit", function (e) {
+                    const selectedDays = document.querySelectorAll(".toggleSwitchDay:checked");
+                    if (selectedDays.length === 0) {
+                        alert("Please select at least one operating day");
+                        e.preventDefault();
+                        return;
+                    }
+
+                    selectedDays.forEach(day => {
+                        const dayName = day.value;
+                        const openingTime = document.querySelector(`input[name="OpeningTime_${dayName}"]`).value;
+                        const closingTime = document.querySelector(`input[name="ClosingTime_${dayName}"]`).value;
+
+                        if (!openingTime || !closingTime) {
+                            alert(`Please set operating hours for ${dayName}`);
+                            e.preventDefault();
+                            return;
+                        }
+                    });
+                });
+            });
+            document.addEventListener("DOMContentLoaded", function () {
                 // Initialize all toggle switches
-                document.querySelectorAll('.toggleSwitch').forEach(function(toggle) {
+                document.querySelectorAll('.toggleSwitch').forEach(function (toggle) {
                     const isChecked = toggle.checked;
                     const slider = toggle.nextElementSibling;
                     const circle = slider.querySelector('div');
@@ -743,11 +809,11 @@
                     }
 
                     // Add change event listener
-                    toggle.addEventListener('change', function() {
+                    toggle.addEventListener('change', function () {
                         console.log("wow");
                         const facilityId = this.getAttribute('data-facility-id');
                         const newStatus = this.checked ? 'Available' : 'Unavailable';
-                                                console.log("wow");
+                        console.log("wow");
 
                         // Update UI immediately
                         if (this.checked) {
@@ -806,111 +872,50 @@
             });
         </script>
 
+        <script>
+            
+        </script>
+
+        <script>
+           
+        </script>
 
 
-    <script>
-        document.getElementById("addfac").addEventListener("click", function() {
-            document.getElementById("addfacpopup").classList.remove("hidden");
-        });
-        document.getElementById("closePopup").addEventListener("click", function() {
-            document.getElementById("addfacpopup").classList.add("hidden");
-        });
-        document.getElementById("addfacpopup").addEventListener("click", function(event) {
-            if (event.target === this) {
-                this.classList.add("hidden");
-            }
-        });
-    </script>
+
+        <script>
+
+        </script>
 
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Initialize all toggle switches based on their checked state
-            document.querySelectorAll('.toggleSwitch').forEach(function(toggle) {
-                const isChecked = toggle.checked;
-                const slider = toggle.nextElementSibling;
-                const circle = slider.querySelector('div');
+        <script>
+            
+        </script>
 
-                if (isChecked) {
-                    slider.classList.add('bg-green-500');
-                    slider.classList.remove('bg-gray-300');
-                    circle.classList.add('translate-x-5');
+        <script>
+            const imageInput = document.getElementById('ImageFile');
+            const preview = document.getElementById('imagePreview');
+            const uploadLabel = document.getElementById('uploadLabel');
+
+            imageInput.addEventListener('change', function (event) {
+                const file = event.target.files[0];
+
+                if (file && file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                        uploadLabel.style.display = 'none';
+                    };
+                    reader.readAsDataURL(file);
                 } else {
-                    slider.classList.remove('bg-green-500');
-                    slider.classList.add('bg-gray-300');
-                    circle.classList.remove('translate-x-5');
+                    preview.src = '#';
+                    preview.style.display = 'none';
+                    uploadLabel.style.display = 'flex';
                 }
             });
-        });
-    </script>
+        </script>
+    </div>
+    </div>
 
-    <script>
-        document.querySelectorAll("#sort a").forEach((btn) => {
-            btn.addEventListener("click", (e) => {
-                e.preventDefault(); // Prevent page reload
 
-                // Reset all buttons
-                document.querySelectorAll("#sort a").forEach(b => {
-                    b.classList.remove("bg-blue-200", "text-blue-700", "font-semibold");
-                    b.classList.add("bg-gray-100", "hover:bg-gray-200");
-                    b.querySelector("span").classList.remove("text-blue-700");
-                    b.querySelector("span").classList.add("text-black");
-                });
-
-                // Add active state to the clicked button
-                e.currentTarget.classList.add("bg-blue-200", "text-blue-700", "font-semibold");
-                e.currentTarget.classList.remove("bg-gray-100", "hover:bg-gray-200");
-
-                // Change the text inside span to blue
-                e.currentTarget.querySelector("span").classList.remove("text-black");
-                e.currentTarget.querySelector("span").classList.add("text-blue-700");
-            });
-        });
-
-                document.querySelector("form").addEventListener("submit", function(e) {
-            const selectedDays = document.querySelectorAll(".toggleSwitchDay:checked");
-            if (selectedDays.length === 0) {
-                alert("Please select at least one operating day");
-                e.preventDefault();
-                return;
-            }
-
-            selectedDays.forEach(day => {
-                const dayName = day.value;
-                const openingTime = document.querySelector(`input[name="OpeningTime_${dayName}"]`).value;
-                const closingTime = document.querySelector(`input[name="ClosingTime_${dayName}"]`).value;
-
-                if (!openingTime || !closingTime) {
-                    alert(`Please set operating hours for ${dayName}`);
-                    e.preventDefault();
-                    return;
-                }
-            });
-        });
-
-    </script>
-
-    <script>
-        const imageInput = document.getElementById('ImageFile');
-        const preview = document.getElementById('imagePreview');
-        const uploadLabel = document.getElementById('uploadLabel');
-
-        imageInput.addEventListener('change', function (event) {
-            const file = event.target.files[0];
-
-            if (file && file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                    uploadLabel.style.display = 'none';
-                };
-                reader.readAsDataURL(file);
-            } else {
-                preview.src = '#';
-                preview.style.display = 'none';
-                uploadLabel.style.display = 'flex';
-            }
-        });
-    </script>
-</div>
+    

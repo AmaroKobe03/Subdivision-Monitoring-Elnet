@@ -6,7 +6,6 @@
     var users = Model.Users;
 }
 
-
 <div class="flex h-[100vh] w-[90%] flex-col items-center overflow-auto bg-[#f2f2f2] p-6 font-semibold">
     @await Html.PartialAsync("_sharedSearch")
 
@@ -72,7 +71,15 @@
                         <div class="flex w-full flex-row items-center">
                             <p class="font-bold">@visitor.first_name @visitor.last_name</p>
                             <div class="ml-auto">
-                                <button class="rounded-full bg-orange-300 px-4 py-2 text-white">@visitor.visit_status</button>
+                                <button class="rounded-full px-4 py-2 text-white @(
+    visitor.visit_status == "Approved" ? "bg-green-500" :
+      visitor.visit_status == "Cancelled" ? "bg-yellow-500" :
+    visitor.visit_status == "Declined" ? "bg-red-500" :
+    "bg-orange-5x`00"
+)">
+                                    @visitor.visit_status
+                                </button>
+
                             </div>
                         </div>
 

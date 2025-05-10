@@ -8,23 +8,6 @@
 <div class="flex h-[100vh] w-[90%] flex-col items-center overflow-auto overflow-y-hidden bg-[#f2f2f2] font-semibold">
     @await Html.PartialAsync("_sharedSearch")
 
-    <div class="flex h-[15vh] w-[88%] items-center justify-center">
-        <div class="flex h-[15vh] w-full items-center justify-center gap-6">
-            @*
-            @foreach (var item in Model)
-            {
-                <div class="flex h-[15vh] w-[25%] items-center justify-around rounded-lg border-b-[3px] bg-white @item.BorderColor shadow-lg">
-                    <div class="ml-5 flex flex-col gap-2">
-                        <h2 class="text-[16px] text-gray-400">@item.Title</h2>
-                        <p class="text-2xl">@item.Count</p>
-                    </div>
-                    <img class="w-[30px]" src="~/Images/@item.Icon" alt="status-icon" />
-                </div>
-            }
-            *@
-        </div>
-    </div>
-
     <div id="sortV" class="mt-4 flex w-[88.5%] flex-row items-center gap-6">
         <a href="#" class="cursor-pointer rounded-full bg-blue-200 px-6 py-2 text-center font-semibold text-blue-700">
             <span class="text-[15px]">Visitor Request</span>

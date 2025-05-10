@@ -66,13 +66,14 @@ namespace ElnetSubdivi.Controllers
 
         public async Task<IActionResult> ServiceRequestManagement(bool showDashboard = false)
         {
+            ViewData["HideSearch"] = true;
             if (showDashboard)
             {
                 ViewData["HideSearch"] = true;
                 ViewData["Hidebtn"] = true;
 
                 var dashboardStats = new List<dynamic>
-        {
+            {
             new { Title = "Total Requests", Count = 123, Icon = "treqs.svg", BorderColor = "border-blue-400 border-b-2" },
             new { Title = "Pending ", Count = 34, Icon = "pendi.svg", BorderColor = "border-yellow-400 borber-b-2" },
             new { Title = "Ongoing ", Count = 15, Icon = "ongo.svg", BorderColor = "border-orange-400 borber-b-2" },
@@ -578,6 +579,7 @@ namespace ElnetSubdivi.Controllers
 
         public async Task<IActionResult> UserManagement()
         {
+            ViewData["HideSearch"] = true;
             var users = await _userService.GetAllUsers(); // Fetch users from DB
             return View(users);
         }
@@ -694,8 +696,8 @@ namespace ElnetSubdivi.Controllers
         {
             ViewData["HideSearch"] = true;
             // Get posts from your database/service
-            var vehiclelist = _context.Vehicle.OrderByDescending(p => p.plate_number).ToList();
             var userId = User.FindFirst("UserId")?.Value;
+            var vehiclelist = _context.Vehicle.Where(p => p.user_id == userId).OrderByDescending(p => p.plate_number).ToList();
 
             // Get current user (example - adjust based on your auth system)
             var currentuser = await _context.Users.FirstOrDefaultAsync(u => u.user_id == userId);
@@ -883,13 +885,6 @@ namespace ElnetSubdivi.Controllers
             ViewData["HideSearch"] = true;
             return View();
         }
-       public IActionResult serviceRequest()
-        {
-            ViewData["Title"] = "Service Request";
-            ViewData["HideSearch"] = true;
-            return View();
-        }
-
 
 
         public IActionResult Calendar()

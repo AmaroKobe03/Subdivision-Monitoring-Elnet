@@ -175,12 +175,12 @@
             </div>
 
 
-            <img id="profile-pic" class="dropdown-btn relative w-[25px] cursor-pointer sm:w-[30px]" src="@profilePictureUrl" alt="Profile">
+            <img id="profile-pic" class="dropdown-btn relative h-10 w-11 rounded-full cursor-pointer rounded-full" src="@profilePictureUrl" alt="Profile">
 
             <div class="drp-popup fles-col absolute top-10 right-0 flex hidden w-50 flex-col gap-2 rounded-lg bg-white p-2 py-2 shadow-lg">
                 <a href="@GetProfileLink()" class="cursor-pointer">
                     <div class="mb-3 flex items-center gap-4 border-b-2 border-gray-400 py-2">
-                        <img id="profile-pic" class="h-7 w-7 rounded-full object-cover" src="@profilePictureUrl" alt="Admin" />
+                        <img id="profile-pic" class="h-8 w-10 rounded-full object-cover" src="@profilePictureUrl" alt="Admin" />
                         <span>@User.Identity.Name</span>
                     </div>
                 </a>
