@@ -141,6 +141,37 @@ namespace ElnetSubdivi.Services
             }
         }
 
+        public async Task<decimal> GetTotalPaymentsAmount()
+        {
+            try
+            {
+                var total = await _context.Payments
+                    .SumAsync(p => p.amount);
 
+                return total;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error calculating total payments: {ex.Message}");
+                return 0;
+            }
+        }
+
+        public async Task<decimal> GetTotalPendingBillsAmount()
+        {
+            try
+            {
+                var totalPending = await _context.Billing_Statements
+                    .Where(b => b.bill_status == "Pending")
+                    .SumAsync(b => b.amount_due);
+
+                return totalPending;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error calculating total pending bills: {ex.Message}");
+                return 0;
+            }
+        }
     }
 }

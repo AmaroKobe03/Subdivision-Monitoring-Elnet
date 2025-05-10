@@ -1,4 +1,4 @@
-﻿
+﻿@model ElnetSubdivi.Models.StatisticsViewModel
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +16,7 @@
 <body class="mt-10 flex h-[100vh] w-full flex-col items-center justify-center">
     <div id="content" class="relative top-10 flex h-full w-[85%] flex-col items-center justify-center">
         <section id="top" class="flex h-[20vh] w-full items-center justify-center gap-6">
-            @foreach (var item in Model)
+            @foreach (var item in Model.DashboardData)
             {
                 <div class="item-center flex h-[15vh] w-[14%] flex-col rounded-lg bg-white">
                     <div class="flex items-center justify-between px-4 py-2">

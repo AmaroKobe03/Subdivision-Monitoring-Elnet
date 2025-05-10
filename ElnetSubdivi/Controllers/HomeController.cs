@@ -530,20 +530,51 @@ namespace ElnetSubdivi.Controllers
 
 
 
-        public IActionResult AdminDash()
+        public async Task<IActionResult> AdminDash()
         {
-            var data = new List<dynamic>
-                {
-                    new { Title = "User Count", Icon = "user.svg", Count = "1,234", Label1 = "Homeowners", Value1 = "876", Label2 = "Staffs", Value2 = "358" },
-                    new { Title = "Events", Icon = "calen.svg", Count = "45", Label1 = "Pending", Value1 = "30", Label2 = "Completed", Value2 = "15" },
-                    new { Title = "Forum Post", Icon = "msg.svg", Count = "40", Label1 = "+14% from last month", Value1 = "", Label2 = "", Value2 = "" },
-                    new { Title = "Requests", Icon = "tool.svg", Count = "10", Label1 = "Ongoing", Value1 = "30", Label2 = "Completed", Value2 = "15" },
-                    new { Title = "Feedback", Icon = "str.svg", Count = "11", Label1 = "Avg Rating", Value1 = "4.8", Label2 = "", Value2 = "" },
-                    new { Title = "Financial", Icon = "pe.svg", Count = "", Label1 = "Paid", Value1 = "₱25,000", Label2 = "Overdue", Value2 = "₱5,000" }
-                };
+            // Await asynchronous calls to avoid blocking and allow proper async handling
+            var bills = (await _billingService.GetAll()).Count;
+            var users = (await _userService.GetAllUsers()).Count;
+            var feedbacks = (await _feedbackService.GetAllFeedback()).Count;
+            var requests = (await _requestService.GetAllRequest()).Count; // Fix: Await the Task
+            var events = 10; // Example placeholder
+            var homeowners = (await _userService.GetAllHomeowners()).Count;
+            var staff = (await _userService.GetAllStaff()).Count;
+            var pending = (await _requestService.GetAllPendingRequest()).Count; // Fix: Await the Task
+            var completed = (await _requestService.GetAllCompleteRequest()).Count;
+            var posts = (await _postService.GetAllPost()).Count;
+            var payments = await _billingService.GetTotalPaymentsAmount();
+            var overdue = await _billingService.GetTotalPendingBillsAmount();
 
-            return View(data);
+            var data = new List<dynamic>
+    {
+        new { Title = "User Count", Icon = "user.svg", Count = users.ToString(), Label1 = "Homeowners", Value1 = homeowners.ToString(), Label2 = "Staffs", Value2 = staff.ToString() },
+        new { Title = "Events", Icon = "calen.svg", Count = events.ToString(), Label1 = "Pending", Value1 = pending.ToString(), Label2 = "Completed", Value2 = completed.ToString() },
+        new { Title = "Forum Post", Icon = "msg.svg", Count = posts.ToString(), Label1 = "+14% from last month", Value1 = "", Label2 = "", Value2 = "" },
+        new { Title = "Requests", Icon = "tool.svg", Count = requests.ToString(), Label1 = "Ongoing", Value1 = pending.ToString(), Label2 = "Completed", Value2 = completed.ToString() },
+        new { Title = "Feedback", Icon = "str.svg", Count = feedbacks.ToString(), Label1 = "Avg Rating", Value1 = "4.8", Label2 = "", Value2 = "" },
+        new { Title = "Financial", Icon = "pe.svg", Count = "", Label1 = "Paid", Value1 = payments.ToString(), Label2 = "Overdue", Value2 = overdue.ToString() }
+    };
+
+            var statistics = new StatisticsViewModel
+            {
+                BillStatements = await _billingService.GetAll(),
+                Users = await _userService.GetAllUsers(),
+                Payments = await _context.Payments.ToListAsync(),
+                Feedback = await _feedbackService.GetAllFeedback(),
+                IncidentReports = await _context.Incident_Reports.ToListAsync(),
+                VisitorList = await _context.Visitor_List.ToListAsync(),
+                Vehicle = await _context.Vehicle.ToListAsync(),
+                ServiceRequests = await _requestService.GetAllRequest(),
+                Reservations = await _reservationService.GetAllReservationAsync(),
+                Facilities = await _facilityService.GetAllFacilitiesWithHoursAsync(),
+                Posts = await _postService.GetAllPost(),
+                DashboardData = data
+            };
+
+            return View(statistics);
         }
+
 
         public async Task<IActionResult> UserManagement()
         {
@@ -902,7 +933,7 @@ namespace ElnetSubdivi.Controllers
             ViewData["HideSearch"] = true;
             return View();
         }
-        public IActionResult UserFeedback()
+        public async Task<IActionResult> UserFeedbackAsync()
         {
             ViewData["HideSearch"] = true;
 
@@ -1357,19 +1388,19 @@ namespace ElnetSubdivi.Controllers
         // and ensuring optional parameters appear after all required parameters.
 
         private async Task<IActionResult> SignInUser(
-    string first_name,
-    string last_name,
-    string redirectAction,
-    string role = "",
-    string additionalClaim = "",
-    byte[] profilePicture = null)
-        {
-            var username = first_name + " " + last_name;
+            string first_name,
+            string last_name,
+            string redirectAction,
+            string role = "",
+            string additionalClaim = "",
+            byte[] profilePicture = null)
+                {
+                    var username = first_name + " " + last_name;
 
-            var claims = new List<Claim>
-    {
-        new Claim(ClaimTypes.Name, username)
-    };
+                    var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, username)
+            };
 
             if (!string.IsNullOrEmpty(role))
             {

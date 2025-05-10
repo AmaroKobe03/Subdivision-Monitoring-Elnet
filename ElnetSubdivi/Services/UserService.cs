@@ -49,6 +49,72 @@ namespace ElnetSubdivi.Services
             }
         }
 
+        public async Task<List<Users>> GetAllHomeowners()
+        {
+            try
+            {
+                var users = await _context.Users
+                    .Where(u => u.type_of_user == 2) // Filter by type_of_user = 2
+                    .Select(u => new Users
+                    {
+                        user_id = u.user_id ?? "",
+                        first_name = u.first_name ?? "",
+                        middle_name = u.middle_name ?? "",
+                        last_name = u.last_name ?? "",
+                        date_of_birth = u.date_of_birth,
+                        gender = u.gender ?? "",
+                        phone = u.phone ?? "",
+                        email = u.email ?? "",
+                        address = u.address ?? "",
+                        type_of_user = u.type_of_user ?? 0,
+                        profile_picture = u.profile_picture ?? null,
+                        created_at = u.created_at ?? DateTime.MinValue
+                    })
+                    .ToListAsync();
+
+                return users;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching users: {ex.Message}");
+                return new List<Users>();
+            }
+        }
+
+        public async Task<List<Users>> GetAllStaff()
+        {
+            try
+            {
+                var validTypes = new List<int?> { 3, 4, 5 };
+
+                var users = await _context.Users
+                    .Where(u => validTypes.Contains(u.type_of_user))
+                    .Select(u => new Users
+                    {
+                        user_id = u.user_id ?? "",
+                        first_name = u.first_name ?? "",
+                        middle_name = u.middle_name ?? "",
+                        last_name = u.last_name ?? "",
+                        date_of_birth = u.date_of_birth,
+                        gender = u.gender ?? "",
+                        phone = u.phone ?? "",
+                        email = u.email ?? "",
+                        address = u.address ?? "",
+                        type_of_user = u.type_of_user ?? 0,
+                        profile_picture = u.profile_picture ?? null,
+                        created_at = u.created_at ?? DateTime.MinValue
+                    })
+                    .ToListAsync();
+
+                return users;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching users: {ex.Message}");
+                return new List<Users>();
+            }
+        }
+
 
 
         // Get user from user_accounts by username (for login)
@@ -66,6 +132,7 @@ namespace ElnetSubdivi.Services
                 .Where(u => u.user_id == userId)
                 .FirstOrDefaultAsync();
         }
+
 
         public async Task<string> GetUserType(int type_of_user)
         {

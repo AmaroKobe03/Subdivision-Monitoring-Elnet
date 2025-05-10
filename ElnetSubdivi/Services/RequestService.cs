@@ -20,6 +20,25 @@ namespace ElnetSubdivi.Services
             return requests ?? new List<ServiceRequest>(); // Ensure it never returns null  
         }
 
+        public async Task<List<ServiceRequest>> GetAllPendingRequest()
+        {
+            var requests = await _context.Service_Request
+                .Where(r => r.Request_Status == "Pending")
+                .ToListAsync();
+
+            return requests ?? new List<ServiceRequest>(); // Ensure it never returns null  
+        }
+
+        public async Task<List<ServiceRequest>> GetAllCompleteRequest()
+        {
+            var requests = await _context.Service_Request
+                .Where(r => r.Request_Status != "Completed")
+                .ToListAsync();
+
+            return requests ?? new List<ServiceRequest>(); // Ensure it never returns null  
+        }
+
+
         public async Task<List<Post>> GetPostsByUserAsync(string userId)
         {
             return await _context.Posts

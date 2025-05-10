@@ -8,6 +8,8 @@ namespace ElnetSubdivi.Services
     public interface IUserService
     {
         Task<List<Users>> GetAllUsers();
+        Task<List<Users>> GetAllHomeowners();
+        Task<List<Users>> GetAllStaff();
         Task<UserAccount> GetUserByUsername(string username);
         Task<Users> GetUserDetailsById(string userId);
         Task<bool> CreateUser(Users user);
